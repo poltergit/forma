@@ -5,6 +5,7 @@ All notable project changes are recorded here.
 ## [Unreleased]
 
 ### Added
+- Added `docs/REFERENCE_LED_ART_DIRECTION.md`, a proposed reference-led creative direction and motion system for FORMA.
 - Initialized the FORMA repository documentation.
 - Added approved Product Requirements Document, Brand Guidelines, and Phase 03 UX Specification.
 - Added proposed Phase 04 Visual Design System and framework-independent design tokens.
