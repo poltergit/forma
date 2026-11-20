@@ -29,7 +29,7 @@ See docs/UX_SPECIFICATION.md for the approved sitemap, navigation, page structur
 
 ## Phase 04 — In progress
 Review these proposed artifacts together:
-- docs/VISUAL_DESIGN_SYSTEM.md — semantic colors, typography, spacing, components, motion, responsive rules, and accessibility.
+- docs/REFERENCE_LED_ART_DIRECTION.md — reference-led creative territory, page art direction, motion families, scroll/transition rules, accessibility guardrails, and reference-inspection protocol.
 - docs/PAGE_LAYOUT_SPECIFICATIONS.md — page-by-page compositions and responsive behavior.
 - docs/COMPONENT_DESIGN_SPECIFICATIONS.md — reusable component states, behavior, and accessibility contracts.
 - docs/LOGO_EXPLORATION.md — initial logo routes and review criteria.
@@ -46,6 +46,7 @@ Review these proposed artifacts together:
 - design/prototypes/account-preview.html — responsive sign-in, sign-up, and password-recovery visual states with local navigation and prototype-only submission feedback.
 
 ### Configuration-independent progress
+- Added a reference-led art direction proposal synthesizing the four owner-supplied websites into FORMA's original FORM IN MOTION concept. It defines a shared motion grammar, scroll behavior, route transitions, page-specific direction, and validation protocol; it does not claim a completed live-site audit.
 - Completed a preliminary contrast audit for key dark/light semantic color pairings and documented proposed token corrections.
 - Added framework-independent CSS custom properties with dark/light themes and reduced-motion overrides.
 - Added page-level layout specifications for Home, Playground, experiment detail, Motion Lab, Scene Studio, Archive, case studies, About, and account surfaces.
