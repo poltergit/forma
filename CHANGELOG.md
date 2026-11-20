@@ -21,6 +21,8 @@ All notable project changes are recorded here.
 - Added `design/prototypes/account-preview.html`, responsive sign-in, account creation, and recovery views with local navigation and explicit prototype-only feedback.
 
 ### Updated
+- Applied restrained FORM IN MOTION feedback to Scene Studio while preserving its task-focused editor hierarchy and simplified mobile layout.
+- Applied progressive reveals and responsive hover/focus artwork treatment to Archive, with a reduced-motion fallback.
 - Applied FORM IN MOTION to the Playground with progressive editorial reveals, restrained hover light-sweep, artwork response, and reduced-motion fallback.
 - Refined Motion Lab with tactile control feedback, behavior-switch transition cues, live playback status announcements, and reduced-motion-safe static presentation.
 - Updated README with all current design-preview links.
