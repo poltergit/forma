@@ -6,6 +6,8 @@
 
 ## 1. Shared application frame
 
+The reference-led direction is defined in `docs/REFERENCE_LED_ART_DIRECTION.md`. Apply its FORM IN MOTION language across the page layouts: open-frame geometry, deliberate editorial contrast, tactile controls, restrained scroll reveals, and consistent transitions. Motion remains progressive enhancement and must never compromise native scrolling, content access, or the approved page purpose.
+
 ### Desktop
 - A restrained top navigation anchors the experience: wordmark at left, primary destinations centered or grouped, and one clear account/action area at right.
 - Keep navigation visually quiet; the active destination uses a clear text/indicator treatment rather than a large filled tab.
