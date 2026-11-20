@@ -18,12 +18,13 @@ It is both a personal creative-technology flagship and an independent product di
 Phases 01–03 are approved. Phase 04 visual design is in progress and awaiting product-owner review. See [PROJECT_STATUS.md](PROJECT_STATUS.md) and the [documentation](docs/).
 
 ### Design previews
-- [Home page visual prototype](design/prototypes/home-preview.html) — standalone responsive HTML/CSS/JS design artifact; download and open locally in a browser.
-- [Playground visual prototype](design/prototypes/playground-preview.html) — editorial experiment gallery with working category filters; standalone responsive HTML/CSS/JS artifact.
-- [Motion Lab visual prototype](design/prototypes/motion-lab-preview.html) — interactive motion canvas with behavior, duration, intensity, easing, and play/pause controls.
-- [Scene Studio visual prototype](design/prototypes/scene-studio-preview.html) — responsive editor-shell interaction study with local object selection, hierarchy, inspector, and mobile sheets.
-- [Archive visual prototype](design/prototypes/archive-preview.html) — responsive editorial project archive with category filtering and keyboard-accessible case-note dialogs.
-- [About visual prototype](design/prototypes/about-preview.html) — responsive editorial story page presenting FORMA's point of view, principles, and creator context.
+- [Home page visual prototype](design/prototypes/home-preview.html) — standalone responsive HTML/CSS/JS design artifact.
+- [Playground visual prototype](design/prototypes/playground-preview.html) — editorial experiment gallery with working category filters.
+- [Motion Lab visual prototype](design/prototypes/motion-lab-preview.html) — interactive motion canvas with behavior and playback controls.
+- [Scene Studio visual prototype](design/prototypes/scene-studio-preview.html) — responsive editor-shell interaction study with local object and inspector controls.
+- [Archive visual prototype](design/prototypes/archive-preview.html) — responsive project archive with category filters and case-note dialogs.
+- [About visual prototype](design/prototypes/about-preview.html) — editorial story page presenting FORMA's point of view and principles.
+- [Account visual prototype](design/prototypes/account-preview.html) — responsive sign-in, account creation, and recovery states; no authentication is connected.
 - [Brand application guidelines](docs/BRAND_APPLICATION_GUIDELINES.md)
 - [Hybrid identity proposal](docs/HYBRID_IDENTITY_SYSTEM.md)
 
