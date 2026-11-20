@@ -31,7 +31,18 @@ See docs/UX_SPECIFICATION.md for the approved sitemap, navigation, page structur
 
 ## Phase 04 — In progress
 
-See docs/VISUAL_DESIGN_SYSTEM.md for the proposed semantic color system, typography scale, spacing and grid, component specifications, page art direction, motion guidance, responsive rules, and accessibility requirements.
+Review these proposed artifacts together:
+- docs/VISUAL_DESIGN_SYSTEM.md — semantic colors, typography, spacing, components, motion, responsive rules, and accessibility.
+- docs/PAGE_LAYOUT_SPECIFICATIONS.md — page-by-page compositions and responsive behavior.
+- docs/COMPONENT_DESIGN_SPECIFICATIONS.md — reusable component states, behavior, and accessibility contracts.
+- design/tokens.css — framework-independent draft CSS tokens.
+
+### Configuration-independent progress
+- Completed a preliminary contrast audit for key dark/light semantic color pairings.
+- Documented semantic token corrections for light muted text, accent text, and strong borders.
+- Added framework-independent CSS custom properties with dark/light themes and reduced-motion overrides.
+- Added page-level layout specifications for Home, Playground, experiment detail, Motion Lab, Scene Studio, Archive, case studies, About, and account surfaces.
+- Added component design specifications for navigation, buttons, previews, filters, interactive stages, editor panels, forms, feedback, overlays, and accessibility.
 
 ## Next action
 
@@ -41,6 +52,7 @@ Product-owner review and approval of Phase 04. Do not begin Phase 05 or applicat
 
 - Work in small, reviewable milestones.
 - Do not begin implementation before the relevant architecture and design decisions are approved.
+- Prioritize configuration-independent work while practical.
 - Avoid unrelated changes, speculative features, and unnecessary abstractions.
 - Do not claim tests, builds, deployments, or commits succeeded without verification.
 - Maintain accessibility, performance, security, and reduced-motion requirements.
@@ -53,22 +65,6 @@ Product-owner review and approval of Phase 04. Do not begin Phase 05 or applicat
 - Logo artwork has not yet been produced; only its direction is documented.
 - Technical providers and database schema are not yet selected.
 - Trademark, domain, and social-handle availability have not been checked.
-- Phase 04 visual tokens are proposed and have not yet been approved or contrast-validated in a rendered interface.
-
-
-## Configuration-independent progress
-
-- Completed a preliminary contrast audit for the proposed visual tokens.
-- Identified a light muted-text pairing below the WCAG normal-text threshold and documented a semantic-token correction.
-- Documented safer semantic accent and strong-border mappings.
-- Database, authentication provider, hosting, and other external configuration remain intentionally untouched.
-
-Phase 04 is still awaiting product-owner approval. The contrast audit is preliminary and does not replace rendered component testing.
-
-
-## Framework-independent design artifact
-
-- Added `design/tokens.css`, a framework-agnostic CSS custom-property stylesheet.
-- Includes dark defaults, opt-in light theme, typography, spacing, layout, geometry, motion, layering, and reduced-motion overrides.
-- This file has no dependency on a frontend framework or external service and can be adopted after the application foundation is selected.
-- File existence and repository contents were verified through GitHub.
+- Phase 04 artifacts are proposed and have not yet been approved.
+- Contrast measurements are preliminary; full component-level validation requires rendered UI testing.
+- No backend, authentication, hosting, or external service configuration has been performed.
