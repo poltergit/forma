@@ -335,4 +335,4 @@ The detailed scene schema, migration proposal, RLS policies, and save concurrenc
 - Environment, testing, performance, and deployment strategy approved.
 - MVP exclusions and migration assumptions understood.
 
-**Current state:** Proposal drafted; owner review required. Phase 06 is not authorized.
+**Current state:** Core stack approved (D-014). Detailed persistence and security specification prepared. Authentication and environment specification: docs/AUTH_AND_ENVIRONMENT.md. Supporting architecture and Phase 05 acceptance review remain in progress. Phase 06 is not authorized.
