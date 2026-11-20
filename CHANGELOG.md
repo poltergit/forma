@@ -18,21 +18,24 @@ All notable project changes are recorded here.
 - Added proposed standalone mark, horizontal light/dark lockups, favicon draft, and brand asset usage notes.
 - Added `docs/BRAND_APPLICATION_GUIDELINES.md` with practical logo, color, typography, composition, motion, and touchpoint rules.
 - Added `graphic-frame.svg` and `graphic-form-shift.svg` as reusable supporting brand graphics.
+- Added `design/prototypes/home-preview.html`, a standalone responsive Home page visual prototype with mobile navigation and reduced-motion support.
 
 ### Updated
 - Recorded the product owner's decision to combine the three logo exploration routes.
 - Updated project status to distinguish approval of the combined exploration direction from approval of final logo artwork.
 - Documented the supporting graphic assets and brand application rules.
+- Updated the repository README with current phase status and design-preview links.
 
 ### Project phase
 - Phase 01 approved.
 - Phase 02 approved.
 - Phase 03 approved.
-- Phase 04 in progress; awaiting product-owner approval.
+- Phase 04 in progress; awaiting product-owner review.
 - Phase 05 not started.
-- Application implementation not started.
+- Production application implementation not started.
 
 ### Notes
 - Work remains configuration-independent: no database, authentication provider, hosting, or external service has been configured.
-- Page layouts, component specifications, and identity assets are proposals for review, not authorization to begin application implementation.
+- The Home page HTML is a design prototype, not production application code; experiment visuals are illustrative and do not imply working product features.
+- Page layouts, component specifications, and identity assets remain proposals for review.
 - The Modular Frame hybrid identity is not final approved artwork or trademark clearance.
