@@ -408,3 +408,56 @@ Components should reference semantic tokens rather than hard-coded repeated valu
 **Phase 04 status: Proposed. Awaiting product-owner approval.**
 
 On approval, Phase 05 will finalize the application architecture, framework/tooling, data model, authentication, authorization, scene persistence, security, deployment, and free-tier constraints before frontend implementation begins.
+
+
+---
+
+## 14. Configuration-independent design QA — contrast audit
+
+A preliminary WCAG relative-luminance contrast calculation was performed against the proposed semantic colors. This work does not require a database, authentication provider, hosting configuration, or application framework.
+
+### Measured text pairings
+
+| Pairing | Contrast | Result |
+|---|---:|---|
+| Dark primary text #F2F0EA on #111214 | 16.45:1 | Pass |
+| Dark secondary text #B0B0AA on #111214 | 8.60:1 | Pass |
+| Dark muted text #92938F on #111214 | 6.06:1 | Pass |
+| Electric Lime #C7F36B on #111214 | 14.69:1 | Pass |
+| Signal Coral #FF765E on #111214 | 7.14:1 | Pass |
+| Digital Blue #8294FF on #111214 | 6.81:1 | Pass |
+| Light primary text #111214 on #F2F0EA | 16.45:1 | Pass |
+| Light secondary text #555650 on #F2F0EA | 6.50:1 | Pass |
+| Light muted text #6E7069 on #F2F0EA | 4.40:1 | **Fail for normal text** |
+| Dark text #111214 on Electric Lime #C7F36B | 14.69:1 | Pass |
+| Dark-green accent #526D16 on #F2F0EA | 5.18:1 | Pass |
+
+### Required semantic-token adjustments
+
+The brand palette remains unchanged. Adjust only semantic mappings:
+
+| Token | Previous proposal | Recommended mapping | Reason |
+|---|---|---|---|
+| Light theme text.muted | #6E7069 | #696B64 | Raises contrast on Soft Canvas to 4.74:1 |
+| Light theme accent.secondary for text | #C54835 | #B13E2E | Darker semantic coral reaches 5.12:1 on Soft Canvas |
+| Dark theme border.strong | #55585D | #6B6D67 | Stronger visible boundary against dark raised surfaces |
+| Light theme border.strong | #A6A49B | #85877F | Reaches 3.19:1 against Soft Canvas |
+
+Supporting accent colors remain available for large visual areas, illustrations, and non-text use when appropriate. Do not assume every brand color is suitable for small text.
+
+### Border usage
+
+- Subtle borders are for decorative separation and should not be the only indicator of an interactive boundary or selected state.
+- Where a boundary is necessary to identify a control, use a contrast-validated strong border or an additional shape/focus/selection cue.
+- Focus indicators must be independently visible and must not rely on the subtle border token.
+
+### Validation scope and caveats
+
+- Ratios above were calculated using the WCAG relative-luminance formula and rounded to two decimal places.
+- Text pairings are evaluated against the 4.5:1 normal-text threshold; large text may use the 3:1 threshold where WCAG definitions apply.
+- Non-text control boundaries and meaningful graphical indicators generally require 3:1 against adjacent colors.
+- These are token-pair checks, not a full rendered-interface accessibility audit.
+- All state colors, hover/pressed/disabled combinations, overlays, and actual component compositions must be tested when components exist.
+- Final validation should include automated checks and manual keyboard/visual review.
+
+**Audit status:** preliminary semantic color pairings checked; full component-level contrast validation remains part of implementation QA.
