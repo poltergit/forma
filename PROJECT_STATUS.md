@@ -6,7 +6,7 @@
 - Phase 01 — Product Discovery and Definition: **Approved**
 - Phase 02 — Brand Identity and Creative Direction: **Approved**
 - Phase 03 — UX and Information Architecture: **Approved**
-- Phase 04 — Visual Design System: **In progress; Home and Playground visual prototypes available for review**
+- Phase 04 — Visual Design System: **In progress; Home, Playground, and Motion Lab visual prototypes available for review**
 - Phase 05 — Technical Architecture: **Not started**
 - Production application implementation: **Not started**
 - Repository: **Initialized and verified**
@@ -38,7 +38,7 @@ Review these proposed artifacts together:
 - design/tokens.css — framework-independent draft CSS tokens.
 - design/brand/ — proposed logo assets and supporting structural/form-shift graphics.
 - design/prototypes/home-preview.html — standalone responsive Home page visual prototype.
-- design/prototypes/playground-preview.html — standalone responsive Playground gallery prototype with working category filters.
+- design/prototypes/playground-preview.html — standalone responsive Playground gallery prototype with working category filters.\n- design/prototypes/motion-lab-preview.html — responsive Motion Lab prototype with live animation controls for behavior, duration, intensity, easing, and playback.
 
 ### Configuration-independent progress
 - Completed a preliminary contrast audit for key dark/light semantic color pairings.
@@ -50,10 +50,10 @@ Review these proposed artifacts together:
 - Created a proposed hybrid identity, monochrome horizontal lockups, standalone mark, and favicon draft.
 - Added brand application rules and two reusable SVG graphic devices: an open frame and a three-state form-shift composition.
 - Created a standalone Home page design prototype with responsive layouts, a working mobile navigation toggle, semantic landmarks, keyboard focus styling, and reduced-motion handling.
-- Created a standalone Playground page prototype with an asymmetric editorial gallery, category filters, live result count, responsive layout, keyboard-visible focus states, and reduced-motion handling.
+- Created a standalone Playground page prototype with an asymmetric editorial gallery, category filters, live result count, responsive layout, keyboard-visible focus states, and reduced-motion handling.\n- Created a standalone Motion Lab prototype with four motion behaviors, live duration/intensity/easing controls, play/pause, reset, responsive control layout, and reduced-motion handling.
 
 ## Next action
-Review the Home and Playground visual prototypes and proposed Modular Frame identity. Refine the visual direction based on product-owner feedback, then complete remaining Phase 04 page-level visual prototypes and validation. These prototypes are design artifacts, not production application code. Do not begin Phase 05 or production application implementation until the relevant approval gate is satisfied.
+Review the Home, Playground, and Motion Lab visual prototypes and proposed Modular Frame identity. Refine the visual direction based on product-owner feedback, then complete remaining Phase 04 page-level visual prototypes and validation. These prototypes are design artifacts, not production application code. Do not begin Phase 05 or production application implementation until the relevant approval gate is satisfied.
 
 ## Project constraints
 - Work in small, reviewable milestones.
@@ -68,7 +68,7 @@ Review the Home and Playground visual prototypes and proposed Modular Frame iden
 ## Known limitations
 - No production application code has been implemented yet.
 - The Home page is a static design prototype; its sample experiment previews are illustrative, not functional product features.
-- The Playground gallery is also a visual prototype; its category filters work locally, but the experiment tiles are illustrative and do not launch interactive experiences.
+- The Playground gallery is also a visual prototype; its category filters work locally, but the experiment tiles are illustrative and do not launch interactive experiences.\n- The Motion Lab is a front-end interaction prototype; its motion controls affect a CSS demonstration object, not a saved motion project or production animation engine.
 - The hybrid logo is a proposed concept, not approved final artwork.
 - The SVG wordmark uses a font reference and is not yet an outlined production master.
 - Technical providers and database schema are not yet selected.
