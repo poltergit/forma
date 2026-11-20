@@ -6,45 +6,37 @@ All notable project changes are recorded here.
 
 ### Added
 - Initialized the FORMA repository documentation.
-- Added approved Product Requirements Document.
-- Added approved Brand Guidelines.
-- Added approved Phase 03 UX Specification.
-- Added proposed Phase 04 Visual Design System.
-- Added `design/tokens.css`, a framework-independent draft of visual tokens with dark/light semantic themes and reduced-motion overrides.
-- Added `docs/PAGE_LAYOUT_SPECIFICATIONS.md`, covering page compositions and responsive behavior across the product.
-- Added `docs/COMPONENT_DESIGN_SPECIFICATIONS.md`, defining reusable component behavior, states, and accessibility requirements.
-- Added `docs/LOGO_EXPLORATION.md` and three monochrome SVG logo explorations: Modular F, Form Shift, and Structural Frame.
-- Added `docs/HYBRID_IDENTITY_SYSTEM.md` and a proposed Modular Frame identity that combines the strongest roles of the three routes.
-- Added proposed standalone mark, horizontal light/dark lockups, favicon draft, and brand asset usage notes.
-- Added `docs/BRAND_APPLICATION_GUIDELINES.md` with practical logo, color, typography, composition, motion, and touchpoint rules.
-- Added `graphic-frame.svg` and `graphic-form-shift.svg` as reusable supporting brand graphics.
-- Added `design/prototypes/home-preview.html`, a standalone responsive Home page visual prototype with mobile navigation and reduced-motion support.
-- Added `design/prototypes/playground-preview.html`, a standalone responsive editorial gallery prototype with working category filters and live result count.
-- Added `design/prototypes/motion-lab-preview.html`, a responsive interactive motion-study prototype with behavior, duration, intensity, easing, playback, and reset controls.
-- Added `design/prototypes/scene-studio-preview.html`, a responsive editor-shell prototype with local object manipulation UI and dedicated mobile panel sheets.
-- Added `design/prototypes/archive-preview.html`, a responsive editorial archive with working category filters, live result count, and keyboard-accessible project detail dialogs.\n- Added `design/prototypes/about-preview.html`, a responsive editorial About page with brand philosophy, principles, creator context, and a link to the creator's existing portfolio.
+- Added approved Product Requirements Document, Brand Guidelines, and Phase 03 UX Specification.
+- Added proposed Phase 04 Visual Design System and framework-independent design tokens.
+- Added page layout and component design specifications.
+- Added three monochrome logo explorations and a proposed hybrid Modular Frame identity system.
+- Added brand application guidelines, proposed logo lockups, favicon draft, and supporting SVG graphics.
+- Added `design/prototypes/home-preview.html`, a responsive Home page visual prototype.
+- Added `design/prototypes/playground-preview.html`, an editorial experiment gallery with local category filters.
+- Added `design/prototypes/motion-lab-preview.html`, an interactive motion study with behavior, duration, intensity, easing, playback, and reset controls.
+- Added `design/prototypes/scene-studio-preview.html`, a responsive editor-shell prototype with local object controls and mobile panel sheets.
+- Added `design/prototypes/archive-preview.html`, a responsive editorial archive with category filters and keyboard-accessible project detail dialogs.
+- Added `design/prototypes/about-preview.html`, an editorial About page with brand philosophy, principles, and creator context.
+- Added `design/prototypes/account-preview.html`, responsive sign-in, account creation, and recovery views with local navigation and explicit prototype-only feedback.
 
 ### Updated
-- Recorded the product owner's decision to combine the three logo exploration routes.
-- Updated project status to distinguish approval of the combined exploration direction from approval of final logo artwork.
-- Documented the supporting graphic assets and brand application rules.
-- Updated the repository README with current phase status and design-preview links.
-- Updated Phase 04 status to include the Playground, Motion Lab, Scene Studio, and Archive prototypes and their interaction scopes.
+- Updated README with all current design-preview links.
+- Updated project status and changelog to record the Account prototype and clarify its non-production scope.
+- Maintained the Phase 04 approval gate; Phase 05 and production implementation remain unstarted.
 
 ### Project phase
 - Phase 01 approved.
 - Phase 02 approved.
 - Phase 03 approved.
-- Phase 04 in progress; awaiting product-owner review.
+- Phase 04 in progress; awaiting consolidated product-owner review.
 - Phase 05 not started.
 - Production application implementation not started.
 
 ### Notes
 - Work remains configuration-independent: no database, authentication provider, hosting, or external service has been configured.
-- The Home page HTML is a design prototype, not production application code; experiment visuals are illustrative and do not imply working product features.
-- The Playground gallery is a design prototype; only its local category filtering and result count are functional.
-- The Motion Lab is a design prototype; its local CSS motion controls work, but it does not save projects or represent a production animation engine.
-- The Scene Studio is a design prototype; its local hierarchy and inspector interactions are illustrative UI behavior, not real 3D editing, authentication, or persistence.
-- The Archive is a design prototype with illustrative project content; its local filtering and detail dialogs do not connect to persistent project data.\n- The About page is a visual storytelling prototype; its portfolio link is external and no form or messaging backend is implemented.
+- All page prototypes are separate from production application code.
+- Interactive controls in prototypes demonstrate local UI behavior only; they do not imply production services or persistent data.
+- Account forms do not authenticate, create accounts, send recovery emails, or transmit/store user information.
 - Page layouts, component specifications, and identity assets remain proposals for review.
 - The Modular Frame hybrid identity is not final approved artwork or trademark clearance.
+- Contrast measurements are preliminary; full component-level validation requires rendered UI testing.
