@@ -64,3 +64,11 @@ Product-owner review and approval of Phase 04. Do not begin Phase 05 or applicat
 - Database, authentication provider, hosting, and other external configuration remain intentionally untouched.
 
 Phase 04 is still awaiting product-owner approval. The contrast audit is preliminary and does not replace rendered component testing.
+
+
+## Framework-independent design artifact
+
+- Added `design/tokens.css`, a framework-agnostic CSS custom-property stylesheet.
+- Includes dark defaults, opt-in light theme, typography, spacing, layout, geometry, motion, layering, and reduced-motion overrides.
+- This file has no dependency on a frontend framework or external service and can be adopted after the application foundation is selected.
+- File existence and repository contents were verified through GitHub.
