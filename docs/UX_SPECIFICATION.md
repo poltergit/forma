@@ -2,8 +2,16 @@
 
 **Version:** 1.0  
 **Phase:** 03 — UX and Information Architecture  
-**Status:** Proposed for product-owner approval  
+**Status:** Approved by product owner  
 **Inputs:** Approved Product Requirements Document v1.1 and Brand Guidelines v1.1
+
+## Product-owner decisions
+
+- **Scene Studio:** professional creative editor with a dominant 3D viewport, left scene hierarchy, right contextual properties panel, and compact top toolbar.
+- **Playground:** editorial experiment gallery with varied preview compositions rather than a repetitive uniform card grid.
+- **Mobile Scene Studio:** simplified, purpose-built mobile editing experience rather than a compressed desktop editor.
+
+The full approved sitemap, page responsibilities, user flows, interaction states, responsive behavior, accessibility requirements, and MVP boundaries follow.
 
 ## 1. UX objective
 
