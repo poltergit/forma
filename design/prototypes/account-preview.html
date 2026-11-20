@@ -47,7 +47,7 @@
 const sections={signin:document.querySelector('#signin'),signup:document.querySelector('#signup'),recovery:document.querySelector('#recovery')};
 function show(name){Object.entries(sections).forEach(([key,node])=>node.classList.toggle('hidden',key!==name));document.querySelectorAll('.notice').forEach(n=>{n.classList.remove('show');n.textContent=''});const focus=sections[name].querySelector('input');if(focus)focus.focus()}
 document.querySelector('#tab-signup').addEventListener('click',()=>show('signup'));document.querySelector('#tab-signin').addEventListener('click',()=>show('signin'));document.querySelector('#tab-signin-2').addEventListener('click',()=>show('signin'));document.querySelector('#tab-signup-2').addEventListener('click',()=>show('signup'));document.querySelector('#forgot').addEventListener('click',()=>show('recovery'));document.querySelector('#return-signin').addEventListener('click',()=>show('signin'));
-document.querySelectorAll('form[data-demo-form]').forEach(form=>form.addEventListener('submit',event=>{event.preventDefault();const notice=form.parentElement.querySelector('.notice');notice.textContent='This is a design prototype. Authentication is not connected, and no information has been sent or stored.';notice.classList.add('show')}));
+document.querySelectorAll('form[data-demo-form]').forEach(form=>form.addEventListener('submit',event=>{event.preventDefault();if(!form.checkValidity()){form.reportValidity();return}const notice=form.parentElement.querySelector('.notice');notice.textContent='This is a design prototype. Authentication is not connected, and no information has been sent or stored.';notice.classList.add('show')}));
 </script>
 </body>
 </html>
