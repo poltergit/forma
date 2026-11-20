@@ -23,3 +23,9 @@ All notable project changes are recorded here.
 - Phase 02 approved.
 - Phase 03 approved.
 - Phase 04 in progress; awaiting product-owner approval.
+
+
+### Design QA
+- Added preliminary WCAG contrast measurements for key dark/light semantic color pairings.
+- Documented corrected light muted-text and supporting accent mappings.
+- Added strong-border guidance and component-level validation caveats.
