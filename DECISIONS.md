@@ -47,3 +47,19 @@ This file records decisions that have been explicitly approved. Proposed ideas d
 
 **Status:** Accepted  
 **Decision:** Work phase by phase. Require explicit product-owner approval before advancing beyond major phases.
+
+
+## D-010 — Scene Studio UX layout
+
+**Status:** Accepted  
+**Decision:** Use a professional creative-editor layout: compact top toolbar, left scene hierarchy, dominant central 3D viewport, and right contextual properties inspector. On smaller screens, panels become contextual or collapsible.
+
+## D-011 — Playground presentation
+
+**Status:** Accepted  
+**Decision:** Use an editorial experiment gallery with varied preview compositions and consistent metadata, not a repetitive uniform card grid.
+
+## D-012 — Mobile Scene Studio
+
+**Status:** Accepted  
+**Decision:** Build a simplified mobile editing experience with viewport-first interaction and touch-appropriate controls. Do not compress the full desktop editor into a narrow screen.
