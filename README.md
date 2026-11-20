@@ -14,6 +14,10 @@ It is both a personal creative-technology flagship and an independent product di
 - **Archive** — projects, case studies, and technical explorations.
 - **About** — the creator, philosophy, and contact.
 
+## Creative direction
+
+- [Reference-led Art Direction & Motion Direction](docs/REFERENCE_LED_ART_DIRECTION.md) — proposed FORM IN MOTION concept, motion grammar, scroll behavior, transitions, and page-specific art direction.
+
 ## Project status
 Phases 01–03 are approved. Phase 04 visual design is in progress and awaiting product-owner review. See [PROJECT_STATUS.md](PROJECT_STATUS.md) and the [documentation](docs/).
 
