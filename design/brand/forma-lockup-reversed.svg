@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 360 88" role="img" aria-labelledby="title">
+  <title id="title">FORMA proposed reversed horizontal logo lockup</title>
+  <g fill="#F2F0EA">
+    <path d="M8 12H60V23H20V33H48V44H20V68H8Z"/>
+  </g>
+  <path d="M55 34V64H34" fill="none" stroke="#F2F0EA" stroke-width="4" stroke-linecap="square"/>
+  <text x="86" y="63" fill="#F2F0EA" font-family="Space Grotesk, Inter, Arial, sans-serif" font-size="55" font-weight="600" letter-spacing="-2.5">FORMA</text>
+</svg>
