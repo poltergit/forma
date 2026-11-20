@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 96" role="img" aria-labelledby="title">
+  <title id="title">FORMA logo exploration — Structural Frame</title>
+  <g fill="none" stroke="#111214" stroke-width="9" stroke-linecap="square">
+    <path d="M22 18H69V78H22"/>
+    <path d="M22 48H47"/>
+  </g>
+  <text x="102" y="69" fill="#111214" font-family="Space Grotesk, Arial, sans-serif" font-size="54" font-weight="600" letter-spacing="-2">FORMA</text>
+</svg>
