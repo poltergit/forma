@@ -6,8 +6,8 @@
 - Phase 01 — Product Discovery and Definition: **Approved**
 - Phase 02 — Brand Identity and Creative Direction: **Approved**
 - Phase 03 — UX and Information Architecture: **Approved**
-- Phase 04 — Visual Design System: **In progress; FORM IN MOTION applied across all seven page prototypes (Home, Playground, Motion Lab, Scene Studio, Archive, About, and Account)**
-- Phase 05 — Technical Architecture: **Not started**
+- Phase 04 — Visual Design System: **Approved**
+- Phase 05 — Technical Architecture: **In progress; proposal prepared for owner review**
 - Production application implementation: **Not started**
 - Repository: **Initialized and verified**
 
@@ -69,7 +69,9 @@ Review these proposed artifacts together:
 - Created an Account prototype with sign-in, account creation, and recovery views; form submission explicitly explains that no authentication or data transfer occurs.
 
 ## Next action
-Phase 04 review package prepared. Product-owner approval is pending; rendered browser, assistive-technology, and direct reference-site validation remain outstanding. The live reference websites still require direct desktop/mobile inspection before their specific techniques can be attributed or approved. Do not begin Phase 05 or production application implementation until the product owner explicitly approves Phase 04.
+Phase 04 was approved by the product owner on 2026-11-20. See `docs/PHASE_04_REVIEW.md`. Rendered browser, assistive-technology, and direct reference-site validation remain follow-up tasks and are not claimed complete.
+
+Phase 05 architecture proposal: `docs/TECHNICAL_ARCHITECTURE.md`. Review the proposed stack, backend, scene persistence/security model, testing strategy, and deployment candidates. Do not begin Phase 06 or production application implementation until the product owner explicitly approves Phase 05.
 
 ## Project constraints
 - Work in small, reviewable milestones.
@@ -90,8 +92,7 @@ Phase 04 review package prepared. Product-owner approval is pending; rendered br
 - Account forms do not authenticate, create accounts, send recovery emails, or transmit/store user information.
 - The About page links externally to the creator's portfolio; no contact backend is implemented.
 - The hybrid logo is a proposed concept, not approved final artwork; its wordmark is not an outlined production master.
-- Technical providers and database schema are not yet selected.
+- Technical providers and database schema are proposed in Phase 05 but not yet approved.
 - Trademark, domain, and social-handle availability have not been checked.
-- Phase 04 artifacts are proposed and have not yet been approved.
 - Contrast measurements are preliminary; full component-level validation requires rendered UI testing.
 - No backend, authentication, hosting, or external service configuration has been performed.
