@@ -6,7 +6,7 @@
 - Phase 01 — Product Discovery and Definition: **Approved**
 - Phase 02 — Brand Identity and Creative Direction: **Approved**
 - Phase 03 — UX and Information Architecture: **Approved**
-- Phase 04 — Visual Design System: **In progress; Home, Playground, Motion Lab, Scene Studio, Archive, and About visual prototypes available for review**
+- Phase 04 — Visual Design System: **In progress; Home, Playground, Motion Lab, Scene Studio, Archive, About, and Account visual prototypes available for review**
 - Phase 05 — Technical Architecture: **Not started**
 - Production application implementation: **Not started**
 - Repository: **Initialized and verified**
@@ -37,31 +37,30 @@ Review these proposed artifacts together:
 - docs/BRAND_APPLICATION_GUIDELINES.md — logo usage, sizing, clear space, color, typography, composition, and product touchpoints.
 - design/tokens.css — framework-independent draft CSS tokens.
 - design/brand/ — proposed logo assets and supporting structural/form-shift graphics.
-- design/prototypes/home-preview.html — standalone responsive Home page visual prototype.
-- design/prototypes/playground-preview.html — standalone responsive Playground gallery prototype with working category filters.
-- design/prototypes/motion-lab-preview.html — responsive Motion Lab prototype with live animation controls for behavior, duration, intensity, easing, and playback.
-- design/prototypes/scene-studio-preview.html — responsive editor-shell prototype with local object hierarchy, selection, transform/appearance inspector, add/delete, visibility, undo/redo, and mobile bottom-dock sheets.
-- design/prototypes/archive-preview.html — responsive editorial archive with category filtering, varied project compositions, and keyboard-accessible project detail dialogs.
-- design/prototypes/about-preview.html — responsive editorial About page with brand philosophy, principles, creator context, and a verified portfolio link.
+- design/prototypes/home-preview.html — responsive Home page visual prototype.
+- design/prototypes/playground-preview.html — editorial Playground gallery with local category filters.
+- design/prototypes/motion-lab-preview.html — Motion Lab with live animation controls.
+- design/prototypes/scene-studio-preview.html — editor-shell prototype with local hierarchy, selection, inspector, object controls, and mobile sheets.
+- design/prototypes/archive-preview.html — editorial archive with category filtering and keyboard-accessible project detail dialogs.
+- design/prototypes/about-preview.html — editorial About page with brand philosophy, principles, creator context, and portfolio link.
+- design/prototypes/account-preview.html — responsive sign-in, sign-up, and password-recovery visual states with local navigation and prototype-only submission feedback.
 
 ### Configuration-independent progress
-- Completed a preliminary contrast audit for key dark/light semantic color pairings.
-- Documented semantic token corrections for light muted text, accent text, and strong borders.
+- Completed a preliminary contrast audit for key dark/light semantic color pairings and documented proposed token corrections.
 - Added framework-independent CSS custom properties with dark/light themes and reduced-motion overrides.
 - Added page-level layout specifications for Home, Playground, experiment detail, Motion Lab, Scene Studio, Archive, case studies, About, and account surfaces.
 - Added component design specifications for navigation, buttons, previews, filters, interactive stages, editor panels, forms, feedback, overlays, and accessibility.
-- Created three initial flat-vector logo routes.
-- Created a proposed hybrid identity, monochrome horizontal lockups, standalone mark, and favicon draft.
-- Added brand application rules and two reusable SVG graphic devices: an open frame and a three-state form-shift composition.
-- Created a standalone Home page design prototype with responsive layouts, a working mobile navigation toggle, semantic landmarks, keyboard focus styling, and reduced-motion handling.
-- Created a standalone Playground page prototype with an asymmetric editorial gallery, category filters, live result count, responsive layout, keyboard-visible focus states, and reduced-motion handling.
-- Created a standalone Motion Lab prototype with four motion behaviors, live duration/intensity/easing controls, play/pause, reset, responsive control layout, and reduced-motion handling.
-- Created a Scene Studio editor-shell prototype with desktop hierarchy/viewport/inspector composition and a purpose-built mobile bottom dock with object and inspector sheets.
-- Created an Archive prototype with category filters, live project count, responsive editorial layouts, keyboard-operable project cards, and accessible detail dialogs.
-- Created an About prototype with an editorial manifesto, six working principles, creator context, and a link to the creator's existing portfolio.
+- Created three initial flat-vector logo routes and a proposed hybrid Modular Frame identity, monochrome lockups, standalone mark, and favicon draft.
+- Added brand application rules and reusable SVG graphic devices.
+- Created standalone Home and Playground prototypes with responsive layouts, local navigation/filter interactions, keyboard focus styling, and reduced-motion handling.
+- Created a Motion Lab prototype with four motion behaviors and live duration, intensity, easing, playback, and reset controls.
+- Created a Scene Studio editor-shell prototype with desktop hierarchy/viewport/inspector composition and a purpose-built mobile bottom dock.
+- Created an Archive prototype with category filters, live project count, responsive layouts, keyboard-operable cards, and detail dialogs.
+- Created an About prototype with an editorial manifesto, six working principles, creator context, and portfolio link.
+- Created an Account prototype with sign-in, account creation, and recovery views; form submission explicitly explains that no authentication or data transfer occurs.
 
 ## Next action
-Create the visual account-entry states (sign-in, sign-up, and recovery) without choosing an authentication provider or implying that authentication is operational. Then run a consistency and accessibility review across the full Phase 04 prototype set. Review all proposed visual artifacts together before requesting Phase 04 approval. Do not begin Phase 05 or production application implementation until the relevant approval gate is satisfied.
+Run a consistency and accessibility review across the full Phase 04 prototype set, reconcile any mismatches with the approved UX and visual-system documents, and prepare a consolidated review package. Do not begin Phase 05 or production application implementation until the product owner explicitly approves Phase 04.
 
 ## Project constraints
 - Work in small, reviewable milestones.
@@ -75,14 +74,13 @@ Create the visual account-entry states (sign-in, sign-up, and recovery) without 
 
 ## Known limitations
 - No production application code has been implemented yet.
-- The Home page is a static design prototype; its sample experiment previews are illustrative, not functional product features.
-- The Playground gallery is also a visual prototype; its category filters work locally, but the experiment tiles are illustrative and do not launch interactive experiences.
-- The Motion Lab is a front-end interaction prototype; its motion controls affect a CSS demonstration object, not a saved motion project or production animation engine.
-- The Scene Studio prototype uses simplified DOM/CSS shapes to demonstrate editor layout and local UI state; it is not a 3D editor, does not save scenes, and has no authentication or cloud persistence.
-- The Archive prototype uses illustrative project entries; its category filters and local detail dialogs work in-browser, but it is not connected to a project database or live case-study content.
-- The About prototype is a visual storytelling page; its creator portfolio link is external and no form or messaging backend is implemented.
-- The hybrid logo is a proposed concept, not approved final artwork.
-- The SVG wordmark uses a font reference and is not yet an outlined production master.
+- Home, Playground, Motion Lab, Scene Studio, Archive, About, and Account are visual/interaction prototypes, not production features.
+- Playground filters, Motion Lab controls, Scene Studio local editor controls, Archive filters/details, and Account view navigation are local prototype interactions only.
+- The Scene Studio prototype uses DOM/CSS shapes; it is not a real 3D editor and has no authentication or cloud persistence.
+- Archive entries are illustrative and are not connected to persistent project data.
+- Account forms do not authenticate, create accounts, send recovery emails, or transmit/store user information.
+- The About page links externally to the creator's portfolio; no contact backend is implemented.
+- The hybrid logo is a proposed concept, not approved final artwork; its wordmark is not an outlined production master.
 - Technical providers and database schema are not yet selected.
 - Trademark, domain, and social-handle availability have not been checked.
 - Phase 04 artifacts are proposed and have not yet been approved.
