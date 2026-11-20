@@ -6,12 +6,13 @@
 
 - Phase 01 — Product Discovery and Definition: **Approved**
 - Phase 02 — Brand Identity and Creative Direction: **Approved**
-- Phase 03 — UX and Information Architecture: **Proposed; awaiting product-owner approval**
-- Phase 04 — Visual Design System: **Not started**
+- Phase 03 — UX and Information Architecture: **Approved**
+- Phase 04 — Visual Design System: **In progress; proposed specification available for review**
+- Phase 05 — Technical Architecture: **Not started**
 - Application implementation: **Not started**
 - Repository: **Initialized and verified**
 
-## Approved decisions
+## Approved product decisions
 
 - Product: FORMA — Interactive Digital Playground / Creative Technology Platform.
 - Tagline: Where form meets function.
@@ -19,28 +20,27 @@
 - Budget: Free-tier wherever practical.
 - Scene Studio: Cloud persistence and user accounts from the beginning.
 - Brand ownership: Personal flagship evolving into an independent product.
-- Brand palette, typography, and creative direction: See docs/BRAND_GUIDELINES.md.
+- Brand palette, typography, and creative direction: docs/BRAND_GUIDELINES.md.
+- Scene Studio UX: professional creative-editor layout.
+- Playground UX: editorial gallery with varied compositions.
+- Mobile Scene Studio: simplified touch-oriented editing experience.
 
-## Phase 03 deliverable
+## Phase 03 — Approved
 
-See docs/UX_SPECIFICATION.md for:
-- Sitemap and route responsibilities.
-- Global desktop and mobile navigation.
-- Page structures and responsibilities.
-- Core visitor and Scene Studio user flows.
-- Scene Studio authentication, editing, and cloud-save behavior.
-- Loading, empty, error, and save states.
-- Responsive and accessibility requirements.
-- MVP boundaries and acceptance criteria.
+See docs/UX_SPECIFICATION.md for the approved sitemap, navigation, page structures, user journeys, Scene Studio lifecycle, system states, responsive behavior, accessibility requirements, and MVP boundaries.
+
+## Phase 04 — In progress
+
+See docs/VISUAL_DESIGN_SYSTEM.md for the proposed semantic color system, typography scale, spacing and grid, component specifications, page art direction, motion guidance, responsive rules, and accessibility requirements.
 
 ## Next action
 
-Product-owner review and approval of Phase 03. Do not begin Phase 04 until approval is explicit.
+Product-owner review and approval of Phase 04. Do not begin Phase 05 or application implementation until the relevant approval gate is satisfied.
 
 ## Project constraints
 
 - Work in small, reviewable milestones.
-- Do not begin implementation before the relevant architecture and UX decisions are approved.
+- Do not begin implementation before the relevant architecture and design decisions are approved.
 - Avoid unrelated changes, speculative features, and unnecessary abstractions.
 - Do not claim tests, builds, deployments, or commits succeeded without verification.
 - Maintain accessibility, performance, security, and reduced-motion requirements.
@@ -50,7 +50,7 @@ Product-owner review and approval of Phase 03. Do not begin Phase 04 until appro
 ## Known limitations
 
 - No application code has been implemented yet.
-- Logo artwork has not yet been produced; only its approved direction is documented.
+- Logo artwork has not yet been produced; only its direction is documented.
 - Technical providers and database schema are not yet selected.
 - Trademark, domain, and social-handle availability have not been checked.
-- Phase 03 UX specification is proposed and has not yet been approved.
+- Phase 04 visual tokens are proposed and have not yet been approved or contrast-validated in a rendered interface.
