@@ -16,6 +16,38 @@
     .manifesto{background:var(--paper);color:var(--ink);padding-block:clamp(80px,11vw,150px)}.manifesto-inner{display:grid;grid-template-columns:.35fr 1.65fr;gap:5vw}.manifesto h2{font:600 clamp(42px,7.2vw,100px)/.98 var(--display);letter-spacing:-.075em;max-width:1000px;margin:0}.manifesto h2 em{font-style:normal;color:#697b39}.manifesto-foot{display:flex;justify-content:space-between;align-items:end;gap:30px;margin-top:50px}.manifesto-foot p{max-width:300px;color:#5d5e58;font-size:14px;margin:0}
     .studio{display:grid;grid-template-columns:.85fr 1.15fr;gap:7vw;align-items:center}.studio-copy h2{font:600 clamp(48px,6.5vw,88px)/.94 var(--display);letter-spacing:-.075em;margin:16px 0 24px}.studio-copy>p{color:#aaa9a2;max-width:390px}.studio-preview{border:1px solid #44464a;background:#191a1d;min-height:390px;position:relative;padding:16px}.studio-top{height:35px;border-bottom:1px solid #3b3d40;display:flex;justify-content:space-between;align-items:start;color:#b6b5ae}.studio-ui{display:grid;grid-template-columns:100px 1fr 120px;gap:10px;height:300px;padding-top:12px}.ui-panel{background:#222428;border:1px solid #36383c;padding:10px}.ui-line{height:5px;background:#51535a;margin:0 0 11px;width:75%}.ui-line.short{width:43%}.ui-line.active{background:var(--lime);width:58%}.ui-canvas{background:#111214;display:grid;place-items:center;position:relative;overflow:hidden}.cube{width:100px;height:100px;position:relative;transform:rotate(-30deg) skew(0deg,12deg);border:1px solid var(--lime);background:#c7f36b12}.cube:before,.cube:after{content:"";position:absolute;inset:15px;border:1px solid #92938f;transform:translate(18px,-18px)}.cube:after{inset:30px;transform:translate(34px,-34px);border-color:var(--coral)}.studio-label{position:absolute;bottom:13px;left:16px;color:#999}.studio-foot{display:flex;justify-content:space-between;color:#aaa9a2;padding-top:13px}
     .closing{border-top:1px solid var(--line);padding-block:90px 45px}.closing-top{display:flex;justify-content:space-between;gap:30px;align-items:end;padding-bottom:75px}.closing h2{font:600 clamp(54px,9vw,120px)/.9 var(--display);letter-spacing:-.08em;margin:15px 0 0}.closing .button{flex-shrink:0}.footer{border-top:1px solid var(--line);padding-top:24px;display:flex;justify-content:space-between;gap:20px;color:#92938f;font-size:12px}.footer-links{display:flex;gap:22px}
+
+    /* FORM IN MOTION — progressive, non-blocking motion layer */
+    .hero-art{isolation:isolate}
+    .hero-art:after{content:"";position:absolute;inset:0;background:linear-gradient(115deg,transparent 30%,#c7f36b0b 50%,transparent 70%);transform:translateX(-100%);animation:frame-sweep 8s ease-in-out infinite;pointer-events:none}
+    .frame-visual .outer{animation:frame-open 9s cubic-bezier(.2,.7,.2,1) infinite alternate}
+    .frame-visual .inner{animation:frame-shift 7s cubic-bezier(.2,.7,.2,1) infinite alternate}
+    .frame-visual .solid{animation:form-pulse 6s ease-in-out infinite alternate}
+    .work-card{transform:translateZ(0)}
+    .work-visual{transition:transform .55s cubic-bezier(.2,.7,.2,1),border-color .35s,filter .35s}
+    .work-card:hover .work-visual,.work-card:focus-visible .work-visual{transform:translateY(-7px) scale(.992);border-color:#777b6a;filter:saturate(1.12)}
+    .work-card:focus-visible{outline:2px solid var(--lime);outline-offset:8px}
+    .work-card:focus-visible .work-visual{border-color:var(--lime)}
+    .work-card .work-meta h3{transition:color .2s}
+    .work-card:hover .work-meta h3,.work-card:focus-visible .work-meta h3{color:var(--lime)}
+    .button,.nav-cta{transition:transform .22s cubic-bezier(.2,.7,.2,1),background .22s,border-color .22s}
+    .under-link{transition:border-color .2s,color .2s}
+    .under-link:hover{color:var(--lime);border-color:var(--lime)}
+    .manifesto{position:relative;overflow:hidden}
+    .manifesto:after{content:"F";position:absolute;right:-.04em;bottom:-.43em;font:600 clamp(280px,48vw,720px)/.8 var(--display);letter-spacing:-.12em;color:#11121408;pointer-events:none}
+    .manifesto-inner{position:relative;z-index:1}
+    .closing h2{max-width:950px}
+    @keyframes frame-sweep{0%,22%{transform:translateX(-100%)}55%,100%{transform:translateX(100%)}}
+    @keyframes frame-open{from{transform:scale(.94) rotate(-7deg)}to{transform:scale(1.04) rotate(-4deg)}}
+    @keyframes frame-shift{from{transform:translate(12px,-10px)}to{transform:translate(34px,-24px)}}
+    @keyframes form-pulse{from{transform:translateY(0) scale(.96)}to{transform:translateY(-5px) scale(1.02)}}
+    .motion-ready .reveal{opacity:0;transform:translateY(28px);transition:opacity .7s cubic-bezier(.2,.7,.2,1),transform .7s cubic-bezier(.2,.7,.2,1)}
+    .motion-ready .reveal.is-visible{opacity:1;transform:none}
+    .motion-ready .reveal[data-reveal-delay="1"]{transition-delay:90ms}
+    .motion-ready .reveal[data-reveal-delay="2"]{transition-delay:180ms}
+    .motion-ready .reveal[data-reveal-delay="3"]{transition-delay:270ms}
+    @media(hover:none){.work-card:hover .work-visual{transform:none;filter:none}}
+    @media(prefers-reduced-motion:reduce){.hero-art:after,.frame-visual .outer,.frame-visual .inner,.frame-visual .solid{animation:none!important}.work-visual,.work-meta h3,.button,.nav-cta,.under-link{transition:none!important}.motion-ready .reveal{opacity:1;transform:none;transition:none}}
     @media(max-width:800px){.navlinks{display:none;position:absolute;top:83px;left:0;right:0;background:#191a1d;border-bottom:1px solid var(--line);padding:24px var(--gutter) 30px;flex-direction:column;align-items:flex-start;gap:22px}.navlinks.open{display:flex}.navlinks a{font-size:16px}.navright .text-link{display:none}.menu-toggle{display:inline-grid;place-items:center}.hero-grid{grid-template-columns:1fr;gap:25px}.hero-copy{max-width:490px}.hero-art{margin-top:60px}.section-head{align-items:start;flex-direction:column}.section-intro{max-width:460px}.manifesto-inner{grid-template-columns:1fr;gap:34px}.manifesto-foot{align-items:start;flex-direction:column}.studio{grid-template-columns:1fr;gap:35px}.studio-preview{min-height:340px}.studio-ui{grid-template-columns:72px 1fr 88px;height:255px}.closing-top{align-items:start;flex-direction:column}}
     @media(max-width:540px){.topbar{height:72px}.navlinks{top:71px}.brand{font-size:22px}.nav-cta{min-height:42px;padding-inline:13px;font-size:12px}.hero{padding-top:76px}.hero h1{font-size:clamp(60px,17vw,90px)}.hero-art{height:260px}.frame-visual{width:80vw}.ticker{justify-content:flex-start;gap:18px}.ticker span:nth-child(n+3){display:none}.work-grid{grid-template-columns:1fr;gap:38px}.work-card:nth-child(2){margin-top:0}.work-visual,.work-card:nth-child(2) .work-visual,.work-card:nth-child(3) .work-visual{height:270px}.manifesto h2{font-size:clamp(42px,12vw,64px)}.studio-ui{grid-template-columns:54px 1fr 65px;gap:6px}.ui-panel{padding:6px}.closing{padding-top:75px}.closing-top{padding-bottom:55px}.footer{flex-direction:column}.footer-links{flex-wrap:wrap}.work-meta h3{font-size:21px}}
     @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,*::before,*::after{transition-duration:1ms!important;animation-duration:1ms!important;animation-iteration-count:1!important}}
@@ -47,7 +79,7 @@
       </div>
     </section>
     <div class="ticker wrap mono"><span><b>01</b> EXPERIMENT</span><span><b>02</b> INTERACT</span><span><b>03</b> CREATE</span><span class="muted">WHERE FORM MEETS FUNCTION</span></div>
-    <section class="section wrap" id="playground">
+    <section class="section wrap reveal" id="playground">
       <div class="section-head"><div><div class="mono lime">01 / Selected explorations</div><h2>Not just things<br>to look at.</h2></div><p class="section-intro">Small ideas, open-ended experiments, and digital objects designed to be explored. Pick one. See what happens.</p></div>
       <div class="work-grid">
         <a class="work-card" href="#motion"><div class="work-visual"><div class="visual-orbit"><div class="orb-core"></div></div><span class="mono" style="position:absolute;left:18px;top:16px;color:#c8c7c0">INTERACTION / 001</span><span class="mono" style="position:absolute;right:18px;bottom:16px;color:#c8c7c0">DRAG TO EXPLORE ↗</span></div><div class="work-meta"><div><h3>Orbit / Field</h3><p>Responsive systems · Pointer study</p></div><span class="mono work-number">01</span></div></a>
@@ -55,18 +87,20 @@
         <a class="work-card" id="motion" href="#studio"><div class="work-visual"><div class="shift-stack"><i></i><i></i><i></i><b>SHIFT</b></div><span class="mono" style="position:absolute;left:18px;top:16px;color:#c8c7c0">MOTION / 003</span><span class="mono" style="position:absolute;right:18px;bottom:16px;color:#c8c7c0">STATE TRANSITION</span></div><div class="work-meta"><div><h3>State / Shift</h3><p>Motion language · Transformation</p></div><span class="mono work-number">03</span></div></a>
       </div>
     </section>
-    <section class="manifesto" id="about"><div class="wrap manifesto-inner"><div class="mono">A point of view<br>— 001</div><div><h2>Design is not a picture. It's a <em>possibility</em> you can step into.</h2><div class="manifesto-foot"><p>FORMA brings design and technology into the same conversation. The result is a place to test, play, question, and make.</p><span class="mono">CURIOUS BY DESIGN. BUILT TO BE EXPLORED.</span></div></div></div></section>
-    <section class="section wrap studio" id="studio">
+    <section class="manifesto reveal" id="about"><div class="wrap manifesto-inner"><div class="mono">A point of view<br>— 001</div><div><h2>Design is not a picture. It's a <em>possibility</em> you can step into.</h2><div class="manifesto-foot"><p>FORMA brings design and technology into the same conversation. The result is a place to test, play, question, and make.</p><span class="mono">CURIOUS BY DESIGN. BUILT TO BE EXPLORED.</span></div></div></div></section>
+    <section class="section wrap studio reveal" id="studio">
       <div class="studio-copy"><div class="mono lime">02 / Make something</div><h2>From observer<br>to maker.</h2><p>Scene Studio is the creative workspace behind FORMA. Shape a scene, adjust its details, and build a visual idea from the ground up.</p><a class="button" href="#top">Discover Scene Studio <span class="arrow">↗</span></a></div>
       <div class="studio-preview" aria-label="Static concept preview of the Scene Studio interface"><div class="studio-top mono"><span>FORMA / SCENE STUDIO</span><span class="lime">● LOCAL PREVIEW</span></div><div class="studio-ui"><div class="ui-panel"><div class="mono muted" style="font-size:9px;margin-bottom:14px">SCENE</div><div class="ui-line active"></div><div class="ui-line"></div><div class="ui-line short"></div><div class="ui-line"></div></div><div class="ui-canvas"><div class="cube"></div><span class="studio-label mono">VIEWPORT / 01</span></div><div class="ui-panel"><div class="mono muted" style="font-size:9px;margin-bottom:14px">PROPERTIES</div><div class="ui-line"></div><div class="ui-line short"></div><div class="ui-line active"></div><div class="ui-line"></div></div></div><div class="studio-foot mono"><span>OBJECT / FRAME_01</span><span>1280 × 720</span></div></div>
     </section>
-    <section class="closing wrap"><div class="closing-top"><div><div class="mono lime">The next idea is yours</div><h2>Make room<br>for <span class="lime">what's next.</span></h2></div><a class="button" href="#playground">Start exploring <span class="arrow">↗</span></a></div><footer class="footer"><span>© 2026 FORMA — Where form meets function.</span><div class="footer-links"><a href="#playground">Playground</a><a href="#motion">Motion Lab</a><a href="#studio">Scene Studio</a><a href="#top">Back to top ↑</a></div></footer></section>
+    <section class="closing wrap reveal"><div class="closing-top"><div><div class="mono lime">The next idea is yours</div><h2>Make room<br>for <span class="lime">what's next.</span></h2></div><a class="button" href="#playground">Start exploring <span class="arrow">↗</span></a></div><footer class="footer"><span>© 2026 FORMA — Where form meets function.</span><div class="footer-links"><a href="#playground">Playground</a><a href="#motion">Motion Lab</a><a href="#studio">Scene Studio</a><a href="#top">Back to top ↑</a></div></footer></section>
   </main>
   <script>
     const toggle=document.querySelector("#menu-toggle");
     const nav=document.querySelector("#primary-nav");
     toggle.addEventListener("click",()=>{const open=toggle.getAttribute("aria-expanded")!=="true";toggle.setAttribute("aria-expanded",String(open));toggle.setAttribute("aria-label",open?"Close navigation":"Open navigation");nav.classList.toggle("open",open);toggle.textContent=open?"×":"☰";});
     nav.addEventListener("click",event=>{if(event.target.closest("a")){nav.classList.remove("open");toggle.setAttribute("aria-expanded","false");toggle.setAttribute("aria-label","Open navigation");toggle.textContent="☰";}});
+    const reduceMotion=window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if(!reduceMotion && "IntersectionObserver" in window){document.documentElement.classList.add("motion-ready");const observer=new IntersectionObserver(entries=>{entries.forEach(entry=>{if(entry.isIntersecting){entry.target.classList.add("is-visible");observer.unobserve(entry.target);}});},{threshold:.12,rootMargin:"0px 0px -48px 0px"});document.querySelectorAll(".reveal").forEach((section,index)=>{section.dataset.revealDelay=String(Math.min(index,3));observer.observe(section);});}
   </script>
 </body>
 </html>
