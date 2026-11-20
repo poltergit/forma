@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 96" role="img" aria-labelledby="title">
+  <title id="title">FORMA logo exploration — Form Shift</title>
+  <g fill="none" stroke="#111214" stroke-width="7" stroke-linejoin="miter">
+    <path d="M20 29H57V66H20Z"/>
+    <path d="M35 17H72V54H35Z"/>
+    <path d="M20 29L35 17M57 29L72 17M57 66L72 54"/>
+  </g>
+  <text x="102" y="69" fill="#111214" font-family="Space Grotesk, Arial, sans-serif" font-size="54" font-weight="600" letter-spacing="-2">FORMA</text>
+</svg>
