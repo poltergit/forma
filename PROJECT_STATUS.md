@@ -6,7 +6,7 @@
 - Phase 01 — Product Discovery and Definition: **Approved**
 - Phase 02 — Brand Identity and Creative Direction: **Approved**
 - Phase 03 — UX and Information Architecture: **Approved**
-- Phase 04 — Visual Design System: **In progress; Home, Playground, Motion Lab, and Scene Studio visual prototypes available for review**
+- Phase 04 — Visual Design System: **In progress; Home, Playground, Motion Lab, Scene Studio, and Archive visual prototypes available for review**
 - Phase 05 — Technical Architecture: **Not started**
 - Production application implementation: **Not started**
 - Repository: **Initialized and verified**
@@ -41,6 +41,7 @@ Review these proposed artifacts together:
 - design/prototypes/playground-preview.html — standalone responsive Playground gallery prototype with working category filters.
 - design/prototypes/motion-lab-preview.html — responsive Motion Lab prototype with live animation controls for behavior, duration, intensity, easing, and playback.
 - design/prototypes/scene-studio-preview.html — responsive editor-shell prototype with local object hierarchy, selection, transform/appearance inspector, add/delete, visibility, undo/redo, and mobile bottom-dock sheets.
+- design/prototypes/archive-preview.html — responsive editorial archive with category filtering, varied project compositions, and keyboard-accessible project detail dialogs.
 
 ### Configuration-independent progress
 - Completed a preliminary contrast audit for key dark/light semantic color pairings.
@@ -55,9 +56,10 @@ Review these proposed artifacts together:
 - Created a standalone Playground page prototype with an asymmetric editorial gallery, category filters, live result count, responsive layout, keyboard-visible focus states, and reduced-motion handling.
 - Created a standalone Motion Lab prototype with four motion behaviors, live duration/intensity/easing controls, play/pause, reset, responsive control layout, and reduced-motion handling.
 - Created a Scene Studio editor-shell prototype with desktop hierarchy/viewport/inspector composition and a purpose-built mobile bottom dock with object and inspector sheets.
+- Created an Archive prototype with category filters, live project count, responsive editorial layouts, keyboard-operable project cards, and accessible detail dialogs.
 
 ## Next action
-Review the Home, Playground, Motion Lab, and Scene Studio visual prototypes and proposed Modular Frame identity. Refine the visual direction based on product-owner feedback, then complete remaining Phase 04 page-level visual prototypes and validation. These prototypes are design artifacts, not production application code. Do not begin Phase 05 or production application implementation until the relevant approval gate is satisfied.
+Complete the remaining Phase 04 page-level visual prototypes (About and account-entry states), then run a consistency and accessibility review across the full set. Review all proposed visual artifacts together before requesting Phase 04 approval. Do not begin Phase 05 or production application implementation until the relevant approval gate is satisfied.
 
 ## Project constraints
 - Work in small, reviewable milestones.
@@ -75,6 +77,7 @@ Review the Home, Playground, Motion Lab, and Scene Studio visual prototypes and 
 - The Playground gallery is also a visual prototype; its category filters work locally, but the experiment tiles are illustrative and do not launch interactive experiences.
 - The Motion Lab is a front-end interaction prototype; its motion controls affect a CSS demonstration object, not a saved motion project or production animation engine.
 - The Scene Studio prototype uses simplified DOM/CSS shapes to demonstrate editor layout and local UI state; it is not a 3D editor, does not save scenes, and has no authentication or cloud persistence.
+- The Archive prototype uses illustrative project entries; its category filters and local detail dialogs work in-browser, but it is not connected to a project database or live case-study content.
 - The hybrid logo is a proposed concept, not approved final artwork.
 - The SVG wordmark uses a font reference and is not yet an outlined production master.
 - Technical providers and database schema are not yet selected.
