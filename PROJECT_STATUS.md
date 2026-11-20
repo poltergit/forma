@@ -6,7 +6,7 @@
 - Phase 01 — Product Discovery and Definition: **Approved**
 - Phase 02 — Brand Identity and Creative Direction: **Approved**
 - Phase 03 — UX and Information Architecture: **Approved**
-- Phase 04 — Visual Design System: **In progress; reference-led art direction added and Home prototype updated with the first FORM IN MOTION treatment**
+- Phase 04 — Visual Design System: **In progress; FORM IN MOTION applied to Home, Playground, and Motion Lab prototypes**
 - Phase 05 — Technical Architecture: **Not started**
 - Production application implementation: **Not started**
 - Repository: **Initialized and verified**
@@ -30,7 +30,9 @@ See docs/UX_SPECIFICATION.md for the approved sitemap, navigation, page structur
 ## Phase 04 — In progress
 Review these proposed artifacts together:
 - docs/REFERENCE_LED_ART_DIRECTION.md — reference-led creative territory, page art direction, motion families, scroll/transition rules, accessibility guardrails, and reference-inspection protocol.
-- Home prototype — first application of FORM IN MOTION: animated modular-frame study, restrained hover/focus feedback, progressive section reveals using IntersectionObserver, and reduced-motion fallback.
+- Home prototype — animated modular-frame study, restrained hover/focus feedback, progressive section reveals, and reduced-motion fallback.
+- Playground prototype — staggered editorial gallery reveals, subtle hover light-sweep and artwork response, and reduced-motion-safe progressive enhancement.
+- Motion Lab prototype — tactile behavior controls, transition feedback when switching motion studies, live playback status announcements, and reduced-motion-safe static presentation.
 - docs/PAGE_LAYOUT_SPECIFICATIONS.md — page-by-page compositions and responsive behavior.
 - docs/COMPONENT_DESIGN_SPECIFICATIONS.md — reusable component states, behavior, and accessibility contracts.
 - docs/LOGO_EXPLORATION.md — initial logo routes and review criteria.
@@ -55,6 +57,7 @@ Review these proposed artifacts together:
 - Created three initial flat-vector logo routes and a proposed hybrid Modular Frame identity, monochrome lockups, standalone mark, and favicon draft.
 - Added brand application rules and reusable SVG graphic devices.
 - Created standalone Home and Playground prototypes with responsive layouts, local navigation/filter interactions, keyboard focus styling, and reduced-motion handling.
+- Applied the FORM IN MOTION layer to the Playground and Motion Lab prototypes; the Motion Lab remains a local CSS motion instrument, not a production animation engine.
 - Created a Motion Lab prototype with four motion behaviors and live duration, intensity, easing, playback, and reset controls.
 - Created a Scene Studio editor-shell prototype with desktop hierarchy/viewport/inspector composition and a purpose-built mobile bottom dock.
 - Created an Archive prototype with category filters, live project count, responsive layouts, keyboard-operable cards, and detail dialogs.
@@ -62,7 +65,7 @@ Review these proposed artifacts together:
 - Created an Account prototype with sign-in, account creation, and recovery views; form submission explicitly explains that no authentication or data transfer occurs.
 
 ## Next action
-Continue applying FORM IN MOTION to the remaining prototypes, then complete a consistency/accessibility review and prepare a consolidated Phase 04 review package. The live reference websites still require direct desktop/mobile inspection before their specific techniques can be attributed or approved. Do not begin Phase 05 or production application implementation until the product owner explicitly approves Phase 04.
+Continue applying FORM IN MOTION to Scene Studio, Archive, About, and Account, then complete a consistency/accessibility review and prepare a consolidated Phase 04 review package. The live reference websites still require direct desktop/mobile inspection before their specific techniques can be attributed or approved. Do not begin Phase 05 or production application implementation until the product owner explicitly approves Phase 04.
 
 ## Project constraints
 - Work in small, reviewable milestones.
