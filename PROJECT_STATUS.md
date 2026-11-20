@@ -7,7 +7,7 @@
 - Phase 02 — Brand Identity and Creative Direction: **Approved**
 - Phase 03 — UX and Information Architecture: **Approved**
 - Phase 04 — Visual Design System: **Approved**
-- Phase 05 — Technical Architecture: **In progress; proposal prepared for owner review**
+- Phase 05 — Technical Architecture: **In progress; core stack approved, detailed data/security specification prepared**
 - Production application implementation: **Not started**
 - Repository: **Initialized and verified**
 
@@ -27,8 +27,10 @@
 ## Phase 03 — Approved
 See docs/UX_SPECIFICATION.md for the approved sitemap, navigation, page structures, user journeys, Scene Studio lifecycle, system states, responsive behavior, accessibility requirements, and MVP boundaries.
 
-## Phase 04 — In progress
-Review these proposed artifacts together:
+## Phase 04 — Approved
+See docs/PHASE_04_REVIEW.md for the approved visual direction, review results, and remaining validation tasks.
+
+Approved Phase 04 deliverables and artifacts:
 - docs/REFERENCE_LED_ART_DIRECTION.md — reference-led creative territory, page art direction, motion families, scroll/transition rules, accessibility guardrails, and reference-inspection protocol.
 - Home prototype — animated modular-frame study, restrained hover/focus feedback, progressive section reveals, and reduced-motion fallback.
 - Playground prototype — staggered editorial gallery reveals, subtle hover light-sweep and artwork response, and reduced-motion-safe progressive enhancement.
@@ -71,7 +73,7 @@ Review these proposed artifacts together:
 ## Next action
 Phase 04 was approved by the product owner on 2026-11-20. See `docs/PHASE_04_REVIEW.md`. Rendered browser, assistive-technology, and direct reference-site validation remain follow-up tasks and are not claimed complete.
 
-Phase 05 architecture proposal: `docs/TECHNICAL_ARCHITECTURE.md`. Review the proposed stack, backend, scene persistence/security model, testing strategy, and deployment candidates. Do not begin Phase 06 or production application implementation until the product owner explicitly approves Phase 05.
+Phase 05: core stack approved (D-014). Detailed Scene Studio data model and security specification prepared in docs/SCENE_STUDIO_DATA_MODEL.md. Remaining work: finalize supporting library choices, auth/session flow, environment/deployment setup, test strategy, operational safeguards, and acceptance checklist. Do not begin Phase 06 or production application implementation until the product owner explicitly approves Phase 05.
 
 ## Project constraints
 - Work in small, reviewable milestones.
@@ -92,7 +94,7 @@ Phase 05 architecture proposal: `docs/TECHNICAL_ARCHITECTURE.md`. Review the pro
 - Account forms do not authenticate, create accounts, send recovery emails, or transmit/store user information.
 - The About page links externally to the creator's portfolio; no contact backend is implemented.
 - The hybrid logo is a proposed concept, not approved final artwork; its wordmark is not an outlined production master.
-- Technical providers and database schema are proposed in Phase 05 but not yet approved.
+- Core technical stack is approved; detailed schema, security policies, supporting libraries, and deployment configuration remain under Phase 05 review.
 - Trademark, domain, and social-handle availability have not been checked.
 - Contrast measurements are preliminary; full component-level validation requires rendered UI testing.
 - No backend, authentication, hosting, or external service configuration has been performed.
