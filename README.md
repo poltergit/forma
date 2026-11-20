@@ -22,6 +22,7 @@ Phases 01–03 are approved. Phase 04 visual design is in progress and awaiting 
 - [Playground visual prototype](design/prototypes/playground-preview.html) — editorial experiment gallery with working category filters; standalone responsive HTML/CSS/JS artifact.
 - [Motion Lab visual prototype](design/prototypes/motion-lab-preview.html) — interactive motion canvas with behavior, duration, intensity, easing, and play/pause controls.
 - [Scene Studio visual prototype](design/prototypes/scene-studio-preview.html) — responsive editor-shell interaction study with local object selection, hierarchy, inspector, and mobile sheets.
+- [Archive visual prototype](design/prototypes/archive-preview.html) — responsive editorial project archive with category filtering and keyboard-accessible case-note dialogs.
 - [Brand application guidelines](docs/BRAND_APPLICATION_GUIDELINES.md)
 - [Hybrid identity proposal](docs/HYBRID_IDENTITY_SYSTEM.md)
 
