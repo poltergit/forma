@@ -22,13 +22,14 @@ All notable project changes are recorded here.
 - Added `design/prototypes/playground-preview.html`, a standalone responsive editorial gallery prototype with working category filters and live result count.
 - Added `design/prototypes/motion-lab-preview.html`, a responsive interactive motion-study prototype with behavior, duration, intensity, easing, playback, and reset controls.
 - Added `design/prototypes/scene-studio-preview.html`, a responsive editor-shell prototype with local object manipulation UI and dedicated mobile panel sheets.
+- Added `design/prototypes/archive-preview.html`, a responsive editorial archive with working category filters, live result count, and keyboard-accessible project detail dialogs.
 
 ### Updated
 - Recorded the product owner's decision to combine the three logo exploration routes.
 - Updated project status to distinguish approval of the combined exploration direction from approval of final logo artwork.
 - Documented the supporting graphic assets and brand application rules.
 - Updated the repository README with current phase status and design-preview links.
-- Updated Phase 04 status to include the Playground, Motion Lab, and Scene Studio prototypes and their interaction scopes.
+- Updated Phase 04 status to include the Playground, Motion Lab, Scene Studio, and Archive prototypes and their interaction scopes.
 
 ### Project phase
 - Phase 01 approved.
@@ -44,5 +45,6 @@ All notable project changes are recorded here.
 - The Playground gallery is a design prototype; only its local category filtering and result count are functional.
 - The Motion Lab is a design prototype; its local CSS motion controls work, but it does not save projects or represent a production animation engine.
 - The Scene Studio is a design prototype; its local hierarchy and inspector interactions are illustrative UI behavior, not real 3D editing, authentication, or persistence.
+- The Archive is a design prototype with illustrative project content; its local filtering and detail dialogs do not connect to persistent project data.
 - Page layouts, component specifications, and identity assets remain proposals for review.
 - The Modular Frame hybrid identity is not final approved artwork or trademark clearance.
