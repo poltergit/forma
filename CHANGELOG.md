@@ -13,6 +13,7 @@ All notable project changes are recorded here.
 - Added `design/tokens.css`, a framework-independent draft of visual tokens with dark/light semantic themes and reduced-motion overrides.
 - Added `docs/PAGE_LAYOUT_SPECIFICATIONS.md`, covering page compositions and responsive behavior across the product.
 - Added `docs/COMPONENT_DESIGN_SPECIFICATIONS.md`, defining reusable component behavior, states, and accessibility requirements.
+- Added `docs/LOGO_EXPLORATION.md` and three monochrome SVG logo explorations: Modular F, Form Shift, and Structural Frame.
 
 ### Updated
 - Recorded approved Scene Studio professional-editor layout.
@@ -31,5 +32,5 @@ All notable project changes are recorded here.
 
 ### Notes
 - Work remains configuration-independent: no database, authentication provider, hosting, or external service has been configured.
-- Page layouts and component specifications are proposals for review, not authorization to begin application implementation.
-- Logo artwork remains outstanding; only the direction is documented.
+- Page layouts, component specifications, and logo explorations are proposals for review, not authorization to begin application implementation.
+- No final logo route has been selected or approved.
