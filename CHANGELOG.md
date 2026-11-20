@@ -21,6 +21,7 @@ All notable project changes are recorded here.
 - Added `design/prototypes/account-preview.html`, responsive sign-in, account creation, and recovery views with local navigation and explicit prototype-only feedback.
 
 ### Updated
+- Added a cross-page prototype consistency review and explicit Phase 04 validation checklist to `docs/VISUAL_DESIGN_SYSTEM.md`. The review distinguishes source inspection from browser, assistive-technology, and WCAG validation.
 - Applied restrained FORM IN MOTION feedback to Scene Studio while preserving its task-focused editor hierarchy and simplified mobile layout.
 - Applied progressive editorial reveals, geometric form response, and reduced-motion-safe fallbacks to the About prototype.
 - Refined Account with compact view transitions, tactile form controls, restrained geometric feedback, and reduced-motion-safe behavior.
