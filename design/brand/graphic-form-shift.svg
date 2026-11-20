@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 280" fill="none">
+  <title>FORMA form shift three-state graphic</title>
+  <g stroke="#92938F" stroke-width="2">
+    <path d="M48 54H184V226H48V54Z"/>
+    <path d="M292 54H428V226H292V54Z"/>
+    <path d="M536 54H672V226H536V54Z"/>
+  </g>
+  <g fill="#111214">
+    <path d="M76 82H156V110H104V142H144V170H104V198H76V82Z"/>
+    <path d="M320 82H400V110H348V142H388V170H348V198H320V82Z"/>
+    <path d="M564 82H644V110H592V142H632V170H592V198H564V82Z"/>
+  </g>
+  <path d="M184 140H256M428 140H500" stroke="#C7F36B" stroke-width="3" stroke-linecap="square"/>
+  <path d="M246 130L256 140L246 150M490 130L500 140L490 150" stroke="#C7F36B" stroke-width="3" stroke-linecap="square" stroke-linejoin="miter"/>
+  <g fill="#FF765E">
+    <rect x="64" y="236" width="8" height="8"/>
+    <rect x="308" y="236" width="8" height="8"/>
+    <rect x="552" y="236" width="8" height="8"/>
+  </g>
+</svg>
