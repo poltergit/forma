@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#111214">
+<meta name="description" content="FORMA Motion Lab — explore timing, movement, and visual behavior.">
+<title>Motion Lab — FORMA</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Inter:wght@400;500;600&family=Space+Grotesk:wght@400;500;600;700&display=swap');
+:root{color-scheme:dark;--bg:#111214;--panel:#191a1c;--paper:#f2f0ea;--muted:#a5a59e;--line:#303134;--lime:#c7f36b;--coral:#ff765e;--blue:#8294ff;--display:"Space Grotesk",Arial,sans-serif;--body:Inter,Arial,sans-serif;--mono:"DM Mono",monospace}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--paper);font-family:var(--body);-webkit-font-smoothing:antialiased}button,select,input{font:inherit}button{color:inherit}.wrap{width:min(1320px,calc(100% - 64px));margin:auto}.mono,.eyebrow,.label,.readout,.nav-label{font:10px var(--mono);text-transform:uppercase;letter-spacing:.1em}.topbar{height:76px;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between}.brand{display:flex;align-items:center;gap:12px;font:600 19px var(--display);letter-spacing:-.06em;color:var(--paper);text-decoration:none}.mark{width:25px;height:25px;border:2px solid var(--lime);position:relative}.mark:after{content:"";position:absolute;width:8px;height:8px;right:-5px;bottom:-5px;border:2px solid var(--lime);background:var(--bg)}nav{display:flex;gap:28px}nav a{color:var(--muted);font-size:12px;text-decoration:none}nav a.active,nav a:hover{color:var(--paper)}.nav-label{color:var(--lime)}.intro{padding:76px 0 48px;display:flex;justify-content:space-between;align-items:end;gap:40px}.eyebrow{color:var(--lime)}h1{font:500 clamp(58px,9vw,112px)/.9 var(--display);letter-spacing:-.09em;margin:22px 0 0}.intro-copy{max-width:310px;color:var(--muted);font-size:13px;line-height:1.8;margin-bottom:5px}.workspace{display:grid;grid-template-columns:minmax(0,1fr) 300px;border:1px solid var(--line);min-height:570px}.stage-wrap{min-width:0;border-right:1px solid var(--line);display:flex;flex-direction:column}.stage-head,.stage-foot{height:48px;padding:0 20px;display:flex;align-items:center;justify-content:space-between;color:var(--muted)}.stage-head{border-bottom:1px solid var(--line)}.stage-foot{border-top:1px solid var(--line)}.stage{flex:1;min-height:460px;position:relative;overflow:hidden;display:grid;place-items:center;background-color:#151719;background-image:linear-gradient(#ffffff09 1px,transparent 1px),linear-gradient(90deg,#ffffff09 1px,transparent 1px);background-size:40px 40px}.stage:before{content:"";position:absolute;inset:0;background:radial-gradient(ellipse at center,#ffffff08,transparent 60%);pointer-events:none}.object{width:170px;height:170px;position:relative;z-index:1;transform-style:preserve-3d;animation:float 4s ease-in-out infinite alternate}.object.orbit{border-radius:50%;background:radial-gradient(circle at 30% 25%,#f3ffd7,#c7f36b 22%,#67884a 58%,#273a2b 78%);box-shadow:inset -22px -25px 38px #08120c99,0 0 75px #c7f36b22}.object.orbit:after{content:"";position:absolute;inset:-26px;border:1px solid #c7f36b99;border-radius:50%;transform:rotateX(67deg) scaleY(.6)}.object.pulse{border:2px solid var(--coral);border-radius:50%;box-shadow:0 0 0 18px #ff765e20,0 0 0 38px #ff765e12,0 0 75px #ff765e22}.object.pulse:after{content:"";position:absolute;inset:28px;border:1px solid var(--coral);border-radius:50%}.object.shift{width:150px;height:150px;background:var(--blue);box-shadow:22px 22px 0 #ff765e,-22px -22px 0 #c7f36b}.object.stagger{width:260px;height:70px;background:linear-gradient(90deg,var(--lime) 0 18%,transparent 18% 22%,var(--paper) 22% 40%,transparent 40% 44%,var(--coral) 44% 62%,transparent 62% 66%,var(--blue) 66% 84%,transparent 84%)}@keyframes float{from{transform:translateY(-13px) rotate(-8deg)}to{transform:translateY(13px) rotate(8deg)}}.stage.paused .object{animation-play-state:paused}.stage[data-motion="pulse"] .object{animation-name:pulse;animation-timing-function:ease-in-out}@keyframes pulse{0%,100%{transform:scale(.78);opacity:.65}50%{transform:scale(1.18);opacity:1}}.stage[data-motion="shift"] .object{animation-name:shift;animation-timing-function:cubic-bezier(.2,.8,.2,1)}@keyframes shift{0%{transform:translate(-70px,35px) rotate(-18deg)}100%{transform:translate(70px,-35px) rotate(18deg)}}.stage[data-motion="stagger"] .object{animation-name:stagger;animation-timing-function:steps(5,end)}@keyframes stagger{0%{transform:translateX(-90px) scaleX(.7)}100%{transform:translateX(90px) scaleX(1.15)}}.stage[data-motion="orbit"] .object{animation-name:orbit;animation-timing-function:ease-in-out}@keyframes orbit{0%{transform:rotate(-25deg) translateX(-34px) rotate(25deg)}100%{transform:rotate(335deg) translateX(-34px) rotate(-335deg)}}.crosshair{position:absolute;width:14px;height:14px;border-left:1px solid #ffffff40;border-top:1px solid #ffffff40}.crosshair.a{top:18px;left:18px}.crosshair.b{right:18px;bottom:18px;transform:rotate(180deg)}.play{border:1px solid var(--line);background:transparent;padding:8px 13px;cursor:pointer;font:10px var(--mono);text-transform:uppercase;letter-spacing:.08em}.play:hover{border-color:var(--lime);color:var(--lime)}.controls{padding:22px;background:var(--panel)}.control-title{display:flex;justify-content:space-between;align-items:center;padding-bottom:18px;border-bottom:1px solid var(--line)}.control-title h2{font:500 18px var(--display);margin:0;letter-spacing:-.04em}.control-group{padding:22px 0;border-bottom:1px solid var(--line)}.label{display:block;color:var(--muted);margin-bottom:12px}.modes{display:grid;grid-template-columns:1fr 1fr;gap:7px}.mode{background:transparent;border:1px solid var(--line);padding:11px 9px;text-align:left;color:var(--muted);font:10px var(--mono);cursor:pointer}.mode[aria-pressed="true"]{border-color:var(--lime);color:var(--lime);background:#c7f36b0c}.range-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}.range-head output{font:11px var(--mono);color:var(--lime)}input[type=range]{width:100%;accent-color:var(--lime);cursor:pointer}.range-hints{display:flex;justify-content:space-between;color:#777970;font:9px var(--mono);margin-top:7px}.select{width:100%;background:#111214;border:1px solid var(--line);color:var(--paper);padding:11px;font-size:11px}.reset{width:100%;margin-top:20px;background:var(--lime);color:#111214;border:0;padding:13px;font:10px var(--mono);text-transform:uppercase;letter-spacing:.08em;cursor:pointer}.reset:hover{filter:brightness(1.08)}.note{padding:44px 0 70px;display:flex;justify-content:space-between;gap:30px;color:var(--muted);font-size:12px;line-height:1.7}.note strong{color:var(--paper);font-weight:500}.footer{border-top:1px solid var(--line);padding:26px 0 38px;display:flex;justify-content:space-between;color:var(--muted);font:10px var(--mono);text-transform:uppercase;letter-spacing:.08em}.footer a{color:var(--paper);text-decoration:none}:focus-visible{outline:2px solid var(--lime);outline-offset:4px}
+@media(max-width:850px){.workspace{grid-template-columns:1fr}.stage-wrap{border-right:0;border-bottom:1px solid var(--line)}.stage{min-height:390px}.controls{display:grid;grid-template-columns:1fr 1fr;gap:0 24px}.control-title{grid-column:1/-1}.reset{align-self:end}.intro{align-items:flex-start;flex-direction:column;gap:24px}.intro-copy{max-width:440px}}
+@media(max-width:560px){.wrap{width:calc(100% - 36px)}.topbar{height:66px}nav{gap:14px}nav a:nth-child(1),nav a:nth-child(4){display:none}.nav-label{display:none}.intro{padding:60px 0 36px}h1{font-size:clamp(58px,16vw,86px)}.stage{min-height:320px}.object{transform:scale(.8)}.controls{display:block;padding:18px}.note,.footer{flex-direction:column;gap:14px}.stage-head,.stage-foot{padding:0 12px}}
+@media(prefers-reduced-motion:reduce){*,*:before,*:after{scroll-behavior:auto!important;animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<header class="topbar wrap">
+<a class="brand" href="home-preview.html"><span class="mark" aria-hidden="true"></span>FORMA</a>
+<nav aria-label="Main navigation"><a href="home-preview.html">Experience</a><a href="playground-preview.html">Playground</a><a class="active" href="#lab">Motion Lab</a><a href="#footer">About</a></nav>
+<span class="nav-label">MOVEMENT STUDIES ↗</span>
+</header>
+<main>
+<section class="intro wrap"><div><p class="eyebrow">02 / Motion Lab</p><h1>Make it<br>move.</h1></div><p class="intro-copy">Motion is a material. Tune its timing, change its character, and explore how a small shift can change the feeling of a form.</p></section>
+<section class="workspace wrap" id="lab" aria-label="Motion experiment workspace">
+<div class="stage-wrap">
+<div class="stage-head"><span class="mono">LIVE CANVAS / 001</span><span class="mono" id="status">PLAYING</span></div>
+<div class="stage" id="stage" data-motion="orbit"><span class="crosshair a"></span><span class="crosshair b"></span><div class="object orbit" id="object" aria-hidden="true"></div></div>
+<div class="stage-foot"><span class="mono">PREVIEW ENVIRONMENT</span><button class="play" id="toggle" type="button" aria-pressed="false">Ⅱ &nbsp; Pause</button></div>
+</div>
+<aside class="controls" aria-label="Motion controls">
+<div class="control-title"><h2>Motion controls</h2><span class="mono" style="color:var(--lime)">LIVE</span></div>
+<div class="control-group"><span class="label">01 / Behavior</span><div class="modes" role="group" aria-label="Choose motion behavior">
+<button class="mode" data-mode="orbit" aria-pressed="true">Orbit</button><button class="mode" data-mode="pulse" aria-pressed="false">Pulse</button><button class="mode" data-mode="shift" aria-pressed="false">Shift</button><button class="mode" data-mode="stagger" aria-pressed="false">Stagger</button>
+</div></div>
+<div class="control-group"><div class="range-head"><label class="label" for="duration">02 / Duration</label><output id="duration-value" for="duration">4.0s</output></div><input id="duration" type="range" min="1" max="8" step=".5" value="4"><div class="range-hints"><span>FAST</span><span>SLOW</span></div></div>
+<div class="control-group"><div class="range-head"><label class="label" for="intensity">03 / Intensity</label><output id="intensity-value" for="intensity">50%</output></div><input id="intensity" type="range" min="10" max="100" step="5" value="50"><div class="range-hints"><span>SUBTLE</span><span>EXPRESSIVE</span></div></div>
+<div class="control-group"><label class="label" for="easing">04 / Easing</label><select class="select" id="easing"><option value="ease-in-out">Ease in out</option><option value="linear">Linear</option><option value="cubic-bezier(.2,.8,.2,1)">Ease out</option><option value="steps(5,end)">Stepped</option></select></div>
+<button class="reset" id="reset" type="button">↺ &nbsp; Reset parameters</button>
+</aside>
+</section>
+<section class="note wrap"><p><strong>Movement with intention.</strong><br>Use the controls to explore how duration, intensity, and easing affect the character of a transition.</p><p class="mono">A SMALL STUDY IN TIMING, SPACE & RESPONSE.</p></section>
+</main>
+<footer class="footer wrap" id="footer"><span>FORMA — Where form meets function.</span><a href="playground-preview.html">Explore the Playground ↑</a></footer>
+<script>
+const stage=document.getElementById("stage"),object=document.getElementById("object"),status=document.getElementById("status"),toggle=document.getElementById("toggle");
+const duration=document.getElementById("duration"),intensity=document.getElementById("intensity"),easing=document.getElementById("easing");
+const durationValue=document.getElementById("duration-value"),intensityValue=document.getElementById("intensity-value");
+let mode="orbit",paused=false;
+function apply(){
+  object.className="object "+mode;
+  stage.dataset.motion=mode;
+  object.style.animationDuration=duration.value+"s";
+  object.style.animationTimingFunction=easing.value;
+  const amount=Number(intensity.value)/50;
+  object.style.setProperty("--intensity",amount);
+  if(mode==="orbit")object.style.setProperty("animation-duration",duration.value+"s");
+  if(mode==="pulse")object.style.setProperty("scale",String(.7+amount*.3));
+  if(mode==="shift")object.style.setProperty("transform-origin","center");
+  object.style.animationPlayState=paused?"paused":"running";
+  durationValue.textContent=Number(duration.value).toFixed(1)+"s";
+  intensityValue.textContent=intensity.value+"%";
+}
+document.querySelectorAll("[data-mode]").forEach(button=>button.addEventListener("click",()=>{
+  mode=button.dataset.mode;
+  document.querySelectorAll("[data-mode]").forEach(item=>item.setAttribute("aria-pressed",String(item===button)));
+  apply();
+}));
+[duration,intensity,easing].forEach(control=>control.addEventListener("input",apply));
+toggle.addEventListener("click",()=>{
+  paused=!paused;stage.classList.toggle("paused",paused);
+  toggle.setAttribute("aria-pressed",String(paused));
+  toggle.innerHTML=paused?"▶ &nbsp; Play":"Ⅱ &nbsp; Pause";
+  status.textContent=paused?"PAUSED":"PLAYING";
+  apply();
+});
+document.getElementById("reset").addEventListener("click",()=>{
+  mode="orbit";paused=false;duration.value="4";intensity.value="50";easing.value="ease-in-out";
+  document.querySelectorAll("[data-mode]").forEach(item=>item.setAttribute("aria-pressed",String(item.dataset.mode==="orbit")));
+  stage.classList.remove("paused");toggle.setAttribute("aria-pressed","false");toggle.innerHTML="Ⅱ &nbsp; Pause";status.textContent="PLAYING";apply();
+});
+apply();
+</script>
+</body>
+</html>
