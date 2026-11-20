@@ -70,3 +70,19 @@ This file records decisions that have been explicitly approved. Proposed ideas d
 **Status:** Accepted  
 **Decision:** The product owner approved the Phase 04 Visual Design System and FORM IN MOTION direction on 2026-11-20. The consolidated review package is recorded in `docs/PHASE_04_REVIEW.md`. Outstanding browser, assistive-technology, and direct reference-site validation remain follow-up tasks; approval does not imply those checks have passed.
 
+
+
+## D-014 — Phase 05 application technology stack
+
+**Status:** Accepted  
+**Decision date:** 2026-11-20  
+**Decision:** The product owner approved:
+- Application framework: Next.js App Router.
+- Language: TypeScript.
+- Backend: Supabase.
+- 3D engine: Three.js with React Three Fiber.
+- Hosting: Vercel.
+- Styling: framework-independent CSS design tokens with CSS Modules.
+
+**Implementation note:** Exact dependency versions, service plan limits, environment configuration, and deployment settings must be verified at implementation time. Supporting recommendations such as Zustand, Zod, testing libraries, and specific server/client data-access patterns are not included in this approval and remain subject to review.
+
