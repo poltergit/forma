@@ -16,7 +16,8 @@ It is both a personal creative-technology flagship and an independent product di
 
 ## Technical architecture
 
-- [Phase 05 Technical Architecture Proposal](docs/TECHNICAL_ARCHITECTURE.md) — proposed application stack, rendering strategy, Scene Studio architecture, persistence/security model, testing, and deployment.
+- [Phase 05 Technical Architecture](docs/TECHNICAL_ARCHITECTURE.md) — approved core stack and system architecture, with remaining implementation details under review.
+- [Scene Studio Data Model & Security](docs/SCENE_STUDIO_DATA_MODEL.md) — proposed PostgreSQL migration, RLS policies, document contract, validation, and revision-aware saving.
 
 ## Creative direction
 
