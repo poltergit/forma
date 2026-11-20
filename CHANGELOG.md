@@ -38,18 +38,18 @@ All notable project changes are recorded here.
 - Updated README with all current design-preview links.
 - Updated project status and changelog to record the Account prototype and clarify its non-production scope.
 - Updated About and Account to complete the first FORM IN MOTION pass across all seven page prototypes.
-- Maintained the Phase 04 approval gate; Phase 05 and production implementation remain unstarted.
+- Recorded Phase 04 approval and continued Phase 05 architecture work; production implementation remains gated on Phase 05 approval.
 
 ### Project phase
 - Phase 01 approved.
 - Phase 02 approved.
 - Phase 03 approved.
-- Phase 04 in progress; awaiting consolidated product-owner review.
-- Phase 05 not started.
+- Phase 04 approved.
+- Phase 05 in progress; core stack approved, detailed architecture specifications under review.
 - Production application implementation not started.
 
 ### Notes
-- Work remains configuration-independent: no database, authentication provider, hosting, or external service has been configured.
+- Work remains configuration-independent: no database, authentication, hosting, or external service has been configured.
 - All page prototypes are separate from production application code.
 - Interactive controls in prototypes demonstrate local UI behavior only; they do not imply production services or persistent data.
 - Account forms do not authenticate, create accounts, send recovery emails, or transmit/store user information.
