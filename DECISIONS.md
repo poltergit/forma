@@ -63,3 +63,10 @@ This file records decisions that have been explicitly approved. Proposed ideas d
 
 **Status:** Accepted  
 **Decision:** Build a simplified mobile editing experience with viewport-first interaction and touch-appropriate controls. Do not compress the full desktop editor into a narrow screen.
+
+
+## D-013 — Phase 04 visual design system
+
+**Status:** Accepted  
+**Decision:** The product owner approved the Phase 04 Visual Design System and FORM IN MOTION direction on 2026-11-20. The consolidated review package is recorded in `docs/PHASE_04_REVIEW.md`. Outstanding browser, assistive-technology, and direct reference-site validation remain follow-up tasks; approval does not imply those checks have passed.
+
