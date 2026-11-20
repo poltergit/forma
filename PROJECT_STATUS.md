@@ -6,7 +6,7 @@
 - Phase 01 — Product Discovery and Definition: **Approved**
 - Phase 02 — Brand Identity and Creative Direction: **Approved**
 - Phase 03 — UX and Information Architecture: **Approved**
-- Phase 04 — Visual Design System: **In progress; FORM IN MOTION applied to Home, Playground, Motion Lab, Scene Studio, and Archive prototypes**
+- Phase 04 — Visual Design System: **In progress; FORM IN MOTION applied across all seven page prototypes (Home, Playground, Motion Lab, Scene Studio, Archive, About, and Account)**
 - Phase 05 — Technical Architecture: **Not started**
 - Production application implementation: **Not started**
 - Repository: **Initialized and verified**
@@ -59,7 +59,7 @@ Review these proposed artifacts together:
 - Created three initial flat-vector logo routes and a proposed hybrid Modular Frame identity, monochrome lockups, standalone mark, and favicon draft.
 - Added brand application rules and reusable SVG graphic devices.
 - Created standalone Home and Playground prototypes with responsive layouts, local navigation/filter interactions, keyboard focus styling, and reduced-motion handling.
-- Applied FORM IN MOTION to the Playground, Motion Lab, Scene Studio, and Archive prototypes. Scene Studio remains a local DOM/CSS editor-shell demonstration; Motion Lab remains a local CSS motion instrument.
+- Applied FORM IN MOTION across all seven page prototypes. About uses progressive editorial reveals and restrained geometric response; Account uses compact view transitions and tactile feedback while keeping form completion clear. Scene Studio remains a local DOM/CSS editor-shell demonstration; Motion Lab remains a local CSS motion instrument.
 - Created a Motion Lab prototype with four motion behaviors and live duration, intensity, easing, playback, and reset controls.
 - Created a Scene Studio editor-shell prototype with desktop hierarchy/viewport/inspector composition and a purpose-built mobile bottom dock.
 - Created an Archive prototype with category filters, live project count, responsive layouts, keyboard-operable cards, and detail dialogs.
@@ -67,7 +67,7 @@ Review these proposed artifacts together:
 - Created an Account prototype with sign-in, account creation, and recovery views; form submission explicitly explains that no authentication or data transfer occurs.
 
 ## Next action
-Continue applying FORM IN MOTION to About and Account, then complete a consistency/accessibility review and prepare a consolidated Phase 04 review package. The live reference websites still require direct desktop/mobile inspection before their specific techniques can be attributed or approved. Do not begin Phase 05 or production application implementation until the product owner explicitly approves Phase 04.
+Complete a cross-page consistency/accessibility review, resolve any source-level issues, and prepare a consolidated Phase 04 review package. The live reference websites still require direct desktop/mobile inspection before their specific techniques can be attributed or approved. Do not begin Phase 05 or production application implementation until the product owner explicitly approves Phase 04.
 
 ## Project constraints
 - Work in small, reviewable milestones.
