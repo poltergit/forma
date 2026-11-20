@@ -6,9 +6,9 @@
 - Phase 01 — Product Discovery and Definition: **Approved**
 - Phase 02 — Brand Identity and Creative Direction: **Approved**
 - Phase 03 — UX and Information Architecture: **Approved**
-- Phase 04 — Visual Design System: **In progress; brand application system drafted for review**
+- Phase 04 — Visual Design System: **In progress; Home page visual prototype available for review**
 - Phase 05 — Technical Architecture: **Not started**
-- Application implementation: **Not started**
+- Production application implementation: **Not started**
 - Repository: **Initialized and verified**
 
 ## Approved product decisions
@@ -37,6 +37,7 @@ Review these proposed artifacts together:
 - docs/BRAND_APPLICATION_GUIDELINES.md — logo usage, sizing, clear space, color, typography, composition, and product touchpoints.
 - design/tokens.css — framework-independent draft CSS tokens.
 - design/brand/ — proposed logo assets and supporting structural/form-shift graphics.
+- design/prototypes/home-preview.html — standalone responsive Home page visual prototype.
 
 ### Configuration-independent progress
 - Completed a preliminary contrast audit for key dark/light semantic color pairings.
@@ -47,13 +48,14 @@ Review these proposed artifacts together:
 - Created three initial flat-vector logo routes.
 - Created a proposed hybrid identity, monochrome horizontal lockups, standalone mark, and favicon draft.
 - Added brand application rules and two reusable SVG graphic devices: an open frame and a three-state form-shift composition.
+- Created a standalone Home page design prototype with responsive layouts, a working mobile navigation toggle, semantic landmarks, keyboard focus styling, and reduced-motion handling.
 
 ## Next action
-Continue Phase 04 with a high-fidelity, configuration-independent Home page visual prototype. The prototype will be a design artifact, not production application code. Product-owner review of the Modular Frame identity and Phase 04 design artifacts remains required; the final logo artwork is not approved. Do not begin Phase 05 or application implementation until the relevant approval gate is satisfied.
+Review the Home page visual prototype and proposed Modular Frame identity. Refine the visual direction based on product-owner feedback, then complete remaining Phase 04 page-level visual prototypes and validation. The prototype is a design artifact, not production application code. Do not begin Phase 05 or production application implementation until the relevant approval gate is satisfied.
 
 ## Project constraints
 - Work in small, reviewable milestones.
-- Do not begin implementation before the relevant architecture and design decisions are approved.
+- Do not begin production implementation before the relevant architecture and design decisions are approved.
 - Prioritize configuration-independent work while practical.
 - Avoid unrelated changes, speculative features, and unnecessary abstractions.
 - Do not claim tests, builds, deployments, or commits succeeded without verification.
@@ -62,7 +64,8 @@ Continue Phase 04 with a high-fidelity, configuration-independent Home page visu
 - Avoid AI slop, token-maxxing, fake functionality, generic templates, and decorative complexity without purpose.
 
 ## Known limitations
-- No application code has been implemented yet.
+- No production application code has been implemented yet.
+- The Home page is a static design prototype; its sample experiment previews are illustrative, not functional product features.
 - The hybrid logo is a proposed concept, not approved final artwork.
 - The SVG wordmark uses a font reference and is not yet an outlined production master.
 - Technical providers and database schema are not yet selected.
