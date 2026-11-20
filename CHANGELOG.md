@@ -21,6 +21,8 @@ All notable project changes are recorded here.
 - Added `design/prototypes/account-preview.html`, responsive sign-in, account creation, and recovery views with local navigation and explicit prototype-only feedback.
 
 ### Updated
+- Applied FORM IN MOTION to the Playground with progressive editorial reveals, restrained hover light-sweep, artwork response, and reduced-motion fallback.
+- Refined Motion Lab with tactile control feedback, behavior-switch transition cues, live playback status announcements, and reduced-motion-safe static presentation.
 - Updated README with all current design-preview links.
 - Updated project status and changelog to record the Account prototype and clarify its non-production scope.
 - Maintained the Phase 04 approval gate; Phase 05 and production implementation remain unstarted.
