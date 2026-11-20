@@ -5,6 +5,7 @@ All notable project changes are recorded here.
 ## [Unreleased]
 
 ### Added
+- Added docs/SCENE_STUDIO_DATA_MODEL.md with the initial scenes table migration, ownership-focused RLS policies, versioned scene document contract, optimistic concurrency protocol, and security test matrix.
 - Added `docs/REFERENCE_LED_ART_DIRECTION.md`, a proposed reference-led creative direction and motion system for FORMA.
 - Initialized the FORMA repository documentation.
 - Added approved Product Requirements Document, Brand Guidelines, and Phase 03 UX Specification.
@@ -21,6 +22,8 @@ All notable project changes are recorded here.
 - Added `design/prototypes/account-preview.html`, responsive sign-in, account creation, and recovery views with local navigation and explicit prototype-only feedback.
 
 ### Updated
+- Recorded the product owner's six approved Phase 05 technology choices (Next.js App Router, TypeScript, Supabase, Three.js + React Three Fiber, Vercel, and CSS tokens + CSS Modules) as D-014.
+- Updated the technical architecture to distinguish approved stack choices from supporting recommendations that remain under review.
 - Recorded product-owner approval of Phase 04 and opened Phase 05.
 - Added `docs/TECHNICAL_ARCHITECTURE.md` with proposed application stack, route/rendering strategy, Scene Studio architecture, persistence/security model, testing, and deployment recommendations. All technical choices remain subject to owner approval.
 - Added `docs/PHASE_04_REVIEW.md` as the consolidated Phase 04 review package, including seven-prototype inventory, source-level QA results, preliminary semantic contrast calculations, limitations, and the approval gate.
