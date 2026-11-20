@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 420" fill="none">
+  <title>FORMA open structural frame graphic</title>
+  <path d="M72 72H568V348H72V250" stroke="#111214" stroke-width="2"/>
+  <path d="M112 112H528V308H112V266" stroke="#92938F" stroke-width="2"/>
+  <path d="M72 72V170M72 250V348M470 72H568V170M470 348H568V250" stroke="#C7F36B" stroke-width="8"/>
+  <path d="M112 112V190M112 266V308H190M450 112H528V190M450 308H528V266" stroke="#111214" stroke-width="2"/>
+  <circle cx="320" cy="210" r="4" fill="#FF765E"/>
+</svg>
