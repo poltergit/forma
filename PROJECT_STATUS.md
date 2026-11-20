@@ -35,7 +35,9 @@ Review these proposed artifacts together:
 - docs/VISUAL_DESIGN_SYSTEM.md — semantic colors, typography, spacing, components, motion, responsive rules, and accessibility.
 - docs/PAGE_LAYOUT_SPECIFICATIONS.md — page-by-page compositions and responsive behavior.
 - docs/COMPONENT_DESIGN_SPECIFICATIONS.md — reusable component states, behavior, and accessibility contracts.
+- docs/LOGO_EXPLORATION.md — three initial logo routes and review criteria.
 - design/tokens.css — framework-independent draft CSS tokens.
+- design/brand/ — three monochrome SVG logo exploration lockups.
 
 ### Configuration-independent progress
 - Completed a preliminary contrast audit for key dark/light semantic color pairings.
@@ -43,10 +45,11 @@ Review these proposed artifacts together:
 - Added framework-independent CSS custom properties with dark/light themes and reduced-motion overrides.
 - Added page-level layout specifications for Home, Playground, experiment detail, Motion Lab, Scene Studio, Archive, case studies, About, and account surfaces.
 - Added component design specifications for navigation, buttons, previews, filters, interactive stages, editor panels, forms, feedback, overlays, and accessibility.
+- Created three initial flat-vector logo routes: Modular F, Form Shift, and Structural Frame.
 
 ## Next action
 
-Product-owner review and approval of Phase 04. Do not begin Phase 05 or application implementation until the relevant approval gate is satisfied.
+Product-owner review of the three logo routes and the Phase 04 design artifacts. No logo route has been selected or approved. Do not begin Phase 05 or application implementation until the relevant approval gate is satisfied.
 
 ## Project constraints
 
@@ -62,7 +65,7 @@ Product-owner review and approval of Phase 04. Do not begin Phase 05 or applicat
 ## Known limitations
 
 - No application code has been implemented yet.
-- Logo artwork has not yet been produced; only its direction is documented.
+- Logo explorations are preliminary and not approved final artwork.
 - Technical providers and database schema are not yet selected.
 - Trademark, domain, and social-handle availability have not been checked.
 - Phase 04 artifacts are proposed and have not yet been approved.
