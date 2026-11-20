@@ -14,13 +14,12 @@ All notable project changes are recorded here.
 - Added `docs/PAGE_LAYOUT_SPECIFICATIONS.md`, covering page compositions and responsive behavior across the product.
 - Added `docs/COMPONENT_DESIGN_SPECIFICATIONS.md`, defining reusable component behavior, states, and accessibility requirements.
 - Added `docs/LOGO_EXPLORATION.md` and three monochrome SVG logo explorations: Modular F, Form Shift, and Structural Frame.
+- Added `docs/HYBRID_IDENTITY_SYSTEM.md` and a proposed Modular Frame identity that combines the strongest roles of the three routes.
+- Added proposed standalone mark, horizontal light/dark lockups, favicon draft, and brand asset usage notes.
 
 ### Updated
-- Recorded approved Scene Studio professional-editor layout.
-- Recorded approved editorial Playground presentation.
-- Recorded approved simplified mobile Scene Studio experience.
-- Added preliminary WCAG contrast measurements and semantic token recommendations.
-- Updated project status to reflect the expanded Phase 04 design deliverables.
+- Recorded the product owner's decision to combine the three logo exploration routes.
+- Updated project status to distinguish approval of the combined exploration direction from approval of final logo artwork.
 
 ### Project phase
 - Phase 01 approved.
@@ -32,5 +31,5 @@ All notable project changes are recorded here.
 
 ### Notes
 - Work remains configuration-independent: no database, authentication provider, hosting, or external service has been configured.
-- Page layouts, component specifications, and logo explorations are proposals for review, not authorization to begin application implementation.
-- No final logo route has been selected or approved.
+- Page layouts, component specifications, and identity assets are proposals for review, not authorization to begin application implementation.
+- The Modular Frame hybrid identity is not final approved artwork or trademark clearance.
