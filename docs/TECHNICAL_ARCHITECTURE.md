@@ -2,7 +2,7 @@
 
 **Version:** 0.1  
 **Phase:** 05 — Technical Architecture  
-**Status:** Proposed; product-owner approval required  
+**Status:** Core stack approved; supporting architecture details under review  
 **Prerequisites:** Phases 01–04 approved  
 **Implementation status:** Not started
 
@@ -18,16 +18,16 @@ Avoid premature microservices, unnecessary abstractions, and features outside th
 
 | Layer | Recommendation | Responsibility |
 |---|---|---|
-| Web application | Next.js App Router + React + TypeScript | Public routes, application shell, server rendering |
-| Styling | Existing CSS tokens + CSS Modules/global CSS | Custom art direction and semantic design system |
-| 3D | Three.js through React Three Fiber | Scene Studio viewport |
+| Web application | **Approved:** Next.js App Router + React + TypeScript | Public routes, application shell, server rendering |
+| Styling | **Approved:** existing CSS tokens + CSS Modules | Custom art direction and semantic design system |
+| 3D | **Approved:** Three.js through React Three Fiber | Scene Studio viewport |
 | 3D helpers | Drei, selectively | Camera, controls, and common scene helpers |
 | Editor state | Zustand | Selection, transforms, tools, undo/redo, transient editor state |
 | Server/cache state | TanStack Query only where justified | Scene queries, mutations, invalidation |
 | Validation | Zod | Runtime validation of forms, API inputs, and scene documents |
 | Backend | Supabase | PostgreSQL, Auth, RLS, and object storage when needed |
 | Tests | Vitest, React Testing Library, Playwright, axe-core | Unit, component, browser, and accessibility testing |
-| Hosting candidate | Vercel | Next.js previews and production hosting |
+| Hosting | **Approved:** Vercel | Next.js previews and production hosting |
 
 This is a recommended baseline, not a set of approved provider choices. Use stable compatible releases at implementation time; do not freeze package versions in this proposal.
 
@@ -268,7 +268,7 @@ Recommended environments:
 - **Preview:** pull-request or branch deployments using non-production backend resources.
 - **Production:** protected deployment with production secrets and database.
 
-Vercel is the initial hosting candidate, not a final selection. Before approval, verify current free-tier quotas, build and bandwidth limits, Supabase database/storage quotas and inactivity behavior, auth email constraints, custom-domain needs, backup/restore options, and commercial-use terms. A free tier is not a guaranteed production SLA. Maintain a database and scene-document export/migration path.
+Vercel is the approved hosting provider. Before configuring deployment, verify current plan quotas, build and bandwidth limits, environment controls, preview behavior, and production requirements. Supabase quotas and inactivity behavior must also be checked. A free tier is not a guaranteed production SLA. Before approval, verify current free-tier quotas, build and bandwidth limits, Supabase database/storage quotas and inactivity behavior, auth email constraints, custom-domain needs, backup/restore options, and commercial-use terms. A free tier is not a guaranteed production SLA. Maintain a database and scene-document export/migration path.
 
 ## 13. Observability and operations
 
@@ -304,27 +304,33 @@ Third-party analytics are not required for the first implementation.
 | Mobile editor usability | Purpose-built workflows and device testing |
 | Premature abstractions | One application, feature modules, no microservices |
 
-## 16. Decisions requiring owner approval
+## 16. Decisions requiring further review
 
-These recommendations are not binding until approved:
+### Approved by the product owner (D-014)
+- Next.js App Router.
+- TypeScript.
+- Supabase.
+- Three.js + React Three Fiber.
+- Vercel.
+- CSS design tokens + CSS Modules.
 
-1. Next.js App Router as the application framework.
-2. TypeScript as the application language.
-3. CSS tokens + CSS Modules/global CSS; no general UI kit.
-4. Three.js through React Three Fiber; Drei only where useful.
-5. Zustand for editor-local state.
-6. Supabase Auth + PostgreSQL + RLS; Storage only when needed.
-7. Zod for runtime validation.
-8. Vitest, React Testing Library, Playwright, and axe-core for testing.
-9. Vercel as the initial hosting candidate, subject to current quota review.
-10. Private single-user scenes for MVP; no public sharing, collaboration, marketplace, or native mobile apps.
+### Still proposed, not yet approved
+- Zustand for editor-local state.
+- Zod for runtime validation.
+- Drei helpers where useful.
+- TanStack Query only if client-side server-state caching proves necessary.
+- Vitest, React Testing Library, Playwright, and axe-core.
+- Exact Supabase Auth session integration and server/client data-access boundaries.
+- Final environment topology and provider plan configuration.
+
+The detailed scene schema, migration proposal, RLS policies, and save concurrency protocol are in docs/SCENE_STUDIO_DATA_MODEL.md.
 
 ### Phase 05 acceptance criteria
 
 - Stack and provider decisions recorded in `DECISIONS.md`.
 - Route/rendering strategy approved.
 - Application and feature boundaries approved.
-- Scene document and persistence model approved.
+- Scene document and persistence model documented for owner review.
 - Authentication and authorization model approved.
 - Environment, testing, performance, and deployment strategy approved.
 - MVP exclusions and migration assumptions understood.
