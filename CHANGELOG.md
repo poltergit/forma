@@ -21,6 +21,7 @@ All notable project changes are recorded here.
 - Added `design/prototypes/account-preview.html`, responsive sign-in, account creation, and recovery views with local navigation and explicit prototype-only feedback.
 
 ### Updated
+- Added `docs/PHASE_04_REVIEW.md` as the consolidated Phase 04 review package, including seven-prototype inventory, source-level QA results, preliminary semantic contrast calculations, limitations, and the approval gate.
 - Added a cross-page prototype consistency review and explicit Phase 04 validation checklist to `docs/VISUAL_DESIGN_SYSTEM.md`. The review distinguishes source inspection from browser, assistive-technology, and WCAG validation.
 - Applied restrained FORM IN MOTION feedback to Scene Studio while preserving its task-focused editor hierarchy and simplified mobile layout.
 - Applied progressive editorial reveals, geometric form response, and reduced-motion-safe fallbacks to the About prototype.
