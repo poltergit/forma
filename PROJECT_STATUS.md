@@ -6,7 +6,7 @@
 - Phase 01 — Product Discovery and Definition: **Approved**
 - Phase 02 — Brand Identity and Creative Direction: **Approved**
 - Phase 03 — UX and Information Architecture: **Approved**
-- Phase 04 — Visual Design System: **In progress; Home, Playground, Motion Lab, Scene Studio, Archive, About, and Account visual prototypes available for review**
+- Phase 04 — Visual Design System: **In progress; reference-led art direction added and Home prototype updated with the first FORM IN MOTION treatment**
 - Phase 05 — Technical Architecture: **Not started**
 - Production application implementation: **Not started**
 - Repository: **Initialized and verified**
@@ -30,6 +30,7 @@ See docs/UX_SPECIFICATION.md for the approved sitemap, navigation, page structur
 ## Phase 04 — In progress
 Review these proposed artifacts together:
 - docs/REFERENCE_LED_ART_DIRECTION.md — reference-led creative territory, page art direction, motion families, scroll/transition rules, accessibility guardrails, and reference-inspection protocol.
+- Home prototype — first application of FORM IN MOTION: animated modular-frame study, restrained hover/focus feedback, progressive section reveals using IntersectionObserver, and reduced-motion fallback.
 - docs/PAGE_LAYOUT_SPECIFICATIONS.md — page-by-page compositions and responsive behavior.
 - docs/COMPONENT_DESIGN_SPECIFICATIONS.md — reusable component states, behavior, and accessibility contracts.
 - docs/LOGO_EXPLORATION.md — initial logo routes and review criteria.
@@ -61,7 +62,7 @@ Review these proposed artifacts together:
 - Created an Account prototype with sign-in, account creation, and recovery views; form submission explicitly explains that no authentication or data transfer occurs.
 
 ## Next action
-Run a consistency and accessibility review across the full Phase 04 prototype set, reconcile any mismatches with the approved UX and visual-system documents, and prepare a consolidated review package. Do not begin Phase 05 or production application implementation until the product owner explicitly approves Phase 04.
+Continue applying FORM IN MOTION to the remaining prototypes, then complete a consistency/accessibility review and prepare a consolidated Phase 04 review package. The live reference websites still require direct desktop/mobile inspection before their specific techniques can be attributed or approved. Do not begin Phase 05 or production application implementation until the product owner explicitly approves Phase 04.
 
 ## Project constraints
 - Work in small, reviewable milestones.
