@@ -16,10 +16,13 @@ All notable project changes are recorded here.
 - Added `docs/LOGO_EXPLORATION.md` and three monochrome SVG logo explorations: Modular F, Form Shift, and Structural Frame.
 - Added `docs/HYBRID_IDENTITY_SYSTEM.md` and a proposed Modular Frame identity that combines the strongest roles of the three routes.
 - Added proposed standalone mark, horizontal light/dark lockups, favicon draft, and brand asset usage notes.
+- Added `docs/BRAND_APPLICATION_GUIDELINES.md` with practical logo, color, typography, composition, motion, and touchpoint rules.
+- Added `graphic-frame.svg` and `graphic-form-shift.svg` as reusable supporting brand graphics.
 
 ### Updated
 - Recorded the product owner's decision to combine the three logo exploration routes.
 - Updated project status to distinguish approval of the combined exploration direction from approval of final logo artwork.
+- Documented the supporting graphic assets and brand application rules.
 
 ### Project phase
 - Phase 01 approved.
