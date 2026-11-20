@@ -68,13 +68,25 @@ function render(){
  document.getElementById("selected-name").textContent=obj.name;
  document.getElementById("object-name").value=obj.name;
  ["x","y","z"].forEach(k=>document.getElementById("p-"+k).addEventListener("change",e=>{obj[k]=Number(e.target.value)||0;snapshot();render()}));
- document.getElementById("color").addEventListener("input",e=>{obj.color=e.target.value;snapshot();render()});
+ document.getElementById("color").addEventListener("change",e=>{obj.color=e.target.value;snapshot();render()});
  document.getElementById("object-name").addEventListener("change",e=>{obj.name=e.target.value.trim()||obj.name;snapshot();render()});
  }else inspector.innerHTML='<div class="empty-inspector">Nothing selected.<br><br>Select an object in the scene or hierarchy to inspect its properties.</div>';
 }
 function addObject(type="cube"){const id=nextId++;objects.push({id,name:type[0].toUpperCase()+type.slice(1)+" "+id,type,color:type==="cube"?"#c7f36b":type==="sphere"?"#ff765e":"#8294ff",x:(objects.length%3)-1,y:0,z:0,visible:true});selected=id;snapshot();render();closeSheet()}
 function deleteSelected(){const index=objects.findIndex(o=>o.id===selected);if(index<0)return;objects.splice(index,1);selected=objects.length?objects[Math.max(0,index-1)].id:null;snapshot();render()}
-function openSheet(which){const sheet=document.getElementById("sheet"),content=document.getElementById("sheet-content"),backdrop=document.getElementById("backdrop");document.querySelectorAll(".dockbtn").forEach(b=>b.setAttribute("aria-pressed",String(b.dataset.sheet===which)));if(which==="tools"){closeSheet();return}const source=which==="hierarchy"?document.getElementById("hierarchy-panel"):document.getElementById("inspector-panel");content.innerHTML="";const clone=source.cloneNode(true);clone.classList.remove("left","right");clone.style.display="flex";clone.style.maxHeight="65vh";if(which==="hierarchy"){clone.querySelector("#tree")?.removeAttribute("id");clone.querySelectorAll(".tree-row").forEach(row=>row.addEventListener("click",()=>{const name=row.textContent.trim();const obj=objects.find(o=>o.name===name);if(obj){selected=obj.id;render();openSheet("hierarchy")}}));clone.querySelectorAll("[data-add]").forEach(b=>b.addEventListener("click",()=>addObject(b.dataset.add)))}else{clone.querySelector("#inspector")?.removeAttribute("id");clone.querySelectorAll("input").forEach(input=>input.disabled=true)}content.appendChild(clone);sheet.classList.add("open");backdrop.style.display="block"}
+function openSheet(which){const sheet=document.getElementById("sheet"),content=document.getElementById("sheet-content"),backdrop=document.getElementById("backdrop");document.querySelectorAll(".dockbtn").forEach(b=>b.setAttribute("aria-pressed",String(b.dataset.sheet===which)));if(which==="tools"){closeSheet();return}const source=which==="hierarchy"?document.getElementById("hierarchy-panel"):document.getElementById("inspector-panel");content.innerHTML="";const clone=source.cloneNode(true);clone.classList.remove("left","right");clone.style.display="flex";clone.style.maxHeight="65vh";if(which==="hierarchy"){clone.querySelector("#tree")?.removeAttribute("id");clone.querySelectorAll(".tree-row").forEach(row=>row.addEventListener("click",()=>{const name=row.textContent.trim();const obj=objects.find(o=>o.name===name);if(obj){selected=obj.id;render();openSheet("hierarchy")}}));clone.querySelectorAll("[data-add]").forEach(b=>b.addEventListener("click",()=>addObject(b.dataset.add)))}else{clone.querySelector("#inspector")?.removeAttribute("id");clone.querySelectorAll("input").forEach(input=>input.disabled=true)}content.appendChild(clone);
+ if(which==="inspector"){
+  const current=objects.find(o=>o.id===selected);
+  if(current){
+   ["x","y","z"].forEach(k=>clone.querySelector("#p-"+k)?.addEventListener("change",e=>{current[k]=Number(e.target.value)||0;snapshot();render();closeSheet()}));
+   clone.querySelector("#object-name")?.addEventListener("change",e=>{current.name=e.target.value.trim()||current.name;snapshot();render();closeSheet()});
+   clone.querySelector("#color")?.addEventListener("change",e=>{current.color=e.target.value;snapshot();render();closeSheet()});
+   clone.querySelector("#delete")?.addEventListener("click",()=>{deleteSelected();closeSheet()});
+  }
+ }else{
+  clone.querySelectorAll(".eye").forEach((eye,index)=>eye.addEventListener("click",()=>{const obj=objects[index];if(obj){obj.visible=!obj.visible;snapshot();render();openSheet("hierarchy")}}));
+ }
+ sheet.classList.add("open");backdrop.style.display="block"}
 function closeSheet(){document.getElementById("sheet").classList.remove("open");document.getElementById("backdrop").style.display="none";document.querySelectorAll(".dockbtn").forEach(b=>b.setAttribute("aria-pressed",String(b.dataset.sheet==="tools")))}
 document.querySelectorAll("[data-add]").forEach(b=>b.addEventListener("click",()=>addObject(b.dataset.add)));
 document.getElementById("add-top").addEventListener("click",()=>addObject("cube"));
