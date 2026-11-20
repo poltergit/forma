@@ -22,11 +22,14 @@ All notable project changes are recorded here.
 
 ### Updated
 - Applied restrained FORM IN MOTION feedback to Scene Studio while preserving its task-focused editor hierarchy and simplified mobile layout.
+- Applied progressive editorial reveals, geometric form response, and reduced-motion-safe fallbacks to the About prototype.
+- Refined Account with compact view transitions, tactile form controls, restrained geometric feedback, and reduced-motion-safe behavior.
 - Applied progressive reveals and responsive hover/focus artwork treatment to Archive, with a reduced-motion fallback.
 - Applied FORM IN MOTION to the Playground with progressive editorial reveals, restrained hover light-sweep, artwork response, and reduced-motion fallback.
 - Refined Motion Lab with tactile control feedback, behavior-switch transition cues, live playback status announcements, and reduced-motion-safe static presentation.
 - Updated README with all current design-preview links.
 - Updated project status and changelog to record the Account prototype and clarify its non-production scope.
+- Updated About and Account to complete the first FORM IN MOTION pass across all seven page prototypes.
 - Maintained the Phase 04 approval gate; Phase 05 and production implementation remain unstarted.
 
 ### Project phase
