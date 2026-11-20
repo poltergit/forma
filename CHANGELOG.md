@@ -29,3 +29,7 @@ All notable project changes are recorded here.
 - Added preliminary WCAG contrast measurements for key dark/light semantic color pairings.
 - Documented corrected light muted-text and supporting accent mappings.
 - Added strong-border guidance and component-level validation caveats.
+
+
+### Added
+- Added `design/tokens.css`, a framework-independent draft of FORMA's visual tokens with dark/light semantic themes and reduced-motion overrides.
