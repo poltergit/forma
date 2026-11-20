@@ -19,6 +19,7 @@ Phases 01–03 are approved. Phase 04 visual design is in progress and awaiting 
 
 ### Design previews
 - [Home page visual prototype](design/prototypes/home-preview.html) — standalone responsive HTML/CSS/JS design artifact; download and open locally in a browser.
+- [Playground visual prototype](design/prototypes/playground-preview.html) — editorial experiment gallery with working category filters; standalone responsive HTML/CSS/JS artifact.
 - [Brand application guidelines](docs/BRAND_APPLICATION_GUIDELINES.md)
 - [Hybrid identity proposal](docs/HYBRID_IDENTITY_SYSTEM.md)
 
