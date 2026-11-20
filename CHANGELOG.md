@@ -5,6 +5,7 @@ All notable project changes are recorded here.
 ## [Unreleased]
 
 ### Added
+- Added docs/AUTH_AND_ENVIRONMENT.md covering Supabase session architecture, auth flows, route access, environment variables, environment separation, and deployment security.
 - Added docs/SCENE_STUDIO_DATA_MODEL.md with the initial scenes table migration, ownership-focused RLS policies, versioned scene document contract, optimistic concurrency protocol, and security test matrix.
 - Added `docs/REFERENCE_LED_ART_DIRECTION.md`, a proposed reference-led creative direction and motion system for FORMA.
 - Initialized the FORMA repository documentation.
