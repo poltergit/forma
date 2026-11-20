@@ -461,3 +461,37 @@ Supporting accent colors remain available for large visual areas, illustrations,
 - Final validation should include automated checks and manual keyboard/visual review.
 
 **Audit status:** preliminary semantic color pairings checked; full component-level contrast validation remains part of implementation QA.
+
+
+## 12. Cross-page prototype consistency review
+
+The first FORM IN MOTION pass is now present across all seven page prototypes. A source-level review confirms that each prototype includes:
+- A reduced-motion media query.
+- A visible keyboard-focus treatment.
+- At least one responsive breakpoint.
+- Local interaction code appropriate to its prototype scope.
+
+This is a source inspection only. It does not establish successful browser rendering, runtime behavior across browsers, screen-reader usability, or WCAG conformance.
+
+### Shared system versus standalone previews
+
+The HTML previews intentionally remain independently openable design artifacts. They currently contain local CSS variables and page-specific values rather than importing `design/tokens.css`. This keeps each preview portable, but creates a synchronization responsibility.
+
+When the production frontend is established:
+- Map local aliases to the semantic tokens in `design/tokens.css`.
+- Keep page-specific composition and motion values where they express a deliberate difference.
+- Treat the brand palette values as canonical; lighter/darker accent tints are allowed only as documented semantic variants.
+- Load Space Grotesk, Inter, and JetBrains Mono through the chosen font delivery strategy, with the documented system fallbacks retained.
+- Consolidate repeated focus, reduced-motion, control, and transition primitives into shared components/utilities without flattening page-specific art direction.
+
+### Remaining validation before Phase 04 approval
+
+- Render all seven pages at representative desktop, tablet, and mobile widths.
+- Verify no horizontal overflow, clipped focus, overlapping navigation, or obstructed controls.
+- Test keyboard-only flows, form errors, dialogs, filters, editor panels, and mobile navigation.
+- Test reduced-motion behavior in an actual browser, including reveal fallback when JavaScript or IntersectionObserver is unavailable.
+- Measure foreground/background contrast for real component states against WCAG 2.2 AA.
+- Confirm font loading, wrapping, and layout stability with the actual font files.
+- Inspect the four owner-supplied reference websites directly before making claims about their specific techniques.
+
+Phase 04 remains proposed until these checks and the product-owner review are complete.
