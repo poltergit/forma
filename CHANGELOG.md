@@ -19,14 +19,14 @@ All notable project changes are recorded here.
 - Added `docs/BRAND_APPLICATION_GUIDELINES.md` with practical logo, color, typography, composition, motion, and touchpoint rules.
 - Added `graphic-frame.svg` and `graphic-form-shift.svg` as reusable supporting brand graphics.
 - Added `design/prototypes/home-preview.html`, a standalone responsive Home page visual prototype with mobile navigation and reduced-motion support.
-- Added `design/prototypes/playground-preview.html`, a standalone responsive editorial gallery prototype with working category filters and live result count.
+- Added `design/prototypes/playground-preview.html`, a standalone responsive editorial gallery prototype with working category filters and live result count.\n- Added `design/prototypes/motion-lab-preview.html`, a responsive interactive motion-study prototype with behavior, duration, intensity, easing, playback, and reset controls.
 
 ### Updated
 - Recorded the product owner's decision to combine the three logo exploration routes.
 - Updated project status to distinguish approval of the combined exploration direction from approval of final logo artwork.
 - Documented the supporting graphic assets and brand application rules.
 - Updated the repository README with current phase status and design-preview links.
-- Updated Phase 04 status to include the Playground page prototype and its interaction scope.
+- Updated Phase 04 status to include the Playground and Motion Lab page prototypes and their interaction scopes.
 
 ### Project phase
 - Phase 01 approved.
@@ -39,6 +39,6 @@ All notable project changes are recorded here.
 ### Notes
 - Work remains configuration-independent: no database, authentication provider, hosting, or external service has been configured.
 - The Home page HTML is a design prototype, not production application code; experiment visuals are illustrative and do not imply working product features.
-- The Playground gallery is a design prototype; only its local category filtering and result count are functional.
+- The Playground gallery is a design prototype; only its local category filtering and result count are functional.\n- The Motion Lab is a design prototype; its local CSS motion controls work, but it does not save projects or represent a production animation engine.
 - Page layouts, component specifications, and identity assets remain proposals for review.
 - The Modular Frame hybrid identity is not final approved artwork or trademark clearance.
