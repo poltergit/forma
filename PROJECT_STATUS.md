@@ -57,7 +57,14 @@ The [Phase 07 branch](https://github.com/poltergit/forma/tree/phase-07/immersive
 
 ### Phase 08 — In progress
 
-The [Phase 08 branch](https://github.com/poltergit/forma/tree/phase-08/playground-motion-lab) begins the interactive Playground and Motion Lab. Its plan prioritizes distinct original experiments, a generative editorial gallery, a parameter-driven motion instrument, reproducible recipes, and accessible, bounded rendering. See [Phase 08 Plan](docs/PHASE_08_PLAYGROUND_MOTION_LAB_PLAN.md).
+The [Phase 08 branch](https://github.com/poltergit/forma/tree/phase-08/playground-motion-lab) now contains the first expanded feature slice:
+- Playground with a deterministic, pointer/keyboard-responsive Displacement Field.
+- A filterable editorial experiment index and a separate Elastic Matter typography study.
+- Motion Lab with four behaviors, duration/intensity/easing controls, scrub/freeze timeline, response-curve visualization, presets, and Zod-validated copyable JSON recipes.
+- Home hero pointer/touch-responsive sculpture with reduced-motion handling.
+- Playwright and unit-test coverage for feature interactions, direct anchors/history, reduced motion, and required responsive widths.
+
+These files and tests are committed to the branch, but this latest Phase 08 slice has **not** been run through lint, typecheck, unit tests, Playwright, or production build in this environment. Browser rendering, screen-reader review, and performance measurement remain open. See [Phase 08 Plan](docs/PHASE_08_PLAYGROUND_MOTION_LAB_PLAN.md) and [Phase 08 Implementation Log](docs/PHASE_08_IMPLEMENTATION_LOG.md).
 
 ## Project constraints
 
