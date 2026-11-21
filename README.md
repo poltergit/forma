@@ -2,17 +2,24 @@
 
 **Where form meets function.**
 
-FORMA is an interactive digital playground where design, motion, creative coding, and 3D experiences come together.
+FORMA is an interactive digital playground where design, motion, creative coding, generative systems, and 3D experiences come together.
 
 It is both a personal creative-technology flagship and an independent product direction: a place to explore digital experiences, build interactive experiments, and demonstrate the craft behind them.
 
 ## Product pillars
-- **Experience** — an immersive, responsive introduction to FORMA.
-- **Playground** — a curated gallery of interactive experiments.
-- **Motion Lab** — generative visuals, motion systems, and interactive effects.
-- **Scene Studio** — a constrained 3D scene editor with authenticated cloud persistence.
+- **Experience** — a spatial, expressive introduction to FORMA.
+- **Playground** — a curated gallery of distinct interactive experiments.
+- **Motion Lab** — generative visuals, motion systems, parameter-driven studies, and interactive effects.
+- **Scene Studio** — a constrained but real 3D scene editor with authenticated cloud persistence.
 - **Archive** — projects, case studies, and technical explorations.
 - **About** — the creator, philosophy, and contact.
+
+## Creative direction
+
+FORMA's ambition is to feel like a spatial, generative playground—not a conventional SaaS interface with decorative 3D. Its visual language combines controlled chaos, dimensional typography, authored geometry, meaningful interaction, scroll-linked storytelling, and generative systems.
+
+- [Experiential Direction](docs/EXPERIENCE_DIRECTION.md) — the creative ambition, 3D strategy, generative system, interaction vocabulary, scroll/motion guardrails, anti-patterns, and validation checklist.
+- [Reference-led Art Direction & Motion Direction](docs/REFERENCE_LED_ART_DIRECTION.md) — FORM IN MOTION concept, motion grammar, scroll behavior, transitions, and page-specific art direction.
 
 ## Technical architecture
 
@@ -20,30 +27,28 @@ It is both a personal creative-technology flagship and an independent product di
 - [Scene Studio Data Model & Security](docs/SCENE_STUDIO_DATA_MODEL.md) — proposed PostgreSQL migration, RLS policies, document contract, validation, and revision-aware saving.
 - [Authentication & Environment Specification](docs/AUTH_AND_ENVIRONMENT.md) — proposed session flows, route access, environment separation, and deployment security.
 
-## Creative direction
-
-- [Reference-led Art Direction & Motion Direction](docs/REFERENCE_LED_ART_DIRECTION.md) — proposed FORM IN MOTION concept, motion grammar, scroll behavior, transitions, and page-specific art direction.
-
 ## Project status
-Phases 01–04 are approved. Phase 05 technical architecture is in progress and awaiting product-owner review. See [PROJECT_STATUS.md](PROJECT_STATUS.md) and the [documentation](docs/).
+Phases 01–04 are approved. Phase 05 technical architecture is in progress and awaiting product-owner review. See [PROJECT_STATUS.md](PROJECT_STATUS.md) and the [decision log](DECISIONS.md).
 
-### Design previews
-- [Home page visual prototype](design/prototypes/home-preview.html) — standalone responsive HTML/CSS/JS design artifact.
-- [Playground visual prototype](design/prototypes/playground-preview.html) — editorial experiment gallery with working category filters.
-- [Motion Lab visual prototype](design/prototypes/motion-lab-preview.html) — interactive motion canvas with behavior and playback controls.
-- [Scene Studio visual prototype](design/prototypes/scene-studio-preview.html) — responsive editor-shell interaction study with local object and inspector controls.
-- [Archive visual prototype](design/prototypes/archive-preview.html) — responsive project archive with category filters and case-note dialogs.
-- [About visual prototype](design/prototypes/about-preview.html) — editorial story page presenting FORMA's point of view and principles.
-- [Account visual prototype](design/prototypes/account-preview.html) — responsive sign-in, account creation, and recovery states; no authentication is connected.
-- [Brand application guidelines](docs/BRAND_APPLICATION_GUIDELINES.md)
-- [Hybrid identity proposal](docs/HYBRID_IDENTITY_SYSTEM.md)
+## Design previews
+- [Home](design/prototypes/home-preview.html)
+- [Playground](design/prototypes/playground-preview.html)
+- [Motion Lab](design/prototypes/motion-lab-preview.html)
+- [Scene Studio](design/prototypes/scene-studio-preview.html)
+- [Archive](design/prototypes/archive-preview.html)
+- [About](design/prototypes/about-preview.html)
+- [Account](design/prototypes/account-preview.html)
+
+These are standalone design/interaction prototypes. They are not production application features; the Scene Studio prototype is not a real 3D engine, and account forms are not connected to authentication.
 
 ## Principles
 - Experience over decoration.
 - Originality over templates.
+- Controlled chaos over generic polish.
+- Meaningful interaction over visual simulation.
+- Generative systems with authored rules and user control.
 - Purposeful motion over motion for its own sake.
-- Functional interactions over visual mock functionality.
-- Accessibility and performance are product requirements.
+- Accessibility, performance, and security are product requirements.
 - Small, verifiable milestones over oversized implementation bursts.
 
 ## Development approach
