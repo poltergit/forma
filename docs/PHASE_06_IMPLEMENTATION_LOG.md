@@ -1,7 +1,7 @@
 # Phase 06 — Implementation Log
 
 **Branch:** `phase-06/frontend-foundation`  
-**Status:** In progress  
+**Status:** Approved for progression by product owner (2026-11-21)  
 **Last updated:** 2026-11-21
 
 ## Implemented in the foundation branch
@@ -24,29 +24,23 @@
 - The home screen is a foundation placeholder, not the approved final creative experience.
 - Three.js and React Three Fiber are intentionally not imported into the root bundle. They will be introduced behind a client-only, lazy-loaded Scene Studio boundary.
 - No privileged service-role key is read or exposed by the browser client.
-- No CI workflow is added until the dependency lockfile is generated and committed; a CI job using an unlocked dependency graph would undermine the reproducibility requirement.
+- The npm lockfile has now been committed. A CI workflow remains a follow-up task.
 
 ## Verification status
 
-The GitHub branch contents have been committed and source files have been reviewed through the repository API. Additional static source checks confirmed valid JSON syntax in `package.json`, no unresolved relative imports across 16 inspected TypeScript/configuration files, and no unresolved CSS custom-property references across the five inspected stylesheet sources. These checks do not replace compiler, bundler, or browser execution. This environment cannot clone the repository or reach the npm registry, so the following have **not** been run:
+The product owner reports the following local verification results: ESLint passed; TypeScript passed; Vitest passed (3 files, 8 tests); Playwright passed (6 tests after the responsive and browser-project fixes); and the Next.js production build passed. The npm lockfile is committed. The checks were run locally on Node.js 26.12.1 using `npm install --engine-strict=false`, outside the package's declared `>=20.9.0 <23` engine range. These results have not been independently rerun in this environment.
 
-- Dependency installation or lockfile generation.
-- ESLint.
-- TypeScript typecheck.
-- Vitest.
-- Playwright browser tests.
-- Next.js production build.
-- Rendered desktop/tablet/mobile inspection.
-- Accessibility automation and responsive browser checks are now authored but have not been executed; assistive-technology testing remains outstanding.
+- A clean `npm ci` on Node.js 22.
+- GitHub Actions CI using the committed lockfile.
+- Independent rendered desktop/tablet/mobile inspection.
+- Manual keyboard and assistive-technology testing.
+- Supabase integration, migrations, RLS/RPC, invitation, Realtime, and deployment checks.
 
-These are outstanding acceptance requirements, not implied successes.
+These are outstanding follow-up validation requirements, not implied successes. The product owner explicitly approved progression to Phase 07; see [Phase 06 Review](PHASE_06_REVIEW.md).
 
 ## Next implementation steps
 
-1. Install dependencies in a network-enabled project environment and resolve any package-version incompatibilities.
-2. Commit the generated npm lockfile.
-3. Run lint, typecheck, unit tests, Playwright, and production build; fix all failures.
-4. Add CI with the same locked install and verification commands.
-5. Inspect the rendered foundation at desktop, tablet, and mobile widths.
-6. Resolve any runtime, accessibility, and responsive defects found during verification.
-7. Present the Phase 06 review for explicit product-owner approval before Phase 07.
+1. Run a clean `npm ci` on supported Node.js 22.
+2. Add CI using `npm ci`, lint, typecheck, unit tests, Playwright, and production build.
+3. Complete rendered desktop/tablet/mobile and assistive-technology review.
+4. Verify Supabase proxy/session behavior against an isolated project before authenticated features depend on it.
