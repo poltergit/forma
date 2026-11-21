@@ -1,8 +1,8 @@
 # FORMA — Technical Architecture
 
-**Version:** 0.3  
+**Version:** 0.4  
 **Phase:** 05 — Technical Architecture  
-**Status:** Core and supporting stack approved; detailed operational validation remains  
+**Status:** Core and supporting stack approved; operational validation remains  
 **Implementation status:** Not started
 
 ---
@@ -34,8 +34,6 @@ It must not become a generic SaaS dashboard with decorative 3D. Its spatial and 
 Exact package versions and compatibility are verified at implementation time. Approval does not mean packages are installed or tests configured.
 
 ## 3. System topology
-
-One Next.js application and one Supabase project per environment. Do not split the MVP into microservices.
 
 ```text
 Browser clients (owner / editor / viewer)
@@ -154,14 +152,17 @@ Scene Studio separates:
 - Anonymous/non-member: no private scene or channel access.
 
 ### Synchronization baseline
-- Supabase Realtime private channels provide presence and committed-change notifications.
+- Supabase Realtime private channels provide scene presence and committed-change notifications.
 - PostgreSQL remains the durable source of truth.
-- Mutations are validated and authorized on the server, then serialized against the current scene revision in a transaction.
+- Mutations are validated at the Next.js boundary and executed through a narrow PostgreSQL RPC/function that checks `auth.uid()`, current membership/role, command idempotency, and scene revision inside one database transaction.
+- Ordinary browser clients cannot directly replace the scene document or revision. RLS/privileges prevent bypassing the command RPC.
 - Commands are idempotent; concurrent edits are ordered. Same-property conflicts use explicit server commit order and visible collaborator attribution.
 - Notifications are not the event log. Reconnecting clients fetch an authoritative snapshot/revision and reconcile pending command IDs.
 - No CRDT or offline multi-user merge in MVP.
 
-See [Real-Time Collaboration](REALTIME_COLLABORATION.md). The proposed approach requires an isolated technical spike to validate private-channel authorization, RLS, transactional mutation behavior, event recovery, and quotas before production.
+A Next.js server action is not itself a database transaction. The atomic lock/update/receipt operation must occur inside PostgreSQL. Prefer a narrowly scoped security-invoker RPC where feasible; if security-definer is necessary, harden its search path and grants and enforce the actor from `auth.uid()` inside the function.
+
+See [Real-Time Collaboration](REALTIME_COLLABORATION.md) and [Security Threat Model](SECURITY_THREAT_MODEL.md). Validate private-channel authorization, RLS, transaction/idempotency behavior, event recovery, and quotas in an isolated project before production.
 
 ## 8. Data and security
 
@@ -176,11 +177,11 @@ See [Real-Time Collaboration](REALTIME_COLLABORATION.md). The proposed approach 
 - Bound object counts, payload sizes, numeric ranges, and generator resource consumption.
 - Private storage only when binary assets are introduced.
 
-The existing [Scene Studio Data Model](SCENE_STUDIO_DATA_MODEL.md) is an owner-only baseline and must be revised to add memberships and collaboration-aware RLS before implementation. The [Generative Artifact Model](GENERATIVE_ARTIFACT_MODEL.md) is a separate proposed table and policy.
+The collaboration-aware [Scene Studio Data Model](SCENE_STUDIO_DATA_MODEL.md) is the proposed baseline. The [Generative Artifact Model](GENERATIVE_ARTIFACT_MODEL.md) is a separate proposed table and policy. Neither has been applied or tested.
 
 ## 9. Authentication and invitation flow
 
-Use Supabase Auth with the supported SSR integration for the selected Next.js version. Validate sessions server-side. Invitation acceptance requires an authenticated account matching the intended recipient identity, a valid unexpired token, and an atomic membership creation. If an admin invitation API is needed, isolate it behind a server-only operation; never expose service credentials. Do not claim invitation delivery unless email configuration is actually working.
+Use Supabase Auth with the supported SSR integration for the selected Next.js version. Validate sessions server-side. Invitation acceptance requires an authenticated account matching the intended verified recipient identity, a valid unexpired token, and an atomic membership creation. If an admin invitation API is needed, isolate it behind a server-only operation; never expose service credentials. Do not claim invitation delivery unless email configuration is actually working.
 
 See [Authentication & Environment](AUTH_AND_ENVIRONMENT.md) and [Real-Time Collaboration](REALTIME_COLLABORATION.md).
 
@@ -239,10 +240,11 @@ Approved:
 - D-017: real-time invite-only collaboration in Scene Studio MVP.
 
 Still required before Phase 05 acceptance:
-- Revise scene SQL/data model for membership and collaboration.
-- Finalize invitation delivery and token acceptance.
-- Validate RLS, private Realtime authorization, transaction/command behavior, idempotency, and reconnect in isolated Supabase.
+- Finalize and test migrations, RLS, and grants for scenes, members, invitations, and artifacts.
+- Validate invitation delivery, verified identity binding, and atomic acceptance.
+- Validate PostgreSQL command RPC, idempotency, concurrent edits, and conflict behavior.
+- Validate private Realtime authorization, revocation, reconnect, and recovery.
 - Verify provider quotas, environment separation, backups, and deployment constraints.
-- Complete final threat model and Phase 05 checklist.
+- Complete final threat-model review and validation evidence package.
 
 **Phase 06 is not authorized until the product owner explicitly approves the completed Phase 05 review.**
