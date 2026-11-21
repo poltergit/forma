@@ -66,17 +66,19 @@ test("Home feature territories open the real Phase 08 routes", async ({ page }) 
   await expect(page.getByRole("heading", { level: 1 })).toBeVisible();
 });
 
-test("Playground and Motion Lab remain within a narrow mobile viewport", async ({ page }) => {
-  await page.setViewportSize({ width: 375, height: 812 });
-  for (const route of ["/playground", "/motion-lab"]) {
-    await page.goto(route);
-    await expect(page.getByRole("link", { name: "PLAYGROUND" })).toBeVisible();
-    await expect(page.getByRole("link", { name: "MOTION LAB" })).toBeVisible();
-    const dimensions = await page.evaluate(() => ({
-      viewport: document.documentElement.clientWidth,
-      document: document.documentElement.scrollWidth,
-    }));
-    expect(dimensions.document).toBeLessThanOrEqual(dimensions.viewport);
+test("Playground and Motion Lab fit the required responsive widths", async ({ page }) => {
+  for (const width of [320, 375, 768, 1024, 1440]) {
+    await page.setViewportSize({ width, height: 900 });
+    for (const route of ["/playground", "/motion-lab"]) {
+      await page.goto(route);
+      await expect(page.getByRole("link", { name: "PLAYGROUND" })).toBeVisible();
+      await expect(page.getByRole("link", { name: "MOTION LAB" })).toBeVisible();
+      const dimensions = await page.evaluate(() => ({
+        viewport: document.documentElement.clientWidth,
+        document: document.documentElement.scrollWidth,
+      }));
+      expect(dimensions.document).toBeLessThanOrEqual(dimensions.viewport);
+    }
   }
 });
 
