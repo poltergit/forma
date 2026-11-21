@@ -34,9 +34,13 @@ test("Motion Lab parameters change the motion study and can be paused", async ({
 
   const timeline = page.getByRole("slider", { name: /motion timeline position/i });
   await timeline.focus();
-  await timeline.press("End");
-  await expect(page.getByText("100%")).toBeVisible();
+  await timeline.press("Home");
+  const motionObject = page.locator('[data-motion="pulse"]').locator("div").first();
+  const startTransform = await motionObject.evaluate((node) => getComputedStyle(node).transform);
+  for (let step = 0; step < 25; step += 1) await timeline.press("ArrowRight");
+  await expect(page.getByText("25%")).toBeVisible();
   await expect(page.getByText("PAUSED")).toBeVisible();
+  await expect.poll(() => motionObject.evaluate((node) => getComputedStyle(node).transform)).not.toBe(startTransform);
   await expect(page.getByText(/forma\.motion-recipe/)).toBeVisible();
 
   await page.getByRole("button", { name: /impact \/ 02/i }).click();
