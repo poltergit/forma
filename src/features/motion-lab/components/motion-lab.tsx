@@ -25,7 +25,7 @@ export function MotionLab() {
   const [easing, setEasing] = useState<Easing>("ease-in-out");
   const [paused, setPaused] = useState(false);
   const [progress, setProgress] = useState(0);
-  const [copied, setCopied] = useState(false);
+  const [copied, setCopied] = useState(false);\n  const [copyMessage, setCopyMessage] = useState("");
 
   const reset = () => {
     setMode("orbit");
@@ -126,7 +126,7 @@ export function MotionLab() {
         </div>
         <div className={styles.recipe}>
           <div><span>REPRODUCIBLE RECIPE / JSON</span><button type="button" onClick={copyRecipe}>{copied ? "COPIED ✓" : "COPY RECIPE ↗"}</button></div>
-          <pre>{JSON.stringify(recipe, null, 2)}</pre>
+          <pre>{JSON.stringify(recipe, null, 2)}</pre>\n          <p className={styles.copyMessage} role="status" aria-live="polite">{copyMessage}</p>
         </div>
         <button className={styles.reset} type="button" onClick={reset}>↺ RESET PARAMETERS</button>
       </aside>
