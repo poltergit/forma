@@ -300,6 +300,7 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
+  .sculpture { transform: rotateX(-28deg) rotateY(-36deg) !important; transition-duration: 1ms; }
   .sculpture,
   .cube,
   .recompose {
