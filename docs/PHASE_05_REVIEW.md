@@ -1,6 +1,6 @@
 # FORMA — Phase 05 Architecture Review
 
-**Version:** 0.4  
+**Version:** 0.5  
 **Phase:** 05 — Technical Architecture  
 **Status:** Owner decisions recorded; technical validation and final approval remain open  
 **Purpose:** Consolidate the approved direction, supporting architecture, collaboration requirements, and Phase 05 acceptance criteria before Phase 06.
@@ -27,7 +27,7 @@
 
 Scene Command Engine: [command contract](SCENE_COMMAND_ENGINE.md) and `supabase/migrations/20261121000200_forma_scene_command_rpc.sql` (not applied or tested).\n\nDatabase draft: [Migration Design Review](DATABASE_MIGRATION_REVIEW.md) and `supabase/migrations/20261121000100_forma_core_schema.sql` (not applied or tested).
 
-Invitation lifecycle: [Invitation & Membership Engine](INVITATION_MEMBERSHIP_ENGINE.md) and `supabase/migrations/20261121000300_forma_invitation_membership_rpc.sql` (review draft only; not applied or tested).\n\nDetailed references: [Technical Architecture](TECHNICAL_ARCHITECTURE.md), [Scene Studio Data Model](SCENE_STUDIO_DATA_MODEL.md), [Real-Time Collaboration](REALTIME_COLLABORATION.md), [Generative Artifact Model](GENERATIVE_ARTIFACT_MODEL.md), [Authentication & Environment](AUTH_AND_ENVIRONMENT.md).
+Invitation lifecycle: [Invitation & Membership Engine](INVITATION_MEMBERSHIP_ENGINE.md) and `supabase/migrations/20261121000300_forma_invitation_membership_rpc.sql` (review draft only; not applied or tested).\n\nRealtime authorization/recovery: [Realtime Authorization & Recovery](REALTIME_AUTHORIZATION_RECOVERY.md) and `supabase/migrations/20261121000400_forma_realtime_authorization_recovery.sql` (review draft only; not applied or tested).\n\nDetailed references: [Technical Architecture](TECHNICAL_ARCHITECTURE.md), [Scene Studio Data Model](SCENE_STUDIO_DATA_MODEL.md), [Real-Time Collaboration](REALTIME_COLLABORATION.md), [Generative Artifact Model](GENERATIVE_ARTIFACT_MODEL.md), [Authentication & Environment](AUTH_AND_ENVIRONMENT.md).
 
 ## 3. Creative scope
 
@@ -78,14 +78,14 @@ Separate local/preview/production resources; verify current provider quotas, ema
 - [x] Authentication and invitation proposal documented.
 - [x] Collaboration architecture documented.
 - [x] Security threat model drafted.
-- [x] Core schema/RLS migration draft prepared for isolated review (not executed).\n- [x] Typed Scene Command Engine contract and atomic RPC migration draft prepared (not executed).\n- [x] Invitation/membership lifecycle contract and create/list/accept/revoke/remove RPC migration draft prepared (not executed).
+- [x] Core schema/RLS migration draft prepared for isolated review (not executed).\n- [x] Typed Scene Command Engine contract and atomic RPC migration draft prepared (not executed).\n- [x] Invitation/membership lifecycle contract and create/list/accept/revoke/remove RPC migration draft prepared (not executed).\n- [x] Private Realtime authorization, reconnect recovery, and command receipt lookup specification/migration draft prepared (not executed).
 - [x] Technical validation plan drafted.
 - [ ] Confirm isolated Supabase environment and current provider capabilities/quotas.
 - [ ] Implement and apply migrations in isolated development only; verify fresh-database apply.
 - [ ] Execute RLS and database privilege tests for owner/editor/viewer/revoked/non-member/anonymous.
 - [ ] Validate atomic command RPC, idempotency, concurrency, and rollback.
 - [ ] Validate invitation email delivery, token handling, verified identity binding, expiry, replay, concurrency, revocation, and member-removal/command ordering.
-- [ ] Validate Realtime private join, revocation, reconnect, and snapshot recovery.
+- [ ] Validate Realtime private join, live-socket revocation, reconnect, receipt lookup, snapshot recovery, and provider limits.
 - [ ] Verify environment separation, backups/restore, and Vercel constraints.
 - [ ] Complete accessibility/performance/security evidence package.
 - [ ] Final Phase 05 approval from product owner.
