@@ -121,3 +121,13 @@ This file records decisions that have been explicitly approved. Proposed ideas d
 **Boundaries:** No public rooms, anonymous editing, voice/video, chat, offline multi-user merge, team workspaces, or CRDT-based conflict-free editing in the MVP. The first implementation uses Supabase Auth, PostgreSQL/RLS, and Supabase Realtime subject to a technical spike validating authorization, quotas, and synchronization behavior. A dedicated collaboration service requires a separate approval and cost/security review.
 
 **Reference:** `docs/REALTIME_COLLABORATION.md`.
+
+## D-018 — Phase 05 approval and Phase 06 authorization
+
+**Status:** Accepted  
+**Decision date:** 2026-11-21  
+**Decision:** The product owner confirmed “Validated and Approved” for the Phase 05 technical architecture review. Phase 05 is accepted and Phase 06 — Frontend Foundation is authorized to begin.
+
+**Verification boundary:** This approval records the owner's phase-gate decision. It does not assert that proposed Supabase migrations, RLS policies, invitation email delivery, Realtime revocation, provider quotas, backup/restore, or deployment behavior have been executed or verified. Those remain implementation and release-validation requirements.
+
+**Reference:** `docs/PHASE_05_REVIEW.md`, `docs/PHASE_06_FOUNDATION_PLAN.md`.
