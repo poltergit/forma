@@ -139,7 +139,7 @@ Expose a small number of useful controls first; advanced controls should appear 
 3. **Two distinct studies implemented.** Displacement Field uses seeded canvas geometry and pointer/keyboard influence; Elastic Matter uses typographic deformation with independent tension, release, and inversion controls.
 4. **Initial gallery implemented.** Added asymmetric experiment entries and functional ALL / FORM / TYPE filters with reset. More experiment categories and studies remain.
 5. **Initial studies implemented.** Both studies expose real parameter controls and reset behavior; browser validation and further touch/reduced-motion review remain.
-6. Establish reusable experiment lifecycle, renderer boundaries, deterministic random utilities, and parameter validation.
+6. **Core utilities established.** Added a reusable seeded-random generator with determinism/bounds tests, isolated renderer components, and Zod-validated Motion Lab recipe parameters. A broader shared lifecycle abstraction remains deferred until more studies need it.
 7. **Instrument expanded.** Added scrub/freeze timeline, easing-curve visualization, three authored presets, and copyable JSON motion recipes.
 8. **Second visual grammar implemented.** Elastic Matter is a typographic study rather than another geometry field. Further studies require their own interaction and resource contracts.
 9. **Coverage expanded; execution pending.** Added Playwright cases for filters, direct anchors, Elastic Matter controls, timeline scrubbing, presets, recipe output, and narrow mobile overflow, plus unit tests for deterministic generators and validated motion recipes. Browser-history coverage is included; broad accessibility and performance coverage still need expansion.
