@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
 import { PlaygroundExperience } from "@/features/playground/components/playground-experience";
+import { ExperimentIndex } from "@/features/playground/components/experiment-index";
+import { ElasticType } from "@/features/playground/components/elastic-type";
 import styles from "./page.module.css";
 
 export const metadata: Metadata = {
@@ -18,13 +20,15 @@ export default function PlaygroundPage() {
         </div>
         <div className={styles.introFoot}><span>FORM / FORCE / FEELING</span><span>SCROLL TO INTERACT ↓</span></div>
       </section>
-      <section className={styles.experiment} aria-labelledby="experiment-title">
+      <section className={styles.experiment} id="displacement-field" aria-labelledby="experiment-title">
         <div className={styles.experimentHeading}>
           <div><span>FEATURED EXPERIMENT / 001</span><h2 id="experiment-title">Displacement<br /><em>field.</em></h2></div>
           <p>A seeded field of dimensional forms. Your movement bends the composition; parameters let you change its density and influence.</p>
         </div>
         <PlaygroundExperience />
       </section>
+      <ExperimentIndex />
+      <ElasticType />
       <section className={styles.next}>
         <span>MORE WORLDS ARE TAKING SHAPE</span>
         <p>One experiment at a time.<br /><em>No two rules need to be alike.</em></p>
