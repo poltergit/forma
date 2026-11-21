@@ -39,10 +39,10 @@ export function HeroForm() {
         aria-label={`Abstract dimensional modular sculpture, arrangement ${current.index}: ${current.name.toLowerCase()}.`}
       >
         <div className={styles.stageGrid} />
-        <div className={styles.orbit orbitOne} />
-        <div className={styles.orbit orbitTwo} />
-        <div className={styles.axis axisHorizontal} />
-        <div className={styles.axis axisVertical} />
+        <div className={`${styles.orbit} ${styles.orbitOne}`} />
+        <div className={`${styles.orbit} ${styles.orbitTwo}`} />
+        <div className={`${styles.axis} ${styles.axisHorizontal}`} />
+        <div className={`${styles.axis} ${styles.axisVertical}`} />
         <div className={styles.sculpture}>
           <Cube className={`${styles.cube} ${styles.cubeMain}`} />
           <Cube className={`${styles.cube} ${styles.cubeSatellite}`} />
