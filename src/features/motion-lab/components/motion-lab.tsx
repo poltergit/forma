@@ -80,7 +80,7 @@ export function MotionLab() {
         <div className={styles.timeline}>
           <div className={styles.timelineMeta}><span>SCRUB / FREEZE AT A MOMENT</span><output>{progress}%</output></div>
           <input aria-label="Motion timeline position" type="range" min="0" max="100" step="1" value={progress} onChange={(event) => { setProgress(Number(event.target.value)); setPaused(true); }} />
-          <div className={styles.timelineScale}><span>0:00</span><span>{duration.toFixed(1)}s / LOOP</span></div>
+          <div className={styles.timelineScale}><span>0:00</span><span>{(duration * 2).toFixed(1)}s / FULL CYCLE</span></div>
         </div>
         <div className={styles.stageFooter}>
           <span>{selected.note}</span>
