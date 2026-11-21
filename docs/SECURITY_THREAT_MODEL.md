@@ -75,13 +75,17 @@
 - Never broadcast complete scene documents, invite details, or secrets in presence metadata.
 
 ### Invitation security
-- Generate cryptographically random tokens with sufficient entropy.
-- Store only a cryptographic hash; compare safely.
-- Bind acceptance to the intended verified email/account identity.
-- Consume the token and create membership atomically.
-- Enforce expiry, revocation, single use, per-scene/per-recipient limits, and rate limits.
+- Generate 32 random bytes with Node.js crypto on the server; hash the exact base64url token with SHA-256. Never use MD5 for invitation credentials.
+- Persist only the 64-character SHA-256 digest. The owner-only invitation-list RPC must never return token_hash.
+- Bind acceptance to the normalized, confirmed email in auth.users, not a client-supplied email or unverified profile field.
+- Consume the token and create membership atomically; retries by the same accepting identity are idempotent, while cross-account replay is rejected.
+- Enforce expiry, revocation, single use, one active pending invite per scene/recipient, and server-side rate limits.
+- Use a URL fragment rather than a query parameter where possible; capture and scrub it immediately, apply Referrer-Policy: no-referrer, and avoid third-party scripts/analytics on the redemption route.
+- Email delivery is a separate side effect. On failure, attempt to revoke the pending invitation and never report delivery success.
+- Member removal and scene commands lock the same scene row so authorization changes serialize with durable mutations.
 - Avoid revealing whether an account exists.
 - Do not put raw tokens into logs, analytics, referrers, or third-party tracking URLs.
+- The invitation RPC migration is a review draft only; it has not been applied or tested.
 
 ### Generative security
 - Generator IDs map to a compile-time allowlist.
