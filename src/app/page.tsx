@@ -5,8 +5,8 @@ import styles from "./page.module.css";
 const disciplines = [
   { number: "01", name: "Playground", href: "/playground", descriptor: "INTERACTIVE EXPERIMENTS", description: "Small worlds with their own rules. Touchable studies in form, color, and unexpected behavior.", shape: "shapePlayground" },
   { number: "02", name: "Motion Lab", href: "/motion-lab", descriptor: "GENERATIVE MOTION", description: "A place to tune rhythm, tension, repetition, and the mathematics of movement.", shape: "shapeMotion" },
-  { number: "03", name: "Scene Studio", descriptor: "SPATIAL AUTHORING", description: "A working space for dimensional ideas, assembled with precision and built to be shared.", shape: "shapeStudio" },
-  { number: "04", name: "Archive", descriptor: "COLLECTED FORMS", description: "Experiments, systems, and finished pieces. A growing record of things made along the way.", shape: "shapeArchive" },
+  { number: "03", name: "Scene Studio", href: null, descriptor: "SPATIAL AUTHORING", description: "A working space for dimensional ideas, assembled with precision and built to be shared.", shape: "shapeStudio" },
+  { number: "04", name: "Archive", href: null, descriptor: "COLLECTED FORMS", description: "Experiments, systems, and finished pieces. A growing record of things made along the way.", shape: "shapeArchive" },
 ] as const;
 
 export default function HomePage() {
