@@ -47,7 +47,7 @@ export default function HomePage() {
         </div>
       </section>
 
-      <section className={styles.index} aria-label="FORMA disciplines">
+      <section id="the-materials" className={styles.index} aria-label="FORMA disciplines">
         <div className={styles.indexHeader}>
           <span>THE MATERIALS</span>
           <span>SCROLL TO EXPLORE</span>
