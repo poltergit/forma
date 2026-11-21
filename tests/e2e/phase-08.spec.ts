@@ -93,7 +93,7 @@ test("Playground filters studies and opens the matching direct anchor", async ({
   await page.goto("/playground");
 
   await page.getByRole("button", { name: "TYPE", exact: true }).click();
-  await expect(page.getByRole("heading", { name: "Elastic matter" })).toBeVisible();
+  await expect(page.getByRole("heading", { name: "Elastic matter", exact: true })).toBeVisible();
   await expect(page.getByRole("heading", { name: "Displacement field", exact: true })).toHaveCount(0);
 
   await page.getByRole("link", { name: /open study/i }).click();
@@ -109,7 +109,7 @@ test("Elastic Matter controls change the typographic study", async ({ page }) =>
   await tension.focus();
   for (let step = 0; step < 14; step += 1) await tension.press("ArrowRight");
   await expect(page.locator("#elastic-type output").first()).toHaveText("90%");
-  const invert = page.getByRole("button", { name: /invert tension/i });
+  const invert = page.locator("#elastic-type button").first();
   await invert.click();
   await expect(invert).toHaveAttribute("aria-pressed", "true");
 });
