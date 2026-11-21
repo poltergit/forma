@@ -159,3 +159,12 @@ This file records decisions that have been explicitly approved. Proposed ideas d
 **Rejections:** generic AI-looking filler, template layouts, meaningless particles, repetitive 3D decoration, gratuitous effects, fake functionality, scroll hijacking, and complexity without a concept.
 
 **Reference:** `docs/EXPERIENCE_DIRECTION.md`.
+## D-021 — Phase 07 approval and Phase 08 authorization
+
+**Status:** Accepted  
+**Decision date:** 2026-11-21  
+**Decision:** The product owner confirmed “validated and succeeded” for Phase 07 and explicitly directed the project to continue with Phase 08. Phase 07 — Landing Page & Immersive Experience is approved for progression, and Phase 08 — Playground & Motion Lab is authorized to begin on `phase-08/playground-motion-lab`.
+
+**Verification boundary:** This records the owner's validation report and phase-gate approval. The exact command output and detailed browser/device results were not included in the approval message and were not independently rerun in this environment. No specific test count, performance benchmark, deployment, or provider integration is implied.
+
+**References:** `docs/PHASE_07_REVIEW.md`, `docs/PHASE_08_PLAYGROUND_MOTION_LAB_PLAN.md`.
