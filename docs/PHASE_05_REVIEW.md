@@ -1,135 +1,94 @@
 # FORMA — Phase 05 Architecture Review
 
-**Version:** 0.2  
+**Version:** 0.3  
 **Phase:** 05 — Technical Architecture  
 **Status:** Owner decisions recorded; technical validation and final approval remain open  
 **Purpose:** Consolidate the approved direction, supporting architecture, collaboration requirements, and Phase 05 acceptance criteria before Phase 06.
 
 ---
 
-## 1. Approved product and technology decisions
+## 1. Approved decisions
 
-### Core stack — D-014
-- Next.js App Router and TypeScript.
-- Supabase.
-- Three.js + React Three Fiber.
-- Vercel.
-- CSS design tokens + CSS Modules.
-- Zustand for editor-local state.
-- Zod for runtime validation.
-- Drei selectively.
-- Vitest, React Testing Library, Playwright, and axe-core.
-- Start with server components/actions and focused server queries; defer TanStack Query until justified.
+- **D-014:** Next.js App Router, TypeScript, Supabase, Three.js + React Three Fiber, Vercel, CSS tokens + CSS Modules; Zustand, Zod, selective Drei, Vitest, React Testing Library, Playwright, axe-core; defer TanStack Query.
+- **D-015:** Spatial, generative, performative, expressive, intentionally art-directed experience.
+- **D-016:** Ambitious first-release creative scope: spatial Home, original Playground studies, parameter-rich Motion Lab, reproducible generative artifacts, and Scene Studio.
+- **D-017:** Invite-only real-time collaboration in Scene Studio MVP, with owner/editor/viewer roles, presence, committed changes, conflict handling, and reconnect recovery.
 
-### Experiential ambition — D-015
-Spatial, generative, performative, expressive, intentionally art-directed, and meaningfully interactive. No generic AI-like filler or decorative complexity without purpose.
+## 2. Architecture baseline
 
-### Generative scope — D-016
-Ambitious first-release creative scope: a distinctive spatial Home, isolated Playground studies, richer Motion Lab experiences, reproducible saved generative artifacts, and the constrained Scene Studio editor.
+- App Router owns route composition and server-rendered content.
+- Server actions/route handlers are validation/session boundaries.
+- PostgreSQL RPC is the atomic boundary for collaborative scene commands; a Next.js action alone is not a transaction.
+- RLS and database privileges enforce private data and role access.
+- Supabase Realtime transports private presence and committed revision notifications; it is not the durable event log.
+- Scene documents are versioned JSON, never serialized Three.js runtime objects.
+- Generative registry is compile-time allowlisted; parameters are validated and bounded.
+- Local, preview, and production environments use separate backend resources and secrets.
 
-### Collaboration — D-017
-Real-time collaboration is included in the Scene Studio MVP. The proposed baseline is invite-only rooms, owner/editor/viewer roles, presence, live committed changes, server-authoritative mutation ordering, and reconnect recovery. No public rooms, offline multi-user merge, chat/video, or CRDT in the first release.
+Detailed references: [Technical Architecture](TECHNICAL_ARCHITECTURE.md), [Scene Studio Data Model](SCENE_STUDIO_DATA_MODEL.md), [Real-Time Collaboration](REALTIME_COLLABORATION.md), [Generative Artifact Model](GENERATIVE_ARTIFACT_MODEL.md), [Authentication & Environment](AUTH_AND_ENVIRONMENT.md).
 
-References: [Experiential Direction](EXPERIENCE_DIRECTION.md), [Generative Artifact Model](GENERATIVE_ARTIFACT_MODEL.md), and [Real-Time Collaboration](REALTIME_COLLABORATION.md).
+## 3. Creative scope
 
-## 2. Approved supporting technology posture
+1. Spatial Home composition with scroll-linked transformations and progressive fallback.
+2. Curated Playground with multiple original independently loadable studies.
+3. Motion Lab with parameter-rich motion/generative studies, reset, seed, and reproducibility.
+4. Saved generative artifacts with generator ID/version, seed, validated parameters, and schema version.
+5. Scene Studio with primitives, transforms, materials, selection, history, cloud persistence, and real-time collaboration.
+6. Editorial Archive/About with selective spatial moments.
 
-| Concern | Approved choice | Boundary |
-|---|---|---|
-| Editor-local state | Zustand | Keep server records and ephemeral input state out of unnecessary global stores |
-| Runtime validation | Zod | Validate untrusted data at every boundary |
-| 3D helpers | Drei selectively | Use only where useful |
-| Client server-state cache | Defer TanStack Query | Add only after a demonstrated requirement |
-| Unit tests | Vitest | Pure logic, generator determinism, document commands |
-| Component tests | React Testing Library | Observable user behavior |
-| Browser tests | Playwright | Critical routes and multi-user journeys |
-| Accessibility automation | axe-core | Supplement, not replace, manual checks |
-| Supabase SSR | Official supported SSR integration for chosen versions | Verify package and Next.js conventions when implementing |
+Ambition does not authorize arbitrary user code, shader execution, dynamic module paths, unrestricted node graphs, prompt-to-scene generation, or a public asset marketplace.
 
-## 3. Application boundaries
+## 4. Security and reliability posture
 
-- App Router owns route composition, server-rendered content, and route-level loading/error states.
-- Server actions/route handlers validate mutation inputs, verify session and permissions, and call data operations.
-- Feature modules own product behavior: experience, playground, generative, motion-lab, scene-studio, archive, and account.
-- The generative registry is explicit and allowlisted; database records never select arbitrary modules or executable code.
-- Scene Studio separates viewport, serializable document, editor-local state, command/history layer, persistence, and collaboration.
-- Supabase clients and server-only credentials remain isolated in the platform layer.
-- Shared abstractions should emerge from repeated real use cases, not speculation.
+- RLS protects every private table.
+- Browser clients cannot bypass the typed scene command/RPC path with direct document writes.
+- The database transaction checks identity, role, revision, and idempotency atomically.
+- Invitation tokens are random, hashed at rest, single-use, expiring, and identity-bound.
+- Realtime authorization is tested on join, reconnect, and revocation.
+- Missed/duplicate/out-of-order notifications recover from authoritative database revision/snapshot.
+- Generator parameters and resource consumption are bounded.
+- No service-role credential in browser code or logs.
 
-## 4. Ambitious first-release creative scope
+See [Security Threat Model](SECURITY_THREAT_MODEL.md) and [Phase 05 Technical Validation Plan](PHASE_05_VALIDATION_PLAN.md).
 
-1. A distinctive spatial Home composition with scroll-linked transformations and progressive fallback.
-2. A curated Playground registry with multiple original, independently loadable studies.
-3. Motion Lab with parameter-rich generative/motion studies, deterministic reset, and saved recipes where supported.
-4. A reproducible artifact contract: generator ID/version, seed, validated parameters, and schema version.
-5. A real Scene Studio MVP with primitives, transforms, materials, selection, history, cloud persistence, and collaboration.
-6. Editorial Archive/About surfaces with selective spatial case-study moments.
-
-Ambition is not permission for uncontrolled complexity. Do not include arbitrary code execution, user-uploaded generator plugins, unrestricted node graphs, prompt-to-scene generation, or an open-ended asset marketplace in the first release.
-
-## 5. Real-time collaboration architecture
-
-See [Real-Time Collaboration](REALTIME_COLLABORATION.md) for the detailed proposal.
-
-The baseline is Supabase Realtime for presence/change notifications and PostgreSQL as durable source of truth. Scene mutations use a typed, server-authorized, revision-ordered command model. Notifications are not the event log; reconnecting clients recover from an authoritative snapshot/revision.
-
-Before production implementation, validate private-channel authorization, membership RLS, invitation lifecycle, transaction/idempotency behavior, event delivery/recovery, and plan quotas in an isolated Supabase project. If this requires an unexpectedly complex custom synchronization layer, stop and bring a dedicated provider option back for approval rather than quietly adding a service.
-
-## 6. Non-functional acceptance requirements
+## 5. Non-functional acceptance
 
 ### Performance
-- Server-render essential editorial content and controls.
-- Load WebGL only where needed; isolate each experiment.
-- Avoid multiple heavyweight canvases running simultaneously.
-- Pause/reduce off-screen rendering and cap device pixel ratio.
-- Provide low-power, reduced-motion, and WebGL fallback modes.
-- Measure actual representative devices before setting numeric performance guarantees.
+Server-render essential content; lazy-load WebGL; isolate experiments; pause off-screen rendering; cap pixel ratio and geometry; measure real devices before committing numeric budgets.
 
 ### Accessibility
-- Native scrolling; no scroll hijacking.
-- Keyboard/touch alternatives for pointer-led interactions.
-- Reduced-motion behavior preserving meaning and task completion.
-- Essential text/actions outside the canvas.
-- Accessible collaborator names, role labels, connection state, and update announcements.
-
-### Security
-- RLS for all private scene, membership, invitation, and artifact data.
-- Server-side role checks for every mutation.
-- Private Realtime channels authorized by membership.
-- No service-role credential in browser code.
-- Runtime validation and payload/resource limits.
-- Rate-limited invitation creation and acceptance.
-- No arbitrary user-supplied code execution.
+Native scroll; keyboard/touch alternatives; reduced-motion modes; semantic content outside canvas; accessible collaborator, role, connection, and conflict announcements.
 
 ### Reliability
-- Revision-aware durable scene writes.
-- Idempotent commands and explicit conflict behavior.
-- Reconnect snapshot recovery.
-- Visible save/sync/offline/error states.
-- Revoked collaborators lose access and have private state cleared.
-- Generator versions and seeds retained for reproducibility.
+Revision-aware atomic writes; idempotency; explicit conflicts; snapshot recovery; visible save/sync/offline states; revoked users lose access to subsequent reads/mutations.
 
-## 7. Phase 05 completion checklist
+### Operations
+Separate local/preview/production resources; verify current provider quotas, email deliverability, backup/restore, and deployment configuration; redact secrets and private content from logs.
 
-- [x] Core stack recorded and approved (D-014).
-- [x] Supporting dependencies and test stack approved (D-014).
-- [x] Experiential ambition recorded (D-015).
-- [x] Ambitious generative experience scope approved (D-016).
-- [x] Real-time Scene Studio collaboration approved for MVP (D-017).
-- [x] Scene Studio data model and initial RLS proposal documented.
-- [x] Generative artifact data model documented.
-- [x] Authentication and environment proposal documented.
-- [x] Collaboration architecture and role model drafted.
-- [ ] Validate schema/policies and collaboration synchronization in an isolated Supabase project.
-- [ ] Finalize exact invitation delivery and token lifecycle.
-- [ ] Confirm provider plan quotas, operational limits, and environment topology.
-- [ ] Complete route/module boundaries and final threat-model review.
+## 6. Phase 05 completion checklist
+
+- [x] Core and supporting stack approved and recorded (D-014).
+- [x] Experiential direction approved (D-015).
+- [x] Ambitious generative scope approved (D-016).
+- [x] Real-time collaboration in MVP approved (D-017).
+- [x] Collaboration-aware scene data model documented.
+- [x] Generative artifact model documented.
+- [x] Authentication and invitation proposal documented.
+- [x] Collaboration architecture documented.
+- [x] Security threat model drafted.
+- [x] Technical validation plan drafted.
+- [ ] Confirm isolated Supabase environment and current provider capabilities/quotas.
+- [ ] Implement and apply migrations in isolated development only; verify fresh-database apply.
+- [ ] Execute RLS and database privilege tests for owner/editor/viewer/revoked/non-member/anonymous.
+- [ ] Validate atomic command RPC, idempotency, concurrency, and rollback.
+- [ ] Validate invitation email delivery, identity binding, expiry, replay, and revocation.
+- [ ] Validate Realtime private join, revocation, reconnect, and snapshot recovery.
+- [ ] Verify environment separation, backups/restore, and Vercel constraints.
+- [ ] Complete accessibility/performance/security evidence package.
 - [ ] Final Phase 05 approval from product owner.
 
-## 8. Approval gate
+## 7. Approval gate
 
-**Owner decisions are recorded, but Phase 05 is not yet complete or approved.** The collaboration requirement materially changes the previous single-owner data model and must be reflected in tested migrations, RLS policies, invitation flow, and integration tests.
+**Phase 05 is not complete or approved.** Architecture and validation specifications are documented, but provider-specific behavior and database security must be tested in an isolated environment. No migrations, invitation flow, realtime implementation, or production application code are claimed as built.
 
-Phase 06 must not begin until the product owner explicitly approves the completed Phase 05 review after the isolated technical validation and remaining checklist items.
-
-No production application code, Supabase project, Vercel configuration, or deployment has been started as part of this documentation update.
+Phase 06 must not begin until the validation blockers are resolved or explicitly revised and the product owner approves the final Phase 05 review.
