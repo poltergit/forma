@@ -7,8 +7,8 @@
 - Phase 02 — Brand Identity and Creative Direction: **Approved**
 - Phase 03 — UX and Information Architecture: **Approved**
 - Phase 04 — Visual Design System: **Approved**
-- Phase 05 — Technical Architecture: **In progress; owner decisions recorded, isolated technical validation remains**
-- Production application implementation: **Not started**
+- Phase 05 — Technical Architecture: **Approved by product owner (2026-11-21)**
+- Phase 06 — Frontend Foundation: **In progress**\n- Production application implementation: **Foundation work authorized; not yet bootstrapped**
 - Repository: **Initialized and verified**
 
 ## Approved decisions
@@ -37,8 +37,8 @@ See docs/PHASE_04_REVIEW.md for the approved visual direction and review. Seven 
 - Security threat model: docs/SECURITY_THREAT_MODEL.md.
 - Technical validation plan: docs/PHASE_05_VALIDATION_PLAN.md.
 - Generative artifact model and auth/environment proposal documented.
-- Remaining: isolated Supabase provider/environment verification; migration/RLS/privilege validation; atomic command RPC and concurrency tests; invitation token, verified-identity, lifecycle, email-delivery, and member-removal tests; Realtime private-topic authorization, live-socket revocation, receipt lookup, and recovery tests; quota, backup/restore, deployment, performance, and accessibility evidence; final owner approval.
-- Do not begin Phase 06 or production application implementation until explicit Phase 05 approval.
+- Phase 05 owner approval recorded after the user's “Validated and Approved” confirmation. Remaining provider-specific checks (migration/RLS/RPC execution, invitation delivery, Realtime revocation/recovery, quotas, backups, and deployment) remain mandatory implementation/release validation; no test results are inferred from the approval.
+- Phase 06 is authorized and in progress. See docs/PHASE_06_FOUNDATION_PLAN.md. Phase 07 remains gated on Phase 06 review and explicit owner approval.
 
 ## Project constraints
 - Small, reviewable milestones; no unverified claims about tests, builds, deployment, or commits.
