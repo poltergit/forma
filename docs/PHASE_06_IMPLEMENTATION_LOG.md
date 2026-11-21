@@ -16,7 +16,7 @@
 - Added a Next.js 16 `src/proxy.ts` request boundary that refreshes Supabase sessions through `getClaims` and forwards refreshed cookies.
 - Added explicit missing-configuration errors; the app does not pretend to be connected when environment values are absent.
 - Added Zod boundary schemas for scene vectors and colors, plus a small Zustand editor-panel store.
-- Added representative Zod, public-environment, and Zustand store unit tests, plus a Playwright smoke test.
+- Added representative Zod, public-environment, and Zustand store unit tests, plus Playwright smoke, automated accessibility, and responsive overflow checks.
 
 ## Important boundaries
 
@@ -37,7 +37,7 @@ The GitHub branch contents have been committed and source files have been review
 - Playwright browser tests.
 - Next.js production build.
 - Rendered desktop/tablet/mobile inspection.
-- Accessibility automation or assistive-technology testing.
+- Accessibility automation and responsive browser checks are now authored but have not been executed; assistive-technology testing remains outstanding.
 
 These are outstanding acceptance requirements, not implied successes.
 
