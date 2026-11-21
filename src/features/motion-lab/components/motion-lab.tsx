@@ -33,7 +33,7 @@ export function MotionLab() {
   return (
     <section className={styles.workspace} aria-label="Interactive motion instrument">
       <div className={styles.stageColumn}>
-        <div className={styles.stageMeta}><span>LIVE STAGE / 001</span><span className={styles.live} role="status" aria-live="polite"><i /> {paused ? "PAUSED" : "PLAYING"}</span></div>
+        <div className={styles.stageMeta}><span>LIVE STAGE / 001</span><span className={styles.live} role="status" aria-live="polite"><i /> {paused ? "PAUSED" : "LIVE PREVIEW"}</span></div>
         <div
           className={`${styles.stage} ${paused ? styles.paused : ""}`}
           data-motion={mode}
