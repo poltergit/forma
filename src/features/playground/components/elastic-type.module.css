@@ -21,6 +21,6 @@
 .controls button { min-height: 2.4rem; border: 1px solid var(--color-border); padding: .6rem .7rem; background: transparent; color: var(--color-text-secondary); font: 8px var(--font-mono); letter-spacing: .08em; cursor: pointer; }
 .controls button:hover, .controls button[aria-pressed="true"] { border-color: var(--brand-coral); color: var(--brand-coral); }
 @media (max-width: 900px) { .controls { grid-template-columns: 1fr 1fr; } }
-@media (max-width: 650px) { .heading { align-items: start; flex-direction: column; } .controls { grid-template-columns: 1fr 1fr; } .controls button { min-height: 2.8rem; } .specimen { font-size: clamp(3.5rem, 17vw, 7rem); } }
+@media (max-width: 650px) { .heading { align-items: start; flex-direction: column; } .controls { grid-template-columns: 1fr 1fr; } .controls button { min-height: 2.8rem; } .specimen { font-size: clamp(3.5rem, 17vw, 7rem); transform: scaleX(min(var(--tension), 1.35)); } .stage[data-inverted="true"] .specimen { transform: scaleX(min(calc(1.8 - var(--tension)), 1.35)); } }
 @media (max-width: 380px) { .controls { grid-template-columns: 1fr; } .coordinate, .baseline { font-size: 7px; } }
 @media (prefers-reduced-motion: reduce) { .specimen { transition: none; } }
