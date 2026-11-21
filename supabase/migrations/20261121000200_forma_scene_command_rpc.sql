@@ -10,7 +10,11 @@ language sql
 immutable
 set search_path = ''
 as $
-  select count(*)::integer from jsonb_object_keys(p_value);
+  select case
+    when jsonb_typeof(p_value) = 'object'
+      then (select count(*)::integer from jsonb_object_keys(p_value))
+    else 0
+  end;
 $;
 revoke all on function public.jsonb_key_count(jsonb) from public, anon, authenticated;
 
@@ -23,7 +27,10 @@ declare
   v_item jsonb;
   v_number numeric;
 begin
-  if jsonb_typeof(p_value) <> 'array' or jsonb_array_length(p_value) <> 3 then
+  if jsonb_typeof(p_value) is distinct from 'array' then
+    return false;
+  end if;
+  if jsonb_array_length(p_value) <> 3 then
     return false;
   end if;
   for v_item in select value from jsonb_array_elements(p_value)
