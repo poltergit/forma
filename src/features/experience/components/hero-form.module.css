@@ -9,6 +9,7 @@
 
 .artwork {
   position: relative;
+  touch-action: pan-y;
   display: grid;
   min-height: clamp(22rem, 43vw, 39rem);
   overflow: hidden;
