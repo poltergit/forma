@@ -28,7 +28,7 @@
 
 ## Verification status
 
-The GitHub branch contents have been committed and source files have been reviewed through the repository API. This environment cannot clone the repository or reach the npm registry, so the following have **not** been run:
+The GitHub branch contents have been committed and source files have been reviewed through the repository API. Additional static source checks confirmed valid JSON syntax in `package.json`, no unresolved relative imports across 16 inspected TypeScript/configuration files, and no unresolved CSS custom-property references across the five inspected stylesheet sources. These checks do not replace compiler, bundler, or browser execution. This environment cannot clone the repository or reach the npm registry, so the following have **not** been run:
 
 - Dependency installation or lockfile generation.
 - ESLint.
