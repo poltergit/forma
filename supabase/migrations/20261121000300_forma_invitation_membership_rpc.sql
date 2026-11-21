@@ -235,6 +235,52 @@ begin
 end;
 $fn$;
 
+create or replace function public.list_scene_invitations(p_scene_id uuid)
+returns jsonb
+language plpgsql
+security definer
+set search_path = ''
+as $fn$
+declare
+  v_actor uuid := auth.uid();
+  v_scene public.scenes%rowtype;
+begin
+  if v_actor is null then
+    raise exception using errcode = '28000', message = 'FORMA_UNAUTHENTICATED';
+  end if;
+  if p_scene_id is null then
+    raise exception using errcode = '22023', message = 'FORMA_INVALID_INVITATION';
+  end if;
+
+  select s.* into v_scene from public.scenes s
+  where s.id = p_scene_id for update;
+  if not found then
+    raise exception using errcode = 'P0002', message = 'FORMA_NOT_FOUND';
+  end if;
+  if v_scene.owner_id <> v_actor then
+    raise exception using errcode = '42501', message = 'FORMA_FORBIDDEN';
+  end if;
+
+  return coalesce((
+    select jsonb_agg(jsonb_build_object(
+      'invitation_id', i.id,
+      'recipient_email', i.recipient_email_normalized,
+      'role', i.role,
+      'invited_by', i.invited_by,
+      'created_at', i.created_at,
+      'expires_at', i.expires_at,
+      'accepted_at', i.accepted_at,
+      'accepted_by', i.accepted_by,
+      'revoked_at', i.revoked_at,
+      'revoked_by', i.revoked_by,
+      'expired_at', i.expired_at
+    ) order by i.created_at desc)
+    from public.scene_invitations i
+    where i.scene_id = p_scene_id
+  ), '[]'::jsonb);
+end;
+$fn$;
+
 create or replace function public.remove_scene_member(p_scene_id uuid, p_user_id uuid)
 returns jsonb language plpgsql security definer set search_path = ''
 as $fn$
@@ -277,10 +323,12 @@ revoke all on function public.create_scene_invitation(uuid, text, text, text, ti
 revoke all on function public.accept_scene_invitation(text) from public, anon;
 revoke all on function public.revoke_scene_invitation(uuid, uuid) from public, anon;
 revoke all on function public.remove_scene_member(uuid, uuid) from public, anon;
+revoke all on function public.list_scene_invitations(uuid) from public, anon;
 
 grant execute on function public.create_scene_invitation(uuid, text, text, text, timestamptz) to authenticated;
 grant execute on function public.accept_scene_invitation(text) to authenticated;
 grant execute on function public.revoke_scene_invitation(uuid, uuid) to authenticated;
 grant execute on function public.remove_scene_member(uuid, uuid) to authenticated;
+grant execute on function public.list_scene_invitations(uuid) to authenticated;
 
 commit;
