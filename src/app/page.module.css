@@ -85,7 +85,7 @@
   .heroMeta span:last-child { text-align: right; }
   .heroGrid { grid-template-columns: minmax(0, 1fr); gap: 1.5rem; padding-block: 3rem 2rem; }
   .heroCopy { padding-block: 0; }
-  .heading { max-width: 8ch; font-size: clamp(4.2rem, 17vw, 7rem); }
+  .heading { max-width: 8ch; font-size: clamp(3.4rem, 15vw, 6rem); }
   .heroDescription { max-width: 24rem; margin-top: 1.5rem; }
   .heroVisual { transform: none; }
   .verticalNote { display: none; }
