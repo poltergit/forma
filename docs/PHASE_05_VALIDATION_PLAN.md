@@ -1,6 +1,6 @@
 # FORMA — Phase 05 Technical Validation Plan
 
-**Version:** 0.1  
+**Version:** 0.2  
 **Phase:** 05 — Technical Architecture  
 **Status:** Proposed execution plan; no tests in this document are claimed as run  
 **Purpose:** Define evidence required before Phase 05 approval and before production implementation.
@@ -78,6 +78,26 @@ Run tests through actual authenticated user contexts and direct data APIs, not o
 | INV-10 | Compare existing/non-existing recipient response | No account enumeration |
 | INV-11 | Simulate email provider failure | UI reports failure; no false success |
 | INV-12 | Race two acceptance requests | Exactly one membership and one successful consumption |
+| INV-13 | Attempt owner self-invite or invite existing member | Rejected |
+| INV-14 | Invite the same recipient concurrently | At most one active pending invitation |
+| INV-15 | Reuse accepted token from the same account | Idempotent accepted result; no duplicate membership |
+| INV-16 | Reuse accepted token from another account | Rejected |
+| INV-17 | Attempt acceptance with unverified or mismatched email | Rejected using authoritative auth.users identity |
+| INV-18 | Remove member while editor submits a command | Scene-row lock serializes operations; no post-removal command is authorized |
+| INV-19 | Request invitation after prior invite expires | Expired row retired; new invitation may be created |
+| INV-20 | Inspect DB, SQL args, logs, analytics, and browser network | Only SHA-256 digest reaches DB; raw token is not logged or sent in query string |
+| INV-21 | Burst invite creation/acceptance | Server-side rate limiter throttles requests without account enumeration |
+
+### Invitation implementation-specific checks
+
+- Generate invitation secrets with Node crypto.randomBytes(32); verify 32-byte length and base64url round-trip.
+- Hash the exact token string with SHA-256 in a server-only module. PostgreSQL receives only the lowercase 64-character digest.
+- Prefer a URL fragment for token transport so the initial HTTP request, server access logs, and Referer header do not contain it. Capture and scrub the fragment immediately; do not load third-party scripts or analytics on the redemption route; set a strict Referrer-Policy.
+- Enforce rate limits at the trusted server boundary; do not rely on client throttling.
+- Verify email-provider failure cleanup and ensure a failed delivery is never shown as sent.
+- Verify only owner can invoke create/revoke/remove RPCs and that direct table writes remain denied.
+
+The contract is maintained in [Invitation & Membership Engine](INVITATION_MEMBERSHIP_ENGINE.md); its SQL migration is a review draft only.
 
 ## 5. Scene command and concurrency tests
 
