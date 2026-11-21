@@ -25,6 +25,7 @@ Additional implementation:
 - The hero uses authored CSS 3D geometry first, not a WebGL canvas. This keeps the initial route light while validating the art direction and interaction model. Three.js/R3F remains available for experiences where real 3D geometry, camera control, or scene authoring materially improves the result.
 - No external 3D asset, arbitrary runtime shader, or backend service is required.
 - Motion is state-driven and bounded; native document scrolling remains intact.
+- A reduced-motion Playwright case now checks that primary content remains visible and the hero control remains usable when the preference is enabled.
 - The interaction is keyboard-operable through a semantic button and exposes its current arrangement through a polite live region.
 - Reduced-motion users receive near-instant state changes rather than a motion-dependent experience.
 
