@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useRef, useState, type PointerEvent } from "react";
+import { useCallback, useEffect, useRef, useState, type PointerEvent, type KeyboardEvent } from "react";
 import styles from "./playground-experience.module.css";
 
 type Point = { x: number; y: number; depth: number; size: number; tone: number };
@@ -183,6 +183,19 @@ export function PlaygroundExperience() {
     setStatus("FIELD DISPLACED");
   };
 
+  const handleStageKeyDown = (event: KeyboardEvent<HTMLDivElement>) => {
+    if (!["ArrowUp", "ArrowDown", "ArrowLeft", "ArrowRight"].includes(event.key)) return;
+    event.preventDefault();
+    const step = 0.05;
+    pointerRef.current = {
+      x: Math.min(1, Math.max(0, pointerRef.current.x + (event.key === "ArrowRight" ? step : event.key === "ArrowLeft" ? -step : 0))),
+      y: Math.min(1, Math.max(0, pointerRef.current.y + (event.key === "ArrowDown" ? step : event.key === "ArrowUp" ? -step : 0))),
+      active: true,
+    };
+    drawRef.current?.();
+    setStatus("FIELD DISPLACED");
+  };
+
   const resetPointer = () => {
     pointerRef.current = { x: 0.5, y: 0.5, active: false };
     drawRef.current?.();
@@ -201,8 +214,10 @@ export function PlaygroundExperience() {
         onPointerMove={updatePointer}
         onPointerLeave={resetPointer}
         onPointerDown={updatePointer}
+        onKeyDown={handleStageKeyDown}
+        tabIndex={0}
         role="group"
-        aria-label="Interactive displacement field. Move or drag a pointer across the stage to influence the geometry. Use the controls below to change density and force."
+        aria-label="Interactive displacement field. Move or drag a pointer, or focus the stage and use arrow keys, to influence the geometry. Use the controls below to change density and force."
       >
         <canvas ref={canvasRef} aria-hidden="true" />
         <div className={styles.stageOverlay}>
