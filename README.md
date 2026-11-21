@@ -36,7 +36,7 @@ FORMA's ambition is to feel like a spatial, generative playground—not a conven
 - [Authentication & Environment Specification](docs/AUTH_AND_ENVIRONMENT.md) — proposed session flows, route access, environment separation, and deployment security.
 
 ## Project status
-Phases 01–04 are approved. Phase 05 technical architecture is in progress; owner decisions are recorded and the database migration draft awaits isolated validation. See [PROJECT_STATUS.md](PROJECT_STATUS.md) and the [decision log](DECISIONS.md).
+Phases 01–05 are approved. Phase 06 — Frontend Foundation is in progress. Phase 05 owner approval is recorded; provider-specific database, invitation, and Realtime verification remain implementation/release validation tasks. See [PROJECT_STATUS.md](PROJECT_STATUS.md), the [Phase 05 review](docs/PHASE_05_REVIEW.md), and the [Phase 06 foundation plan](docs/PHASE_06_FOUNDATION_PLAN.md).
 
 ## Design previews
 - [Home](design/prototypes/home-preview.html)
