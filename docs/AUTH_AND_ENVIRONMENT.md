@@ -2,14 +2,14 @@
 
 **Version:** 0.1  
 **Phase:** 05 — Technical Architecture  
-**Status:** Proposed implementation specification  
+**Status:** Proposed implementation specification; collaboration invitation flow added for review  
 **Approved foundation:** Next.js App Router, TypeScript, Supabase, Vercel
 
 ## 1. Authentication scope
 
 The MVP requires account registration, sign-in, sign-out, email confirmation where enabled, password recovery/update, basic account settings, and authenticated Scene Studio access. Public pages, Playground, Motion Lab, Archive, and About remain accessible without authentication.
 
-Social login, team accounts, invitations, and organization identity are deferred unless separately approved.
+Social login and organization identity are deferred. Invite-only Scene Studio collaboration is approved for the MVP (D-017); its invitation lifecycle is specified below.
 
 ## 2. Session architecture
 
@@ -18,7 +18,7 @@ Use the maintained Supabase server-side rendering integration compatible with th
 Create narrowly scoped clients:
 - Browser client for browser-required auth interactions and permitted client-side data access.
 - Server client per request using the request cookie context for server components, route handlers, and server actions.
-- Avoid an admin client for normal product flows. If a future administrative task requires a service-role key, isolate it in server-only code.
+- Avoid an admin client for normal product flows. If the approved invitation flow requires a privileged provider invitation API, isolate that single operation behind a server-only module or Edge Function, validate the caller's owner role first, and never expose the service-role key to the browser. Prefer a token-based flow that does not require broad admin access where practical.
 
 Requirements:
 - Use the provider's supported secure cookie/session refresh pattern for the selected Next.js release.
@@ -73,7 +73,22 @@ Authentication redirects must use an allowlisted local destination. Reject exter
 3. Navigate to a public destination.
 4. Ensure back navigation cannot reveal stale private data.
 
-## 5. Environment variables
+## 5. Scene Studio invitation acceptance
+
+The approved MVP includes owner-issued, invite-only scene access. Invitation creation and acceptance must run through trusted server-side operations:
+
+1. The owner submits a recipient email and the editor/viewer role.
+2. The server validates the session, scene ownership, role, email format, rate limit, and pending-invitation limits.
+3. The server creates a short-lived, single-use random token and stores only its cryptographic hash with the intended normalized email and scene/role metadata.
+4. The recipient follows the invitation link, signs in or registers, and proves control of the intended email through the configured Supabase Auth confirmation/session flow.
+5. The server validates token hash, expiry, unused/revoked state, scene status, and identity match, then atomically creates the membership and marks the invitation accepted.
+6. The server redirects to the scene only after membership is confirmed.
+
+Do not expose whether an email already has a FORMA account. Do not grant membership merely because a link was opened. Do not display a successful invitation state until the server confirms it. Revocation must invalidate pending invitations and remove existing membership as requested by the owner.
+
+The precise email delivery mechanism, confirmation requirements, token hashing method, and atomic acceptance transaction must be verified in an isolated project before release.
+
+## 6. Environment variables
 
 Commit placeholders only.
 
@@ -93,8 +108,9 @@ Secret handling:
 - Production credentials must not be copied into preview.
 - Never print secrets in logs, tests, screenshots, issues, or commits.
 - Normal user-owned scene CRUD should not require a service-role key when RLS is correct.
+- If a provider admin API is required for invitation delivery, its service-role key is server-only and scoped to the invitation operation; it must never be available to client components or browser requests.
 
-## 6. Environment separation
+## 7. Environment separation
 
 | Environment | Web | Backend | Data |
 |---|---|---|---|
@@ -104,7 +120,7 @@ Secret handling:
 
 Do not point untrusted preview builds at production data. Keep schema migrations version-controlled and apply them to development, preview, and production in a controlled sequence.
 
-## 7. Supabase configuration checklist
+## 8. Supabase configuration checklist
 
 Before enabling auth:
 - Configure canonical local, preview, and production site URLs.
@@ -118,7 +134,7 @@ Before enabling auth:
 
 Actual email deliverability depends on project configuration and provider limits.
 
-## 8. Vercel deployment checklist
+## 9. Vercel deployment checklist
 
 Before production:
 - Connect the intended GitHub repository and production branch.
@@ -131,7 +147,7 @@ Before production:
 - Test sign-in, sign-out, confirmation, recovery, and private route behavior in preview.
 - Verify current plan limits before relying on free-tier service.
 
-## 9. Security and privacy checks
+## 10. Security and privacy checks
 
 - No secrets in Git history or public browser bundles.
 - No service-role key in client components.
@@ -144,12 +160,14 @@ Before production:
 - No private scene content in analytics or routine logs.
 - Test expired sessions and revoked access.
 
-## 10. Acceptance criteria
+## 11. Acceptance criteria
 
 - Local, preview, and production environments are separated.
 - Auth redirects are allowlisted and tested.
 - Registration, sign-in, sign-out, confirmation, and recovery have clear success/error states.
 - Server-side session validation protects private routes.
-- RLS protects private scene records independently of route guards.
+- RLS protects private scene records, memberships, and invitation metadata independently of route guards.
+- Invitation acceptance binds a single-use expiring token to the intended verified identity.
+- Owner/editor/viewer permissions are enforced on server mutations and private Realtime access.
 - Preview deployments cannot access production data.
 - No secret is committed or exposed to client code.
