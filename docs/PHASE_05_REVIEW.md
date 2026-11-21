@@ -140,7 +140,11 @@ The following are proposed defaults for review:
 | Collaboration / multiplayer | Excluded from first release | Confirm |
 | User-authored executable code | Excluded from first release | Confirm |
 
-## 7. Phase 05 completion checklist
+## 7. Generative artifact persistence proposal
+
+A separate [Generative Artifact Data Model](GENERATIVE_ARTIFACT_MODEL.md) now specifies private, reproducible generator recipes with a stable generator ID/version, deterministic seed, validated parameters, schema version, and owner-only RLS. It explicitly excludes executable user code and arbitrary dynamic module loading. The SQL remains a proposal and has not been applied or tested.
+
+## 8. Phase 05 completion checklist
 
 - [x] Core stack recorded and approved (D-014).
 - [x] Experiential ambition recorded (D-015).
@@ -154,7 +158,7 @@ The following are proposed defaults for review:
 - [ ] MVP inclusions and exclusions approved.
 - [ ] Final Phase 05 approval from product owner.
 
-## 8. Approval gate
+## 9. Approval gate
 
 **Phase 05 is not yet approved. Phase 06 must not begin until the product owner explicitly approves this review package and the remaining architecture decisions.**
 
