@@ -27,6 +27,7 @@ export function MotionLab() {
   const [progress, setProgress] = useState(0);
   const [copied, setCopied] = useState(false);
   const [copyMessage, setCopyMessage] = useState("");
+  const [reducedMotion, setReducedMotion] = useState(false);
 
   const reset = () => {
     setMode("orbit");
@@ -61,7 +62,7 @@ export function MotionLab() {
   return (
     <section className={styles.workspace} aria-label="Interactive motion instrument">
       <div className={styles.stageColumn}>
-        <div className={styles.stageMeta}><span>LIVE STAGE / 001</span><span className={styles.live} role="status" aria-live="polite"><i /> {paused ? "PAUSED" : "LIVE PREVIEW"}</span></div>
+        <div className={styles.stageMeta}><span>LIVE STAGE / 001</span><span className={styles.live} role="status" aria-live="polite"><i /> {reducedMotion ? "STATIC / REDUCED MOTION" : paused ? "PAUSED" : "LIVE PREVIEW"}</span></div>
         <div
           className={`${styles.stage} ${paused ? styles.paused : ""}`}
           data-motion={mode}
@@ -77,7 +78,8 @@ export function MotionLab() {
           <span className={styles.stageCoordinates}>X / 0.00 &nbsp; Y / 1.00 &nbsp; Z / 0.50</span>
           <span className={styles.stageInstruction}>CHANGE THE PARAMETERS → CHANGE THE FEELING</span>
         </div>
-        <div className={styles.timeline}>
+        <p className={styles.reducedMotionNote} hidden={!reducedMotion}>Motion is reduced by your system preference. The stage stays still; timing controls continue to shape the reproducible recipe.</p>
+        <div className={styles.timeline} hidden={reducedMotion}>
           <div className={styles.timelineMeta}><span>SCRUB / FREEZE AT A MOMENT</span><output>{progress}%</output></div>
           <input aria-label="Motion timeline position" type="range" min="0" max="100" step="1" value={progress} onChange={(event) => { setProgress(Number(event.target.value)); setPaused(true); }} />
           <div className={styles.timelineScale}><span>0:00</span><span>{(duration * 2).toFixed(1)}s / FULL CYCLE</span></div>
