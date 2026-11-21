@@ -1,6 +1,6 @@
 # FORMA — Experiential Direction
 
-**Version:** 0.1  
+**Version:** 0.2  
 **Status:** Product-owner direction captured; execution details remain subject to design and implementation review  
 **Scope:** Cross-product experience ambition and technical constraints
 
@@ -224,3 +224,25 @@ For each major experience, review:
 This document captures the product owner's explicit experiential ambition. It strengthens the approved FORM IN MOTION direction without authorizing unlimited technical scope or replacing the Phase 03 UX, Phase 04 design system, or Phase 05 architecture.
 
 Specific scenes, effects, generator types, and interaction implementations must be prototyped and reviewed. The production application has not started. No browser performance, WebGL compatibility, or device validation is claimed by this document.
+
+## 13. Cross-product experience contract — reaffirmed 2026-11-21
+
+The product owner explicitly reaffirmed that this ambition applies **from the first page through every feature**, not only to the landing page or showcase experiments.
+
+FORMA should create a memorable, brain-stopping first impression and continue rewarding exploration at every depth. The experience should be interactive, fancy, creative, intentionally messy, generative, and performative. Each surface must feel authored rather than assembled from a generic component template.
+
+### The creative bar
+
+- **Surprise through composition:** asymmetry, collision, scale shifts, overlap, cropping, unexpected rhythm, and expressive type.
+- **Surprise through space:** dimensional forms, spatial navigation cues, purposeful 3D, camera movement, morphing, and transitions with continuity.
+- **Surprise through participation:** direct manipulation, pointer/touch response, keyboard interaction, scroll-linked changes, and controls that produce visible, meaningful outcomes.
+- **Surprise through systems:** procedural composition, adjustable parameters, constrained randomness, seeds, and reproducible results where saving or sharing is offered.
+- **Surprise through contrast:** alternate theatrical discovery moments with calm, focused workspaces so that intensity remains impactful.
+
+### The usability contract
+
+The interface may be visually chaotic, but the experience must never be confusing. Users must always be able to understand where they are, what can be interacted with, what changed, and how to recover or continue. Essential content cannot depend on animation, hover, pointer precision, audio, or WebGL.
+
+Every feature brief must define its visual thesis, interaction consequences, responsive composition, keyboard/touch path, reduced-motion equivalent, fallback behavior, and performance budget before implementation is considered complete.
+
+This direction raises the creative quality bar; it does not authorize unlimited scope, gratuitous 3D, inaccessible spectacle, arbitrary executable user code, or unverified functionality.
