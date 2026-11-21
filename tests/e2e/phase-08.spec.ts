@@ -5,7 +5,11 @@ test("Playground exposes a real interactive generative field", async ({ page }) 
 
   await expect(page.getByRole("heading", { name: /enter the unknown/i })).toBeVisible();
   await expect(page.locator("canvas")).toBeVisible();
-  await expect(page.getByText("SEED / 027")).toBeVisible();\n  const stage = page.getByRole("group", { name: /interactive displacement field/i });\n  await stage.focus();\n  await stage.press("ArrowRight");\n  await expect(page.getByText("FIELD DISPLACED")).toBeVisible();
+  await expect(page.getByText("SEED / 027")).toBeVisible();
+  const stage = page.getByRole("group", { name: /interactive displacement field/i });
+  await stage.focus();
+  await stage.press("ArrowRight");
+  await expect(page.getByText("FIELD DISPLACED")).toBeVisible();
 
   await page.getByRole("button", { name: /recompose/i }).click();
   await expect(page.getByText("SEED / 028")).toBeVisible();
