@@ -29,7 +29,7 @@ See docs/UX_SPECIFICATION.md for sitemap, navigation, page structures, journeys,
 ## Phase 04 — Approved
 See docs/PHASE_04_REVIEW.md for the approved visual direction and review. Seven standalone prototypes are design artifacts, not production features. Source-level checks were completed; no browser rendering, assistive-technology, or direct reference-site validation is claimed.
 
-## Phase 05 — In progress\n- Added Scene Command Engine contract and atomic RPC migration draft (`docs/SCENE_COMMAND_ENGINE.md`, `supabase/migrations/20261121000200_forma_scene_command_rpc.sql`). Not executed.
+## Phase 05 — In progress\n- Added Scene Command Engine contract and atomic RPC migration draft (`docs/SCENE_COMMAND_ENGINE.md`, `supabase/migrations/20261121000200_forma_scene_command_rpc.sql`). Not executed.\n- Added Invitation & Membership Engine contract and RPC migration draft (`docs/INVITATION_MEMBERSHIP_ENGINE.md`, `supabase/migrations/20261121000300_forma_invitation_membership_rpc.sql`): hash-only tokens, verified-email acceptance, single-use invitations, owner revocation, and member removal. Not executed.
 - Added a review-only Supabase schema/RLS migration draft at `supabase/migrations/20261121000100_forma_core_schema.sql` and its review checklist at `docs/DATABASE_MIGRATION_REVIEW.md`. Neither has been applied or executed.
 - Core/supporting stack, ambitious generative scope, and collaboration MVP approved.
 - Collaboration-aware Scene Studio data model and role model documented.
@@ -37,7 +37,7 @@ See docs/PHASE_04_REVIEW.md for the approved visual direction and review. Seven 
 - Security threat model: docs/SECURITY_THREAT_MODEL.md.
 - Technical validation plan: docs/PHASE_05_VALIDATION_PLAN.md.
 - Generative artifact model and auth/environment proposal documented.
-- Remaining: isolated Supabase provider/environment verification; migration/RLS/privilege validation; atomic command RPC and concurrency tests; real invitation delivery and lifecycle tests; Realtime authorization/revocation/recovery tests; quota, backup/restore, deployment, performance, and accessibility evidence; final owner approval.
+- Remaining: isolated Supabase provider/environment verification; migration/RLS/privilege validation; atomic command RPC and concurrency tests; invitation token, verified-identity, lifecycle, email-delivery, and member-removal tests; Realtime authorization/revocation/recovery tests; quota, backup/restore, deployment, performance, and accessibility evidence; final owner approval.
 - Do not begin Phase 06 or production application implementation until explicit Phase 05 approval.
 
 ## Project constraints
