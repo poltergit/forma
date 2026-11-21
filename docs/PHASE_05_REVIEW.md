@@ -78,7 +78,7 @@ Separate local/preview/production resources; verify current provider quotas, ema
 - [x] Authentication and invitation proposal documented.
 - [x] Collaboration architecture documented.
 - [x] Security threat model drafted.
-- [x] Core schema/RLS migration draft prepared for isolated review (not executed).\n- [x] Typed Scene Command Engine contract and atomic RPC migration draft prepared (not executed).\n- [x] Invitation/membership lifecycle contract and create/accept/revoke/remove RPC migration draft prepared (not executed).
+- [x] Core schema/RLS migration draft prepared for isolated review (not executed).\n- [x] Typed Scene Command Engine contract and atomic RPC migration draft prepared (not executed).\n- [x] Invitation/membership lifecycle contract and create/list/accept/revoke/remove RPC migration draft prepared (not executed).
 - [x] Technical validation plan drafted.
 - [ ] Confirm isolated Supabase environment and current provider capabilities/quotas.
 - [ ] Implement and apply migrations in isolated development only; verify fresh-database apply.
