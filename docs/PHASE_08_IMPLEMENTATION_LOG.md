@@ -17,12 +17,22 @@ The first Phase 08 slice turns the Playground and Motion Lab from roadmap pillar
 - Canvas rendering is isolated in a client component, redraws on input/resize, caps device pixel ratio, and avoids a continuous animation loop. A static CSS composition remains beneath the canvas as a renderer fallback.
 - The canvas is decorative to assistive technology; the surrounding instructions, controls, and status remain semantic HTML.
 
+### Playground — editorial index and second study
+
+- Added a filterable, asymmetric experiment index with ALL / FORM / TYPE controls and reset.
+- Added direct anchors from the index to each active study.
+- Added **Elastic Matter**, a separate typographic experiment with tension, release, inversion, and reset controls. Its visual grammar is deliberately distinct from the canvas geometry study.
+
 ### Motion Lab
 
 - Added `/motion-lab` with a separate live-stage and instrument-panel composition.
 - Implemented four authored motion behaviors: Orbit, Pulse, Shift, and Stagger.
 - Duration, intensity, and easing controls update the live stage.
 - Play/pause and reset controls are functional.
+- Added a scrub/freeze range that seeks the CSS animation through a negative animation delay.
+- Added a response-curve visualization that updates with the selected easing.
+- Added three authored starting presets: Drift, Impact, and Glitch.
+- Added a versioned, Zod-validated JSON motion recipe with a copy action; no cloud save or import is implied.
 - Reduced-motion CSS preserves a stable, visible form and leaves the controls available. Pause state is exposed through an accessible pressed state and live announcement.
 
 ### Shared application shell
@@ -34,7 +44,8 @@ The first Phase 08 slice turns the Playground and Motion Lab from roadmap pillar
 ### Tests added
 
 - Unit coverage verifies deterministic seed reproduction and point-count bounds for the Playground generator.
-- Playwright coverage exercises the Playground recomposition and density control, Motion Lab behavior selection and pause/reset, and reduced-motion interaction.
+- Motion recipe unit tests verify JSON round-trip stability, parameter bounds, and strict rejection of unknown fields.
+- Playwright coverage exercises Playground keyboard/recomposition/density, category filtering and direct anchors, Elastic Matter controls, Motion Lab mode selection, pause/reset, timeline scrubbing, preset selection, recipe visibility, reduced motion, route navigation, and narrow-mobile overflow.
 
 ## Technical choices
 
@@ -49,9 +60,8 @@ The files and tests have been committed to the Phase 08 branch. **No Phase 08 li
 
 ## Next implementation work
 
-1. Inspect the two routes at desktop, tablet, and narrow mobile widths; correct any overflow or layout collisions.
-2. Validate pointer/touch behavior and canvas fallback in real browsers.
-3. Expand Playground into an editorial experiment index with a functional category/filter model and direct experiment entry.
-4. Develop additional experiments with distinct visual grammars rather than duplicating the displacement field.
-5. Add Motion Lab timeline/curve interaction and a serializable, reproducible motion recipe.
-6. Expand accessibility, responsiveness, and performance tests before Phase 08 review.
+1. Inspect both routes at desktop, tablet, and narrow mobile widths; correct any overflow or layout collisions.
+2. Validate pointer/touch behavior, animation scrubbing, clipboard access, and canvas fallback in real browsers.
+3. Develop additional experiments with distinct visual grammars rather than duplicating the current studies.
+4. Expand keyboard and screen-reader review, responsive checks across all required widths, and performance measurements.
+5. Run supported-runtime lint, typecheck, unit, Playwright, and production-build checks before Phase 08 review.
