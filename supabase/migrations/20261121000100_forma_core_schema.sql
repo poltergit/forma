@@ -52,7 +52,9 @@ create table public.scene_command_receipts (
   scene_id uuid not null references public.scenes(id) on delete cascade,
   command_id uuid not null,
   actor_id uuid not null references auth.users(id) on delete cascade,
-  request_fingerprint text not null check (request_fingerprint ~ '^[0-9a-f]{32}
+  request_fingerprint text not null check (request_fingerprint ~ '^[0-9a-f]{32}$'),
+  command_type text not null check (command_type in (
+    'object.create', 'object.delete', 'object.rename',
     'object.transform.set', 'object.visibility.set',
     'object.material.set', 'scene.settings.set'
   )),
