@@ -1,6 +1,6 @@
 # FORMA — Scene Studio Data Model & Security
 
-**Version:** 0.2  
+**Version:** 0.3  
 **Status:** Proposed; collaboration-aware model requires isolated validation  
 **Backend:** Supabase PostgreSQL + Auth + RLS  
 **Scope:** Private scenes with owner/editor/viewer membership
@@ -60,9 +60,18 @@ Primary key: scene_id + user_id. Owner is represented by scenes.owner_id, not a 
 
 Raw tokens must never be stored. Invitation rows are only accessed through trusted server operations. Avoid disclosing whether a recipient email maps to an existing account.
 
-### Optional command receipt / audit record
+### `public.scene_command_receipts` (required for collaboration MVP)
 
-A command receipt table may record command ID, scene ID, actor ID, resulting revision, command type, and timestamp for idempotency and reconnect recovery. Store only the minimum validated metadata needed; do not retain arbitrary full scene snapshots or sensitive payloads without a separate retention decision.
+| Field | Type | Rule |
+|---|---|---|
+| scene_id | uuid | Scene reference; cascade delete |
+| command_id | uuid | Client-generated idempotency key |
+| actor_id | uuid | Derived from authenticated database identity |
+| command_type | text | Allowlisted command name |
+| resulting_revision | bigint | Revision committed by this command |
+| created_at | timestamptz | Server generated |
+
+Use `(scene_id, command_id)` as a unique key. Retain only the metadata needed to make retries idempotent and reconcile pending commands after reconnect. Define a retention policy before launch; do not retain full command payloads or snapshots without a separate decision.
 
 ## 3. Scene document V1
 
@@ -109,9 +118,11 @@ Every action requires server-side role validation and matching database policy. 
 
 ## 5. RLS policy intent
 
-- Owner can read/update/delete own scenes.
-- A member can read a scene when a matching scene_members row exists.
-- Owner/editor can update scene documents.
+- Owner and members can read scenes according to the role matrix.
+- Owner/editor may mutate scene content only through the narrowly scoped command RPC.
+- Ordinary browser roles must not have direct table privileges to update `scenes.document` or `scenes.revision`; this prevents bypassing validation, revision ordering, and command receipts.
+- Owner may delete a scene through a separately authorized operation.
+- Membership and invitation mutations use owner-only trusted operations.
 - Only owner can delete scenes or manage membership/invitations.
 - Viewers have read-only access.
 - Anonymous and non-members have no access.
@@ -133,17 +144,14 @@ Each edit is a typed command with:
 - target object ID if relevant;
 - validated payload.
 
-Trusted server operation:
-1. Validate session and derive actor ID.
-2. Verify owner/editor membership.
-3. Validate command envelope and payload using Zod.
-4. Execute an atomic database transaction.
-5. Verify command ID has not already committed.
-6. Lock/read the latest scene and revision.
-7. Apply the command to the latest validated document.
-8. Increment revision and update the scene.
-9. Record command receipt/resulting revision.
-10. Return authoritative revision and minimal change metadata.
+Trusted request and database operation:
+1. Next.js validates session and command envelope with Zod.
+2. The browser/server request invokes a narrowly scoped PostgreSQL RPC using the authenticated user's Supabase session; the database derives actor identity from `auth.uid()`.
+3. The RPC verifies owner/editor membership and command authorization.
+4. Inside one transaction, it checks command ID idempotency, locks/reads the latest scene and revision, validates command semantics, applies the command, increments revision, updates the scene, and inserts the command receipt.
+5. The RPC returns the prior receipt for a duplicate command ID, or the newly committed revision and minimal change metadata.
+
+The database function—not a sequence of Next.js requests—is the atomicity boundary. Prefer security-invoker execution where feasible. If security-definer is necessary, pin `search_path`, schema-qualify all objects, restrict execute grants, and repeat identity/role checks inside the function. A Next.js authorization check alone is insufficient.
 
 Concurrent commands are serialized. Same-property edits use commit order; clients display collaborator attribution and clear conflict feedback. Unsafe stale commands are rejected and can be reapplied by the user. Undo is a compensating command, not deletion of another person's work.
 
@@ -157,7 +165,7 @@ Concurrent commands are serialized. Same-property edits use commit order; client
 - Revoked users are unsubscribed and private state cleared.
 - Do not broadcast full documents or high-frequency pointer events as durable mutations.
 
-See [Real-Time Collaboration](REALTIME_COLLABORATION.md).
+See [Real-Time Collaboration](REALTIME_COLLABORATION.md), [Security Threat Model](SECURITY_THREAT_MODEL.md), and [Phase 05 Technical Validation Plan](PHASE_05_VALIDATION_PLAN.md).
 
 ## 8. Validation and limits
 
@@ -198,7 +206,7 @@ No storage bucket is needed for the primitive-only editor. When assets or thumbn
 - Migrations apply cleanly to a fresh isolated database.
 - RLS proves owner/editor/viewer/revoked/anonymous boundaries.
 - Invitation flow is real and tested; no fake success states.
-- Commands are authorized, validated, idempotent, and revision ordered.
+- Commands are authorized, validated, idempotent, and revision ordered through the PostgreSQL RPC; direct table-write bypass is denied.
 - Multiple clients see committed changes without manual refresh.
 - Reconnect restores authoritative state without silent loss.
 - Failed saves preserve local work and explain recovery.
