@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState, type CSSProperties } from "react";
+import { useEffect, useMemo, useState, type CSSProperties } from "react";
 import styles from "./motion-lab.module.css";
 import { createMotionRecipe, type MotionEasing as Easing, type MotionMode } from "../motion-recipe";
 
@@ -41,6 +41,11 @@ export function MotionLab() {
 
   const selected = modes.find((item) => item.id === mode) ?? modes[0];
   const recipe = useMemo(() => createMotionRecipe(mode, duration, intensity, easing), [mode, duration, intensity, easing]);
+
+  useEffect(() => {
+    setCopied(false);
+    setCopyMessage("");
+  }, [recipe]);
 
   const copyRecipe = async () => {
     try {
