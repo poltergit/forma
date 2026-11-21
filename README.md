@@ -37,7 +37,7 @@ FORMA is intended to feel like a spatial, generative playground—not a conventi
 
 ## Project status
 
-Phases 01–06 are approved for progression. Phase 07 — Landing Page & Immersive Experience is in progress on `phase-07/immersive-experience`. The foundation includes a committed npm lockfile and owner-reported successful local checks; Node 22 clean-install validation, CI, and manual rendered/accessibility review remain follow-up tasks. See [Project Status](PROJECT_STATUS.md), [Phase 06 Review](docs/PHASE_06_REVIEW.md), and [Phase 07 Plan](docs/PHASE_07_IMMERSIVE_EXPERIENCE_PLAN.md).
+Phases 01–07 are approved for progression. Phase 08 — Playground & Motion Lab is in progress on `phase-08/playground-motion-lab`. The owner approved Phase 07 after reporting successful validation; exact command output was not supplied and checks were not independently rerun here. Node 22 clean-install validation, CI, and manual rendered/accessibility review remain follow-up tasks. See [Project Status](PROJECT_STATUS.md), [Experiential Direction](docs/EXPERIENCE_DIRECTION.md), [Phase 07 Review](docs/PHASE_07_REVIEW.md), and [Phase 08 Plan](docs/PHASE_08_PLAYGROUND_MOTION_LAB_PLAN.md).
 
 ## Run locally
 
