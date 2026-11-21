@@ -51,6 +51,8 @@ test("Phase 08 experiences remain usable with reduced motion", async ({ page }) 
   await page.goto("/motion-lab");
 
   await expect(page.getByRole("heading", { level: 1 })).toBeVisible();
+  await expect(page.getByText("STATIC / REDUCED MOTION")).toBeVisible();
+  await expect(page.getByRole("slider", { name: /motion timeline position/i })).toBeHidden();
   const shift = page.getByRole("button", { name: /shift/i });
   await shift.click();
   await expect(shift).toHaveAttribute("aria-pressed", "true");
