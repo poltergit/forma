@@ -23,6 +23,8 @@ FORMA's ambition is to feel like a spatial, generative playground—not a conven
 
 ## Technical architecture
 
+- [Security Threat Model](docs/SECURITY_THREAT_MODEL.md) — assets, trust boundaries, threats, mitigations, and release blockers.
+- [Phase 05 Technical Validation Plan](docs/PHASE_05_VALIDATION_PLAN.md) — database, invitation, concurrency, Realtime, generative, and deployment test plan.
 - [Real-Time Collaboration](docs/REALTIME_COLLABORATION.md) — proposed invite-only Scene Studio collaboration, roles, command ordering, presence, and recovery.
 - [Phase 05 Architecture Review](docs/PHASE_05_REVIEW.md) — supporting dependency recommendations, application boundaries, generative runtime scope, non-functional requirements, and approval checklist.
 
