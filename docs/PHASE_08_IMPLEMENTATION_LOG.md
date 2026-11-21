@@ -29,10 +29,10 @@ The first Phase 08 slice turns the Playground and Motion Lab from roadmap pillar
 - Implemented four authored motion behaviors: Orbit, Pulse, Shift, and Stagger.
 - Duration, intensity, and easing controls update the live stage.
 - Play/pause and reset controls are functional.
-- Added a scrub/freeze range that seeks the CSS animation through a negative animation delay.
+- Added a scrub/freeze range that seeks the CSS keyframe animation through the Web Animations API currentTime, with no custom frame loop.
 - Added a response-curve visualization that updates with the selected easing.
 - Added three authored starting presets: Drift, Impact, and Glitch.
-- Added a versioned, Zod-validated JSON motion recipe with a copy action; no cloud save or import is implied.
+- Added a versioned, Zod-validated JSON motion recipe with a copy action and success/fallback feedback; no cloud save or import is implied.
 - Reduced-motion CSS preserves a stable, visible form and leaves the controls available. The stage explicitly reports a static reduced-motion state and hides the non-applicable scrub control. Pause state is exposed through an accessible pressed state and live announcement.
 
 ### Shared application shell
@@ -40,7 +40,7 @@ The first Phase 08 slice turns the Playground and Motion Lab from roadmap pillar
 - Added Playground and Motion Lab to the primary navigation.
 - Prioritized the two active feature links in the compact mobile navigation.
 - Updated the Home territory links so Playground and Motion Lab open their real routes; Scene Studio and Archive remain honestly marked in development.
-- Added pointer-driven tilt to the Home hero sculpture; the sculpture returns to its resting pose when the pointer leaves.
+- Added pointer- and touch-driven tilt to the Home hero sculpture; the sculpture returns to its resting pose when input ends and remains static under reduced-motion preference.
 
 ### Tests added
 
