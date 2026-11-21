@@ -143,6 +143,14 @@ begin
     raise exception using errcode = '42501', message = 'FORMA_FORBIDDEN';
   end if;
 
+  v_request_fingerprint := pg_catalog.md5(
+    jsonb_build_object(
+      'expected_revision', p_expected_revision,
+      'command_type', p_command_type,
+      'payload', p_payload
+    )::text
+  );
+
   select r.* into v_receipt
   from public.scene_command_receipts r
   where r.scene_id = p_scene_id and r.command_id = p_command_id;
