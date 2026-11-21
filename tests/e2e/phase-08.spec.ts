@@ -32,6 +32,15 @@ test("Motion Lab parameters change the motion study and can be paused", async ({
   await page.getByRole("button", { name: /pause/i }).click();
   await expect(page.getByText("PAUSED")).toBeVisible();
 
+  const timeline = page.getByRole("slider", { name: /motion timeline position/i });
+  await timeline.fill("65");
+  await expect(page.getByText("65%")).toBeVisible();
+  await expect(page.getByText("PAUSED")).toBeVisible();
+  await expect(page.getByText(/forma\.motion-recipe/)).toBeVisible();
+
+  await page.getByRole("button", { name: /impact \/ 02/i }).click();
+  await expect(page.getByRole("button", { name: /pulse/i })).toHaveAttribute("aria-pressed", "true");
+
   await page.getByRole("button", { name: /reset parameters/i }).click();
   await expect(page.getByRole("button", { name: /orbit/i })).toHaveAttribute("aria-pressed", "true");
 });
@@ -69,4 +78,26 @@ test("Playground and Motion Lab remain within a narrow mobile viewport", async (
     }));
     expect(dimensions.document).toBeLessThanOrEqual(dimensions.viewport);
   }
+});
+
+test("Playground filters studies and opens the matching direct anchor", async ({ page }) => {
+  await page.goto("/playground");
+
+  await page.getByRole("button", { name: "TYPE", exact: true }).click();
+  await expect(page.getByRole("heading", { name: "Elastic matter" })).toBeVisible();
+  await expect(page.getByRole("heading", { name: "Displacement field" })).toHaveCount(0);
+
+  await page.getByRole("link", { name: /open study/i }).click();
+  await expect(page).toHaveURL(/\/playground#elastic-type$/);
+  await expect(page.getByRole("heading", { name: /elastic matter/i })).toBeVisible();
+});
+
+test("Elastic Matter controls change the typographic study", async ({ page }) => {
+  await page.goto("/playground#elastic-type");
+  const tension = page.locator("#elastic-type input[type=range]").nth(0);
+  await tension.fill("90");
+  await expect(page.locator("#elastic-type output").first()).toHaveText("90%");
+  const invert = page.getByRole("button", { name: /invert tension/i });
+  await invert.click();
+  await expect(invert).toHaveAttribute("aria-pressed", "true");
 });
