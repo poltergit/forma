@@ -142,7 +142,7 @@ Expose a small number of useful controls first; advanced controls should appear 
 6. Establish reusable experiment lifecycle, renderer boundaries, deterministic random utilities, and parameter validation.
 7. **Instrument expanded.** Added scrub/freeze timeline, easing-curve visualization, three authored presets, and copyable JSON motion recipes.
 8. **Second visual grammar implemented.** Elastic Matter is a typographic study rather than another geometry field. Further studies require their own interaction and resource contracts.
-9. **Coverage expanded; execution pending.** Added Playwright cases for filters, direct anchors, Elastic Matter controls, timeline scrubbing, presets, recipe output, and narrow mobile overflow, plus unit tests for deterministic generators and validated motion recipes. Browser-history, broad accessibility, and performance coverage still need expansion.
+9. **Coverage expanded; execution pending.** Added Playwright cases for filters, direct anchors, Elastic Matter controls, timeline scrubbing, presets, recipe output, and narrow mobile overflow, plus unit tests for deterministic generators and validated motion recipes. Browser-history coverage is included; broad accessibility and performance coverage still need expansion.
 10. Run supported-runtime install, lint, typecheck, unit, browser, and production-build checks; document actual results.
 11. Present Phase 08 for explicit owner review before Phase 09.
 
