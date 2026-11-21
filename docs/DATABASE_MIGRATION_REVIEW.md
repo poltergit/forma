@@ -16,7 +16,7 @@ This is a reviewable migration artifact, not evidence that a Supabase project ex
 - public.scenes with owner, versioned JSON document, revision, timestamps, and immutable ownership.
 - public.scene_members with editor/viewer roles and owner represented by scenes.owner_id.
 - public.scene_invitations with normalized recipient identity, SHA-256 token hash shape, expiry, accepted/revoked timestamps, and unique token hash.
-- public.scene_command_receipts with unique per-scene idempotency key and resulting revision.
+- public.scene_command_receipts with unique per-scene idempotency key, request fingerprint, and resulting revision.
 - public.generative_artifacts with owner, generator ID/version, seed, parameters, and schema version.
 - Timestamp triggers and immutable owner guards.
 - Narrow SECURITY DEFINER membership helpers with empty search path and minimal execute grants.
@@ -51,7 +51,7 @@ These are separate security-sensitive operations and must be added only after th
 
 ## 5. Follow-up migrations required
 
-- Scene command RPC: typed allowlist, actor from auth.uid(), role checks, row lock/revision protocol, idempotency, transaction rollback behavior, and no arbitrary document replacement.
+- Scene command RPC draft: typed allowlist, actor from auth.uid(), role checks, row lock/revision protocol, request-fingerprint idempotency, transaction rollback behavior, and no arbitrary document replacement. See SCENE_COMMAND_ENGINE.md and 20261121000200_forma_scene_command_rpc.sql.
 - Invitation RPCs: owner-only creation/revocation, token-hash verification, intended verified identity check, atomic one-time acceptance, expiry, and rate limiting.
 - Membership management RPC: owner-only role changes and revocation.
 - Realtime authorization: private scene channel access for current members only, with tested reauthorization/revocation.
