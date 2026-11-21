@@ -28,6 +28,19 @@ Additional implementation:
 - The interaction is keyboard-operable through a semantic button and exposes its current arrangement through a polite live region.
 - Reduced-motion users receive near-instant state changes rather than a motion-dependent experience.
 
+## Scroll-linked motion refinement
+
+After the owner reported the Phase 07 end-to-end checks succeeding following the contrast correction, a restrained scroll-linked depth layer was added:
+
+- Territory preview panels shift and scale slightly as they pass through the viewport.
+- The invitation orb receives a separate vertical depth drift.
+- Both effects use CSS view timelines only when the browser supports them.
+- The effects are enabled only when reduced motion is not requested.
+- They animate decorative surfaces only; headings, descriptions, controls, and destinations remain visible without animation.
+- Native document scrolling remains unchanged.
+
+This is progressive enhancement, not a dependency on JavaScript scroll handlers or a forced scroll sequence.
+
 ## Verification boundary
 
 The new Phase 07 implementation has been committed to this branch, but it has **not yet been run through lint, typecheck, Vitest, Playwright, or a production build** in this environment. The earlier Phase 06 test results do not validate these new files. Responsive and visual behavior must be inspected in the owner's browser before this slice is accepted.
@@ -37,6 +50,6 @@ The new Phase 07 implementation has been committed to this branch, but it has **
 1. Run lint, typecheck, unit tests, Playwright, and production build on this branch.
 2. Inspect desktop, tablet, and 320/375px mobile rendering; tune hero composition and section rhythm.
 3. Check the recompose interaction with keyboard and touch, plus reduced-motion behavior.
-4. Refine the hero with scroll-linked depth and section transitions only where they improve the narrative and remain progressive enhancements.
+4. Review the new scroll-linked decorative motion in supported browsers, including reduced-motion and unsupported-browser fallbacks.
 5. Review whether the hero benefits from lazy-loaded React Three Fiber or whether CSS 3D remains the better-performing authored solution.
 6. Continue into the Phase 07 review only after the implementation is inspected and tested.
