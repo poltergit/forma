@@ -23,6 +23,7 @@ FORMA's ambition is to feel like a spatial, generative playground—not a conven
 
 ## Technical architecture
 
+- [Real-Time Collaboration](docs/REALTIME_COLLABORATION.md) — proposed invite-only Scene Studio collaboration, roles, command ordering, presence, and recovery.
 - [Phase 05 Architecture Review](docs/PHASE_05_REVIEW.md) — supporting dependency recommendations, application boundaries, generative runtime scope, non-functional requirements, and approval checklist.
 
 - [Phase 05 Technical Architecture](docs/TECHNICAL_ARCHITECTURE.md) — approved core stack and system architecture, with remaining implementation details under review.
