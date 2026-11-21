@@ -4,14 +4,14 @@ import { useMemo, useState } from "react";
 import Link from "next/link";
 import styles from "./experiment-index.module.css";
 
-type Category = "ALL" | "FORM" | "TYPE";
+type Category = "ALL" | "FORM" | "TYPE" | "SPACE";
 
 const experiments = [
   { id: "displacement-field", number: "001", category: "FORM" as const, title: "Displacement field", note: "A responsive geometry field shaped by your movement.", href: "#displacement-field", status: "LIVE", tone: "lime" },
   { id: "elastic-type", number: "002", category: "TYPE" as const, title: "Elastic matter", note: "Typography stretched between tension and release.", href: "#elastic-type", status: "LIVE", tone: "coral" },
 ];
 
-const categories: Category[] = ["ALL", "FORM", "TYPE"];
+const categories: Category[] = ["ALL", "FORM", "TYPE", "SPACE"];
 
 export function ExperimentIndex() {
   const [active, setActive] = useState<Category>("ALL");
