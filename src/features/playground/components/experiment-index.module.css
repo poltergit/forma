@@ -1,0 +1,33 @@
+.index { padding: 2rem 0 clamp(5rem, 10vw, 9rem); border-top: 1px solid var(--color-border); }
+.indexTop { display: flex; justify-content: space-between; align-items: end; gap: 2rem; }
+.indexTop > div > span, .filters > span, .cardCopy > div, .cardVisual > span { color: var(--color-text-muted); font: 9px var(--font-mono); letter-spacing: .12em; }
+.indexTop h2 { margin: 1rem 0 0; font: 500 clamp(3rem, 6vw, 6rem)/.9 var(--font-display); letter-spacing: -.08em; }
+.indexTop h2 em { color: var(--brand-lime); font-style: normal; }
+.indexTop p { max-width: 20rem; margin: 0 0 .3rem; color: var(--color-text-secondary); line-height: 1.6; }
+.filters { display: flex; justify-content: space-between; align-items: center; gap: 1rem; margin-top: 3rem; padding: 1rem 0; border-block: 1px solid var(--color-border); }
+.filters > div { display: flex; gap: .45rem; }
+.filters button { min-width: 3.5rem; min-height: 2.5rem; border: 1px solid var(--color-border); padding: .5rem .8rem; background: transparent; color: var(--color-text-secondary); font: 9px var(--font-mono); cursor: pointer; }
+.filters button[aria-pressed="true"] { border-color: var(--brand-lime); background: rgb(199 243 107 / .08); color: var(--brand-lime); }
+.results { display: grid; grid-template-columns: 1.15fr .85fr; gap: 1rem; padding-top: 1rem; }
+.card { display: grid; min-width: 0; grid-template-columns: 1fr 1fr; border: 1px solid var(--color-border); background: #17191c; }
+.cardVisual { position: relative; display: grid; min-height: 19rem; overflow: hidden; place-items: center; background: #202226; }
+.cardVisual > span { position: absolute; top: .8rem; left: .8rem; }
+.formMark { position: relative; width: 8rem; aspect-ratio: 1; transform: rotateX(58deg) rotateZ(45deg); transform-style: preserve-3d; }
+.formMark i { position: absolute; inset: 8%; border: 1px solid var(--brand-lime); }
+.formMark i:nth-child(2) { inset: 22%; border-color: var(--brand-blue); transform: translateZ(2.2rem) rotate(35deg); }
+.formMark i:nth-child(3) { inset: 37%; border: 0; background: var(--brand-coral); transform: translateZ(4rem); }
+.typeMark { color: var(--brand-coral); font: 500 clamp(6rem, 12vw, 12rem)/.8 var(--font-display); letter-spacing: -.12em; transform: rotate(-12deg) skewY(-8deg); text-shadow: .04em .04em 0 rgb(255 118 94 / .2), .08em .08em 0 rgb(100 123 255 / .35); }
+.cardCopy { display: flex; flex-direction: column; align-items: flex-start; justify-content: center; padding: clamp(1rem, 2.5vw, 2.2rem); }
+.cardCopy > div { display: flex; flex-wrap: wrap; justify-content: space-between; width: 100%; gap: .5rem; }
+.cardCopy > div span:first-child { color: var(--brand-lime); }
+.card[data-tone="coral"] .cardCopy > div span:first-child { color: var(--brand-coral); }
+.cardCopy h3 { margin: 1.4rem 0 .6rem; font: 500 clamp(1.5rem, 2.6vw, 2.8rem)/.95 var(--font-display); letter-spacing: -.07em; }
+.cardCopy p { margin: 0; color: var(--color-text-secondary); font-size: .85rem; line-height: 1.6; }
+.cardCopy a { margin-top: 1.6rem; border-bottom: 1px solid var(--color-border-strong); padding-bottom: .55rem; color: var(--color-text); font: 9px var(--font-mono); letter-spacing: .1em; text-decoration: none; }
+.cardCopy a:hover { color: var(--brand-lime); border-color: var(--brand-lime); }
+.cardCopy a i { padding-left: .6rem; font-style: normal; }
+.reset { margin-top: 1rem; border: 0; padding: .6rem 0; background: transparent; color: var(--color-text-muted); font: 9px var(--font-mono); letter-spacing: .1em; cursor: pointer; }
+.reset:disabled { opacity: .35; cursor: default; }
+.empty { grid-column: 1 / -1; padding: 2rem; color: var(--color-text-secondary); border: 1px dashed var(--color-border); }
+@media (max-width: 760px) { .indexTop { align-items: start; flex-direction: column; } .results { grid-template-columns: 1fr; } .card { grid-template-columns: .9fr 1fr; } .cardVisual { min-height: 15rem; } }
+@media (max-width: 460px) { .filters { align-items: flex-start; flex-direction: column; } .card { grid-template-columns: 1fr; } .cardVisual { min-height: 12rem; } .typeMark { font-size: 7rem; } }
