@@ -1,0 +1,18 @@
+.main { width: min(100% - (var(--page-gutter) * 2), 100rem); margin-inline: auto; }
+.intro { padding: clamp(3rem, 8vw, 7rem) 0 3rem; }
+.meta, .foot, .instrumentHeading > div > span, .closing > span { display: flex; justify-content: space-between; gap: 1rem; color: var(--color-text-muted); font: 10px var(--font-mono); letter-spacing: .12em; }
+.heading { display: grid; grid-template-columns: 1.2fr .8fr; align-items: end; gap: 3rem; padding: clamp(3rem, 8vw, 7rem) 0; }
+.heading h1 { margin: 0; font: 500 clamp(4.5rem, 11vw, 11rem)/.78 var(--font-display); letter-spacing: -.1em; }
+.heading h1 em, .instrumentHeading h2 em, .closing em { color: var(--brand-coral); font-style: normal; }
+.heading p { max-width: 26rem; margin: 0 0 .5rem; color: var(--color-text-secondary); font-size: clamp(1rem, 1.5vw, 1.2rem); line-height: 1.7; }
+.foot { border-top: 1px solid var(--color-border); padding-top: 1rem; }
+.instrument { padding: clamp(2rem, 5vw, 4rem) 0 6rem; }
+.instrumentHeading { display: flex; justify-content: space-between; align-items: end; gap: 2rem; padding-bottom: 2rem; }
+.instrumentHeading > div > span { display: block; }
+.instrumentHeading h2 { margin: 1rem 0 0; font: 500 clamp(3rem, 6vw, 6rem)/.9 var(--font-display); letter-spacing: -.08em; }
+.instrumentHeading > p { max-width: 24rem; margin: 0 0 .35rem; color: var(--color-text-secondary); font-size: .9rem; line-height: 1.65; }
+.closing { display: flex; justify-content: space-between; gap: 2rem; border-top: 1px solid var(--color-border); padding: 2rem 0 6rem; }
+.closing > span { display: block; }
+.closing p { margin: 0; font: 500 clamp(1.7rem, 4vw, 3.6rem)/1.05 var(--font-display); letter-spacing: -.06em; }
+@media (max-width: 700px) { .heading { grid-template-columns: 1fr; gap: 2rem; padding-block: 3.5rem; } .heading h1 { font-size: clamp(4.3rem, 17vw, 7rem); } .instrumentHeading, .closing { align-items: start; flex-direction: column; } }
+@media (max-width: 380px) { .meta, .foot { font-size: 8px; } }
