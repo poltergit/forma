@@ -54,6 +54,7 @@ declare
   v_index bigint;
   v_object_count integer;
   v_color text;
+  v_request_fingerprint text;
 begin
   if v_actor is null then
     raise exception using errcode = '28000', message = 'FORMA_UNAUTHENTICATED';
@@ -92,7 +93,9 @@ begin
   from public.scene_command_receipts r
   where r.scene_id = p_scene_id and r.command_id = p_command_id;
   if found then
-    if v_receipt.actor_id <> v_actor or v_receipt.command_type <> p_command_type then
+    if v_receipt.actor_id <> v_actor
+       or v_receipt.command_type <> p_command_type
+       or v_receipt.request_fingerprint <> v_request_fingerprint then
       raise exception using errcode = '22023', message = 'FORMA_IDEMPOTENCY_MISMATCH';
     end if;
     return jsonb_build_object('command_id', p_command_id,
@@ -257,8 +260,8 @@ begin
   where id = p_scene_id returning * into v_scene;
 
   insert into public.scene_command_receipts(
-    scene_id, command_id, actor_id, command_type, resulting_revision
-  ) values (p_scene_id, p_command_id, v_actor, p_command_type, v_scene.revision);
+    scene_id, command_id, actor_id, request_fingerprint, command_type, resulting_revision
+  ) values (p_scene_id, p_command_id, v_actor, v_request_fingerprint, p_command_type, v_scene.revision);
 
   return jsonb_build_object('command_id', p_command_id,
     'revision', v_scene.revision, 'duplicate', false);
