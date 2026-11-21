@@ -122,7 +122,7 @@ Requirements:
 2. **Initial implementation committed.** Established the four-part page narrative: hero, manifesto, territories, and invitation.
 3. **Initial implementation committed; visual QA pending.** Added a layered CSS 3D sculpture with three selectable arrangements.
 4. **Initial implementation committed; browser validation pending.** Added a semantic recompose button and polite live state announcement.
-5. **Pending.** Add scroll-linked transitions only after initial visual QA.
+5. **Implemented; owner-reported automated checks passing.** Added progressive CSS view-timeline depth to decorative territory previews and the invitation orb. The effect is gated by browser support and the reduced-motion preference; it does not hide content or replace native scrolling.
 6. Introduce WebGL/R3F only if the hero benefits from real 3D; lazy-load and provide fallback.
 7. Build editorial discipline previews and navigation.
 8. Add automated interaction, accessibility, responsive, and performance checks.
