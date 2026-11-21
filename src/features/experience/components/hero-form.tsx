@@ -49,6 +49,8 @@ export function HeroForm() {
         className={styles.artwork}
         onPointerMove={tiltArtwork}
         onPointerLeave={resetArtwork}
+        onPointerCancel={resetArtwork}
+        onPointerUp={(event) => { if (event.pointerType === "touch") resetArtwork(event); }}
         data-arrangement={current.name.toLowerCase()}
         role="img"
         aria-label={`Abstract dimensional modular sculpture, arrangement ${current.index}: ${current.name.toLowerCase()}.`}
