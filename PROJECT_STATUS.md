@@ -3,44 +3,51 @@
 **Last updated:** 2026-11-21
 
 ## Current position
+
 - Phase 01 — Product Discovery and Definition: **Approved**
 - Phase 02 — Brand Identity and Creative Direction: **Approved**
 - Phase 03 — UX and Information Architecture: **Approved**
 - Phase 04 — Visual Design System: **Approved**
 - Phase 05 — Technical Architecture: **Approved by product owner (2026-11-21)**
-- Phase 06 — Frontend Foundation: **In progress**\n- Production application implementation: **Foundation work authorized; not yet bootstrapped**
-- Repository: **Initialized and verified**
+- Phase 06 — Frontend Foundation: **In progress**
+- Phase 07 — Landing Page and Immersive Experience: **Gated; not started**
+- Production application: **Initial foundation committed to `phase-06/frontend-foundation`; not yet verified by install/build**
 
 ## Approved decisions
+
 - FORMA — Interactive Digital Playground / Creative Technology Platform.
 - Tagline: Where form meets function.
-- Web-first, responsive; free-tier infrastructure wherever practical.
+- Web-first and responsive; free-tier infrastructure wherever practical.
 - Scene Studio cloud persistence, accounts, and invite-only real-time collaboration.
 - Collaboration roles: owner, editor, viewer.
-- Approved stack and supporting libraries: D-014.
+- Approved core stack and supporting recommendations: D-014.
 - Spatial/generative/performative direction: D-015.
 - Ambitious generative first-release scope: D-016.
 - Real-time collaboration in Scene Studio MVP: D-017.
-- Brand, UX, and visual system decisions: docs/BRAND_GUIDELINES.md and docs/UX_SPECIFICATION.md.
+- Phase 05 owner approval and Phase 06 authorization: D-018.
 
-## Phase 03 — Approved
-See docs/UX_SPECIFICATION.md for sitemap, navigation, page structures, journeys, editor lifecycle, responsive behavior, and accessibility requirements.
+## Phase summaries
 
-## Phase 04 — Approved
-See docs/PHASE_04_REVIEW.md for the approved visual direction and review. Seven standalone prototypes are design artifacts, not production features. Source-level checks were completed; no browser rendering, assistive-technology, or direct reference-site validation is claimed.
+### Phases 01–03 — Approved
 
-## Phase 05 — In progress\n- Added Scene Command Engine contract and atomic RPC migration draft (`docs/SCENE_COMMAND_ENGINE.md`, `supabase/migrations/20261121000200_forma_scene_command_rpc.sql`). Not executed.\n- Added private Realtime Authorization & Recovery contract and migration draft (`docs/REALTIME_AUTHORIZATION_RECOVERY.md`, `supabase/migrations/20261121000400_forma_realtime_authorization_recovery.sql`): membership-based private topics, minimal presence/broadcast payloads, and command receipt recovery. Not executed.\n- Added Invitation & Membership Engine contract and RPC migration draft (`docs/INVITATION_MEMBERSHIP_ENGINE.md`, `supabase/migrations/20261121000300_forma_invitation_membership_rpc.sql`): hash-only tokens, verified-email acceptance, single-use invitations, owner-only invitation listing/revocation, and member removal. Not executed.
-- Added a review-only Supabase schema/RLS migration draft at `supabase/migrations/20261121000100_forma_core_schema.sql` and its review checklist at `docs/DATABASE_MIGRATION_REVIEW.md`. Neither has been applied or executed.
-- Core/supporting stack, ambitious generative scope, and collaboration MVP approved.
-- Collaboration-aware Scene Studio data model and role model documented.
-- Real-time synchronization, command, presence, invitation, and recovery architecture documented.
-- Security threat model: docs/SECURITY_THREAT_MODEL.md.
-- Technical validation plan: docs/PHASE_05_VALIDATION_PLAN.md.
-- Generative artifact model and auth/environment proposal documented.
-- Phase 05 owner approval recorded after the user's “Validated and Approved” confirmation. Remaining provider-specific checks (migration/RLS/RPC execution, invitation delivery, Realtime revocation/recovery, quotas, backups, and deployment) remain mandatory implementation/release validation; no test results are inferred from the approval.
-- Phase 06 is authorized and in progress. See docs/PHASE_06_FOUNDATION_PLAN.md. Phase 07 remains gated on Phase 06 review and explicit owner approval.
+See [Product Requirements](docs/PRODUCT_REQUIREMENTS.md), [Brand Guidelines](docs/BRAND_GUIDELINES.md), and [UX Specification](docs/UX_SPECIFICATION.md).
+
+### Phase 04 — Approved
+
+Seven standalone visual/interaction prototypes and the design token source are committed. Source-level checks were completed; no browser rendering, assistive-technology, or direct reference-site validation is claimed. See [Phase 04 Review](docs/PHASE_04_REVIEW.md).
+
+### Phase 05 — Approved by owner
+
+The architecture, collaboration contracts, proposed schema/RLS/RPC migrations, invitation design, Realtime authorization/recovery, and security model are documented. The SQL has not been applied or executed. Provider-specific migration/RLS/RPC execution, invitation delivery, Realtime revocation/recovery, quotas, backups, and deployment checks remain implementation/release requirements. See [Phase 05 Review](docs/PHASE_05_REVIEW.md).
+
+### Phase 06 — In progress
+
+The [foundation branch](https://github.com/poltergit/forma/tree/phase-06/frontend-foundation) contains the initial Next.js App Router/TypeScript scaffold, token integration, responsive shell, metadata and route states, font loading, Supabase client boundaries, Zod validation, a Zustand UI store, and initial test configurations.
+
+The dependency manifest is committed, but the lockfile has not yet been generated. Automated checks, browser tests, production build, CI, and rendered responsive inspection have not been run. See [Phase 06 Plan](docs/PHASE_06_FOUNDATION_PLAN.md) and [Implementation Log](docs/PHASE_06_IMPLEMENTATION_LOG.md).
 
 ## Project constraints
+
 - Small, reviewable milestones; no unverified claims about tests, builds, deployment, or commits.
 - Accessibility, performance, security, reduced motion, and WebGL fallbacks are mandatory.
 - Collaboration remains private and role-based; no public rooms in MVP.
@@ -49,7 +56,8 @@ See docs/PHASE_04_REVIEW.md for the approved visual direction and review. Seven 
 - Explicit owner approval required before phase advancement.
 
 ## Known limitations
-- No production application code has been implemented.
+
+- Phase 06 is not complete; package installation, lockfile, checks, CI, and browser validation remain outstanding.
 - No Supabase project or Vercel deployment has been configured.
 - Proposed SQL, RLS, RPC, invitation, and Realtime behavior have not been applied or tested.
 - Provider quotas, email delivery, backup/restore, and preview/production isolation remain to be verified.
