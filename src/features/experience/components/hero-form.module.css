@@ -39,7 +39,7 @@
   aspect-ratio: 1;
   container-type: inline-size;
   transform-style: preserve-3d;
-  transform: rotateX(-28deg) rotateY(-36deg);
+  transform: rotateX(calc(-28deg + var(--tilt-y, 0deg))) rotateY(calc(-36deg + var(--tilt-x, 0deg)));
   transition: transform 950ms cubic-bezier(0.2, 0.8, 0.2, 1);
 }
 
@@ -192,7 +192,7 @@
 }
 
 .artwork[data-arrangement="displace"] .sculpture {
-  transform: rotateX(-12deg) rotateY(46deg) rotateZ(16deg);
+  transform: rotateX(calc(-12deg + var(--tilt-y, 0deg))) rotateY(calc(46deg + var(--tilt-x, 0deg))) rotateZ(16deg);
 }
 
 .artwork[data-arrangement="displace"] .cubeMain {
@@ -208,7 +208,7 @@
 }
 
 .artwork[data-arrangement="refract"] .sculpture {
-  transform: rotateX(34deg) rotateY(128deg) rotateZ(-18deg);
+  transform: rotateX(calc(34deg + var(--tilt-y, 0deg))) rotateY(calc(128deg + var(--tilt-x, 0deg))) rotateZ(-18deg);
 }
 
 .artwork[data-arrangement="refract"] .cubeMain {
