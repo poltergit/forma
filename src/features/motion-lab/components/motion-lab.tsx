@@ -25,7 +25,8 @@ export function MotionLab() {
   const [easing, setEasing] = useState<Easing>("ease-in-out");
   const [paused, setPaused] = useState(false);
   const [progress, setProgress] = useState(0);
-  const [copied, setCopied] = useState(false);\n  const [copyMessage, setCopyMessage] = useState("");
+  const [copied, setCopied] = useState(false);
+  const [copyMessage, setCopyMessage] = useState("");
 
   const reset = () => {
     setMode("orbit");
@@ -35,6 +36,7 @@ export function MotionLab() {
     setPaused(false);
     setProgress(0);
     setCopied(false);
+    setCopyMessage("");
   };
 
   const selected = modes.find((item) => item.id === mode) ?? modes[0];
@@ -44,8 +46,10 @@ export function MotionLab() {
     try {
       await navigator.clipboard.writeText(JSON.stringify(recipe, null, 2));
       setCopied(true);
+      setCopyMessage("Recipe copied to clipboard.");
     } catch {
       setCopied(false);
+      setCopyMessage("Clipboard unavailable. Select and copy the JSON below.");
     }
   };
 
@@ -126,7 +130,8 @@ export function MotionLab() {
         </div>
         <div className={styles.recipe}>
           <div><span>REPRODUCIBLE RECIPE / JSON</span><button type="button" onClick={copyRecipe}>{copied ? "COPIED ✓" : "COPY RECIPE ↗"}</button></div>
-          <pre>{JSON.stringify(recipe, null, 2)}</pre>\n          <p className={styles.copyMessage} role="status" aria-live="polite">{copyMessage}</p>
+          <pre>{JSON.stringify(recipe, null, 2)}</pre>
+          <p className={styles.copyMessage} role="status" aria-live="polite">{copyMessage}</p>
         </div>
         <button className={styles.reset} type="button" onClick={reset}>↺ RESET PARAMETERS</button>
       </aside>
