@@ -39,7 +39,8 @@ The first Phase 08 slice turns the Playground and Motion Lab from roadmap pillar
 
 - Added Playground and Motion Lab to the primary navigation.
 - Prioritized the two active feature links in the compact mobile navigation.
-- Updated the Home territory links so Playground and Motion Lab open their real routes; Scene Studio and Archive remain honestly marked in development.\n- Added pointer-driven tilt to the Home hero sculpture; the sculpture returns to its resting pose when the pointer leaves.
+- Updated the Home territory links so Playground and Motion Lab open their real routes; Scene Studio and Archive remain honestly marked in development.
+- Added pointer-driven tilt to the Home hero sculpture; the sculpture returns to its resting pose when the pointer leaves.
 
 ### Tests added
 
