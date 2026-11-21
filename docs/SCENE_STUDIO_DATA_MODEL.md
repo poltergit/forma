@@ -67,7 +67,7 @@ Raw tokens must never be stored. Invitation rows are only accessed through trust
 | scene_id | uuid | Scene reference; cascade delete |
 | command_id | uuid | Client-generated idempotency key |
 | actor_id | uuid | Derived from authenticated database identity |
-| command_type | text | Allowlisted command name |
+| request_fingerprint | text | Deterministic fingerprint of expected revision, command type, and JSONB payload |\n| command_type | text | Allowlisted command name |
 | resulting_revision | bigint | Revision committed by this command |
 | created_at | timestamptz | Server generated |
 
