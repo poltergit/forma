@@ -117,3 +117,33 @@
 @media (prefers-reduced-motion: reduce) {
   .disciplineVisual > div { transition: none; }
 }
+
+/*
+ * Scroll-linked depth is progressive enhancement: it moves decorative
+ * surfaces only. Content remains visible and native scrolling stays intact.
+ */
+@media (prefers-reduced-motion: no-preference) {
+  @supports (animation-timeline: view()) {
+    .disciplineVisual {
+      animation: territory-drift linear both;
+      animation-timeline: view();
+      animation-range: entry 0% exit 100%;
+    }
+
+    .invitationOrb {
+      animation: invitation-drift linear both;
+      animation-timeline: view();
+      animation-range: entry 0% exit 100%;
+    }
+
+    @keyframes territory-drift {
+      from { transform: translateY(-0.65rem) scale(1.015); }
+      to { transform: translateY(0.65rem) scale(.985); }
+    }
+
+    @keyframes invitation-drift {
+      from { transform: translateY(-2rem) rotateX(62deg) rotateZ(-28deg); }
+      to { transform: translateY(2rem) rotateX(62deg) rotateZ(-28deg); }
+    }
+  }
+}
