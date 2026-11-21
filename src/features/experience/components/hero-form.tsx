@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, type PointerEvent } from "react";
 import styles from "./hero-form.module.css";
 
 const arrangements = [
@@ -26,6 +26,20 @@ export function HeroForm() {
   const [arrangement, setArrangement] = useState(0);
   const current = arrangements[arrangement];
 
+  function tiltArtwork(event: PointerEvent<HTMLDivElement>) {
+    if (event.pointerType === "touch") return;
+    const bounds = event.currentTarget.getBoundingClientRect();
+    const x = (event.clientX - bounds.left) / bounds.width - 0.5;
+    const y = (event.clientY - bounds.top) / bounds.height - 0.5;
+    event.currentTarget.style.setProperty("--tilt-x", String(x * 22) + "deg");
+    event.currentTarget.style.setProperty("--tilt-y", String(y * -16) + "deg");
+  }
+
+  function resetArtwork(event: PointerEvent<HTMLDivElement>) {
+    event.currentTarget.style.setProperty("--tilt-x", "0deg");
+    event.currentTarget.style.setProperty("--tilt-y", "0deg");
+  }
+
   function recompose() {
     setArrangement((value) => (value + 1) % arrangements.length);
   }
@@ -34,6 +48,8 @@ export function HeroForm() {
     <div className={styles.stage}>
       <div
         className={styles.artwork}
+        onPointerMove={tiltArtwork}
+        onPointerLeave={resetArtwork}
         data-arrangement={current.name.toLowerCase()}
         role="img"
         aria-label={`Abstract dimensional modular sculpture, arrangement ${current.index}: ${current.name.toLowerCase()}.`}
