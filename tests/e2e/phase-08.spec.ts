@@ -103,3 +103,15 @@ test("Elastic Matter controls change the typographic study", async ({ page }) =>
   await invert.click();
   await expect(invert).toHaveAttribute("aria-pressed", "true");
 });
+
+test("Home sculpture responds to pointer position and returns to rest", async ({ page }) => {
+  await page.goto("/");
+  const artwork = page.locator('[data-arrangement="origin"]');
+  const sculpture = artwork.locator("div").nth(5);
+  const before = await sculpture.evaluate((node) => getComputedStyle(node).transform);
+  await artwork.hover({ position: { x: 24, y: 24 } });
+  const displaced = await sculpture.evaluate((node) => getComputedStyle(node).transform);
+  expect(displaced).not.toBe(before);
+  await page.mouse.move(0, 0);
+  await expect.poll(() => sculpture.evaluate((node) => getComputedStyle(node).transform)).toBe(before);
+});
