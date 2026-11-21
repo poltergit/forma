@@ -135,14 +135,14 @@ Expose a small number of useful controls first; advanced controls should appear 
 ## 9. Implementation sequence
 
 1. **Completed.** Audited the Phase 07 shell, route structure, canonical tokens, and existing test setup.
-2. **Initial route established.** Added the Playground route and a first featured experiment; the wider gallery taxonomy and detail-route model remain to be designed.
-3. **First experiment implemented.** Added a deterministic displacement field with pointer/touch influence, density and force parameters, and a recomposition control. Additional experiment concepts remain proposals.
-4. **In progress.** The first Playground experience is in place; the full editorial discovery field, filters, and multi-experiment index remain.
-5. Implement the first complete experiment end-to-end, including keyboard/touch and reduced-motion behavior.
+2. **Initial index established.** Added a filterable editorial index with direct anchors for the two live studies.
+3. **Two distinct studies implemented.** Displacement Field uses seeded canvas geometry and pointer/keyboard influence; Elastic Matter uses typographic deformation with independent tension, release, and inversion controls.
+4. **Initial gallery implemented.** Added asymmetric experiment entries and functional ALL / FORM / TYPE filters with reset. More experiment categories and studies remain.
+5. **Initial studies implemented.** Both studies expose real parameter controls and reset behavior; browser validation and further touch/reduced-motion review remain.
 6. Establish reusable experiment lifecycle, renderer boundaries, deterministic random utilities, and parameter validation.
-7. **Initial stage and controls implemented.** Added Orbit, Pulse, Shift, and Stagger behaviors with play/pause, duration, intensity, easing, and reset. Timeline/curve editing and serializable motion recipes remain.
-8. Implement additional experiments using distinct visual grammars and bounded rendering budgets.
-9. **Initial browser coverage added; execution pending.** Added Phase 08 Playwright cases and deterministic generator unit tests. Direct-link, browser-history, responsive, accessibility, and performance coverage still need expansion and execution.
+7. **Instrument expanded.** Added scrub/freeze timeline, easing-curve visualization, three authored presets, and copyable JSON motion recipes.
+8. **Second visual grammar implemented.** Elastic Matter is a typographic study rather than another geometry field. Further studies require their own interaction and resource contracts.
+9. **Coverage expanded; execution pending.** Added Playwright cases for filters, direct anchors, Elastic Matter controls, timeline scrubbing, presets, recipe output, and narrow mobile overflow, plus unit tests for deterministic generators and validated motion recipes. Browser-history, broad accessibility, and performance coverage still need expansion.
 10. Run supported-runtime install, lint, typecheck, unit, browser, and production-build checks; document actual results.
 11. Present Phase 08 for explicit owner review before Phase 09.
 
