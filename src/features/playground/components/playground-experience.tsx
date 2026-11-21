@@ -213,6 +213,8 @@ export function PlaygroundExperience() {
         ref={frameRef}
         onPointerMove={updatePointer}
         onPointerLeave={resetPointer}
+        onPointerCancel={resetPointer}
+        onPointerUp={(event) => { if (event.pointerType === "touch") resetPointer(); }}
         onPointerDown={updatePointer}
         onKeyDown={handleStageKeyDown}
         tabIndex={0}
