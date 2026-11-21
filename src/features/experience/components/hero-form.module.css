@@ -34,7 +34,8 @@
 
 .sculpture {
   position: relative;
-  width: clamp(12rem, 28vw, 23rem);
+  --sculpture-size: clamp(12rem, 28vw, 23rem);
+  width: var(--sculpture-size);
   aspect-ratio: 1;
   transform-style: preserve-3d;
   transform: rotateX(-28deg) rotateY(-36deg);
@@ -98,6 +99,7 @@
 }
 
 .cubeSatellite {
+  --cube-depth: clamp(1.35rem, 4.9vw, 1.8rem);
   width: 30%;
   transform: translate3d(56%, -68%, -4.5rem) rotateX(-22deg) rotateY(34deg) rotateZ(12deg);
 }
@@ -112,6 +114,7 @@
 }
 
 .cubeCore {
+  --cube-depth: clamp(0.85rem, 3.1vw, 1.15rem);
   width: 19%;
   transform: translate3d(88%, 78%, 5.5rem) rotateX(28deg) rotateY(42deg);
 }
