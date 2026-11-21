@@ -219,6 +219,7 @@ export function PlaygroundExperience() {
         role="group"
         aria-label="Interactive displacement field. Move or drag a pointer, or focus the stage and use arrow keys, to influence the geometry. Use the controls below to change density and force."
       >
+        <div className={styles.staticFallback} aria-hidden="true"><i /><i /><i /><i /></div>
         <canvas ref={canvasRef} aria-hidden="true" />
         <div className={styles.stageOverlay}>
           <span>MOVE THROUGH MATTER</span>
