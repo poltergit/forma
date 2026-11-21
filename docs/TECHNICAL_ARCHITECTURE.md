@@ -329,6 +329,8 @@ Third-party analytics are not required for the first implementation.
 
 ## 17. Decisions requiring further review
 
+The consolidated owner review and acceptance checklist is in [Phase 05 Architecture Review](PHASE_05_REVIEW.md).
+
 ### Approved (D-014 and D-015)
 - Next.js App Router, TypeScript, Supabase, Three.js + React Three Fiber, Vercel, CSS tokens + CSS Modules.
 - Experiential ambition: spatial, generative, performative, intentionally art-directed, and meaningfully interactive. See [Experiential Direction](EXPERIENCE_DIRECTION.md).
