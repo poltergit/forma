@@ -25,6 +25,8 @@
 - Generative registry is compile-time allowlisted; parameters are validated and bounded.
 - Local, preview, and production environments use separate backend resources and secrets.
 
+Database draft: [Migration Design Review](DATABASE_MIGRATION_REVIEW.md) and `supabase/migrations/20261121000100_forma_core_schema.sql` (not applied or tested).
+
 Detailed references: [Technical Architecture](TECHNICAL_ARCHITECTURE.md), [Scene Studio Data Model](SCENE_STUDIO_DATA_MODEL.md), [Real-Time Collaboration](REALTIME_COLLABORATION.md), [Generative Artifact Model](GENERATIVE_ARTIFACT_MODEL.md), [Authentication & Environment](AUTH_AND_ENVIRONMENT.md).
 
 ## 3. Creative scope
@@ -76,6 +78,7 @@ Separate local/preview/production resources; verify current provider quotas, ema
 - [x] Authentication and invitation proposal documented.
 - [x] Collaboration architecture documented.
 - [x] Security threat model drafted.
+- [x] Core schema/RLS migration draft prepared for isolated review (not executed).
 - [x] Technical validation plan drafted.
 - [ ] Confirm isolated Supabase environment and current provider capabilities/quotas.
 - [ ] Implement and apply migrations in isolated development only; verify fresh-database apply.
