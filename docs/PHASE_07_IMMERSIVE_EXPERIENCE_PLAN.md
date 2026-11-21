@@ -1,8 +1,8 @@
 # FORMA — Phase 07: Landing Page & Immersive Experience
 
 **Version:** 0.2  
-**Status:** In progress  
-**Owner authorization:** Product owner directed progression on 2026-11-21  
+**Status:** Approved by product owner for progression  
+**Owner approval:** Product owner confirmed “validated and succeeded” and authorized Phase 08 on 2026-11-21  
 **Implementation branch:** `phase-07/immersive-experience`
 
 ## 1. Mission
@@ -127,7 +127,7 @@ Requirements:
 7. Build editorial discipline previews and navigation.
 8. Add automated interaction, accessibility, responsive, and performance checks.
 9. Run supported-runtime install/check/build and browser review; document results.
-10. Present Phase 07 for explicit owner approval before Phase 08.
+10. **Owner-approved for progression (2026-11-21).** The product owner confirmed validation succeeded and explicitly authorized Phase 08.
 
 ## 10. Acceptance criteria
 
@@ -141,7 +141,7 @@ Requirements:
 - [ ] Navigation and all destinations are real; no fake controls or placeholder links.
 - [ ] Automated accessibility and responsive tests pass.
 - [ ] Performance is measured and documented on representative viewports/devices.
-- [ ] Owner reviews and approves Phase 07 before Phase 08.
+- [x] Owner reviewed the phase outcome and approved progression to Phase 08 on 2026-11-21.
 
 ## 11. Out of scope
 
@@ -150,3 +150,9 @@ Requirements:
 - Full Archive/About content architecture (Phase 10), except a concise landing-page introduction and working links.
 - Authentication, persistence, collaboration, and Supabase integration.
 - Billing, public publishing, user-generated code execution, and arbitrary shaders.
+
+## 12. Owner approval and verification boundary
+
+The product owner stated **“validated and succeeded. continue with phase 08”** on 2026-11-21. This is recorded as approval of Phase 07 and authorization to begin Phase 08.
+
+The exact command output and detailed device/browser results were not supplied in that approval message, and the checks were not independently rerun in this environment. This record therefore captures the owner's validation and phase-gate decision; it does not invent test counts, performance measurements, deployment status, or independent verification. Any remaining visual/performance follow-up must continue to be tracked during subsequent QA.
