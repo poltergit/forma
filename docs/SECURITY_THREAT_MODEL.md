@@ -1,6 +1,6 @@
 # FORMA — Security Threat Model
 
-**Version:** 0.1  
+**Version:** 0.2  
 **Phase:** 05 — Technical Architecture  
 **Status:** Proposed review artifact; not a completed security audit  
 **Scope:** Public experience, accounts, generative artifacts, private Scene Studio, invitations, and real-time collaboration
@@ -46,7 +46,7 @@
 | Privilege escalation | Viewer changes role or edits through direct API | Owner-only membership mutation, role checks in database command RPC | Attempt direct REST/RPC/Realtime operations |
 | Realtime channel leakage | Non-member subscribes to a scene topic | Private channels, authorization tied to membership, no sensitive broadcast payloads | Anonymous/non-member subscribe tests |
 | Revoked session/member retains access | Open tab remains connected after removal | Re-check membership, revoke channel access, terminate subscriptions, clear local state | Revoke while connected and test immediately + after reconnect |
-| Invitation replay/theft | Link is reused or forwarded | High-entropy single-use token, store hash only, bind to verified recipient identity, short expiry | Reuse, wrong identity, expiry, revoke tests |
+| Invitation replay/theft | Link is reused or forwarded | 256-bit CSPRNG token, SHA-256 digest at rest, verified-email binding, single-use acceptance, short expiry, owner revocation | Reuse, wrong identity, expiry, revoke, concurrent acceptance tests |
 | Account enumeration | Invite/recovery response reveals account existence | Neutral response and consistent external behavior | Compare responses for existing/non-existing emails |
 | CSRF / cross-origin mutation | Malicious site triggers a state-changing request | Framework protections, same-origin checks where appropriate, secure cookie/session handling, no permissive credentialed CORS | Cross-origin mutation test |
 | XSS through metadata | Scene title or object name contains markup | Render as text, validate length/characters, avoid unsafe HTML, sanitize any intentionally rich content | Stored/reflected payload tests |
@@ -55,7 +55,7 @@
 | Data race / lost update | Two stale clients replace complete documents | Typed commands, DB transaction, row lock/revision check, idempotency | Concurrent same/different property tests |
 | Secret exposure | Service role key bundled into client | Server-only environment variables and modules; bundle/log review | Build artifact and repository secret scan |
 | Environment crossover | Preview build reads production records | Separate projects/keys/redirects and deployment scopes | Preview credential and access tests |
-| Data exfiltration via logs | Error logger captures invite URL or scene document | Structured redaction; no token/document logging | Log review with synthetic secrets |
+| Data exfiltration via logs | Error logger captures invite URL or scene document | Structured redaction; no token/document logging; token in URL fragment rather than query; no-referrer redemption page without third-party scripts | Log, network, browser-history, and referrer review with synthetic secrets |
 | Abuse/spam | Repeated invitations or expensive experiment requests | Per-user/IP rate limits, caps, abuse monitoring | Rate-limit and quota tests |
 | Dependency compromise | Vulnerable transitive package | Lockfile review, minimal dependencies, automated audit, updates | CI dependency scan |
 
