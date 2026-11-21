@@ -131,3 +131,13 @@ This file records decisions that have been explicitly approved. Proposed ideas d
 **Verification boundary:** This approval records the owner's phase-gate decision. It does not assert that proposed Supabase migrations, RLS policies, invitation email delivery, Realtime revocation, provider quotas, backup/restore, or deployment behavior have been executed or verified. Those remain implementation and release-validation requirements.
 
 **Reference:** `docs/PHASE_05_REVIEW.md`, `docs/PHASE_06_FOUNDATION_PLAN.md`.
+
+## D-019 — Phase 06 approval and Phase 07 authorization
+
+**Status:** Accepted  
+**Decision date:** 2026-11-21  
+**Decision:** The product owner stated “Done. Let's proceed to Phase 07” after reporting that the Phase 06 local checks and production build succeeded and confirming that the generated npm lockfile had been committed. This is recorded as owner approval to advance from Phase 06 and begin Phase 07 — Landing Page & Immersive Experience.
+
+**Verification boundary:** The reported local results were ESLint, TypeScript, eight Vitest tests, six Playwright tests, and a Next.js production build. They were not independently rerun in this environment. The install used Node.js 26 with `--engine-strict=false`, outside the declared Node range. A clean Node 22 `npm ci`, CI workflow, and manual rendered/assistive-technology review remain follow-up requirements; no deployment or Supabase integration is implied.
+
+**Reference:** `docs/PHASE_06_REVIEW.md`, `docs/PHASE_07_IMMERSIVE_EXPERIENCE_PLAN.md`.
