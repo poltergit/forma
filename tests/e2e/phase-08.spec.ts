@@ -87,7 +87,7 @@ test("Playground filters studies and opens the matching direct anchor", async ({
 
   await page.getByRole("button", { name: "TYPE", exact: true }).click();
   await expect(page.getByRole("heading", { name: "Elastic matter" })).toBeVisible();
-  await expect(page.getByRole("heading", { name: "Displacement field" })).toHaveCount(0);
+  await expect(page.getByRole("heading", { name: "Displacement field", exact: true })).toHaveCount(0);
 
   await page.getByRole("link", { name: /open study/i }).click();
   await expect(page).toHaveURL(/\/playground#elastic-type$/);
