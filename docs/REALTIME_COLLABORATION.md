@@ -1,6 +1,6 @@
 # FORMA — Real-Time Scene Collaboration
 
-**Version:** 0.3  
+**Version:** 0.4  
 **Phase:** 05 — Technical Architecture  
 **Status:** Proposed MVP architecture based on owner-approved collaboration requirement  
 **Backend:** Supabase Auth, PostgreSQL, RLS, Realtime  
@@ -145,7 +145,7 @@ Never disclose account existence. Never report success before delivery/creation 
 
 Show collaborator identity and role, distinguish remote selections, and expose connected/reconnecting/offline/sync-pending/conflict states. Viewers have read-only controls and accessible descriptions. Throttle transient presence; do not persist pointer movement. Keep local scene editing usable when no collaborators are present.
 
-## 10. Required validation
+## 10. Authorization and reconnect implementation\n\nSee [Realtime Authorization & Recovery](REALTIME_AUTHORIZATION_RECOVERY.md) and draft migration `supabase/migrations/20261121000400_forma_realtime_authorization_recovery.sql`. The channel topic is versioned and private; presence/broadcast payloads are untrusted hints, never durable state. A narrow receipt RPC reconciles a caller's pending command IDs after reconnect. Provider authorization refresh and live-socket revocation still require isolated verification.\n\n## 11. Required validation
 
 See [Phase 05 Technical Validation Plan](PHASE_05_VALIDATION_PLAN.md) and [Security Threat Model](SECURITY_THREAT_MODEL.md).
 
