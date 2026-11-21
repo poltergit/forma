@@ -1,9 +1,10 @@
 # FORMA — Phase 05 Architecture Review
 
-**Version:** 0.5  
+**Version:** 0.6  
 **Phase:** 05 — Technical Architecture  
-**Status:** Owner decisions recorded; technical validation and final approval remain open  
-**Purpose:** Consolidate the approved direction, supporting architecture, collaboration requirements, and Phase 05 acceptance criteria before Phase 06.
+**Status:** Approved by product owner  
+**Owner approval:** 2026-11-21 — “Validated and Approved.”  
+**Purpose:** Record the approved technical direction and preserve remaining implementation verification as Phase 06/QA tasks.
 
 ---
 
@@ -90,8 +91,14 @@ Separate local/preview/production resources; verify current provider quotas, ema
 - [ ] Complete accessibility/performance/security evidence package.
 - [ ] Final Phase 05 approval from product owner.
 
-## 7. Approval gate
+## 7. Approval record and verification boundary
 
-**Phase 05 is not complete or approved.** Architecture and validation specifications are documented, but provider-specific behavior and database security must be tested in an isolated environment. No migrations have been applied. Invitation RPCs, email delivery, Realtime implementation, and production application code are not built or verified.
+The product owner explicitly confirmed: **“Validated and Approved.”** This records acceptance of Phase 05 and authorizes progression to Phase 06.
 
-Phase 06 must not begin until the validation blockers are resolved or explicitly revised and the product owner approves the final Phase 05 review.
+This approval is not a claim that the repository contains provider test output. The SQL migrations remain review drafts until applied and tested against the actual isolated Supabase project. Realtime authorization refresh, live-socket revocation, email delivery, quotas, backup/restore, and deployment behavior must be verified during implementation and release validation. No test, build, deployment, or security audit is claimed by this approval record.
+
+## 8. Gate decision
+
+**Phase 05 — APPROVED. Phase 06 — AUTHORIZED TO BEGIN.**
+
+The remaining unchecked provider-validation items are implementation/release verification tasks, not a reason to hold the owner-approved Phase 05 gate.
