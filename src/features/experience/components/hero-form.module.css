@@ -304,3 +304,17 @@
     transition-duration: 1ms;
   }
 }
+
+@supports (width: 1cqw) {
+  .cube {
+    --cube-depth: 24cqw;
+  }
+
+  .cubeSatellite {
+    --cube-depth: 15cqw;
+  }
+
+  .cubeCore {
+    --cube-depth: 9.5cqw;
+  }
+}
