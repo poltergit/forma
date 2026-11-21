@@ -37,7 +37,7 @@ FORMA is intended to feel like a spatial, generative playground—not a conventi
 
 ## Project status
 
-Phases 01–07 are approved for progression. Phase 08 — Playground & Motion Lab is in progress on `phase-08/playground-motion-lab`. The owner approved Phase 07 after reporting successful validation; exact command output was not supplied and checks were not independently rerun here. Node 22 clean-install validation, CI, and manual rendered/accessibility review remain follow-up tasks. See [Project Status](PROJECT_STATUS.md), [Experiential Direction](docs/EXPERIENCE_DIRECTION.md), [Phase 07 Review](docs/PHASE_07_REVIEW.md), and [Phase 08 Plan](docs/PHASE_08_PLAYGROUND_MOTION_LAB_PLAN.md).
+Phases 01–07 are approved for progression. Phase 08 — Playground & Motion Lab is in progress on `phase-08/playground-motion-lab`. The current branch adds two distinct Playground studies, a filterable editorial index, a parameter-driven Motion Lab with scrub and reproducible JSON recipes, and pointer/touch-responsive Home artwork. New Phase 08 tests are coverage only; they have not yet been executed in this environment. Browser rendering, accessibility, and performance review remain open. See [Project Status](PROJECT_STATUS.md), [Experiential Direction](docs/EXPERIENCE_DIRECTION.md), [Phase 07 Review](docs/PHASE_07_REVIEW.md), and [Phase 08 Plan](docs/PHASE_08_PLAYGROUND_MOTION_LAB_PLAN.md).
 
 ## Run locally
 
