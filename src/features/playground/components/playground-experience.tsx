@@ -13,7 +13,7 @@ function random(seed: number) {
   };
 }
 
-function createPoints(seed: number, amount: number): Point[] {
+export function createPoints(seed: number, amount: number): Point[] {
   const next = random(seed);
   return Array.from({ length: amount }, () => ({
     x: next(),
