@@ -11,8 +11,8 @@
 .staticFallback i:nth-child(3) { width: 9%; border-color: var(--brand-blue); transform: rotateX(58deg) rotateZ(75deg) translateZ(4rem); }
 .staticFallback i:nth-child(4) { width: 5%; background: var(--brand-lime); transform: translateZ(6rem); }
 .stage canvas { position: relative; z-index: 1; display: block; width: 100%; height: 100%; min-height: inherit; }
-.stageOverlay { position: absolute; inset: 1rem 1rem auto; display: flex; justify-content: space-between; gap: 1rem; color: rgb(242 240 234 / .55); font: 9px var(--font-mono); letter-spacing: .1em; pointer-events: none; }
-.stageCrosshair { position: absolute; right: 1.5rem; bottom: 1.25rem; color: var(--brand-lime); font: 1.5rem var(--font-mono); opacity: .7; pointer-events: none; }
+.stageOverlay { z-index: 2; position: absolute; inset: 1rem 1rem auto; display: flex; justify-content: space-between; gap: 1rem; color: rgb(242 240 234 / .55); font: 9px var(--font-mono); letter-spacing: .1em; pointer-events: none; }
+.stageCrosshair { z-index: 2; position: absolute; right: 1.5rem; bottom: 1.25rem; color: var(--brand-lime); font: 1.5rem var(--font-mono); opacity: .7; pointer-events: none; }
 .stageFooter { border-top: 1px solid var(--color-border); }
 .controls { display: grid; grid-template-columns: 1.1fr 1fr 1fr auto; align-items: end; gap: 1.5rem; padding: 1.2rem 1rem; border-top: 1px solid var(--color-border); }
 .controlIntro { display: flex; flex-direction: column; align-items: flex-start; gap: .75rem; color: var(--color-text-muted); font: 10px var(--font-mono); letter-spacing: .1em; }
