@@ -1,127 +1,76 @@
 # FORMA — Scene Studio Data Model & Security
 
-**Version:** 0.1  
-**Phase:** 05 — Technical Architecture  
-**Status:** Proposed implementation specification  
-**Backend:** Supabase PostgreSQL + Auth + Row Level Security  
-**Scope:** Private, single-owner scenes for the MVP
+**Version:** 0.2  
+**Status:** Proposed; collaboration-aware model requires isolated validation  
+**Backend:** Supabase PostgreSQL + Auth + RLS  
+**Scope:** Private scenes with owner/editor/viewer membership
+
+---
 
 ## 1. Principles
 
-- Each scene belongs to one authenticated user.
-- Private scenes are never publicly readable in the MVP.
-- PostgreSQL is the source of truth for persisted scene documents.
-- Persist validated, versioned JSON; never persist Three.js runtime objects, functions, GPU resources, or class instances.
-- Enforce ownership with database Row Level Security (RLS), not merely application checks.
-- Use optimistic concurrency to prevent stale saves from silently overwriting newer work.
-- No sharing, teams, collaboration, marketplace, or public asset tables in the MVP.
+- Scene documents are versioned JSON data, not serialized Three.js runtime objects.
+- The authenticated owner owns the scene; collaboration is granted through explicit membership.
+- RLS is the authorization boundary, not a substitute for application validation.
+- Scene writes are revision-aware and performed through a typed server-authorized command layer.
+- All client/database data is untrusted and validated at runtime.
+- No public sharing or anonymous access in the MVP.
 
-## 2. Data relationship
+## 2. Tables
 
-~~~text
-auth.users
-    |
-    | one-to-many
-    v
-public.scenes
-  id, owner_id, title, document (JSONB),
-  schema_version, revision, created_at, updated_at
-~~~
-
-No separate profile table is required for the initial scene workflow. Supabase Auth owns identity.
-
-## 3. Scenes table
+### `public.scenes`
 
 | Field | Type | Rule |
 |---|---|---|
-| id | uuid | Primary key, generated |
-| owner_id | uuid | Required reference to auth.users |
+| id | uuid | Primary key |
+| owner_id | uuid | Required auth.users reference |
 | title | text | Trimmed, 1–80 characters |
 | document | jsonb | Versioned SceneDocument |
 | schema_version | integer | Initially version 1 |
-| revision | bigint | Starts at 1; increments on update |
+| revision | bigint | Starts at 1; increments on accepted command |
 | created_at | timestamptz | Server generated |
 | updated_at | timestamptz | Server maintained |
 
-Index: owner_id + updated_at descending.
+### `public.scene_members`
 
-## 4. Proposed first migration
+| Field | Type | Rule |
+|---|---|---|
+| scene_id | uuid | FK scenes, cascade delete |
+| user_id | uuid | FK auth.users, cascade delete |
+| role | text | editor or viewer only |
+| invited_by | uuid | Auth user who granted access |
+| created_at | timestamptz | Server generated |
 
-This migration is a reviewable proposal. Apply it through version-controlled Supabase CLI migrations after configuring and testing an isolated project.
+Primary key: scene_id + user_id. Owner is represented by scenes.owner_id, not a duplicate membership.
 
-~~~sql
-create table public.scenes (
-  id uuid primary key default gen_random_uuid(),
-  owner_id uuid not null references auth.users(id) on delete cascade,
-  title text not null
-    check (char_length(btrim(title)) between 1 and 80),
-  document jsonb not null,
-  schema_version integer not null default 1
-    check (schema_version = 1),
-  revision bigint not null default 1
-    check (revision >= 1),
-  created_at timestamptz not null default now(),
-  updated_at timestamptz not null default now(),
-  constraint scenes_document_is_object
-    check (jsonb_typeof(document) = 'object'),
-  constraint scenes_document_version_matches
-    check ((document ->> 'schemaVersion') = schema_version::text)
-);
+### `public.scene_invitations`
 
-create index scenes_owner_updated_idx
-  on public.scenes (owner_id, updated_at desc);
+| Field | Type | Rule |
+|---|---|---|
+| id | uuid | Primary key |
+| scene_id | uuid | FK scenes, cascade delete |
+| recipient_email_normalized | text | Intended recipient identity |
+| role | text | editor or viewer |
+| token_hash | text | Hash of random single-use token |
+| invited_by | uuid | Scene owner |
+| expires_at | timestamptz | Short-lived expiry |
+| accepted_at | timestamptz nullable | Acceptance timestamp |
+| revoked_at | timestamptz nullable | Revocation timestamp |
+| created_at | timestamptz | Server generated |
 
-alter table public.scenes enable row level security;
+Raw tokens must never be stored. Invitation rows are only accessed through trusted server operations. Avoid disclosing whether a recipient email maps to an existing account.
 
-create policy "Owners can read their scenes"
-  on public.scenes for select to authenticated
-  using ((select auth.uid()) = owner_id);
+### Optional command receipt / audit record
 
-create policy "Owners can create their scenes"
-  on public.scenes for insert to authenticated
-  with check ((select auth.uid()) = owner_id);
+A command receipt table may record command ID, scene ID, actor ID, resulting revision, command type, and timestamp for idempotency and reconnect recovery. Store only the minimum validated metadata needed; do not retain arbitrary full scene snapshots or sensitive payloads without a separate retention decision.
 
-create policy "Owners can update their scenes"
-  on public.scenes for update to authenticated
-  using ((select auth.uid()) = owner_id)
-  with check ((select auth.uid()) = owner_id);
+## 3. Scene document V1
 
-create policy "Owners can delete their scenes"
-  on public.scenes for delete to authenticated
-  using ((select auth.uid()) = owner_id);
+```ts
+type Vec3 = [number, number, number];
+type SceneObjectType = "box" | "sphere" | "plane";
 
-create function public.set_scene_updated_at()
-returns trigger language plpgsql as $$
-begin
-  new.updated_at = now();
-  return new;
-end;
-$$;
-
-create trigger scenes_set_updated_at
-before update on public.scenes
-for each row execute function public.set_scene_updated_at();
-
-revoke all on public.scenes from anon;
-grant select, insert, update, delete on public.scenes to authenticated;
-~~~
-
-### Migration notes
-
-- The database checks the top-level document version only. Full nested validation belongs in the application.
-- Version 1 is deliberately constrained. A future migration must explicitly support new versions and include a tested document migration.
-- RLS remains mandatory even if all mutations use server-side routes.
-- The update policy prevents changing owner_id to a different user. Application updates must omit owner_id.
-- The trigger maintains updated_at. The application performs revision increments using compare-and-swap updates.
-- Confirm Supabase role grants and migration conventions in the isolated project before production use.
-
-## 5. Version 1 document contract
-
-~~~ts
-export type Vec3 = [number, number, number];
-export type SceneObjectType = "box" | "sphere" | "plane";
-
-export type SceneDocumentV1 = {
+type SceneDocumentV1 = {
   schemaVersion: 1;
   settings: {
     background: string;
@@ -140,113 +89,119 @@ export type SceneDocumentV1 = {
     material: { color: string };
   }>;
 };
-~~~
+```
 
-The first release supports box, sphere, and plane primitives, object names, visibility, transforms, a background, grid visibility, and a simple color material. Add advanced geometry, lights, cameras, and asset references only through explicit schema evolution.
+The first editor version supports box/sphere/plane primitives, object names, visibility, transforms, background, grid visibility, and simple color materials. Add more features through explicit schema evolution.
 
-### Runtime validation
+## 4. Proposed authorization matrix
 
-Use a runtime schema at every application boundary:
-- Reject unknown document versions and unexpected structure.
-- Require finite transform values.
-- Limit the initial scene to 100 objects.
-- Limit object names and require unique IDs within each document.
-- Restrict primitive types to the supported union.
-- Validate colors against an accepted syntax.
-- Limit serialized document size (initial proposal: 1 MiB).
-- Re-validate data after database reads; persisted JSON is not automatically trusted.
+| Operation | Owner | Editor | Viewer | Non-member |
+|---|---:|---:|---:|---:|
+| Read scene | Yes | Yes | Yes | No |
+| Edit scene | Yes | Yes | No | No |
+| Delete scene | Yes | No | No | No |
+| Rename scene | Yes | Yes | No | No |
+| Add/remove members | Yes | No | No | No |
+| Change roles | Yes | No | No | No |
+| Read presence | Yes | Yes | Yes | No |
 
-These limits are initial guardrails and can be tuned after profiling.
+Every action requires server-side role validation and matching database policy. Viewers must be unable to mutate through API, SQL, or realtime paths.
 
-## 6. Optimistic concurrency
+## 5. RLS policy intent
 
-The revision is a compare-and-swap token.
+- Owner can read/update/delete own scenes.
+- A member can read a scene when a matching scene_members row exists.
+- Owner/editor can update scene documents.
+- Only owner can delete scenes or manage membership/invitations.
+- Viewers have read-only access.
+- Anonymous and non-members have no access.
+- Membership changes are not self-service.
+- Invitations are not directly selectable by ordinary authenticated users.
+- Realtime channels are private and authorized against current membership.
 
-1. Load a scene and retain its revision.
-2. Validate and serialize the edited document.
-3. Update only where both scene ID and expected revision match.
-4. Set revision to expected revision + 1.
-5. If one row is returned, accept the new revision.
-6. If no row is returned, treat it as conflict, deletion, or inaccessible record. Re-fetch metadata and ask the user to reload or reconcile.
-7. On network failure, preserve the local working copy and clearly indicate that it is not saved.
+Avoid recursive RLS policy definitions. Any security-definer helper must pin search_path, use minimal execute grants, and be reviewed. Test policies using actual authenticated database roles. The initial owner-only SQL in older versions of this document must not be treated as sufficient for collaboration.
 
-Illustrative update:
+## 6. Revision-aware command protocol
 
-~~~ts
-const { data, error } = await supabase
-  .from("scenes")
-  .update({
-    document: validatedDocument,
-    schema_version: 1,
-    revision: expectedRevision + 1,
-  })
-  .eq("id", sceneId)
-  .eq("revision", expectedRevision)
-  .select("id, revision, updated_at")
-  .maybeSingle();
+Do not let clients replace a full scene document using a stale revision.
 
-if (error) throw error;
-if (!data) {
-  // Conflict, deletion, or inaccessible scene.
-  // Preserve local edits; never overwrite blindly.
-}
-~~~
+Each edit is a typed command with:
+- command ID (idempotency key);
+- scene ID;
+- expected revision;
+- allowlisted command type;
+- target object ID if relevant;
+- validated payload.
 
-RLS enforces ownership. Revision matching is a concurrency guard, not authorization.
+Trusted server operation:
+1. Validate session and derive actor ID.
+2. Verify owner/editor membership.
+3. Validate command envelope and payload using Zod.
+4. Execute an atomic database transaction.
+5. Verify command ID has not already committed.
+6. Lock/read the latest scene and revision.
+7. Apply the command to the latest validated document.
+8. Increment revision and update the scene.
+9. Record command receipt/resulting revision.
+10. Return authoritative revision and minimal change metadata.
 
-## 7. Required operations
+Concurrent commands are serialized. Same-property edits use commit order; clients display collaborator attribution and clear conflict feedback. Unsafe stale commands are rejected and can be reapplied by the user. Undo is a compensating command, not deletion of another person's work.
 
-| Operation | Required behavior |
-|---|---|
-| List | Only the signed-in user's scenes, newest updated first |
-| Create | Derive owner from trusted session; never accept client owner ID |
-| Load | Query by scene ID and rely on RLS |
-| Update | Validate document and require expected revision |
-| Rename | Validate title and use revision-aware update |
-| Delete | Require UI confirmation and rely on RLS |
-| Sign out | Clear session and private editor data |
+## 7. Realtime behavior
 
-Do not reveal whether an inaccessible scene ID belongs to another user.
+- Supabase Realtime private channels provide scene presence and committed-change notifications.
+- Presence is ephemeral and includes minimal identity, role, selected object, and optional throttled cursor/viewport state.
+- Database revision is authoritative; realtime notification is not durable.
+- Ignore duplicate/older revisions.
+- On reconnect, re-authorize, fetch latest snapshot, reconcile command receipts, and restore safe pending commands.
+- Revoked users are unsubscribed and private state cleared.
+- Do not broadcast full documents or high-frequency pointer events as durable mutations.
 
-## 8. Security test matrix
+See [Real-Time Collaboration](REALTIME_COLLABORATION.md).
 
-Run against an isolated local or disposable test project using Alice, Bob, and an anonymous session.
+## 8. Validation and limits
 
-| Test | Expected |
-|---|---|
-| Anonymous lists scenes | No rows |
-| Alice creates a scene owned by Alice | Allowed |
-| Alice inserts a scene owned by Bob | Denied |
-| Alice reads her own scene | Allowed |
-| Bob reads, updates, or deletes Alice's scene | Denied / no row |
-| Alice changes owner to Bob | Denied |
-| Unsupported document version | Rejected |
-| Malformed nested document | Rejected by application validation |
-| Stale revision update | No row updated; conflict handled |
-| Expired session | Authenticated operations fail |
-| Anonymous access to future private storage | Denied |
+- Reject unknown document/schema versions and unexpected properties.
+- Require finite transform values and supported primitive types.
+- Enforce unique object IDs and bounded object names.
+- Initial object-count proposal: 100 per scene.
+- Initial serialized scene document proposal: 1 MiB.
+- Validate color syntax and numeric ranges.
+- Validate every command and every generator parameter at runtime.
+- Revalidate after database reads.
+- Establish collaboration command size/rate limits per user and scene before launch.
 
-RLS tests must never run against production user data.
+Limits are initial proposals; profile and test before production.
 
-## 9. Storage decision
+## 9. Security and testing matrix
 
-Do not create a storage bucket for the initial primitive-only editor. When thumbnails or uploads are scheduled:
-- Keep buckets private by default.
-- Use owner-scoped object paths and storage policies.
-- Validate actual content and byte size server-side.
-- Do not trust filename extensions or browser MIME declarations.
-- Add orphan cleanup and deletion behavior before shipping uploads.
+Test in an isolated Supabase environment using Alice (owner), Bob (editor), Casey (viewer), Dana (revoked member), and anonymous:
 
-## 10. Deferred capabilities
+- Anonymous/non-member cannot read scene or join presence.
+- Owner can invite, change role, revoke; others cannot.
+- Editor can edit but cannot manage membership or delete.
+- Viewer can read/presence but cannot mutate.
+- Invitation token is single-use, expires, is identity-bound, and is stored hashed.
+- Duplicate command ID is idempotent.
+- Concurrent commands produce deterministic revisions.
+- Missed realtime events recover from snapshot.
+- Revocation removes access for connected clients.
+- Malformed and oversized commands are rejected.
+- Owner deletion cleans related rows through explicit cascade/cleanup.
 
-Public sharing, share tokens, team ownership, collaboration, realtime presence, comments, activity feeds, version-history UI, arbitrary uploads, asset libraries, and marketplace features require separate product and threat-model review.
+## 10. Storage decision
+
+No storage bucket is needed for the primitive-only editor. When assets or thumbnails are introduced, use private buckets, owner/member-scoped policies, server-side content and size validation, and orphan cleanup.
 
 ## 11. Acceptance criteria
 
-- Migration is version-controlled and reproducible in a clean test database.
-- RLS tests prove anonymous and cross-user isolation.
-- Validation rejects malformed and unsupported scene documents.
-- Optimistic concurrency prevents silent stale overwrites.
-- UI preserves local work and communicates save failures.
-- Sign-out and deletion do not leave private content visible.
-- No production secrets are committed.
+- Migrations apply cleanly to a fresh isolated database.
+- RLS proves owner/editor/viewer/revoked/anonymous boundaries.
+- Invitation flow is real and tested; no fake success states.
+- Commands are authorized, validated, idempotent, and revision ordered.
+- Multiple clients see committed changes without manual refresh.
+- Reconnect restores authoritative state without silent loss.
+- Failed saves preserve local work and explain recovery.
+- No production secrets or raw invitation tokens are committed.
+
+**Status:** Proposed architecture only. No migration has been applied; no RLS, invitation, or realtime test has been run.
