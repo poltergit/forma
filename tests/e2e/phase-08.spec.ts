@@ -33,8 +33,9 @@ test("Motion Lab parameters change the motion study and can be paused", async ({
   await expect(page.getByText("PAUSED")).toBeVisible();
 
   const timeline = page.getByRole("slider", { name: /motion timeline position/i });
-  await timeline.fill("65");
-  await expect(page.getByText("65%")).toBeVisible();
+  await timeline.focus();
+  await timeline.press("End");
+  await expect(page.getByText("100%")).toBeVisible();
   await expect(page.getByText("PAUSED")).toBeVisible();
   await expect(page.getByText(/forma\.motion-recipe/)).toBeVisible();
 
@@ -97,7 +98,8 @@ test("Playground filters studies and opens the matching direct anchor", async ({
 test("Elastic Matter controls change the typographic study", async ({ page }) => {
   await page.goto("/playground#elastic-type");
   const tension = page.locator("#elastic-type input[type=range]").nth(0);
-  await tension.fill("90");
+  await tension.focus();
+  for (let step = 0; step < 14; step += 1) await tension.press("ArrowRight");
   await expect(page.locator("#elastic-type output").first()).toHaveText("90%");
   const invert = page.getByRole("button", { name: /invert tension/i });
   await invert.click();
