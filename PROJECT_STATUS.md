@@ -29,7 +29,7 @@ See docs/UX_SPECIFICATION.md for sitemap, navigation, page structures, journeys,
 ## Phase 04 — Approved
 See docs/PHASE_04_REVIEW.md for the approved visual direction and review. Seven standalone prototypes are design artifacts, not production features. Source-level checks were completed; no browser rendering, assistive-technology, or direct reference-site validation is claimed.
 
-## Phase 05 — In progress
+## Phase 05 — In progress\n- Added Scene Command Engine contract and atomic RPC migration draft (`docs/SCENE_COMMAND_ENGINE.md`, `supabase/migrations/20261121000200_forma_scene_command_rpc.sql`). Not executed.
 - Added a review-only Supabase schema/RLS migration draft at `supabase/migrations/20261121000100_forma_core_schema.sql` and its review checklist at `docs/DATABASE_MIGRATION_REVIEW.md`. Neither has been applied or executed.
 - Core/supporting stack, ambitious generative scope, and collaboration MVP approved.
 - Collaboration-aware Scene Studio data model and role model documented.
