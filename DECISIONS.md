@@ -48,7 +48,6 @@ This file records decisions that have been explicitly approved. Proposed ideas d
 **Status:** Accepted  
 **Decision:** Work phase by phase. Require explicit product-owner approval before advancing beyond major phases.
 
-
 ## D-010 — Scene Studio UX layout
 
 **Status:** Accepted  
@@ -64,13 +63,10 @@ This file records decisions that have been explicitly approved. Proposed ideas d
 **Status:** Accepted  
 **Decision:** Build a simplified mobile editing experience with viewport-first interaction and touch-appropriate controls. Do not compress the full desktop editor into a narrow screen.
 
-
 ## D-013 — Phase 04 visual design system
 
 **Status:** Accepted  
 **Decision:** The product owner approved the Phase 04 Visual Design System and FORM IN MOTION direction on 2026-11-20. The consolidated review package is recorded in `docs/PHASE_04_REVIEW.md`. Outstanding browser, assistive-technology, and direct reference-site validation remain follow-up tasks; approval does not imply those checks have passed.
-
-
 
 ## D-014 — Phase 05 application technology stack
 
@@ -86,3 +82,14 @@ This file records decisions that have been explicitly approved. Proposed ideas d
 
 **Implementation note:** Exact dependency versions, service plan limits, environment configuration, and deployment settings must be verified at implementation time. Supporting recommendations such as Zustand, Zod, testing libraries, and specific server/client data-access patterns are not included in this approval and remain subject to review.
 
+## D-015 — Experiential ambition: spatial, generative, performative FORMA
+
+**Status:** Accepted as a product-direction requirement  
+**Decision date:** 2026-11-21  
+**Decision:** FORMA must be fancy, creative, intentionally messy, generative, performative, and deeply interactive. It must use dimensional design, meaningful 3D experiences, spatial transitions, expressive motion, scroll-linked storytelling, and generative systems where they strengthen the concept.
+
+**Quality bar:** No AI slop, generic visual filler, meaningless particles, repetitive decorative 3D, scroll hijacking, or fake interactions. Visual complexity must be art-directed; controls must have meaningful consequences; generative outputs should be controllable and reproducible where saving or sharing is offered.
+
+**Guardrails:** Accessibility, native scrolling, reduced-motion alternatives, keyboard/touch support, WebGL fallbacks, and performance budgets remain mandatory. This decision does not authorize unlimited scope or make every page a 3D canvas. Discovery surfaces may be theatrical; creation tools must remain precise and usable.
+
+**Reference:** `docs/EXPERIENCE_DIRECTION.md`.
