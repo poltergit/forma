@@ -42,7 +42,7 @@ function polygon(
 export function PlaygroundExperience() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const frameRef = useRef<HTMLDivElement>(null);
-  const pointerRef = useRef({ x: 0.5, y: 0.5, active: false });
+  const [pointer, setPointer] = useState({ x: 0.5, y: 0.5, active: false });
   const [seed, setSeed] = useState(27);
   const [density, setDensity] = useState(64);
   const [influence, setInfluence] = useState(58);
@@ -71,7 +71,6 @@ export function PlaygroundExperience() {
       context.fillRect(0, 0, width, height);
 
       const points = createPoints(seed, density);
-      const pointer = pointerRef.current;
       const originX = width * (pointer.active ? pointer.x : 0.5);
       const originY = height * (pointer.active ? pointer.y : 0.5);
       const influenceRadius = Math.min(width, height) * (0.12 + influence / 180);
@@ -166,50 +165,22 @@ export function PlaygroundExperience() {
     const observer = new ResizeObserver(draw);
     observer.observe(frame);
     return () => observer.disconnect();
-  }, [density, influence, seed]);
+  }, [density, influence, seed, pointer]);
 
   const updatePointer = (event: React.PointerEvent<HTMLDivElement>) => {
     const bounds = event.currentTarget.getBoundingClientRect();
-    pointerRef.current = {
+    setPointer({
       x: (event.clientX - bounds.left) / bounds.width,
       y: (event.clientY - bounds.top) / bounds.height,
       active: true,
-    };
+    });
     setStatus("FIELD DISPLACED");
-    const canvas = canvasRef.current;
-    const frame = frameRef.current;
-    if (canvas && frame) {
-      const resize = new Event("forma-redraw");
-      frame.dispatchEvent(resize);
-    }
   };
 
   const resetPointer = () => {
-    pointerRef.current = { x: 0.5, y: 0.5, active: false };
+    setPointer({ x: 0.5, y: 0.5, active: false });
     setStatus("FIELD AT REST");
   };
-
-  useEffect(() => {
-    const frame = frameRef.current;
-    if (!frame) return;
-    const redraw = () => {
-      const canvas = canvasRef.current;
-      if (!canvas) return;
-      const bounds = frame.getBoundingClientRect();
-      const ratio = Math.min(window.devicePixelRatio || 1, 1.5);
-      canvas.width = Math.floor(bounds.width * ratio);
-      canvas.height = Math.floor(bounds.height * ratio);
-      const context = canvas.getContext("2d", { alpha: false });
-      if (!context) return;
-      context.setTransform(ratio, 0, 0, ratio, 0, 0);
-      context.fillStyle = "#141619";
-      context.fillRect(0, 0, bounds.width, bounds.height);
-      // ResizeObserver triggers the full deterministic redraw after pointer state changes.
-      window.dispatchEvent(new Event("resize"));
-    };
-    frame.addEventListener("forma-redraw", redraw);
-    return () => frame.removeEventListener("forma-redraw", redraw);
-  }, []);
 
   return (
     <div className={styles.experience}>
