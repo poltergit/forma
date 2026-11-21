@@ -2,19 +2,12 @@
 
 import { useCallback, useEffect, useRef, useState, type PointerEvent, type KeyboardEvent } from "react";
 import styles from "./playground-experience.module.css";
+import { createSeededRandom } from "@/lib/generative/seeded-random";
 
 type Point = { x: number; y: number; depth: number; size: number; tone: number };
 
-function random(seed: number) {
-  let value = seed >>> 0;
-  return () => {
-    value = (value * 1664525 + 1013904223) >>> 0;
-    return value / 4294967296;
-  };
-}
-
 export function createPoints(seed: number, amount: number): Point[] {
-  const next = random(seed);
+  const next = createSeededRandom(seed);
   return Array.from({ length: amount }, () => ({
     x: next(),
     y: next(),
