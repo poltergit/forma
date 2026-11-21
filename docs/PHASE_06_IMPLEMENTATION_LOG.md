@@ -10,13 +10,13 @@
 - Added the application manifest, Node engine constraint, Next configuration, ESLint flat configuration, Vitest configuration, and Playwright configuration.
 - Integrated the canonical `design/tokens.css` file into the application stylesheet rather than duplicating its palette or spacing system.
 - Added production font loading through `next/font/google` for Space Grotesk, Inter, and JetBrains Mono.
-- Added the root layout, metadata, responsive site shell, skip link, focus-visible treatment, reduced-motion baseline, loading state, error boundary, and not-found page.
+- Added the root layout, metadata, responsive site shell, skip link, focus-visible treatment, reduced-motion baseline, loading state, route error boundary, root global error boundary, and not-found page.
 - Added a deliberately restrained foundation home screen. It is not the final Phase 07 cinematic experience.
 - Added separate Supabase browser and server client factories using the publishable key only.
 - Added a Next.js 16 `src/proxy.ts` request boundary that refreshes Supabase sessions through `getClaims` and forwards refreshed cookies.
 - Added explicit missing-configuration errors; the app does not pretend to be connected when environment values are absent.
 - Added Zod boundary schemas for scene vectors and colors, plus a small Zustand editor-panel store.
-- Added representative Zod unit tests and a Playwright smoke test.
+- Added representative Zod, public-environment, and Zustand store unit tests, plus a Playwright smoke test.
 
 ## Important boundaries
 
@@ -47,6 +47,6 @@ These are outstanding acceptance requirements, not implied successes.
 2. Commit the generated npm lockfile.
 3. Run lint, typecheck, unit tests, Playwright, and production build; fix all failures.
 4. Add CI with the same locked install and verification commands.
-5. Complete the Supabase SSR request/session boundary appropriate to the installed Next.js version.
-6. Inspect the rendered foundation at desktop, tablet, and mobile widths.
+5. Inspect the rendered foundation at desktop, tablet, and mobile widths.
+6. Resolve any runtime, accessibility, and responsive defects found during verification.
 7. Present the Phase 06 review for explicit product-owner approval before Phase 07.
