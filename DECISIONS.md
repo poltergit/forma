@@ -66,21 +66,29 @@ This file records decisions that have been explicitly approved. Proposed ideas d
 ## D-013 — Phase 04 visual design system
 
 **Status:** Accepted  
-**Decision:** The product owner approved the Phase 04 Visual Design System and FORM IN MOTION direction on 2026-11-20. The consolidated review package is recorded in `docs/PHASE_04_REVIEW.md`. Outstanding browser, assistive-technology, and direct reference-site validation remain follow-up tasks; approval does not imply those checks have passed.
+**Decision:** The product owner approved the Phase 04 Visual Design System and FORM IN MOTION direction on 2026-11-20. Outstanding browser, assistive-technology, and direct reference-site validation remain follow-up tasks; approval does not imply those checks have passed.
 
-## D-014 — Phase 05 application technology stack
+## D-014 — Phase 05 application technology stack and supporting libraries
 
 **Status:** Accepted  
-**Decision date:** 2026-11-20  
+**Decision date:** 2026-11-21  
 **Decision:** The product owner approved:
-- Application framework: Next.js App Router.
-- Language: TypeScript.
-- Backend: Supabase.
-- 3D engine: Three.js with React Three Fiber.
-- Hosting: Vercel.
-- Styling: framework-independent CSS design tokens with CSS Modules.
+- Next.js App Router.
+- TypeScript.
+- Supabase.
+- Three.js + React Three Fiber.
+- Vercel.
+- CSS design tokens + CSS Modules.
+- Zustand for editor-local state.
+- Zod for runtime validation.
+- Drei selectively for useful React Three Fiber helpers.
+- Vitest for unit tests.
+- React Testing Library for component tests.
+- Playwright for browser/end-to-end tests.
+- axe-core for automated accessibility checks.
+- Start with Next.js server components/actions and focused server queries; defer TanStack Query unless a demonstrated client cache requirement emerges.
 
-**Implementation note:** Exact dependency versions, service plan limits, environment configuration, and deployment settings must be verified at implementation time. Supporting recommendations such as Zustand, Zod, testing libraries, and specific server/client data-access patterns are not included in this approval and remain subject to review.
+**Implementation note:** Exact package versions and compatibility must be checked at implementation time. This does not imply packages have been installed or tests configured.
 
 ## D-015 — Experiential ambition: spatial, generative, performative FORMA
 
@@ -93,3 +101,23 @@ This file records decisions that have been explicitly approved. Proposed ideas d
 **Guardrails:** Accessibility, native scrolling, reduced-motion alternatives, keyboard/touch support, WebGL fallbacks, and performance budgets remain mandatory. This decision does not authorize unlimited scope or make every page a 3D canvas. Discovery surfaces may be theatrical; creation tools must remain precise and usable.
 
 **Reference:** `docs/EXPERIENCE_DIRECTION.md`.
+
+## D-016 — Ambitious generative experience scope
+
+**Status:** Accepted  
+**Decision date:** 2026-11-21  
+**Decision:** Prioritize a richer generative playground and more elaborate spatial experiences in the first release. This includes a distinctive spatial Home experience, isolated Playground studies, parameter-rich Motion Lab work, reproducible saved generative artifacts, and the constrained Scene Studio MVP.
+
+**Scope discipline:** Ambitious refers to creative quality and breadth of authored experiences, not unbounded feature complexity. Each experience must have a clear concept, real interaction, bounded rendering cost, keyboard/touch behavior, reduced-motion alternative, and WebGL fallback. No arbitrary user code execution or generic AI prompt-to-scene feature is implied.
+
+## D-017 — Real-time collaboration in Scene Studio MVP
+
+**Status:** Accepted  
+**Decision date:** 2026-11-21  
+**Decision:** Include invite-only, multi-user real-time collaboration in the first release of Scene Studio.
+
+**MVP behavior:** Scene owners can invite collaborators and assign owner/editor/viewer permissions; multiple authenticated users can join a private scene, see presence, and receive committed scene changes without refreshing. Mutations are authorized and ordered by a server/database authority, with explicit conflict handling and reconnect recovery.
+
+**Boundaries:** No public rooms, anonymous editing, voice/video, chat, offline multi-user merge, team workspaces, or CRDT-based conflict-free editing in the MVP. The first implementation uses Supabase Auth, PostgreSQL/RLS, and Supabase Realtime subject to a technical spike validating authorization, quotas, and synchronization behavior. A dedicated collaboration service requires a separate approval and cost/security review.
+
+**Reference:** `docs/REALTIME_COLLABORATION.md`.
