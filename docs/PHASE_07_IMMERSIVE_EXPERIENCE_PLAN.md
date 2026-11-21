@@ -1,6 +1,6 @@
 # FORMA — Phase 07: Landing Page & Immersive Experience
 
-**Version:** 0.1  
+**Version:** 0.2  
 **Status:** In progress  
 **Owner authorization:** Product owner directed progression on 2026-11-21  
 **Implementation branch:** `phase-07/immersive-experience`
@@ -118,11 +118,11 @@ Requirements:
 
 ## 9. Implementation sequence
 
-1. Audit existing shell, header/footer, tokens, and Phase 04 prototype; retain useful foundations and remove placeholder-only content where replaced.
-2. Establish page narrative, section hierarchy, and a low-cost responsive composition.
-3. Build the hero's original visual system and test it at mobile-first breakpoints.
-4. Add the interaction model and accessible alternatives.
-5. Add scroll-linked narrative transitions with reduced-motion behavior.
+1. **Started.** Audited the existing shell, tokens, and foundation route; retained the shared shell and replaced the placeholder home content with the first authored narrative slice.
+2. **Initial implementation committed.** Established the four-part page narrative: hero, manifesto, territories, and invitation.
+3. **Initial implementation committed; visual QA pending.** Added a layered CSS 3D sculpture with three selectable arrangements.
+4. **Initial implementation committed; browser validation pending.** Added a semantic recompose button and polite live state announcement.
+5. **Pending.** Add scroll-linked transitions only after initial visual QA.
 6. Introduce WebGL/R3F only if the hero benefits from real 3D; lazy-load and provide fallback.
 7. Build editorial discipline previews and navigation.
 8. Add automated interaction, accessibility, responsive, and performance checks.
