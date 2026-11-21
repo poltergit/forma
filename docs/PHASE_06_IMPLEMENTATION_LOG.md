@@ -13,13 +13,14 @@
 - Added the root layout, metadata, responsive site shell, skip link, focus-visible treatment, reduced-motion baseline, loading state, error boundary, and not-found page.
 - Added a deliberately restrained foundation home screen. It is not the final Phase 07 cinematic experience.
 - Added separate Supabase browser and server client factories using the publishable key only.
+- Added a Next.js 16 `src/proxy.ts` request boundary that refreshes Supabase sessions through `getClaims` and forwards refreshed cookies.
 - Added explicit missing-configuration errors; the app does not pretend to be connected when environment values are absent.
 - Added Zod boundary schemas for scene vectors and colors, plus a small Zustand editor-panel store.
 - Added representative Zod unit tests and a Playwright smoke test.
 
 ## Important boundaries
 
-- The Supabase factories are scaffolding only. No project credentials, middleware/proxy session refresh, database calls, migrations, RLS tests, invitation flow, or Realtime integration have been configured or verified.
+- The Supabase factories are scaffolding only. No project credentials, database calls, migrations, RLS tests, invitation flow, or Realtime integration have been configured or verified. The proxy source is committed but has not been runtime-tested.
 - The home screen is a foundation placeholder, not the approved final creative experience.
 - Three.js and React Three Fiber are intentionally not imported into the root bundle. They will be introduced behind a client-only, lazy-loaded Scene Studio boundary.
 - No privileged service-role key is read or exposed by the browser client.
