@@ -223,7 +223,7 @@ For each major experience, review:
 
 This document captures the product owner's explicit experiential ambition. It strengthens the approved FORM IN MOTION direction without authorizing unlimited technical scope or replacing the Phase 03 UX, Phase 04 design system, or Phase 05 architecture.
 
-Specific scenes, effects, generator types, and interaction implementations must be prototyped and reviewed. The production application has not started. No browser performance, WebGL compatibility, or device validation is claimed by this document.
+Specific scenes, effects, generator types, and interaction implementations must be prototyped and reviewed. The production application has a committed Next.js foundation and an owner-approved Phase 07 landing experience. Specific experiment implementations and feature surfaces remain to be built. No browser performance, WebGL compatibility, or device validation is claimed by this direction document.
 
 ## 13. Cross-product experience contract — reaffirmed 2026-11-21
 
