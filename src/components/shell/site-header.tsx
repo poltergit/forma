@@ -2,6 +2,8 @@ import Link from "next/link";
 import styles from "./site-header.module.css";
 
 const navigation = [
+  { label: "PLAYGROUND", href: "/playground" },
+  { label: "MOTION LAB", href: "/motion-lab" },
   { label: "EXPERIENCE", href: "/#the-idea" },
   { label: "DISCIPLINES", href: "/#disciplines" },
 ];
