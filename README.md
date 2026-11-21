@@ -26,6 +26,7 @@ FORMA's ambition is to feel like a spatial, generative playground—not a conven
 - [Phase 05 Architecture Review](docs/PHASE_05_REVIEW.md) — supporting dependency recommendations, application boundaries, generative runtime scope, non-functional requirements, and approval checklist.
 
 - [Phase 05 Technical Architecture](docs/TECHNICAL_ARCHITECTURE.md) — approved core stack and system architecture, with remaining implementation details under review.
+- [Generative Artifact Data Model](docs/GENERATIVE_ARTIFACT_MODEL.md) — proposed private, reproducible generator recipes, versioning, validation, and ownership policies.
 - [Scene Studio Data Model & Security](docs/SCENE_STUDIO_DATA_MODEL.md) — proposed PostgreSQL migration, RLS policies, document contract, validation, and revision-aware saving.
 - [Authentication & Environment Specification](docs/AUTH_AND_ENVIRONMENT.md) — proposed session flows, route access, environment separation, and deployment security.
 
