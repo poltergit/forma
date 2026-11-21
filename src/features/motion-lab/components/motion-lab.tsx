@@ -33,7 +33,7 @@ export function MotionLab() {
   return (
     <section className={styles.workspace} aria-label="Interactive motion instrument">
       <div className={styles.stageColumn}>
-        <div className={styles.stageMeta}><span>LIVE STAGE / 001</span><span className={styles.live}><i /> {paused ? "PAUSED" : "PLAYING"}</span></div>
+        <div className={styles.stageMeta}><span>LIVE STAGE / 001</span><span className={styles.live} role="status" aria-live="polite"><i /> {paused ? "PAUSED" : "PLAYING"}</span></div>
         <div
           className={`${styles.stage} ${paused ? styles.paused : ""}`}
           data-motion={mode}
@@ -50,7 +50,7 @@ export function MotionLab() {
         </div>
         <div className={styles.stageFooter}>
           <span>{selected.note}</span>
-          <button type="button" onClick={() => setPaused((value) => !value)}>{paused ? "▶ PLAY" : "Ⅱ PAUSE"}</button>
+          <button type="button" aria-pressed={paused} aria-label={paused ? "Play motion" : "Pause motion"} onClick={() => setPaused((value) => !value)}>{paused ? "▶ PLAY" : "Ⅱ PAUSE"}</button>
         </div>
       </div>
       <aside className={styles.panel} aria-label="Motion parameters">
