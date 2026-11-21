@@ -86,7 +86,7 @@ Run tests through actual authenticated user contexts and direct data APIs, not o
 | INV-18 | Remove member while editor submits a command | Scene-row lock serializes operations; no post-removal command is authorized |
 | INV-19 | Request invitation after prior invite expires | Expired row retired; new invitation may be created |
 | INV-20 | Inspect DB, SQL args, logs, analytics, and browser network | Only SHA-256 digest reaches DB; raw token is not logged or sent in query string |
-| INV-21 | Burst invite creation/acceptance | Server-side rate limiter throttles requests without account enumeration |
+| INV-21 | Burst invite creation/acceptance | Server-side rate limiter throttles requests without account enumeration |\n| INV-22 | Non-owner calls invitation list RPC | Denied |\n| INV-23 | Owner lists invitations | Metadata returned; token hash never exposed |
 
 ### Invitation implementation-specific checks
 
