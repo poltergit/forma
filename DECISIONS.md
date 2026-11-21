@@ -141,3 +141,21 @@ This file records decisions that have been explicitly approved. Proposed ideas d
 **Verification boundary:** The reported local results were ESLint, TypeScript, eight Vitest tests, six Playwright tests, and a Next.js production build. They were not independently rerun in this environment. The install used Node.js 26 with `--engine-strict=false`, outside the declared Node range. A clean Node 22 `npm ci`, CI workflow, and manual rendered/assistive-technology review remain follow-up requirements; no deployment or Supabase integration is implied.
 
 **Reference:** `docs/PHASE_06_REVIEW.md`, `docs/PHASE_07_IMMERSIVE_EXPERIENCE_PLAN.md`.
+## D-020 — Cross-product creative experience mandate
+
+**Status:** Accepted as a product-wide experience requirement  
+**Decision date:** 2026-11-21  
+**Decision:** The product owner reaffirmed that the experience must be interactive, fancy, creative, intentionally messy, generative, performative, and memorable from the first page through every product feature. FORMA should aim to surprise and delight both its audience and its creator—not merely present a polished interface.
+
+**Experience bar:**
+- Art-directed controlled chaos: asymmetric composition, bold scale, overlap, distortion, unexpected rhythm, and expressive typography, all governed by clear hierarchy.
+- Meaningful dimensionality: purposeful 3D, spatial layouts, object transformations, camera movement, and transitions when they strengthen the concept.
+- Interaction throughout: real responses to pointer, touch, keyboard, scrolling, dragging, and user decisions; no decorative controls pretending to work.
+- Generative authorship: procedural variation shaped by understandable parameters, constraints, and reproducible seeds where persistence or sharing is promised.
+- A coherent experiential language across Home, Playground, Motion Lab, Scene Studio, Archive, About, and Account, while each surface retains its own character.
+
+**Non-negotiable distinction:** messy in art direction, never messy in usability. Navigation, reading, editing, and task completion must remain understandable. Spectacle must not compromise accessibility, responsive behavior, performance, reduced-motion support, keyboard/touch operation, or WebGL fallbacks.
+
+**Rejections:** generic AI-looking filler, template layouts, meaningless particles, repetitive 3D decoration, gratuitous effects, fake functionality, scroll hijacking, and complexity without a concept.
+
+**Reference:** `docs/EXPERIENCE_DIRECTION.md`.
