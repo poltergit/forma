@@ -30,7 +30,9 @@
 .stageCoordinates, .stageInstruction { position: absolute; bottom: 1rem; color: var(--color-text-muted); font: 8px var(--font-mono); letter-spacing: .1em; }
 .stageCoordinates { left: 1rem; }
 .stageInstruction { right: 1rem; }
-.reducedMotionNote { margin: 0; border-top: 1px solid var(--color-border); padding: .8rem 1rem; color: var(--color-text-muted); font: 9px/1.5 var(--font-mono); }\n.reducedMotionNote[hidden], .timeline[hidden] { display: none; }\n.timeline { display: grid; gap: .65rem; padding: .9rem 1rem; border-top: 1px solid var(--color-border); background: #111315; }
+.reducedMotionNote { margin: 0; border-top: 1px solid var(--color-border); padding: .8rem 1rem; color: var(--color-text-muted); font: 9px/1.5 var(--font-mono); }
+.reducedMotionNote[hidden], .timeline[hidden] { display: none; }
+.timeline { display: grid; gap: .65rem; padding: .9rem 1rem; border-top: 1px solid var(--color-border); background: #111315; }
 .timelineMeta, .timelineScale, .curve > div, .presets > span, .recipe > div { display: flex; justify-content: space-between; gap: .7rem; color: var(--color-text-muted); font: 8px var(--font-mono); letter-spacing: .1em; }
 .timelineMeta output { color: var(--brand-lime); }
 .timeline input { width: 100%; accent-color: var(--brand-lime); cursor: ew-resize; }
