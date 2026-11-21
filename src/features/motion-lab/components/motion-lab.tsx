@@ -1,10 +1,17 @@
 "use client";
 
-import { useState, type CSSProperties } from "react";
+import { useMemo, useState, type CSSProperties } from "react";
 import styles from "./motion-lab.module.css";
 
 type MotionMode = "orbit" | "pulse" | "shift" | "stagger";
 type Easing = "ease-in-out" | "linear" | "cubic-bezier(.2,.8,.2,1)" | "steps(5,end)";
+
+const curvePaths: Record<Easing, string> = {
+  "ease-in-out": "M 8 70 C 28 70, 30 10, 50 10 S 72 70, 92 70",
+  linear: "M 8 70 L 92 10",
+  "cubic-bezier(.2,.8,.2,1)": "M 8 70 C 20 10, 52 4, 92 10",
+  "steps(5,end)": "M 8 70 H 25 V 58 H 42 V 46 H 59 V 34 H 76 V 22 H 92",
+};
 
 const modes: Array<{ id: MotionMode; label: string; note: string }> = [
   { id: "orbit", label: "Orbit", note: "A body moving around an invisible center." },
@@ -19,6 +26,8 @@ export function MotionLab() {
   const [intensity, setIntensity] = useState(50);
   const [easing, setEasing] = useState<Easing>("ease-in-out");
   const [paused, setPaused] = useState(false);
+  const [progress, setProgress] = useState(0);
+  const [copied, setCopied] = useState(false);
 
   const reset = () => {
     setMode("orbit");
@@ -26,9 +35,27 @@ export function MotionLab() {
     setIntensity(50);
     setEasing("ease-in-out");
     setPaused(false);
+    setProgress(0);
+    setCopied(false);
   };
 
   const selected = modes.find((item) => item.id === mode) ?? modes[0];
+  const recipe = useMemo(() => ({
+    schema: "forma.motion-recipe",
+    version: 1,
+    generator: "motion-lab.basic-motion",
+    generatorVersion: "1.0.0",
+    parameters: { behavior: mode, durationSeconds: duration, intensity, easing },
+  }), [mode, duration, intensity, easing]);
+
+  const copyRecipe = async () => {
+    try {
+      await navigator.clipboard.writeText(JSON.stringify(recipe, null, 2));
+      setCopied(true);
+    } catch {
+      setCopied(false);
+    }
+  };
 
   return (
     <section className={styles.workspace} aria-label="Interactive motion instrument">
@@ -41,12 +68,18 @@ export function MotionLab() {
             "--duration": `${duration}s`,
             "--intensity": intensity / 50,
             "--easing": easing,
+            "--scrub-delay": "-" + ((progress / 100) * duration * 2) + "s",
           } as CSSProperties}
         >
           <span className={styles.cornerMark} aria-hidden="true">+</span>
           <div className={`${styles.object} ${styles[mode]}`} aria-hidden="true"><i /><i /><i /></div>
           <span className={styles.stageCoordinates}>X / 0.00 &nbsp; Y / 1.00 &nbsp; Z / 0.50</span>
           <span className={styles.stageInstruction}>CHANGE THE PARAMETERS → CHANGE THE FEELING</span>
+        </div>
+        <div className={styles.timeline}>
+          <div className={styles.timelineMeta}><span>SCRUB / FREEZE AT A MOMENT</span><output>{progress}%</output></div>
+          <input aria-label="Motion timeline position" type="range" min="0" max="100" step="1" value={progress} onChange={(event) => { setProgress(Number(event.target.value)); setPaused(true); }} />
+          <div className={styles.timelineScale}><span>0:00</span><span>{duration.toFixed(1)}s / LOOP</span></div>
         </div>
         <div className={styles.stageFooter}>
           <span>{selected.note}</span>
@@ -84,6 +117,25 @@ export function MotionLab() {
             <option value="steps(5,end)">Stepped</option>
           </select>
         </label>
+        <div className={styles.curve}>
+          <div><span>CURVE / RESPONSE</span><span>{easing === "ease-in-out" ? "BALANCED" : easing === "linear" ? "CONSTANT" : easing === "steps(5,end)" ? "DISCRETE" : "DECELERATE"}</span></div>
+          <svg viewBox="0 0 100 80" role="img" aria-label="Selected easing curve">
+            <path className={styles.curveGrid} d="M8 10V70H92 M8 40H92 M50 10V70" />
+            <path className={styles.curveLine} d={curvePaths[easing]} />
+          </svg>
+        </div>
+        <div className={styles.presets}>
+          <span>STARTING POINTS</span>
+          <div>
+            <button type="button" onClick={() => { setMode("orbit"); setDuration(6); setIntensity(35); setEasing("ease-in-out"); setProgress(0); setPaused(false); }}>DRIFT / 01</button>
+            <button type="button" onClick={() => { setMode("pulse"); setDuration(2); setIntensity(85); setEasing("cubic-bezier(.2,.8,.2,1)"); setProgress(0); setPaused(false); }}>IMPACT / 02</button>
+            <button type="button" onClick={() => { setMode("stagger"); setDuration(5); setIntensity(55); setEasing("steps(5,end)"); setProgress(0); setPaused(false); }}>GLITCH / 03</button>
+          </div>
+        </div>
+        <div className={styles.recipe}>
+          <div><span>REPRODUCIBLE RECIPE / JSON</span><button type="button" onClick={copyRecipe}>{copied ? "COPIED ✓" : "COPY RECIPE ↗"}</button></div>
+          <pre>{JSON.stringify(recipe, null, 2)}</pre>
+        </div>
         <button className={styles.reset} type="button" onClick={reset}>↺ RESET PARAMETERS</button>
       </aside>
     </section>
