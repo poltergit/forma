@@ -26,8 +26,8 @@ export function MotionLab() {
   const [easing, setEasing] = useState<Easing>("ease-in-out");
   const [paused, setPaused] = useState(false);
   const [progress, setProgress] = useState(0);
-  const [copied, setCopied] = useState(false);
-  const [copyMessage, setCopyMessage] = useState("");
+  const [copiedRecipe, setCopiedRecipe] = useState<string | null>(null);
+  const [copyStatus, setCopyStatus] = useState<{ recipeKey: string; message: string } | null>(null);
   const [reducedMotion, setReducedMotion] = useState(false);
 
   const reset = () => {
@@ -37,8 +37,8 @@ export function MotionLab() {
     setEasing("ease-in-out");
     setPaused(false);
     setProgress(0);
-    setCopied(false);
-    setCopyMessage("");
+    setCopiedRecipe(null);
+    setCopyStatus(null);
   };
 
   const selected = modes.find((item) => item.id === mode) ?? modes[0];
@@ -49,6 +49,9 @@ export function MotionLab() {
     if (animation) animation.currentTime = 0;
   }, [duration, easing, mode, paused, progress, reducedMotion]);
   const recipe = useMemo(() => createMotionRecipe(mode, duration, intensity, easing), [mode, duration, intensity, easing]);
+  const recipeKey = JSON.stringify(recipe);
+  const copied = copiedRecipe === recipeKey;
+  const copyMessage = copyStatus?.recipeKey === recipeKey ? copyStatus.message : "";
 
   useEffect(() => {
     const preference = window.matchMedia("(prefers-reduced-motion: reduce)");
@@ -58,19 +61,15 @@ export function MotionLab() {
     return () => preference.removeEventListener("change", updatePreference);
   }, []);
 
-  useEffect(() => {
-    setCopied(false);
-    setCopyMessage("");
-  }, [recipe]);
 
   const copyRecipe = async () => {
     try {
       await navigator.clipboard.writeText(JSON.stringify(recipe, null, 2));
-      setCopied(true);
-      setCopyMessage("Recipe copied to clipboard.");
+      setCopiedRecipe(recipeKey);
+      setCopyStatus({ recipeKey, message: "Recipe copied to clipboard." });
     } catch {
-      setCopied(false);
-      setCopyMessage("Clipboard unavailable. Select and copy the JSON below.");
+      setCopiedRecipe(null);
+      setCopyStatus({ recipeKey, message: "Clipboard unavailable. Select and copy the JSON below." });
     }
   };
 
