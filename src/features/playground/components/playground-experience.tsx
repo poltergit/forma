@@ -42,7 +42,8 @@ function polygon(
 export function PlaygroundExperience() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const frameRef = useRef<HTMLDivElement>(null);
-  const [pointer, setPointer] = useState({ x: 0.5, y: 0.5, active: false });
+  const pointerRef = useRef({ x: 0.5, y: 0.5, active: false });
+  const drawRef = useRef<(() => void) | null>(null);
   const [seed, setSeed] = useState(27);
   const [density, setDensity] = useState(64);
   const [influence, setInfluence] = useState(58);
@@ -71,8 +72,8 @@ export function PlaygroundExperience() {
       context.fillRect(0, 0, width, height);
 
       const points = createPoints(seed, density);
-      const originX = width * (pointer.active ? pointer.x : 0.5);
-      const originY = height * (pointer.active ? pointer.y : 0.5);
+      const originX = width * (pointerRef.current.active ? pointerRef.current.x : 0.5);
+      const originY = height * (pointerRef.current.active ? pointerRef.current.y : 0.5);
       const influenceRadius = Math.min(width, height) * (0.12 + influence / 180);
       const cell = Math.sqrt((width * height) / density) * 0.9;
       const palette = ["#c7f36b", "#ff765e", "#8294ff"];
@@ -82,7 +83,7 @@ export function PlaygroundExperience() {
         const dx = baseX - originX;
         const dy = baseY - originY;
         const distance = Math.sqrt(dx * dx + dy * dy);
-        const falloff = pointer.active
+        const falloff = pointerRef.current.active
           ? Math.max(0, 1 - distance / influenceRadius)
           : 0;
         const push = falloff * (influence / 100) * 54;
@@ -161,24 +162,30 @@ export function PlaygroundExperience() {
       context.fillRect(0, 0, width, height);
     };
 
+    drawRef.current = draw;
     draw();
     const observer = new ResizeObserver(draw);
     observer.observe(frame);
-    return () => observer.disconnect();
-  }, [density, influence, seed, pointer]);
+    return () => {
+      observer.disconnect();
+      drawRef.current = null;
+    };
+  }, [density, influence, seed]);
 
   const updatePointer = (event: React.PointerEvent<HTMLDivElement>) => {
     const bounds = event.currentTarget.getBoundingClientRect();
-    setPointer({
+    pointerRef.current = {
       x: (event.clientX - bounds.left) / bounds.width,
       y: (event.clientY - bounds.top) / bounds.height,
       active: true,
-    });
+    };
+    drawRef.current?.();
     setStatus("FIELD DISPLACED");
   };
 
   const resetPointer = () => {
-    setPointer({ x: 0.5, y: 0.5, active: false });
+    pointerRef.current = { x: 0.5, y: 0.5, active: false };
+    drawRef.current?.();
     setStatus("FIELD AT REST");
   };
 
