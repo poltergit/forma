@@ -64,7 +64,7 @@ Approved Phase 04 deliverables and artifacts:
 - Scene Studio data model and security proposal prepared in docs/SCENE_STUDIO_DATA_MODEL.md.
 - Authentication and environment proposal prepared in docs/AUTH_AND_ENVIRONMENT.md.
 - Experiential ambition recorded in D-015 and docs/EXPERIENCE_DIRECTION.md.
-- Remaining: finalize supporting library choices, route and module boundaries, auth/session flow, environment/deployment setup, test strategy, operational safeguards, 3D/generative runtime boundaries, and the consolidated acceptance checklist.
+- Consolidated review package: docs/PHASE_05_REVIEW.md. Remaining: explicit owner approval of supporting libraries, route/module boundaries, auth/session flow, environment/deployment setup, test strategy, operational safeguards, generative MVP scope, and the final acceptance checklist.
 - Do not begin Phase 06 or production application implementation until the product owner explicitly approves Phase 05.
 
 ## Project constraints
