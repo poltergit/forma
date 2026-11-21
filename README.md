@@ -25,9 +25,9 @@ FORMA's ambition is to feel like a spatial, generative playground—not a conven
 
 - [Security Threat Model](docs/SECURITY_THREAT_MODEL.md) — assets, trust boundaries, threats, mitigations, and release blockers.
 - [Phase 05 Technical Validation Plan](docs/PHASE_05_VALIDATION_PLAN.md) — database, invitation, concurrency, Realtime, generative, and deployment test plan.
-- [Real-Time Collaboration](docs/REALTIME_COLLABORATION.md) — proposed invite-only Scene Studio collaboration, roles, command ordering, presence, and recovery.
+- [Scene Command Engine](docs/SCENE_COMMAND_ENGINE.md) — typed mutations, revision conflicts, idempotency, and collaboration UX states.\n- [Real-Time Collaboration](docs/REALTIME_COLLABORATION.md) — proposed invite-only Scene Studio collaboration, roles, command ordering, presence, and recovery.
 - [Database Migration Design Review](docs/DATABASE_MIGRATION_REVIEW.md) — review boundaries, privilege model, follow-up RPCs, and isolated validation sequence.
-- [Draft Supabase Core Migration](supabase/migrations/20261121000100_forma_core_schema.sql) — schema/RLS baseline; not applied or tested.
+- [Draft Scene Command RPC Migration](supabase/migrations/20261121000200_forma_scene_command_rpc.sql) — atomic scene-editing RPC; not applied or tested.\n- [Draft Supabase Core Migration](supabase/migrations/20261121000100_forma_core_schema.sql) — schema/RLS baseline; not applied or tested.
 - [Phase 05 Architecture Review](docs/PHASE_05_REVIEW.md) — supporting dependency recommendations, application boundaries, generative runtime scope, non-functional requirements, and approval checklist.
 
 - [Phase 05 Technical Architecture](docs/TECHNICAL_ARCHITECTURE.md) — approved core stack and system architecture, with remaining implementation details under review.
