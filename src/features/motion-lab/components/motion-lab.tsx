@@ -5,10 +5,10 @@ import styles from "./motion-lab.module.css";
 import { createMotionRecipe, type MotionEasing as Easing, type MotionMode } from "../motion-recipe";
 
 const curvePaths: Record<Easing, string> = {
-  "ease-in-out": "M 8 70 C 28 70, 30 10, 50 10 S 72 70, 92 70",
+  "ease-in-out": "M 8 70 C 28 70, 28 10, 50 40 S 72 10, 92 10",
   linear: "M 8 70 L 92 10",
-  "cubic-bezier(.2,.8,.2,1)": "M 8 70 C 20 10, 52 4, 92 10",
-  "steps(5,end)": "M 8 70 H 25 V 58 H 42 V 46 H 59 V 34 H 76 V 22 H 92",
+  "cubic-bezier(.2,.8,.2,1)": "M 8 70 C 20 18, 46 10, 92 10",
+  "steps(5,end)": "M 8 70 H 25 V 58 H 42 V 46 H 59 V 34 H 76 V 22 H 92 V 10",
 };
 
 const modes: Array<{ id: MotionMode; label: string; note: string }> = [
