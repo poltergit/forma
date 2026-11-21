@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, type CSSProperties } from "react";
 import styles from "./motion-lab.module.css";
 
 type MotionMode = "orbit" | "pulse" | "shift" | "stagger";
@@ -41,7 +41,7 @@ export function MotionLab() {
             "--duration": `${duration}s`,
             "--intensity": intensity / 50,
             "--easing": easing,
-          } as React.CSSProperties}
+          } as CSSProperties}
         >
           <span className={styles.cornerMark} aria-hidden="true">+</span>
           <div className={`${styles.object} ${styles[mode]}`} aria-hidden="true"><i /><i /><i /></div>
