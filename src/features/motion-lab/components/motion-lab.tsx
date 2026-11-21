@@ -2,9 +2,7 @@
 
 import { useMemo, useState, type CSSProperties } from "react";
 import styles from "./motion-lab.module.css";
-
-type MotionMode = "orbit" | "pulse" | "shift" | "stagger";
-type Easing = "ease-in-out" | "linear" | "cubic-bezier(.2,.8,.2,1)" | "steps(5,end)";
+import { createMotionRecipe, type MotionEasing as Easing, type MotionMode } from "../motion-recipe";
 
 const curvePaths: Record<Easing, string> = {
   "ease-in-out": "M 8 70 C 28 70, 30 10, 50 10 S 72 70, 92 70",
@@ -40,13 +38,7 @@ export function MotionLab() {
   };
 
   const selected = modes.find((item) => item.id === mode) ?? modes[0];
-  const recipe = useMemo(() => ({
-    schema: "forma.motion-recipe",
-    version: 1,
-    generator: "motion-lab.basic-motion",
-    generatorVersion: "1.0.0",
-    parameters: { behavior: mode, durationSeconds: duration, intensity, easing },
-  }), [mode, duration, intensity, easing]);
+  const recipe = useMemo(() => createMotionRecipe(mode, duration, intensity, easing), [mode, duration, intensity, easing]);
 
   const copyRecipe = async () => {
     try {
