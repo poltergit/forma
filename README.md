@@ -37,19 +37,19 @@ FORMA is intended to feel like a spatial, generative playground—not a conventi
 
 ## Project status
 
-Phases 01–05 are approved. Phase 06 — Frontend Foundation is in progress on the `phase-06/frontend-foundation` branch. The production application scaffold has been started; dependency installation, lockfile generation, automated checks, browser validation, and CI remain outstanding. See [Project Status](PROJECT_STATUS.md), [Phase 06 Plan](docs/PHASE_06_FOUNDATION_PLAN.md), and [Phase 06 Implementation Log](docs/PHASE_06_IMPLEMENTATION_LOG.md).
+Phases 01–06 are approved for progression. Phase 07 — Landing Page & Immersive Experience is in progress on `phase-07/immersive-experience`. The foundation includes a committed npm lockfile and owner-reported successful local checks; Node 22 clean-install validation, CI, and manual rendered/accessibility review remain follow-up tasks. See [Project Status](PROJECT_STATUS.md), [Phase 06 Review](docs/PHASE_06_REVIEW.md), and [Phase 07 Plan](docs/PHASE_07_IMMERSIVE_EXPERIENCE_PLAN.md).
 
 ## Run locally
 
-Requirements: Node.js 20.9 or newer (Node 22 recommended).
+Requirements: Node.js 20.9 or newer and lower than 23 (Node 22 recommended).
 
 ```bash
 cp .env.example .env.local
-npm install
+npm ci
 npm run dev
 ```
 
-Supabase is optional for the public foundation route. To use Supabase-backed features, set `NEXT_PUBLIC_SUPABASE_URL` and `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY` in `.env.local`. Never put a service-role key in a browser environment.
+Supabase is optional for the public landing experience. To use Supabase-backed features, set `NEXT_PUBLIC_SUPABASE_URL` and `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY` in `.env.local`. Never put a service-role key in a browser environment.
 
 ## Design previews
 
