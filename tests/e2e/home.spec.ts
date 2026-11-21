@@ -8,3 +8,10 @@ test("home page exposes the primary heading and skip navigation", async ({ page 
     "#main-content",
   );
 });
+
+test("hero form can be recomposed with an accessible control", async ({ page }) => {
+  await page.goto("/");
+  await expect(page.getByText("ORIGIN")).toBeVisible();
+  await page.getByRole("button", { name: /recompose/i }).click();
+  await expect(page.getByText("DISPLACE")).toBeVisible();
+});
