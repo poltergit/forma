@@ -13,7 +13,7 @@ The first Phase 08 slice turns the Playground and Motion Lab from roadmap pillar
 - Added `/playground` with a distinct editorial introduction and featured experiment stage.
 - Implemented **Displacement Field**, a deterministic seeded composition of dimensional forms rendered on a 2D canvas.
 - Pointer movement and dragging displace nearby geometry; keyboard arrow keys move the influence point; density and influence controls change the composition.
-- Recompose advances the seed to create a reproducible new arrangement.
+- Recompose advances the seed to create a reproducible new arrangement. The linear-congruential seeded random generator is shared under `src/lib/generative` and has deterministic/bounds unit tests.
 - Canvas rendering is isolated in a client component, redraws on input/resize, caps device pixel ratio, and avoids a continuous animation loop. A static CSS composition remains beneath the canvas as a renderer fallback.
 - The canvas is decorative to assistive technology; the surrounding instructions, controls, and status remain semantic HTML.
 
@@ -44,7 +44,7 @@ The first Phase 08 slice turns the Playground and Motion Lab from roadmap pillar
 
 ### Tests added
 
-- Unit coverage verifies deterministic seed reproduction and point-count bounds for the Playground generator.
+- Unit coverage verifies deterministic seed reproduction, point-count bounds, and the shared seeded-random utility's repeatability, output bounds, and finite-seed requirement.
 - Motion recipe unit tests verify JSON round-trip stability, parameter bounds, and strict rejection of unknown fields.
 - Playwright coverage exercises Playground keyboard/recomposition/density, category filtering and direct anchors, Elastic Matter controls, Motion Lab mode selection, pause/reset, timeline scrubbing, preset selection, recipe visibility, reduced motion, route navigation, Home hero pointer response, browser back navigation for experiment anchors, and overflow checks at 320, 375, 768, 1024, and 1440 CSS pixels.
 
