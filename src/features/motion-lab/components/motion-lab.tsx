@@ -44,6 +44,14 @@ export function MotionLab() {
   const recipe = useMemo(() => createMotionRecipe(mode, duration, intensity, easing), [mode, duration, intensity, easing]);
 
   useEffect(() => {
+    const preference = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const updatePreference = () => setReducedMotion(preference.matches);
+    updatePreference();
+    preference.addEventListener("change", updatePreference);
+    return () => preference.removeEventListener("change", updatePreference);
+  }, []);
+
+  useEffect(() => {
     setCopied(false);
     setCopyMessage("");
   }, [recipe]);
