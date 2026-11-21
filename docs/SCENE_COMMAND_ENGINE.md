@@ -41,7 +41,7 @@ Other payloads: target_id must identify an existing object; rename name is trimm
 1. Reject unauthenticated callers and invalid envelope values.
 2. Lock the target scene row.
 3. Confirm caller is owner or current editor.
-4. Check the scene/command receipt. Same actor, command type, expected revision, and canonical JSONB payload fingerprint returns the original committed revision without another mutation. Reuse with a different actor or request fingerprint is rejected.
+4. Check the scene/command receipt. Same actor, command type, expected revision, and canonical JSONB payload fingerprint returns the original committed revision without another mutation. Reuse with a different actor or request fingerprint is rejected. The draft uses PostgreSQL MD5 only as a compact idempotency comparison value, never as a credential, signature, or security token.
 5. Compare expected revision with the locked current revision; mismatch changes nothing.
 6. Validate and apply one allowlisted command.
 7. Increment revision exactly once.
