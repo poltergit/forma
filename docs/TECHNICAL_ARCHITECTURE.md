@@ -1,6 +1,6 @@
 # FORMA — Technical Architecture Proposal
 
-**Version:** 0.1  
+**Version:** 0.2  
 **Phase:** 05 — Technical Architecture  
 **Status:** Core stack approved; supporting architecture details under review  
 **Prerequisites:** Phases 01–04 approved  
@@ -10,26 +10,28 @@
 
 ## 1. Architecture goals
 
-FORMA combines a public creative-technology experience with a real interactive product. The architecture must support indexable public pages, interactive 2D experiments, a constrained 3D editor, private cloud-saved scenes, a small-team maintenance model, free-tier-conscious infrastructure, and production-level accessibility, security, and performance.
+FORMA combines a public creative-technology experience with a real interactive product. It must support expressive spatial storytelling, generative 2D/3D experiments, a constrained 3D editor, private cloud-saved scenes, and a small-team maintenance model. The architecture must preserve indexable content, progressive enhancement, accessibility, and free-tier-conscious infrastructure.
+
+FORMA is not to be architected as a generic SaaS dashboard with a 3D hero attached. Its spatial and generative ambition is a product requirement; see [Experiential Direction](EXPERIENCE_DIRECTION.md).
 
 Avoid premature microservices, unnecessary abstractions, and features outside the approved MVP.
 
-## 2. Recommended stack (proposal)
+## 2. Approved stack and supporting recommendations
 
-| Layer | Recommendation | Responsibility |
+| Layer | Decision / recommendation | Responsibility |
 |---|---|---|
 | Web application | **Approved:** Next.js App Router + React + TypeScript | Public routes, application shell, server rendering |
-| Styling | **Approved:** existing CSS tokens + CSS Modules | Custom art direction and semantic design system |
-| 3D | **Approved:** Three.js through React Three Fiber | Scene Studio viewport |
+| Styling | **Approved:** CSS design tokens + CSS Modules | Custom art direction and semantic design system |
+| 3D | **Approved:** Three.js through React Three Fiber | Spatial experiences and Scene Studio viewport |
 | 3D helpers | Drei, selectively | Camera, controls, and common scene helpers |
-| Editor state | Zustand | Selection, transforms, tools, undo/redo, transient editor state |
-| Server/cache state | TanStack Query only where justified | Scene queries, mutations, invalidation |
-| Validation | Zod | Runtime validation of forms, API inputs, and scene documents |
-| Backend | Supabase | PostgreSQL, Auth, RLS, and object storage when needed |
-| Tests | Vitest, React Testing Library, Playwright, axe-core | Unit, component, browser, and accessibility testing |
+| Editor state | Zustand, recommended | Selection, transforms, tools, undo/redo, transient editor state |
+| Server/cache state | Start with server components/actions and focused fetches; add TanStack Query only if justified | Scene queries, mutations, invalidation |
+| Validation | Zod, recommended | Runtime validation of forms, API inputs, and scene/generative documents |
+| Backend | **Approved:** Supabase | PostgreSQL, Auth, RLS, and object storage when needed |
+| Tests | Vitest, React Testing Library, Playwright, axe-core, recommended | Unit, component, browser, and accessibility testing |
 | Hosting | **Approved:** Vercel | Next.js previews and production hosting |
 
-This is a recommended baseline, not a set of approved provider choices. Use stable compatible releases at implementation time; do not freeze package versions in this proposal.
+The six core technology choices are approved (D-014). Supporting library recommendations are not yet approved. Use stable compatible releases at implementation time; do not freeze package versions in this proposal.
 
 ## 3. System topology
 
@@ -40,9 +42,9 @@ Visitor / User
       |
       v
 Next.js Web Application
-  |-- Public experience and content routes
-  |-- Playground and experiment runtime
-  |-- Motion Lab
+  |-- Public editorial and experience routes
+  |-- Interactive experiment runtime
+  |-- Generative and motion studies
   |-- Authenticated Scene Studio
   |-- Account surfaces
   |
@@ -63,26 +65,26 @@ Supabase
 - Browser-exposed environment variables may contain only public configuration, such as the Supabase URL and publishable/anon key.
 - Service-role secrets must never enter client bundles, browser storage, or the repository.
 - Enforce authorization with PostgreSQL RLS and server-side checks where applicable. Hiding a control is not authorization.
-- Validate scene documents before persistence and after loading.
+- Validate scene documents and user-controlled generative parameters before persistence and after loading.
 
 ## 4. Rendering and route strategy
 
-Render public content on the server or statically where appropriate. Hydrate only interactive regions. Load 3D dependencies only where needed.
+Render editorial content on the server or statically where appropriate. Hydrate only interactive regions. Load WebGL dependencies only for experiences that need them.
 
 | Route | Rendering approach | Access |
 |---|---|---|
-| `/` | Server-rendered page; optional client-only hero | Public |
+| `/` | Server-rendered editorial shell; optional client-only spatial hero | Public |
 | `/playground` | Server-rendered gallery and metadata | Public |
-| `/playground/[slug]` | Server-rendered content + client experiment stage | Public |
-| `/motion-lab` | Server shell + client study controls | Public |
+| `/playground/[slug]` | Server-rendered context + isolated client experiment stage | Public |
+| `/motion-lab` | Server shell + client generative/motion workspace | Public |
 | `/archive` | Server-rendered archive | Public |
-| `/archive/[slug]` | Server-rendered case study | Public |
-| `/about` | Server-rendered content | Public |
+| `/archive/[slug]` | Server-rendered case study + optional spatial presentation | Public |
+| `/about` | Server-rendered editorial content + optional progressive spatial elements | Public |
 | `/auth/sign-in`, `/auth/sign-up` | Server shell + client form behavior | Public |
-| `/scene-studio` | Auth-aware route; viewport loaded client-side | Public entry; edit/save requires sign-in |
+| `/scene-studio` | Auth-aware route; editor and viewport loaded client-side | Public entry; edit/save requires sign-in |
 | `/account` | Authenticated route | Authenticated |
 
-Keep page titles, navigation, and essential content usable if a 3D canvas fails. Provide loading, empty, error, and not-found states. Preserve intended destinations through authentication. Public experiments and case studies must not require an account.
+Keep page titles, navigation, and essential content usable if WebGL fails or is unavailable. Provide loading, empty, error, and not-found states. Preserve intended destinations through authentication. Public experiments and case studies must not require an account.
 
 ## 5. Proposed code organization
 
@@ -91,13 +93,12 @@ Use one application repository. Organize by feature and shared responsibility. C
 ```text
 forma/
 ├── app/
-│   ├── (public)/             # Home, Playground, Motion Lab, Archive, About
-│   ├── (auth)/               # Sign-in and sign-up
+│   ├── (public)/
+│   ├── (auth)/
 │   ├── scene-studio/
 │   ├── account/
 │   ├── api/
 │   ├── layout.tsx
-│   ├── not-found.tsx
 │   └── globals.css
 ├── components/
 │   ├── layout/
@@ -105,12 +106,15 @@ forma/
 │   ├── feedback/
 │   └── ui/
 ├── features/
-│   ├── playground/
+│   ├── experience/           # Spatial home composition
+│   ├── playground/           # Experiment registry and stages
+│   ├── generative/           # Shared seeded utilities, not a monolithic engine
 │   ├── motion-lab/
 │   ├── scene-studio/
 │   │   ├── components/
 │   │   ├── editor/
-│   │   ├── scene/
+│   │   ├── renderer/
+│   │   ├── document/
 │   │   ├── state/
 │   │   └── validation/
 │   ├── archive/
@@ -128,9 +132,44 @@ forma/
 └── tests/
 ```
 
-Keep route files thin. Put product behavior in feature modules. Shared components should emerge from genuinely repeated patterns.
+Keep route files thin. Put product behavior in feature modules. Keep experiment-specific rendering isolated so one experiment's dependencies or failures do not contaminate the entire site. Shared components should emerge from genuinely repeated patterns.
 
-## 6. Scene Studio architecture
+## 6. Spatial and generative runtime
+
+The runtime should support expressive experiments without becoming an over-engineered general-purpose game engine.
+
+### Responsibilities
+
+1. **Experience composition:** page-level choreography and spatial elements, isolated from essential document structure.
+2. **Experiment stage:** a bounded runtime for one active interactive study at a time.
+3. **Generative systems:** deterministic seeded functions and explicit parameter schemas.
+4. **Rendering layer:** React Three Fiber for spatial work; CSS/SVG/canvas for simpler 2D motion where more appropriate.
+5. **Interaction layer:** pointer, touch, keyboard, and scroll inputs mapped to explicit state changes.
+6. **Fallback layer:** static preview and meaningful text/control alternatives when WebGL is unavailable or motion is reduced.
+
+### Generative artifact contract
+
+When a generative output is saved, store enough information to reproduce it:
+- generator identifier and version;
+- seed;
+- validated parameter object;
+- document/schema version;
+- optional output metadata or thumbnail reference.
+
+Do not store runtime objects, GPU resources, functions, or arbitrary executable code. Never execute user-supplied code as part of a saved generator document. Treat all saved parameters as untrusted input.
+
+### Runtime isolation
+
+- Load Three.js only in the client-side feature that needs it.
+- Keep the initial Home route's critical text and navigation independent of WebGL.
+- Avoid mounting multiple heavyweight scenes concurrently.
+- Pause or lower render activity when a stage is hidden or off-screen.
+- Bound object counts, geometry complexity, texture sizes, and post-processing.
+- Dispose of geometries, materials, textures, render targets, and listeners.
+- Provide a stable fallback when WebGL context creation fails or the context is lost.
+- Use CSS transforms for simple interface movement; reserve WebGL for spatial or generative work that benefits from it.
+
+## 7. Scene Studio architecture
 
 Keep the editor's responsibilities separate:
 
@@ -164,7 +203,7 @@ type SceneDocument = {
 };
 ```
 
-Constrain the first version to the current MVP. Add geometry, materials, lights, cameras, and assets through explicit schema evolution.
+Constrain the first version to the approved MVP. Add geometry, materials, lights, cameras, and assets through explicit schema evolution.
 
 ### Editing, history, and saving
 
@@ -177,26 +216,11 @@ Constrain the first version to the current MVP. Add geometry, materials, lights,
 - Preserve the local working document and communicate failures when offline or when saving fails.
 - No collaboration or multi-user editing in the MVP.
 
-## 7. Initial persistence model proposal
+## 8. Persistence model and authorization
 
-Use PostgreSQL for structured scene records. Keep the first schema small.
+Use PostgreSQL for structured scene records. Keep the first schema small. See [Scene Studio Data Model](SCENE_STUDIO_DATA_MODEL.md) for the proposed `scenes` table, versioned document, RLS policies, validation constraints, and revision-aware save protocol.
 
-### `scenes`
-
-| Column | Type | Purpose |
-|---|---|---|
-| `id` | uuid primary key | Scene identifier |
-| `owner_id` | uuid, auth user reference | Ownership |
-| `title` | text | Scene name |
-| `document` | jsonb | Versioned SceneDocument |
-| `schema_version` | integer | Migration version |
-| `created_at` | timestamptz | Creation time |
-| `updated_at` | timestamptz | Last successful save |
-
-Index `(owner_id, updated_at desc)` for a user's scene library.
-
-### Authorization requirements
-
+Authorization requirements:
 - Enable RLS.
 - A user may select, insert, update, and delete only rows where `owner_id = auth.uid()`.
 - Inserts must enforce the authenticated owner.
@@ -204,115 +228,110 @@ Index `(owner_id, updated_at desc)` for a user's scene library.
 - Anonymous users receive no access to private scenes.
 - Test every operation using at least two separate user identities.
 
-Use object storage only for binary assets such as uploaded textures or thumbnails. Store object paths and metadata in PostgreSQL, not binary payloads in JSONB. Define private buckets and owner-scoped policies before enabling uploads.
+Use object storage only for binary assets such as uploaded textures or thumbnails. Define private buckets and owner-scoped policies before enabling uploads. Do not add public sharing, teams, comments, or collaboration tables to the MVP.
 
-Do not add public sharing, team membership, comments, or collaboration tables to the MVP.
+## 9. Authentication and security
 
-## 8. Authentication and security
+Use Supabase Auth for sign-up, sign-in, sign-out, and recovery. Use the supported server-side session/cookie integration for the selected Next.js version. Validate redirect destinations, protect private routes on the server, and enforce data access again with RLS.
 
-Proposed approach:
-- Supabase Auth for sign-up, sign-in, sign-out, and recovery.
-- Use the supported server-side session/cookie integration for the selected Next.js version.
-- Validate redirect destinations to prevent open redirects.
-- Protect private routes on the server and enforce data access again with RLS.
 - Never trust client-supplied owner IDs.
-- Validate external inputs with Zod and enforce document size and upload type/size limits.
-- Use secure HttpOnly session cookies through the supported integration.
-- Keep secrets in deployment environment settings; commit only a placeholder `.env.example`.
+- Validate forms, API inputs, scene documents, and generator parameters at runtime.
+- Apply strict bounds to object counts, serialized document sizes, numeric ranges, and uploaded files.
+- Keep secrets in deployment environment settings; commit only placeholders in `.env.example`.
 - Add rate limiting and abuse protection to sensitive endpoints where supported.
-- Apply least-privilege database and storage policies.
 - Collect only personal data the product actually needs.
 
-Security acceptance tests: anonymous access, cross-user reads/writes, owner reassignment attempts, invalid scene payloads, expired sessions, and unauthorized storage access.
+See [Authentication & Environment](AUTH_AND_ENVIRONMENT.md) for the proposed session flow and environment separation.
 
-## 9. Data flows
+## 10. Data flows
 
-**Public content:** request → Next.js route → typed content source → rendered page. Curated experiment metadata can live in typed source files for the MVP; do not introduce a CMS until non-developer editing is a real requirement.
+**Public experience:** request → Next.js route → server-rendered editorial content → optional client enhancement. Essential information does not depend on a canvas.
+
+**Generative experiment:** user input/seed → validated parameter state → deterministic generator → bounded renderer → interactive output → optional reproducible artifact save/export.
 
 **Scene load:** authenticated user → server session validation → owner-scoped query → schema validation → editor hydration → viewport render.
 
 **Scene save:** editor command → serialization → schema validation → authenticated mutation → RLS ownership check → database write → revision response → visible save status.
 
-**Authentication:** form → server-side validation → Supabase Auth → session cookie → validated intended-route redirect. Recovery must use the provider's configured flow and never claim an email was sent unless the provider confirms it.
-
-## 10. Performance strategy
+## 11. Performance and resilience
 
 - Server-render public content and isolate interactive client regions.
 - Dynamically load the 3D viewport and editor-only dependencies.
 - Compress and correctly size images; lazy-load below-the-fold media.
-- Avoid rendering expensive 3D scenes while inactive or off-screen.
+- Avoid rendering expensive scenes while inactive or off-screen.
 - Cap pixel ratio and provide quality fallbacks for weaker devices.
-- Dispose of geometries, materials, textures, and renderer resources when no longer needed.
-- Avoid expensive shader/particle effects as a default.
+- Pause animation when the page is hidden; avoid unnecessary render loops.
+- Dispose of GPU resources and listeners.
+- Avoid expensive shader/post-processing effects as a default.
 - Respect reduced-motion preferences and provide non-canvas alternatives for essential information.
-- Measure route JavaScript, LCP, INP, and CLS.
+- Preserve native scrolling; no scroll hijacking or forced cinematic waits.
+- Measure route JavaScript, LCP, INP, CLS, and representative frame time.
 - Establish numeric performance budgets after a real baseline is measured.
 
-## 11. Testing strategy
+## 12. Testing strategy
 
 | Layer | Tools | Coverage |
 |---|---|---|
-| Unit | Vitest | Scene serialization, validation, editor commands |
+| Unit | Vitest | Serialization, seeded determinism, generator bounds, validation, editor commands |
 | Component | React Testing Library | Forms, controls, navigation, loading/error states |
-| Browser | Playwright | Public journeys, authentication, editing and persistence |
+| Browser | Playwright | Public journeys, keyboard/touch flows, experiments, auth, editing and persistence |
 | Security | RLS integration tests | Anonymous and cross-user isolation |
-| Accessibility | axe-core + manual checks | Semantics, keyboard, focus, dialogs, contrast, announcements |
-| Visual | Browser screenshots + manual review | Desktop/tablet/mobile and approved visual direction |
+| Accessibility | axe-core + manual checks | Semantics, keyboard, focus, dialogs, contrast, announcements, reduced motion |
+| Visual/device | Browser screenshots + manual review | Desktop/tablet/mobile, WebGL fallback, reduced-motion and low-power modes |
+| 3D runtime | Manual profiling + targeted automated checks | Context loss, disposal, render loop, object/texture budgets, frame-time sampling |
 
-Run browser tests against an isolated configured test environment. A passing unit suite does not establish deployment readiness.
+Run browser and security tests against isolated configured environments. A passing unit suite does not establish deployment readiness. Do not claim device, WebGL, or accessibility validation without actually performing it.
 
-## 12. Environments and deployment
+## 13. Environments and deployment
 
 Recommended environments:
-- **Local:** local development, local environment variables, isolated test data.
-- **Preview:** pull-request or branch deployments using non-production backend resources.
+- **Local:** local development and isolated test data.
+- **Preview:** branch deployments using non-production backend resources.
 - **Production:** protected deployment with production secrets and database.
 
-Vercel is the approved hosting provider. Before configuring deployment, verify current plan quotas, build and bandwidth limits, environment controls, preview behavior, and production requirements. Supabase quotas and inactivity behavior must also be checked. A free tier is not a guaranteed production SLA. Before approval, verify current free-tier quotas, build and bandwidth limits, Supabase database/storage quotas and inactivity behavior, auth email constraints, custom-domain needs, backup/restore options, and commercial-use terms. A free tier is not a guaranteed production SLA. Maintain a database and scene-document export/migration path.
+Vercel is the approved hosting provider. Verify current plan quotas, build and bandwidth limits, environment controls, preview behavior, and production requirements before configuring deployment. Verify Supabase quotas, inactivity behavior, email constraints, backup/restore options, and commercial terms. Free tiers do not guarantee production SLAs. Maintain a database and scene-document export/migration path.
 
-## 13. Observability and operations
+## 14. Observability and operations
 
 MVP baseline:
 - Structured server logs without secrets or sensitive scene contents.
-- Error reporting for client and server exceptions.
+- Error reporting for client/server exceptions and WebGL failures.
 - Clear loading, empty, save, and failure states.
-- Basic health checks for configured backend connectivity.
+- Basic backend connectivity checks.
 - Deployment and migration notes.
 - Documented backup/export procedure before real user data is accepted.
 
 Third-party analytics are not required for the first implementation.
 
-## 14. Dependency policy
+## 15. Dependency policy
 
-- Prefer stable releases compatible with the selected React/Next.js versions.
+- Prefer stable releases compatible with selected React/Next.js versions.
 - Pin dependencies through the package lockfile.
 - Do not install libraries for trivial utilities.
 - Isolate Three.js dependencies from public page bundles.
 - Review maintenance, licensing, bundle cost, and security advisories before adoption.
 - Re-check compatibility at implementation time.
 
-## 15. Risks and mitigations
+## 16. Risks and mitigations
 
 | Risk | Mitigation |
 |---|---|
-| 3D complexity expands scope | Constrain MVP primitives and scene schema |
-| Large client bundle | Server-render public pages; lazy-load editor |
+| 3D complexity expands scope | Bounded experiment stages, primitive budgets, explicit MVP schema |
+| Heavy visual runtime harms performance | Lazy loading, quality tiers, visibility pause, measured budgets |
+| Generative output becomes random noise | Authored rules, exposed parameters, deterministic seeds, curated presets |
+| Motion harms accessibility | Native scroll, reduced-motion equivalents, keyboard/touch support |
+| WebGL fails on a device | Static/2D fallback and non-canvas essential content |
 | Cloud data exposure | RLS, server checks, cross-user tests |
 | Save conflicts/data loss | Revision-aware writes, local working state, visible errors |
 | Free-tier changes | Quota monitoring and export/migration plan |
-| Design drift | Shared semantic tokens and component specs |
-| Mobile editor usability | Purpose-built workflows and device testing |
+| Design drift | Shared semantic tokens and page/experience specifications |
 | Premature abstractions | One application, feature modules, no microservices |
 
-## 16. Decisions requiring further review
+## 17. Decisions requiring further review
 
-### Approved by the product owner (D-014)
-- Next.js App Router.
-- TypeScript.
-- Supabase.
-- Three.js + React Three Fiber.
-- Vercel.
-- CSS design tokens + CSS Modules.
+### Approved (D-014 and D-015)
+- Next.js App Router, TypeScript, Supabase, Three.js + React Three Fiber, Vercel, CSS tokens + CSS Modules.
+- Experiential ambition: spatial, generative, performative, intentionally art-directed, and meaningfully interactive. See [Experiential Direction](EXPERIENCE_DIRECTION.md).
 
 ### Still proposed, not yet approved
 - Zustand for editor-local state.
@@ -322,17 +341,17 @@ Third-party analytics are not required for the first implementation.
 - Vitest, React Testing Library, Playwright, and axe-core.
 - Exact Supabase Auth session integration and server/client data-access boundaries.
 - Final environment topology and provider plan configuration.
-
-The detailed scene schema, migration proposal, RLS policies, and save concurrency protocol are in docs/SCENE_STUDIO_DATA_MODEL.md.
+- Exact boundaries and initial scope of the generative runtime.
 
 ### Phase 05 acceptance criteria
 
-- Stack and provider decisions recorded in `DECISIONS.md`.
+- Core stack and provider decisions recorded in `DECISIONS.md`.
 - Route/rendering strategy approved.
-- Application and feature boundaries approved.
-- Scene document and persistence model documented for owner review.
+- Application, experiment, generative, and feature boundaries approved.
+- Scene document and persistence model reviewed.
 - Authentication and authorization model approved.
-- Environment, testing, performance, and deployment strategy approved.
+- Environment, testing, performance, accessibility, and deployment strategy approved.
+- Spatial/generative ambition translated into bounded MVP scope and validation criteria.
 - MVP exclusions and migration assumptions understood.
 
-**Current state:** Core stack approved (D-014). Detailed persistence and security specification prepared. Authentication and environment specification: docs/AUTH_AND_ENVIRONMENT.md. Supporting architecture and Phase 05 acceptance review remain in progress. Phase 06 is not authorized.
+**Current state:** Core stack approved (D-014). Experiential ambition captured (D-015). Detailed persistence, security, and authentication specifications prepared. Supporting architecture and Phase 05 acceptance review remain in progress. Phase 06 is not authorized.
