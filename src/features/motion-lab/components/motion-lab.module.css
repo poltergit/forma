@@ -6,7 +6,7 @@
 .live i { display: inline-block; width: 6px; height: 6px; margin-right: .45rem; border-radius: 50%; background: var(--brand-lime); box-shadow: 0 0 12px var(--brand-lime); }
 .stage { position: relative; display: grid; min-height: 490px; overflow: hidden; place-items: center; isolation: isolate; background-color: #17191c; background-image: linear-gradient(rgb(255 255 255 / .045) 1px, transparent 1px), linear-gradient(90deg, rgb(255 255 255 / .045) 1px, transparent 1px); background-size: 42px 42px; perspective: 1000px; }
 .stage::before { position: absolute; inset: 0; z-index: -1; background: radial-gradient(ellipse at 50% 50%, rgb(199 243 107 / .07), transparent 52%); content: ""; }
-.object { position: relative; display: grid; width: clamp(130px, 17vw, 205px); aspect-ratio: 1; place-items: center; transform-style: preserve-3d; animation: orbit var(--duration) var(--easing) infinite alternate; animation-delay: var(--scrub-delay, 0s); }
+.object { position: relative; display: grid; width: clamp(130px, 17vw, 205px); aspect-ratio: 1; place-items: center; transform-style: preserve-3d; animation: orbit var(--duration) var(--easing) infinite alternate; }
 .object i { position: absolute; inset: 0; border: 1px solid var(--brand-lime); transform: rotateX(66deg) rotateZ(0deg); box-shadow: 0 0 30px rgb(199 243 107 / .08); }
 .object i:nth-child(2) { transform: rotateX(66deg) rotateZ(60deg) translateZ(16px); border-color: var(--brand-coral); }
 .object i:nth-child(3) { transform: rotateX(66deg) rotateZ(120deg) translateZ(-16px); border-color: var(--brand-blue); }
