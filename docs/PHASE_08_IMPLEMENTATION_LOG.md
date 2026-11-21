@@ -12,9 +12,9 @@ The first Phase 08 slice turns the Playground and Motion Lab from roadmap pillar
 
 - Added `/playground` with a distinct editorial introduction and featured experiment stage.
 - Implemented **Displacement Field**, a deterministic seeded composition of dimensional forms rendered on a 2D canvas.
-- Pointer movement and dragging displace nearby geometry; density and influence controls change the composition.
+- Pointer movement and dragging displace nearby geometry; keyboard arrow keys move the influence point; density and influence controls change the composition.
 - Recompose advances the seed to create a reproducible new arrangement.
-- Canvas rendering is isolated in a client component, redraws on input/resize, caps device pixel ratio, and avoids a continuous animation loop.
+- Canvas rendering is isolated in a client component, redraws on input/resize, caps device pixel ratio, and avoids a continuous animation loop. A static CSS composition remains beneath the canvas as a renderer fallback.
 - The canvas is decorative to assistive technology; the surrounding instructions, controls, and status remain semantic HTML.
 
 ### Motion Lab
@@ -23,7 +23,7 @@ The first Phase 08 slice turns the Playground and Motion Lab from roadmap pillar
 - Implemented four authored motion behaviors: Orbit, Pulse, Shift, and Stagger.
 - Duration, intensity, and easing controls update the live stage.
 - Play/pause and reset controls are functional.
-- Reduced-motion CSS preserves a stable, visible form and leaves the controls available.
+- Reduced-motion CSS preserves a stable, visible form and leaves the controls available. Pause state is exposed through an accessible pressed state and live announcement.
 
 ### Shared application shell
 
