@@ -63,9 +63,9 @@ Turn the approved architecture and Phase 04 design system into a maintainable, a
 
 1. **Initial bootstrap — started.** Next.js 16.4.6, React 19-compatible manifest, TypeScript strict configuration, App Router, and core scripts committed. Dependency install and lockfile still pending.
 2. **Token and visual foundation — source committed.** Canonical token import, font loading, global reset, focus styles, reduced motion, responsive shell, and a restrained foundation home route.
-3. **Route shell — source committed.** Header/footer, metadata, loading, error, and not-found states.
+3. **Route shell — source committed.** Header/footer, metadata, loading, route error, global error, and not-found states.
 4. **Environment and Supabase boundaries — source committed.** Separate browser/server factories and explicit missing configuration. Session refresh boundary still needs implementation and validation against the installed Next.js version.
-5. **Zod and Zustand conventions — initial examples committed.** Scene vector/color validation and editor panel UI state.
+5. **Zod and Zustand conventions — initial examples committed.** Scene vector/color validation, public environment validation, and editor panel UI state. Starter unit tests cover these boundaries.
 6. **Test tooling — configuration and starter tests committed.** Vitest and Playwright configuration. Tests have not been executed.
 7. **CI — pending.** Add after the lockfile exists so CI uses a reproducible install.
 8. **Verification and responsive review — pending.** Install, lint, typecheck, tests, build, browser inspection, accessibility checks, and performance review.
@@ -75,7 +75,7 @@ Turn the approved architecture and Phase 04 design system into a maintainable, a
 
 - [ ] Reproducible install from committed lockfile.
 - [x] Initial strict TypeScript project configuration committed (typecheck not yet run).
-- [x] App Router root, not-found, error, and loading source files committed (runtime not yet verified).
+- [x] App Router root, not-found, route error, global error, and loading source files committed (runtime not yet verified).
 - [x] Tokens load from the canonical design token source (build not yet verified).
 - [x] Responsive shell source and mobile breakpoints committed (rendered inspection pending).
 - [x] Keyboard focus and reduced-motion baseline committed (manual validation pending).
