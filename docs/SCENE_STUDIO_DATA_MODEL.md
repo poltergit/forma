@@ -201,7 +201,11 @@ Test in an isolated Supabase environment using Alice (owner), Bob (editor), Case
 
 No storage bucket is needed for the primitive-only editor. When assets or thumbnails are introduced, use private buckets, owner/member-scoped policies, server-side content and size validation, and orphan cleanup.
 
-## 11. Acceptance criteria
+## 11. Migration artifact
+
+A review-only schema/RLS draft is maintained at `supabase/migrations/20261121000100_forma_core_schema.sql`. Its deliberate restrictions and missing follow-up RPCs are documented in [Database Migration Design Review](DATABASE_MIGRATION_REVIEW.md). It has not been applied or tested.
+
+## 12. Acceptance criteria
 
 - Migrations apply cleanly to a fresh isolated database.
 - RLS proves owner/editor/viewer/revoked/anonymous boundaries.
