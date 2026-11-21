@@ -27,7 +27,6 @@ export function HeroForm() {
   const current = arrangements[arrangement];
 
   function tiltArtwork(event: PointerEvent<HTMLDivElement>) {
-    if (event.pointerType === "touch") return;
     const bounds = event.currentTarget.getBoundingClientRect();
     const x = (event.clientX - bounds.left) / bounds.width - 0.5;
     const y = (event.clientY - bounds.top) / bounds.height - 0.5;
