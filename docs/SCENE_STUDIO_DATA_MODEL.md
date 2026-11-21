@@ -55,10 +55,13 @@ Primary key: scene_id + user_id. Owner is represented by scenes.owner_id, not a 
 | invited_by | uuid | Scene owner |
 | expires_at | timestamptz | Short-lived expiry |
 | accepted_at | timestamptz nullable | Acceptance timestamp |
+| accepted_by | uuid nullable | Authenticated recipient who accepted |
 | revoked_at | timestamptz nullable | Revocation timestamp |
+| revoked_by | uuid nullable | Owner who revoked |
+| expired_at | timestamptz nullable | Expiry retirement timestamp |
 | created_at | timestamptz | Server generated |
 
-Raw tokens must never be stored. Invitation rows are only accessed through trusted server operations. Avoid disclosing whether a recipient email maps to an existing account.
+Raw tokens must never be stored. A server-only Node crypto module generates 32 random bytes and stores only the SHA-256 digest. RPCs provide owner-only create/list/revoke, verified-recipient acceptance, and owner member removal. The list RPC never returns token_hash. Avoid disclosing whether a recipient email maps to an existing account.
 
 ### `public.scene_command_receipts` (required for collaboration MVP)
 
