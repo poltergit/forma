@@ -13,8 +13,7 @@ create table public.scenes (
   schema_version integer not null default 1 check (schema_version = 1),
   revision bigint not null default 1 check (revision >= 1),
   created_at timestamptz not null default now(),
-  updated_at timestamptz not null default now(),
-  constraint scenes_owner_id_matches_session check (owner_id = auth.uid())
+  updated_at timestamptz not null default now()
 );
 create index scenes_owner_updated_idx on public.scenes(owner_id, updated_at desc);
 
@@ -75,8 +74,7 @@ create table public.generative_artifacts (
   parameters jsonb not null check (jsonb_typeof(parameters) = 'object'),
   schema_version integer not null default 1 check (schema_version = 1),
   created_at timestamptz not null default now(),
-  updated_at timestamptz not null default now(),
-  constraint generative_artifact_owner_matches_session check (owner_id = auth.uid())
+  updated_at timestamptz not null default now()
 );
 create index generative_artifacts_owner_updated_idx
   on public.generative_artifacts(owner_id, updated_at desc);
