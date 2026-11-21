@@ -1,13 +1,13 @@
 # FORMA — Project Status
 
-**Last updated:** 2026-11-20
+**Last updated:** 2026-11-21
 
 ## Current position
 - Phase 01 — Product Discovery and Definition: **Approved**
 - Phase 02 — Brand Identity and Creative Direction: **Approved**
 - Phase 03 — UX and Information Architecture: **Approved**
 - Phase 04 — Visual Design System: **Approved**
-- Phase 05 — Technical Architecture: **In progress; core stack approved, detailed data/security specification prepared**
+- Phase 05 — Technical Architecture: **In progress; core stack approved, supporting architecture and experiential requirements being finalized**
 - Production application implementation: **Not started**
 - Repository: **Initialized and verified**
 
@@ -23,6 +23,7 @@
 - Playground UX: editorial gallery with varied compositions.
 - Mobile Scene Studio: simplified touch-oriented editing experience.
 - Logo exploration decision: combine the Modular F, Form Shift, and Structural Frame concepts into one coherent identity proposal.
+- Experiential ambition: spatial, generative, performative, intentionally art-directed 3D and motion; see docs/EXPERIENCE_DIRECTION.md.
 
 ## Phase 03 — Approved
 See docs/UX_SPECIFICATION.md for the approved sitemap, navigation, page structures, user journeys, Scene Studio lifecycle, system states, responsive behavior, accessibility requirements, and MVP boundaries.
@@ -37,6 +38,8 @@ Approved Phase 04 deliverables and artifacts:
 - Motion Lab prototype — tactile behavior controls, transition feedback when switching motion studies, live playback status announcements, and reduced-motion-safe static presentation.
 - Scene Studio prototype — restrained viewport framing, object-selection feedback, tactile toolbar states, and compact inspector transitions; editor layout and hierarchy remain visually calm.
 - Archive prototype — progressive project reveals, artwork light-sweep and hover response, and reduced-motion fallback.
+- About prototype — editorial manifesto, guiding principles, creator context, and portfolio link.
+- Account prototype — responsive sign-in, sign-up, and recovery visual states with local navigation and prototype-only submission feedback.
 - docs/PAGE_LAYOUT_SPECIFICATIONS.md — page-by-page compositions and responsive behavior.
 - docs/COMPONENT_DESIGN_SPECIFICATIONS.md — reusable component states, behavior, and accessibility contracts.
 - docs/LOGO_EXPLORATION.md — initial logo routes and review criteria.
@@ -44,36 +47,25 @@ Approved Phase 04 deliverables and artifacts:
 - docs/BRAND_APPLICATION_GUIDELINES.md — logo usage, sizing, clear space, color, typography, composition, and product touchpoints.
 - design/tokens.css — framework-independent draft CSS tokens.
 - design/brand/ — proposed logo assets and supporting structural/form-shift graphics.
-- design/prototypes/home-preview.html — responsive Home page visual prototype.
-- design/prototypes/playground-preview.html — editorial Playground gallery with local category filters.
-- design/prototypes/motion-lab-preview.html — Motion Lab with live animation controls.
-- design/prototypes/scene-studio-preview.html — editor-shell prototype with local hierarchy, selection, inspector, object controls, and mobile sheets.
-- design/prototypes/archive-preview.html — editorial archive with category filtering and keyboard-accessible project detail dialogs.
-- design/prototypes/about-preview.html — editorial About page with brand philosophy, principles, creator context, and portfolio link.
-- design/prototypes/account-preview.html — responsive sign-in, sign-up, and password-recovery visual states with local navigation and prototype-only submission feedback.
+- Seven standalone responsive HTML/CSS/JS design prototypes in design/prototypes/.
 
 ### Configuration-independent progress
 - Added a reference-led art direction proposal synthesizing the four owner-supplied websites into FORMA's original FORM IN MOTION concept. It defines a shared motion grammar, scroll behavior, route transitions, page-specific direction, and validation protocol; it does not claim a completed live-site audit.
-- Completed a preliminary contrast audit for key dark/light semantic color pairings and documented proposed token corrections.
 - Added framework-independent CSS custom properties with dark/light themes and reduced-motion overrides.
-- Added page-level layout specifications for Home, Playground, experiment detail, Motion Lab, Scene Studio, Archive, case studies, About, and account surfaces.
-- Added component design specifications for navigation, buttons, previews, filters, interactive stages, editor panels, forms, feedback, overlays, and accessibility.
-- Created three initial flat-vector logo routes and a proposed hybrid Modular Frame identity, monochrome lockups, standalone mark, and favicon draft.
-- Added brand application rules and reusable SVG graphic devices.
-- Created standalone Home and Playground prototypes with responsive layouts, local navigation/filter interactions, keyboard focus styling, and reduced-motion handling.
-- Applied FORM IN MOTION across all seven page prototypes. About uses progressive editorial reveals and restrained geometric response; Account uses compact view transitions and tactile feedback while keeping form completion clear. Scene Studio remains a local DOM/CSS editor-shell demonstration; Motion Lab remains a local CSS motion instrument.
-- Completed a source-level consistency sweep: all seven prototypes contain reduced-motion handling, visible keyboard-focus styling, responsive breakpoints, and local interaction code. No duplicate IDs, unresolved local hash links, or unbalanced script tags were found. This is not browser or assistive-technology verification.
-- Prepared `docs/PHASE_04_REVIEW.md`, including preliminary semantic color contrast calculations and the outstanding validation checklist. Phase 04 remains unapproved.
-- Created a Motion Lab prototype with four motion behaviors and live duration, intensity, easing, playback, and reset controls.
-- Created a Scene Studio editor-shell prototype with desktop hierarchy/viewport/inspector composition and a purpose-built mobile bottom dock.
-- Created an Archive prototype with category filters, live project count, responsive layouts, keyboard-operable cards, and detail dialogs.
-- Created an About prototype with an editorial manifesto, six working principles, creator context, and portfolio link.
-- Created an Account prototype with sign-in, account creation, and recovery views; form submission explicitly explains that no authentication or data transfer occurs.
+- Added page-level layout and component design specifications.
+- Created initial logo routes and a proposed hybrid Modular Frame identity.
+- Created seven standalone visual/interaction prototypes. These are design artifacts, not production features.
+- Completed a source-level consistency sweep for the seven prototypes. This is not browser or assistive-technology verification.
+- Prepared docs/PHASE_04_REVIEW.md. Phase 04 approval does not imply outstanding browser, assistive-technology, or reference-site checks have passed.
+- Captured the stronger product-owner direction in docs/EXPERIENCE_DIRECTION.md: FORMA should feel like a spatial, generative playground, with controlled chaos, meaningful 3D, performative interactions, and authored visual systems—not a conventional SaaS UI with decorative 3D.
 
-## Next action
-Phase 04 was approved by the product owner on 2026-11-20. See `docs/PHASE_04_REVIEW.md`. Rendered browser, assistive-technology, and direct reference-site validation remain follow-up tasks and are not claimed complete.
-
-Phase 05: core stack approved (D-014). Detailed Scene Studio data model and security specification prepared in docs/SCENE_STUDIO_DATA_MODEL.md. Remaining work: finalize supporting library choices, auth/session flow, environment/deployment setup, test strategy, operational safeguards, and acceptance checklist. Do not begin Phase 06 or production application implementation until the product owner explicitly approves Phase 05.
+## Phase 05 — In progress
+- Core technology stack approved and recorded in D-014.
+- Scene Studio data model and security proposal prepared in docs/SCENE_STUDIO_DATA_MODEL.md.
+- Authentication and environment proposal prepared in docs/AUTH_AND_ENVIRONMENT.md.
+- Experiential ambition recorded in D-015 and docs/EXPERIENCE_DIRECTION.md.
+- Remaining: finalize supporting library choices, route and module boundaries, auth/session flow, environment/deployment setup, test strategy, operational safeguards, 3D/generative runtime boundaries, and the consolidated acceptance checklist.
+- Do not begin Phase 06 or production application implementation until the product owner explicitly approves Phase 05.
 
 ## Project constraints
 - Work in small, reviewable milestones.
@@ -87,13 +79,11 @@ Phase 05: core stack approved (D-014). Detailed Scene Studio data model and secu
 
 ## Known limitations
 - No production application code has been implemented yet.
-- Home, Playground, Motion Lab, Scene Studio, Archive, About, and Account are visual/interaction prototypes, not production features.
-- Playground filters, Motion Lab controls, Scene Studio local editor controls, Archive filters/details, and Account view navigation are local prototype interactions only.
+- All seven page prototypes are visual/interaction studies, not production features.
 - The Scene Studio prototype uses DOM/CSS shapes; it is not a real 3D editor and has no authentication or cloud persistence.
-- Archive entries are illustrative and are not connected to persistent project data.
+- Motion Lab is a local CSS motion instrument, not a production generative engine.
 - Account forms do not authenticate, create accounts, send recovery emails, or transmit/store user information.
-- The About page links externally to the creator's portfolio; no contact backend is implemented.
-- The hybrid logo is a proposed concept, not approved final artwork; its wordmark is not an outlined production master.
+- The hybrid logo is a proposed concept, not approved final artwork.
 - Core technical stack is approved; detailed schema, security policies, supporting libraries, and deployment configuration remain under Phase 05 review.
 - Trademark, domain, and social-handle availability have not been checked.
 - Contrast measurements are preliminary; full component-level validation requires rendered UI testing.
