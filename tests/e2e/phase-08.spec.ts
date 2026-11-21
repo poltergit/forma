@@ -112,8 +112,7 @@ test("Home sculpture responds to pointer position and returns to rest", async ({
   const sculpture = artwork.locator("div").nth(5);
   const before = await sculpture.evaluate((node) => getComputedStyle(node).transform);
   await artwork.hover({ position: { x: 24, y: 24 } });
-  const displaced = await sculpture.evaluate((node) => getComputedStyle(node).transform);
-  expect(displaced).not.toBe(before);
+  await expect.poll(() => sculpture.evaluate((node) => getComputedStyle(node).transform)).not.toBe(before);
   await page.mouse.move(0, 0);
   await expect.poll(() => sculpture.evaluate((node) => getComputedStyle(node).transform)).toBe(before);
 });
