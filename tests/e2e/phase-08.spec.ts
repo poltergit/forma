@@ -117,3 +117,13 @@ test("Home sculpture responds to pointer position and returns to rest", async ({
   await page.mouse.move(0, 0);
   await expect.poll(() => sculpture.evaluate((node) => getComputedStyle(node).transform)).toBe(before);
 });
+
+test("Playground empty filter state offers a reset", async ({ page }) => {
+  await page.goto("/playground");
+  await page.getByRole("button", { name: "SPACE", exact: true }).click();
+  await expect(page.getByText(/no studies in this material yet/i)).toBeVisible();
+  const reset = page.getByRole("button", { name: /reset index/i });
+  await expect(reset).toBeEnabled();
+  await reset.click();
+  await expect(page.getByRole("heading", { name: "Displacement field", exact: true })).toBeVisible();
+});
