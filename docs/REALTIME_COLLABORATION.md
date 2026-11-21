@@ -1,6 +1,6 @@
 # FORMA — Real-Time Scene Collaboration
 
-**Version:** 0.2  
+**Version:** 0.3  
 **Phase:** 05 — Technical Architecture  
 **Status:** Proposed MVP architecture based on owner-approved collaboration requirement  
 **Backend:** Supabase Auth, PostgreSQL, RLS, Realtime  
@@ -38,7 +38,9 @@ Prefer a security-invoker function if its permissions can be made safe. If a sec
 Only the owner can add/remove members or change roles.
 
 ### Invitations
-Store scene, normalized recipient identity, inviter, role, cryptographic token hash, expiry, accepted/revoked timestamps, and created timestamp. Never store raw token. Invitation creation and acceptance run through trusted server-side operations. Acceptance must bind to the intended verified identity and atomically consume the token/create membership.
+Store scene, normalized recipient identity, inviter, role, SHA-256 token hash, expiry, accepted/revoked/expired timestamps, actor IDs, and creation timestamp. Never store raw token. The server generates 32 random bytes with Node crypto and hashes the base64url token using SHA-256; PostgreSQL receives only the digest. Acceptance reads the authenticated account's confirmed email from auth.users and binds it to the invitation identity. Membership creation and invitation consumption occur in one transaction.
+
+See [Invitation & Membership Engine](INVITATION_MEMBERSHIP_ENGINE.md) and migration draft [20261121000300_forma_invitation_membership_rpc.sql](../supabase/migrations/20261121000300_forma_invitation_membership_rpc.sql). The RPCs cover create, accept, revoke, and owner removal. They remain unexecuted review drafts.
 
 ### Command receipts
 Use a durable unique command ID scoped appropriately (at minimum unique per scene) and retain actor, command type, resulting revision, and timestamp. Store only the minimum metadata required for idempotency and recovery. Decide retention before adding full payload/audit history.
@@ -117,13 +119,14 @@ Membership removal must block future database reads and commands regardless of a
 
 ## 7. Invitation lifecycle
 
-1. Owner submits recipient and role.
-2. Trusted operation verifies owner, input, quotas, and limits.
-3. Generate high-entropy random token; store only hash.
-4. Deliver an expiring link using configured email delivery.
-5. Recipient authenticates and proves intended verified identity.
-6. Atomic acceptance validates hash, expiry, revocation, identity, and scene state; creates membership and consumes invitation.
-7. Owner may revoke pending invitations or active membership.
+1. A trusted server action authenticates the owner, generates 32 random bytes, creates a base64url token, and computes its SHA-256 digest.
+2. The owner-only create RPC validates scene ownership, role, recipient, digest shape, and a 1–7 day expiry; only the digest is persisted.
+3. The server sends a link using the configured transactional email provider. Prefer a URL fragment for the token so it is not sent in the initial HTTP request; the redemption page must capture it, immediately scrub it from browser history, avoid third-party scripts/analytics, and use a strict no-referrer policy.
+4. Recipient authenticates. The server hashes the submitted token; the acceptance RPC verifies the confirmed auth.users email, locks the scene/invitation, and atomically creates membership and records the accepting actor.
+5. Owner may revoke a pending invitation or remove an accepted collaborator. Removal locks the scene row, serializing against the scene command RPC's membership check.
+6. Delivery failure is handled as a separate side effect: attempt invitation revocation and show failure rather than a false success.
+
+The email provider, server-side rate limiter, canonical origins, and actual Realtime revocation behavior remain validation decisions.
 
 Never disclose account existence. Never report success before delivery/creation is confirmed. If email is not configured, show a truthful unavailable/error state; do not fake invitation delivery.
 
@@ -148,4 +151,4 @@ See [Phase 05 Technical Validation Plan](PHASE_05_VALIDATION_PLAN.md) and [Secur
 
 Critical tests: RLS for all roles, direct-write bypass denial, private-channel join/revocation, identity-bound single-use invitations, duplicate command retries, concurrent commands, transaction rollback, missed/out-of-order notifications, reconnect recovery, and oversized payload rejection.
 
-**Status:** Architecture only. No SQL migration, RPC, email flow, Realtime configuration, or integration test has been implemented or verified.
+**Status:** Architecture and review-only SQL drafts. No migration has been applied; no email flow, provider configuration, Realtime configuration, or integration test has been implemented or verified.
