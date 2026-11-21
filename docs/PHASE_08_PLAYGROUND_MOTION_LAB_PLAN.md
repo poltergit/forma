@@ -134,15 +134,15 @@ Expose a small number of useful controls first; advanced controls should appear 
 
 ## 9. Implementation sequence
 
-1. Audit the Phase 07 shell, routes, design tokens, and current test setup.
-2. Define Playground information architecture, experiment metadata, category taxonomy, and route model.
-3. Prototype distinct visual directions for the first experiment set; select the strongest concepts before scaling implementation.
-4. Build the responsive editorial discovery field and functional filters.
+1. **Completed.** Audited the Phase 07 shell, route structure, canonical tokens, and existing test setup.
+2. **Initial route established.** Added the Playground route and a first featured experiment; the wider gallery taxonomy and detail-route model remain to be designed.
+3. **First experiment implemented.** Added a deterministic displacement field with pointer/touch influence, density and force parameters, and a recomposition control. Additional experiment concepts remain proposals.
+4. **In progress.** The first Playground experience is in place; the full editorial discovery field, filters, and multi-experiment index remain.
 5. Implement the first complete experiment end-to-end, including keyboard/touch and reduced-motion behavior.
 6. Establish reusable experiment lifecycle, renderer boundaries, deterministic random utilities, and parameter validation.
-7. Build the Motion Lab stage, control surface, timeline/curve interaction, and motion recipe model.
+7. **Initial stage and controls implemented.** Added Orbit, Pulse, Shift, and Stagger behaviors with play/pause, duration, intensity, easing, and reset. Timeline/curve editing and serializable motion recipes remain.
 8. Implement additional experiments using distinct visual grammars and bounded rendering budgets.
-9. Add direct-link, browser-history, responsive, accessibility, and performance coverage.
+9. **Initial browser coverage added; execution pending.** Added Phase 08 Playwright cases and deterministic generator unit tests. Direct-link, browser-history, responsive, accessibility, and performance coverage still need expansion and execution.
 10. Run supported-runtime install, lint, typecheck, unit, browser, and production-build checks; document actual results.
 11. Present Phase 08 for explicit owner review before Phase 09.
 
