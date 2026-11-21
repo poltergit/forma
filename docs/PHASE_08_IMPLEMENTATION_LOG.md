@@ -33,7 +33,7 @@ The first Phase 08 slice turns the Playground and Motion Lab from roadmap pillar
 - Added a response-curve visualization that updates with the selected easing.
 - Added three authored starting presets: Drift, Impact, and Glitch.
 - Added a versioned, Zod-validated JSON motion recipe with a copy action; no cloud save or import is implied.
-- Reduced-motion CSS preserves a stable, visible form and leaves the controls available. Pause state is exposed through an accessible pressed state and live announcement.
+- Reduced-motion CSS preserves a stable, visible form and leaves the controls available. The stage explicitly reports a static reduced-motion state and hides the non-applicable scrub control. Pause state is exposed through an accessible pressed state and live announcement.
 
 ### Shared application shell
 
@@ -46,7 +46,7 @@ The first Phase 08 slice turns the Playground and Motion Lab from roadmap pillar
 
 - Unit coverage verifies deterministic seed reproduction and point-count bounds for the Playground generator.
 - Motion recipe unit tests verify JSON round-trip stability, parameter bounds, and strict rejection of unknown fields.
-- Playwright coverage exercises Playground keyboard/recomposition/density, category filtering and direct anchors, Elastic Matter controls, Motion Lab mode selection, pause/reset, timeline scrubbing, preset selection, recipe visibility, reduced motion, route navigation, Home hero pointer response, and overflow checks at 320, 375, 768, 1024, and 1440 CSS pixels.
+- Playwright coverage exercises Playground keyboard/recomposition/density, category filtering and direct anchors, Elastic Matter controls, Motion Lab mode selection, pause/reset, timeline scrubbing, preset selection, recipe visibility, reduced motion, route navigation, Home hero pointer response, browser back navigation for experiment anchors, and overflow checks at 320, 375, 768, 1024, and 1440 CSS pixels.
 
 ## Technical choices
 
