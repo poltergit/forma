@@ -1,6 +1,6 @@
 # FORMA — Phase 05 Architecture Review
 
-**Version:** 0.3  
+**Version:** 0.4  
 **Phase:** 05 — Technical Architecture  
 **Status:** Owner decisions recorded; technical validation and final approval remain open  
 **Purpose:** Consolidate the approved direction, supporting architecture, collaboration requirements, and Phase 05 acceptance criteria before Phase 06.
@@ -27,7 +27,7 @@
 
 Scene Command Engine: [command contract](SCENE_COMMAND_ENGINE.md) and `supabase/migrations/20261121000200_forma_scene_command_rpc.sql` (not applied or tested).\n\nDatabase draft: [Migration Design Review](DATABASE_MIGRATION_REVIEW.md) and `supabase/migrations/20261121000100_forma_core_schema.sql` (not applied or tested).
 
-Detailed references: [Technical Architecture](TECHNICAL_ARCHITECTURE.md), [Scene Studio Data Model](SCENE_STUDIO_DATA_MODEL.md), [Real-Time Collaboration](REALTIME_COLLABORATION.md), [Generative Artifact Model](GENERATIVE_ARTIFACT_MODEL.md), [Authentication & Environment](AUTH_AND_ENVIRONMENT.md).
+Invitation lifecycle: [Invitation & Membership Engine](INVITATION_MEMBERSHIP_ENGINE.md) and `supabase/migrations/20261121000300_forma_invitation_membership_rpc.sql` (review draft only; not applied or tested).\n\nDetailed references: [Technical Architecture](TECHNICAL_ARCHITECTURE.md), [Scene Studio Data Model](SCENE_STUDIO_DATA_MODEL.md), [Real-Time Collaboration](REALTIME_COLLABORATION.md), [Generative Artifact Model](GENERATIVE_ARTIFACT_MODEL.md), [Authentication & Environment](AUTH_AND_ENVIRONMENT.md).
 
 ## 3. Creative scope
 
@@ -78,13 +78,13 @@ Separate local/preview/production resources; verify current provider quotas, ema
 - [x] Authentication and invitation proposal documented.
 - [x] Collaboration architecture documented.
 - [x] Security threat model drafted.
-- [x] Core schema/RLS migration draft prepared for isolated review (not executed).\n- [x] Typed Scene Command Engine contract and atomic RPC migration draft prepared (not executed).
+- [x] Core schema/RLS migration draft prepared for isolated review (not executed).\n- [x] Typed Scene Command Engine contract and atomic RPC migration draft prepared (not executed).\n- [x] Invitation/membership lifecycle contract and create/accept/revoke/remove RPC migration draft prepared (not executed).
 - [x] Technical validation plan drafted.
 - [ ] Confirm isolated Supabase environment and current provider capabilities/quotas.
 - [ ] Implement and apply migrations in isolated development only; verify fresh-database apply.
 - [ ] Execute RLS and database privilege tests for owner/editor/viewer/revoked/non-member/anonymous.
 - [ ] Validate atomic command RPC, idempotency, concurrency, and rollback.
-- [ ] Validate invitation email delivery, identity binding, expiry, replay, and revocation.
+- [ ] Validate invitation email delivery, token handling, verified identity binding, expiry, replay, concurrency, revocation, and member-removal/command ordering.
 - [ ] Validate Realtime private join, revocation, reconnect, and snapshot recovery.
 - [ ] Verify environment separation, backups/restore, and Vercel constraints.
 - [ ] Complete accessibility/performance/security evidence package.
@@ -92,6 +92,6 @@ Separate local/preview/production resources; verify current provider quotas, ema
 
 ## 7. Approval gate
 
-**Phase 05 is not complete or approved.** Architecture and validation specifications are documented, but provider-specific behavior and database security must be tested in an isolated environment. No migrations, invitation flow, realtime implementation, or production application code are claimed as built.
+**Phase 05 is not complete or approved.** Architecture and validation specifications are documented, but provider-specific behavior and database security must be tested in an isolated environment. No migrations have been applied. Invitation RPCs, email delivery, Realtime implementation, and production application code are not built or verified.
 
 Phase 06 must not begin until the validation blockers are resolved or explicitly revised and the product owner approves the final Phase 05 review.
