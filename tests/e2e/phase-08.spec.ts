@@ -100,7 +100,7 @@ test("Playground filters studies and opens the matching direct anchor", async ({
   await expect(page).toHaveURL(/\/playground#elastic-type$/);
   await expect(page.getByRole("heading", { name: /elastic matter/i })).toBeVisible();
   await page.goBack();
-  await expect(page).toHaveURL(/\\/playground$/);
+  await expect(page).toHaveURL(/\/playground$/);
 });
 
 test("Elastic Matter controls change the typographic study", async ({ page }) => {
