@@ -47,7 +47,7 @@ Turn the approved architecture and Phase 04 design system into a maintainable, a
 - Supabase browser/server clients are separate modules; missing credentials are an explicit configuration error, never a fake connected state.
 - Zod validates external input at trust boundaries; TypeScript types alone are not runtime validation.
 - Zustand stores are scoped to client interaction state, not a substitute for server authorization or durable persistence.
-- Vitest, React Testing Library, Playwright, and axe-core provide the planned test layers.
+- Vitest, React Testing Library, Playwright, and axe-core provide the planned test layers; browser coverage includes automated accessibility and viewport overflow checks.
 - Reduced-motion, keyboard, touch, responsive behavior, and graceful WebGL fallback are baseline requirements.
 
 ## 3. Out of scope
