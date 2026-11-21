@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, type CSSProperties } from "react";
 import styles from "./elastic-type.module.css";
 
 export function ElasticType() {
@@ -16,7 +16,7 @@ export function ElasticType() {
       </div>
       <div className={styles.stage} data-inverted={inverted}>
         <span className={styles.coordinate}>TYPE / VARIABLE FORM / 02</span>
-        <div className={styles.specimen} style={{ "--tension": tension / 50, "--release": release / 100 } as React.CSSProperties} aria-label="Elastic Matter typographic specimen">
+        <div className={styles.specimen} style={{ "--tension": tension / 50, "--release": release / 100 } as CSSProperties} aria-label="Elastic Matter typographic specimen">
           <span>F</span><span>O</span><span>R</span><span>M</span><span>A</span>
         </div>
         <span className={styles.baseline}>STRETCH IS A FORM OF EXPRESSION</span>
