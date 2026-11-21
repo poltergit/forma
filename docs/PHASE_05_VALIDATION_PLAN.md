@@ -98,11 +98,11 @@ Every command includes an idempotency ID, scene ID, expected revision, allowlist
 | CMD-10 | Two clients edit same property concurrently | Deterministic committed order and visible winner |
 | CMD-11 | DB transaction fails mid-operation | Neither scene update nor command receipt partially commits |
 | CMD-12 | Oversized document/object count | Rejected within documented limits |
-| CMD-13 | Client spoofs actor ID | Ignored; actor derived from auth context |
+| CMD-13 | Client spoofs actor ID | Ignored; actor derived from auth context |\n| CMD-14 | Reuse command ID with changed payload or expected revision | Rejected by request fingerprint; no second mutation |
 
 Do not promise automatic rebase for arbitrary commands. Define the safe-rebase rules command by command.
 
-## 6. Realtime and recovery tests
+The detailed typed payload and UX contract is maintained in [Scene Command Engine](SCENE_COMMAND_ENGINE.md). The SQL RPC is a review draft only.\n\n## 6. Realtime and recovery tests
 
 | Test | Action | Expected result |
 |---|---|---|
