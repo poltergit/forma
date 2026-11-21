@@ -42,6 +42,7 @@
 }
 
 .cube {
+  --cube-depth: clamp(3.6rem, 14vw, 5.5rem);
   position: absolute;
   top: 50%;
   left: 50%;
@@ -63,32 +64,32 @@
 }
 
 .faceFront {
-  transform: translateZ(3.6rem);
+  transform: translateZ(var(--cube-depth));
   background: linear-gradient(145deg, rgb(199 243 107 / 0.72), rgb(199 243 107 / 0.12));
 }
 
 .faceBack {
-  transform: rotateY(180deg) translateZ(3.6rem);
+  transform: rotateY(180deg) translateZ(var(--cube-depth));
   background: rgb(100 123 255 / 0.18);
 }
 
 .faceRight {
-  transform: rotateY(90deg) translateZ(3.6rem);
+  transform: rotateY(90deg) translateZ(var(--cube-depth));
   background: linear-gradient(160deg, rgb(100 123 255 / 0.72), rgb(100 123 255 / 0.12));
 }
 
 .faceLeft {
-  transform: rotateY(-90deg) translateZ(3.6rem);
+  transform: rotateY(-90deg) translateZ(var(--cube-depth));
   background: rgb(255 118 94 / 0.22);
 }
 
 .faceTop {
-  transform: rotateX(90deg) translateZ(3.6rem);
+  transform: rotateX(90deg) translateZ(var(--cube-depth));
   background: linear-gradient(135deg, rgb(242 240 234 / 0.78), rgb(242 240 234 / 0.12));
 }
 
 .faceBottom {
-  transform: rotateX(-90deg) translateZ(3.6rem);
+  transform: rotateX(-90deg) translateZ(var(--cube-depth));
   background: rgb(17 18 20 / 0.72);
 }
 
@@ -281,16 +282,12 @@
     width: 15rem;
   }
 
-  .cube span {
-    --cube-depth: 2.35rem;
-  }
-
-  .faceFront { transform: translateZ(var(--cube-depth, 3.6rem)); }
-  .faceBack { transform: rotateY(180deg) translateZ(var(--cube-depth, 3.6rem)); }
-  .faceRight { transform: rotateY(90deg) translateZ(var(--cube-depth, 3.6rem)); }
-  .faceLeft { transform: rotateY(-90deg) translateZ(var(--cube-depth, 3.6rem)); }
-  .faceTop { transform: rotateX(90deg) translateZ(var(--cube-depth, 3.6rem)); }
-  .faceBottom { transform: rotateX(-90deg) translateZ(var(--cube-depth, 3.6rem)); }
+  .faceFront { transform: translateZ(var(--cube-depth)); }
+  .faceBack { transform: rotateY(180deg) translateZ(var(--cube-depth)); }
+  .faceRight { transform: rotateY(90deg) translateZ(var(--cube-depth)); }
+  .faceLeft { transform: rotateY(-90deg) translateZ(var(--cube-depth)); }
+  .faceTop { transform: rotateX(90deg) translateZ(var(--cube-depth)); }
+  .faceBottom { transform: rotateX(-90deg) translateZ(var(--cube-depth)); }
 
   .caption {
     align-items: flex-start;
