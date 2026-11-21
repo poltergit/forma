@@ -82,7 +82,7 @@ Turn the approved architecture and Phase 04 design system into a maintainable, a
 - [x] Supabase browser/server modules separated; no service-role key in browser code.
 - [x] Missing Supabase credentials are explicit rather than silently mocked.
 - [x] Initial unit and browser test configuration plus representative tests committed (not yet run).
-- [ ] Session refresh/request boundary implemented for the selected Next.js version.
+- [x] Next.js 16 `proxy.ts` session refresh boundary committed (runtime validation pending).
 - [ ] Lint, typecheck, unit tests, Playwright, and production build pass.
 - [ ] CI reports the same checks using the committed lockfile.
 - [ ] Rendered desktop/tablet/mobile review completed without horizontal overflow.
