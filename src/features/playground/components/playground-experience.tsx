@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState, type PointerEvent } from "react";
 import styles from "./playground-experience.module.css";
 
 type Point = { x: number; y: number; depth: number; size: number; tone: number };
@@ -172,7 +172,7 @@ export function PlaygroundExperience() {
     };
   }, [density, influence, seed]);
 
-  const updatePointer = (event: React.PointerEvent<HTMLDivElement>) => {
+  const updatePointer = (event: PointerEvent<HTMLDivElement>) => {
     const bounds = event.currentTarget.getBoundingClientRect();
     pointerRef.current = {
       x: (event.clientX - bounds.left) / bounds.width,
