@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useState, type CSSProperties } from "react";
+import { useEffect, useMemo, useRef, useState, type CSSProperties } from "react";
 import styles from "./motion-lab.module.css";
 import { createMotionRecipe, type MotionEasing as Easing, type MotionMode } from "../motion-recipe";
 
@@ -19,6 +19,7 @@ const modes: Array<{ id: MotionMode; label: string; note: string }> = [
 ];
 
 export function MotionLab() {
+  const objectRef = useRef<HTMLDivElement>(null);
   const [mode, setMode] = useState<MotionMode>("orbit");
   const [duration, setDuration] = useState(4);
   const [intensity, setIntensity] = useState(50);
@@ -41,6 +42,12 @@ export function MotionLab() {
   };
 
   const selected = modes.find((item) => item.id === mode) ?? modes[0];
+
+  useEffect(() => {
+    if (reducedMotion || progress !== 0 || paused) return;
+    const animation = objectRef.current?.getAnimations()[0];
+    if (animation) animation.currentTime = 0;
+  }, [duration, easing, mode, paused, progress, reducedMotion]);
   const recipe = useMemo(() => createMotionRecipe(mode, duration, intensity, easing), [mode, duration, intensity, easing]);
 
   useEffect(() => {
@@ -78,18 +85,17 @@ export function MotionLab() {
             "--duration": `${duration}s`,
             "--intensity": intensity / 50,
             "--easing": easing,
-            "--scrub-delay": "-" + ((progress / 100) * duration * 2) + "s",
           } as CSSProperties}
         >
           <span className={styles.cornerMark} aria-hidden="true">+</span>
-          <div className={`${styles.object} ${styles[mode]}`} aria-hidden="true"><i /><i /><i /></div>
+          <div ref={objectRef} className={`${styles.object} ${styles[mode]}`} aria-hidden="true"><i /><i /><i /></div>
           <span className={styles.stageCoordinates}>X / 0.00 &nbsp; Y / 1.00 &nbsp; Z / 0.50</span>
           <span className={styles.stageInstruction}>CHANGE THE PARAMETERS → CHANGE THE FEELING</span>
         </div>
         <p className={styles.reducedMotionNote} hidden={!reducedMotion}>Motion is reduced by your system preference. The stage stays still; timing controls continue to shape the reproducible recipe.</p>
         <div className={styles.timeline} hidden={reducedMotion}>
           <div className={styles.timelineMeta}><span>SCRUB / FREEZE AT A MOMENT</span><output>{progress}%</output></div>
-          <input aria-label="Motion timeline position" type="range" min="0" max="100" step="1" value={progress} onChange={(event) => { setProgress(Number(event.target.value)); setPaused(true); }} />
+          <input aria-label="Motion timeline position" type="range" min="0" max="100" step="1" value={progress} onChange={(event) => { const next = Number(event.target.value); setProgress(next); setPaused(true); const animation = objectRef.current?.getAnimations()[0]; if (animation) { animation.pause(); animation.currentTime = (next / 100) * duration * 2000; } }} />
           <div className={styles.timelineScale}><span>0:00</span><span>{(duration * 2).toFixed(1)}s / FULL CYCLE</span></div>
         </div>
         <div className={styles.stageFooter}>
