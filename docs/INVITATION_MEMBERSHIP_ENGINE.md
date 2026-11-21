@@ -1,6 +1,6 @@
 # FORMA — Invitation & Membership Engine
 
-**Version:** 0.1  
+**Version:** 0.2  
 **Phase:** 05 — Technical Architecture  
 **Status:** Review draft; no provider or database execution claimed
 
@@ -59,17 +59,18 @@ It excludes public sharing, open collaboration links, role delegation, ownership
 | RPC | Caller | Effect |
 |---|---|---|
 | create_scene_invitation | Owner | Stores hash-only invitation with role and expiry |
+| list_scene_invitations | Owner | Lists invitation metadata without exposing token hashes |
 | accept_scene_invitation | Authenticated, verified recipient | Atomically adds membership and marks invitation accepted |
 | revoke_scene_invitation | Owner | Revokes a pending invitation |
 | remove_scene_member | Owner | Removes an existing editor/viewer |
 
-Functions use SECURITY DEFINER with an empty search path, schema-qualified relations, explicit actor derivation via auth.uid(), and execute permission limited to authenticated. Review against actual Supabase grants before use.
+Functions use SECURITY DEFINER with an empty search path, schema-qualified relations, explicit actor derivation via auth.uid(), and execute permission limited to authenticated. The owner-only list operation returns invitation metadata but never token hashes. Review against actual Supabase grants before use.
 
 ## 5. Application boundary
 
 - Token generation and hashing live in a server-only module; never import it into Client Components.
 - The browser never receives the token hash as a reusable credential.
-- The raw token appears only in the recipient-facing link and should be removed from visible app state after successful exchange.
+- The raw token appears only in the recipient-facing link. Prefer a URL fragment (not a query parameter), capture and scrub it immediately, set Referrer-Policy: no-referrer, and keep third-party scripts/analytics off the redemption route.
 - Use a fixed configured site origin; validate post-acceptance return paths against a local allowlist.
 - Email delivery is a separate side effect from the database transaction. The application must handle delivery failure explicitly; atomicity across PostgreSQL and an email provider is not possible.
 - Provider choice and delivery configuration remain open pending current limits and pricing.
