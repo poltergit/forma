@@ -136,8 +136,16 @@ The detailed typed payload and UX contract is maintained in [Scene Command Engin
 | RT-08 | Realtime service unavailable | Editor displays degraded/offline state; durable writes remain explicit |
 | RT-09 | Presence payload contains oversized/private data | Rejected or omitted by schema |
 | RT-10 | High-frequency cursor movement | Throttled; not written as durable scene revisions |
+| RT-11 | Anonymous/non-member joins guessed private topic | Denied by Realtime RLS |
+| RT-12 | Member tries public channel for scene collaboration | Application never creates it; only private topics allowed |
+| RT-13 | Forged revision broadcast | UI verifies durable scene revision/receipt; no false saved state |
+| RT-14 | Remove member while socket remains open | Database reads/writes denied immediately; record actual socket revocation behavior |
+| RT-15 | Receipt RPC queried by non-member or for another actor's command | Denied or returns no other actor's receipts |
+| RT-16 | Receipt query with null, empty, or over-100 IDs | Rejected |
+| RT-17 | Reconnect after committed but unacknowledged command | Receipt lookup resolves original command ID/revision |
+| RT-18 | Duplicate/out-of-order notifications | Snapshot/revision converges without duplicate mutation |
 
-Measure convergence time and connection/message use with a realistic number of synthetic clients before choosing production limits.
+Measure convergence time and connection/message use with a realistic number of synthetic clients before choosing production limits. See [Realtime Authorization & Recovery](REALTIME_AUTHORIZATION_RECOVERY.md) for the channel, payload, and receipt protocol.
 
 ## 7. Generative determinism and safety tests
 
