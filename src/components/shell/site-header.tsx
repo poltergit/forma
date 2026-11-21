@@ -2,8 +2,8 @@ import Link from "next/link";
 import styles from "./site-header.module.css";
 
 const navigation = [
-  { label: "EXPERIENCE", href: "/#main-content" },
-  { label: "DISCIPLINES", href: "/#the-materials" },
+  { label: "EXPERIENCE", href: "/#the-idea" },
+  { label: "DISCIPLINES", href: "/#disciplines" },
 ];
 
 export function SiteHeader() {
