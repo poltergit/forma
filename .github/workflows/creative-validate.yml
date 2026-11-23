@@ -58,3 +58,5 @@ jobs:
           git rm .github/workflows/creative-validate.yml
           git commit -m "ci: remove temporary validation workflow"
           git push origin HEAD:phase-08/playground-motion-lab
+
+# Re-run against the corrected orbital ref implementation.
