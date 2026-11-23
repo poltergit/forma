@@ -2,7 +2,7 @@
 
 **Branch:** `phase-08/playground-motion-lab`  
 **Status:** In progress  
-**Last updated:** 2026-11-21
+**Last updated:** 2026-11-23
 
 ## First implementation slice
 
@@ -53,7 +53,7 @@ The first Phase 08 slice turns the Playground and Motion Lab from roadmap pillar
 - The first Playground study uses a bounded 2D canvas renderer rather than introducing Three.js prematurely. The result is interactive and spatially styled without adding WebGL cost to the first experiment.
 - Motion Lab uses CSS 3D transforms and authored keyframes for its first motion instrument. This keeps the stage lightweight while exposing real parameter control.
 - No backend, cloud persistence, authentication, arbitrary user code, or shader execution is introduced.
-- No new dependency was added.
+- The initial Playground/Motion Lab slice added no dependencies. The later orbit-centered Home refoundation adds the separately documented GSAP and Three/R3F runtime.
 
 ## Creative refoundation — orbit-centered Home
 
@@ -77,20 +77,36 @@ Resolved and committed on a Node 22 GitHub Actions runner:
 
 The runner completed `npm install --save-exact` and `npm ls --depth=0`, updated `package.json` and `package-lock.json` together, then removed its temporary bootstrap workflow. This confirms dependency installation and package-tree resolution, not application build or browser validation.
 
-### Open issues
+### Validation completed — 2026-11-23
 
-- The owner's reported React `use()` suspension warning has not yet been reproduced and traced to its originating component/library/runtime.
-- The current implementation uses R3F/Three.js without post-processing or physics; those packages remain deferred until a concrete experience needs them.
-- Visual polish, reduced-motion behavior, WebGL fallback, keyboard/touch, mobile composition, and runtime performance still require automated and manual review.
+A clean GitHub Actions run on **Node 22.23.5 / npm 10.9.9** validated the latest Phase 08 branch commit before the temporary workflow cleaned itself up:
 
-## Verification boundary
+| Check | Result |
+|---|---|
+| `npm ci` from committed lockfile | Passed |
+| `npm run lint` | Passed |
+| `npm run typecheck` | Passed |
+| `npm run test` | 6 files / 17 tests passed |
+| Chromium Playwright | 28 tests passed |
+| `npm run build` | Passed; Next.js 16.4.6 optimized production build |
 
-The files and tests have been committed to the Phase 08 branch. **No Phase 08 lint, typecheck, unit test, Playwright run, production build, browser rendering review, or performance measurement has been executed in this environment.** The new checks are test coverage, not test results. The owner must pull the branch and run the project checks before this slice can be treated as validated.
+The npm install audit reported zero vulnerabilities. This is a dependency audit result, not a full application security audit. The lockfile and package manifest are consistent. The temporary `.github/workflows/creative-validate.yml` was removed by the successful workflow.
+
+Workflow: [Validate FORMA orbital experience](https://github.com/poltergit/forma/actions/runs/45112076858)  
+Final branch commit after workflow cleanup: [30795180](https://github.com/poltergit/forma/commit/30795180dfcc5a5d69329e0cd7bef93dda3cb4fa)
+
+### Open issues and review boundary
+
+- The owner's previously reported React `use()` suspension warning has not yet been reproduced and traced to its originating component/library/runtime.
+- Chromium browser logs emitted the Three.js `THREE.Clock` deprecation warning ("Please use THREE.Timer instead") while the R3F stage loaded. This is a separate finding and needs investigation.
+- Passing automated checks does not replace owner-led visual review. Desktop/tablet/mobile composition, manual keyboard/touch behavior, screen-reader output, reduced-motion presentation, WebGL failure fallback, GPU/frame performance, and the visual quality bar still need inspection.
+- No post-processing or physics package was added; those remain feature-gated until an actual scene requires them.
+- Supabase is not configured; orbit settings are local-only and are not cloud-saved.
 
 ## Next implementation work
 
-1. Inspect both routes at desktop, tablet, and narrow mobile widths; correct any overflow or layout collisions.
-2. Validate pointer/touch behavior, animation scrubbing, clipboard access, and canvas fallback in real browsers.
-3. Develop additional experiments with distinct visual grammars rather than duplicating the current studies.
-4. Expand keyboard and screen-reader review, responsive checks across all required widths, and performance measurements.
-5. Run supported-runtime lint, typecheck, unit, Playwright, and production-build checks before Phase 08 review.
+1. Open the updated Home experience locally and review its composition at 320, 375, 768, 1024, and 1440px.
+2. Inspect the five chapters, specimen selection, orbital controls, seed changes, navigation, and existing Playground/Motion Lab routes.
+3. Investigate both browser console findings; do not suppress either warning without identifying its source.
+4. Review keyboard/screen-reader behavior, reduced motion, WebGL/static fallback, and representative device performance.
+5. Improve the art direction based on the owner's visual feedback, then prepare a new Phase 08 review for explicit approval.
