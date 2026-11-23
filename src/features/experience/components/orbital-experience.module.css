@@ -279,3 +279,167 @@
   .world { min-height: auto; }
   .chapter { min-height: 100svh; }
 }
+
+/* Art-direction pass: give each chapter a physical surface, not a flat color panel. */
+.chapter::after {
+  position: absolute;
+  z-index: 0;
+  inset: 0;
+  pointer-events: none;
+  content: "";
+  opacity: .17;
+  background-image:
+    linear-gradient(90deg, transparent 49.9%, rgb(17 18 20 / .18) 50%, transparent 50.1%),
+    linear-gradient(0deg, transparent 49.9%, rgb(17 18 20 / .13) 50%, transparent 50.1%),
+    repeating-linear-gradient(0deg, transparent 0 5px, rgb(17 18 20 / .035) 6px);
+  background-size: 84px 84px, 84px 84px, 100% 7px;
+  mask-image: radial-gradient(ellipse at 50% 50%, #000 0%, transparent 78%);
+  mix-blend-mode: soft-light;
+}
+
+.ignite::after {
+  opacity: .24;
+  background-image:
+    repeating-linear-gradient(115deg, transparent 0 46px, rgb(199 243 107 / .12) 47px, transparent 48px 92px),
+    radial-gradient(circle at 50% 45%, transparent 0 23%, rgb(199 243 107 / .18) 23.1%, transparent 23.3% 34%, rgb(100 123 255 / .14) 34.1%, transparent 34.3%);
+  background-size: auto, 100% 100%;
+  mix-blend-mode: screen;
+}
+
+.heroTitle span:first-child {
+  color: #F2F0EA;
+  text-shadow: 0 0 1px rgb(242 240 234 / .8), 0 12px 50px rgb(0 0 0 / .2);
+}
+
+.heroTitle span:nth-child(2) {
+  position: relative;
+  width: max-content;
+  max-width: 100%;
+  padding-right: .08em;
+  text-shadow: 0 0 42px rgb(199 243 107 / .14);
+}
+
+.heroTitle em {
+  display: inline-block;
+  transform: skewX(-8deg);
+  text-shadow: 0 0 34px rgb(199 243 107 / .22);
+}
+
+.aperture {
+  filter: drop-shadow(0 0 26px rgb(82 109 22 / .14));
+  perspective: 900px;
+}
+
+.aperture i {
+  transform-style: preserve-3d;
+  backface-visibility: visible;
+  will-change: transform;
+}
+
+.territory button {
+  overflow: hidden;
+  isolation: isolate;
+  box-shadow: 12px 16px 38px rgb(17 18 20 / .055);
+}
+
+.territory button::before {
+  position: absolute;
+  z-index: -1;
+  inset: -60% auto -60% -55%;
+  width: 42%;
+  content: "";
+  background: linear-gradient(90deg, transparent, rgb(255 255 255 / .48), transparent);
+  transform: skewX(-22deg) translateX(-180%);
+  transition: transform 700ms cubic-bezier(.2,.8,.2,1);
+}
+
+.territory button:hover::before,
+.territory button[aria-pressed="true"]::before {
+  transform: skewX(-22deg) translateX(430%);
+}
+
+.territory button[aria-pressed="true"] {
+  border-color: rgb(82 109 22 / .65);
+  box-shadow: 16px 22px 48px rgb(17 18 20 / .12);
+}
+
+.instrument {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+  box-shadow: 0 28px 90px rgb(0 0 0 / .22), inset 0 1px rgb(242 240 234 / .08);
+}
+
+.instrument::before {
+  position: absolute;
+  z-index: -1;
+  inset: 0;
+  pointer-events: none;
+  content: "";
+  opacity: .7;
+  background:
+    radial-gradient(ellipse at 100% 0%, rgb(100 123 255 / .18), transparent 48%),
+    repeating-linear-gradient(135deg, transparent 0 18px, rgb(242 240 234 / .018) 19px, transparent 20px 38px);
+}
+
+.instrument input {
+  height: 3px;
+  border-radius: 0;
+  background: linear-gradient(90deg, var(--brand-lime), rgb(242 240 234 / .2));
+}
+
+.instrument input::-webkit-slider-thumb {
+  width: 13px;
+  height: 13px;
+  border: 2px solid #111214;
+  border-radius: 50%;
+  background: var(--brand-lime);
+  box-shadow: 0 0 0 4px rgb(199 243 107 / .13), 0 0 18px rgb(199 243 107 / .5);
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+.instrument input::-moz-range-thumb {
+  width: 10px;
+  height: 10px;
+  border: 2px solid #111214;
+  border-radius: 50%;
+  background: var(--brand-lime);
+  box-shadow: 0 0 0 4px rgb(199 243 107 / .13), 0 0 18px rgb(199 243 107 / .5);
+}
+
+.buildLinks a {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+}
+
+.buildLinks a::before {
+  position: absolute;
+  z-index: -1;
+  inset: 0;
+  content: "";
+  background: var(--brand-lime);
+  transform: translateY(102%);
+  transition: transform 360ms cubic-bezier(.2,.8,.2,1);
+}
+
+.buildLinks a:hover {
+  color: #111214;
+  border-color: var(--brand-lime);
+}
+
+.buildLinks a:hover::before {
+  transform: translateY(0);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .territory button::before,
+  .buildLinks a::before {
+    transition: none;
+  }
+  .aperture i {
+    will-change: auto;
+  }
+}
+
