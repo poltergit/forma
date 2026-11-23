@@ -145,7 +145,7 @@ export function OrbitalExperience() {
           <span className={styles.identityTag}>WHERE FORM MEETS FUNCTION</span>
         </div>
         <div className={styles.orbitCaption} aria-hidden="true">
-          <span>THE FORM ENGINE</span><span>SEED / {String(seed).padStart(5, "0")}</span>
+          <span>THE FORM ENGINE</span><span data-testid="orbital-seed">SEED / {String(seed).padStart(5, "0")}</span>
         </div>
       </div>
 
@@ -238,15 +238,15 @@ export function OrbitalExperience() {
           <div className={styles.instrumentHead}><span>ORBITAL PARAMETERS</span><span>LIVE / LOCAL</span></div>
           <label>
             <span>ENERGY <output>{intensity.toFixed(2)}×</output></span>
-            <input type="range" min="0.55" max="1.5" step="0.05" value={intensity} onChange={(event) => setIntensity(Number(event.target.value))} />
+            <input aria-label="Orbit energy" type="range" min="0.55" max="1.5" step="0.05" value={intensity} onChange={(event) => setIntensity(Number(event.target.value))} />
           </label>
           <label>
             <span>ORBIT SPEED <output>{speed.toFixed(2)}×</output></span>
-            <input type="range" min="0.35" max="1.8" step="0.05" value={speed} onChange={(event) => setSpeed(Number(event.target.value))} />
+            <input aria-label="Orbit speed" type="range" min="0.35" max="1.8" step="0.05" value={speed} onChange={(event) => setSpeed(Number(event.target.value))} />
           </label>
           <label>
             <span>FIELD DENSITY <output>{density}</output></span>
-            <input type="range" min="6" max="28" step="2" value={density} onChange={(event) => setDensity(Number(event.target.value))} />
+            <input aria-label="Field density" type="range" min="6" max="28" step="2" value={density} onChange={(event) => setDensity(Number(event.target.value))} />
           </label>
           <div className={styles.instrumentFoot}><span>SEED / {String(seed).padStart(5, "0")}</span><button type="button" onClick={recompose}>GENERATE NEW FORM ↗</button></div>
           <p className={styles.parameterNote}>Parameters change the orbital composition. This local study is not yet a saved artifact.</p>

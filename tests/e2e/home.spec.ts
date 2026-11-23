@@ -17,9 +17,9 @@ test("orbital specimens can be selected and recomposed", async ({ page }) => {
   await typeSpecimen.click();
   await expect(typeSpecimen).toHaveAttribute("aria-pressed", "true");
 
-  await expect(page.getByText("SEED / 04137")).toBeVisible();
+  await expect(page.getByTestId("orbital-seed")).toHaveText(/SEED \/ 04137/);
   await page.getByRole("button", { name: /recompose/i }).click();
-  await expect(page.getByText("SEED / 04138")).toBeVisible();
+  await expect(page.getByTestId("orbital-seed")).toHaveText(/SEED \/ 04138/);
 });
 
 test("reduced-motion keeps the orbital story readable and interactive", async ({ page }) => {

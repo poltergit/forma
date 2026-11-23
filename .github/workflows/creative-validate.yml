@@ -62,3 +62,5 @@ jobs:
 # Re-run against the corrected orbital ref implementation.
 
 # Retry after resolving lint findings.
+
+# Validate explicitly named orbital range controls and seed status.

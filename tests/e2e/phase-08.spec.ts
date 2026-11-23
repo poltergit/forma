@@ -128,7 +128,7 @@ test("Home exposes a selectable orbit and live orbital controls", async ({ page 
   await expect(page.getByText("1.05×")).toBeVisible();
 
   await page.getByRole("button", { name: /generate new form/i }).click();
-  await expect(page.getByText("SEED / 04138")).toBeVisible();
+  await expect(page.getByTestId("orbital-seed")).toHaveText(/SEED \/ 04138/);
 });
 
 test("Playground empty filter state offers a reset", async ({ page }) => {
