@@ -4,7 +4,7 @@ test("Playground exposes a real interactive generative field", async ({ page }) 
   await page.goto("/playground");
 
   await expect(page.getByRole("heading", { name: /enter the unknown/i })).toBeVisible();
-  await expect(page.locator("canvas")).toBeVisible();
+  await expect(page.locator('canvas, [class*="staticFallback"]').first()).toBeVisible();
   await expect(page.getByText("SEED / 027")).toBeVisible();
   const stage = page.getByRole("group", { name: /interactive displacement field/i });
   await stage.focus();
@@ -64,7 +64,7 @@ test("Phase 08 experiences remain usable with reduced motion", async ({ page }) 
 
 test("Home feature territories open the real Phase 08 routes", async ({ page }) => {
   await page.goto("/");
-  await page.getByRole("link", { name: /enter experiment/i }).first().click();
+  await page.getByRole("link", { name: /enter playground/i }).click();
   await expect(page).toHaveURL(/\/playground$/);
   await expect(page.getByRole("heading", { level: 1 })).toBeVisible();
 
@@ -114,15 +114,21 @@ test("Elastic Matter controls change the typographic study", async ({ page }) =>
   await expect(invert).toHaveAttribute("aria-pressed", "true");
 });
 
-test("Home sculpture responds to pointer position and returns to rest", async ({ page }) => {
+test("Home exposes a selectable orbit and live orbital controls", async ({ page }) => {
   await page.goto("/");
-  const artwork = page.locator('[data-arrangement="origin"]');
-  const sculpture = artwork.locator("div").nth(5);
-  const before = await sculpture.evaluate((node) => getComputedStyle(node).transform);
-  await artwork.hover({ position: { x: 24, y: 24 } });
-  await expect.poll(() => sculpture.evaluate((node) => getComputedStyle(node).transform)).not.toBe(before);
-  await page.mouse.move(0, 0);
-  await expect.poll(() => sculpture.evaluate((node) => getComputedStyle(node).transform)).toBe(before);
+  await expect(page.locator('canvas, [class*="staticFallback"]').first()).toBeVisible();
+
+  const formSpecimen = page.locator("button[aria-pressed]").filter({ hasText: "Form" }).first();
+  await formSpecimen.click();
+  await expect(formSpecimen).toHaveAttribute("aria-pressed", "true");
+
+  const speed = page.getByRole("slider", { name: /orbit speed/i });
+  await speed.focus();
+  await speed.press("ArrowRight");
+  await expect(page.getByText("1.05×")).toBeVisible();
+
+  await page.getByRole("button", { name: /generate new form/i }).click();
+  await expect(page.getByTestId("orbital-seed")).toHaveText(/SEED \/ 04138/);
 });
 
 test("Playground empty filter state offers a reset", async ({ page }) => {

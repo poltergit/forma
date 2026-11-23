@@ -1,7 +1,7 @@
 # FORMA — Creative Refoundation
 
 **Version:** 0.1  
-**Status:** Proposed experience re-foundation; Phase 08 remains in progress and unapproved  
+**Status:** Creative direction approved by product owner; implementation in progress; Phase 08 remains unapproved  
 **Reference supplied by product owner:** Otsuka / zeroz — https://otsuka-air.jp/  
 **Working thesis:** FORMA / A GENERATIVE WORLD OF FORM
 
@@ -294,4 +294,19 @@ No third-party library is permitted to replace accessibility semantics, reduced-
 
 ### Installation gate
 
-The repository's existing package manifest and lockfile do not yet include GSAP or the 3D runtime. Add dependencies together with an updated lockfile from a supported runtime, after version/peer-dependency checks. Do not edit only package.json and leave a stale lockfile.
+The Phase 08 branch now includes GSAP 3.15.1, @gsap/react 2.1.2, Three.js 0.187.0, React Three Fiber 9.8.2, and Drei 10.7.9. These exact versions are pinned in package.json and package-lock.json. A clean Node 22 npm ci and npm ls dependency resolution succeeded. Do not add further libraries without a concrete feature, compatibility check, and runtime/performance justification.
+
+
+## 15. First implementation and automated validation — 2026-11-23
+
+The first orbit-centered implementation is committed on `phase-08/playground-motion-lab`:
+- Home has five connected chapters: Ignite, Disturb, Compose, Direct, and Build.
+- A lazy-loaded React Three Fiber scene places a central FORMA core among five semantically meaningful orbiting specimens.
+- Specimen selection is exposed as semantic controls with descriptions and real destinations where features exist.
+- Energy, orbit speed, field density, and seed/recomposition controls affect the live scene; these settings are local-only.
+- GSAP and ScrollTrigger coordinate intro/chapter choreography. Native scroll is preserved.
+- Reduced motion skips the GSAP intro/scroll choreography and has a stable scene composition; a static WebGL fallback is supplied.
+
+Automated validation on a clean Node 22 runner succeeded: npm ci, lint, typecheck, 6 Vitest files / 17 tests, 30 Playwright tests, including Home overflow checks at 320/375/768/1024/1440px across desktop and mobile Chromium projects, and Next.js 16.4.6 production build. See [GitHub Actions run 45112076858](https://github.com/poltergit/forma/actions/runs/45112076858).
+
+This is not Phase 08 owner approval. Visual inspection on the owner's device, assistive-technology review, and performance profiling remain open. Browser logs show the separate Three.js `THREE.Clock` deprecation warning: React Three Fiber v9.8.2 constructs `THREE.Clock` in its store, while Three.js r187 marks it deprecated. The owner's earlier React `use()` warning has not been reproduced or traced.

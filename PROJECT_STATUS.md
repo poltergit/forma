@@ -1,6 +1,6 @@
 # FORMA — Project Status
 
-**Last updated:** 2026-11-21
+**Last updated:** 2026-11-23
 
 ## Current position
 
@@ -58,16 +58,18 @@ The owner reported successful local ESLint, TypeScript, eight Vitest tests, six 
 
 The [Phase 07 branch](https://github.com/poltergit/forma/tree/phase-07/immersive-experience) begins the cinematic landing-page and immersive experience work. The plan defines a four-act narrative, original spatial hero, meaningful interaction, scroll-linked storytelling, responsive art direction, reduced-motion and WebGL fallbacks, and performance/accessibility requirements. The owner confirmed validation succeeded and approved progression to Phase 08. The exact command output was not supplied and checks were not independently rerun here; this approval does not assert independent performance benchmarking or deployment. See [Phase 07 Review](docs/PHASE_07_REVIEW.md) and [Phase 07 Plan](docs/PHASE_07_IMMERSIVE_EXPERIENCE_PLAN.md).
 
-### Phase 08 — In progress
+### Phase 08 — In progress; automated validation passed
 
-The [Phase 08 branch](https://github.com/poltergit/forma/tree/phase-08/playground-motion-lab) now contains the first expanded feature slice:
-- Playground with a deterministic, pointer/keyboard-responsive Displacement Field.
-- A filterable editorial experiment index and a separate Elastic Matter typography study.
-- Motion Lab with four behaviors, duration/intensity/easing controls, scrub/freeze timeline, response-curve visualization, presets, and Zod-validated copyable JSON recipes.
-- Home hero pointer/touch-responsive sculpture with reduced-motion handling.
-- Playwright and unit-test coverage for feature interactions, direct anchors/history, reduced motion, and required responsive widths.
+The [Phase 08 branch](https://github.com/poltergit/forma/tree/phase-08/playground-motion-lab) contains the existing Playground and Motion Lab feature work plus a creative refoundation of Home:
+- Playground with a deterministic, pointer/keyboard-responsive Displacement Field, editorial experiment index, and Elastic Matter typography study.
+- Motion Lab with four behaviors, parameter controls, scrub/freeze timeline, easing visualization, presets, and copyable validated motion recipes.
+- A five-chapter Home experience (Ignite, Disturb, Compose, Direct, Build) with a lazy-loaded React Three Fiber orbital scene.
+- A central FORMA core and five meaningful orbit specimens (Form, Motion, Type, Space, Field), with pointer influence, selection, GSAP/ScrollTrigger choreography, and local deterministic recomposition controls.
+- GSAP 3.15.1, @gsap/react 2.1.2, Three.js 0.187.0, React Three Fiber 9.8.2, and Drei 10.7.9 locked in the package manifest and lockfile.
 
-These files and tests are committed to the branch, but this latest Phase 08 slice has **not** been run through lint, typecheck, unit tests, Playwright, or production build in this environment. Browser rendering, screen-reader review, and performance measurement remain open. See [Phase 08 Plan](docs/PHASE_08_PLAYGROUND_MOTION_LAB_PLAN.md) and [Phase 08 Implementation Log](docs/PHASE_08_IMPLEMENTATION_LOG.md).
+Latest automated validation passed on Node 22: clean `npm ci`, lint, typecheck, 6 Vitest files / 17 tests, 30 Chromium Playwright tests including Home width checks, and optimized Next.js production build. The temporary validation workflow removed itself after success. See [the Actions run](https://github.com/poltergit/forma/actions/runs/45112076858), [Phase 08 Plan](docs/PHASE_08_PLAYGROUND_MOTION_LAB_PLAN.md), and [Phase 08 Implementation Log](docs/PHASE_08_IMPLEMENTATION_LOG.md).
+
+**Not yet owner-approved:** real-device visual inspection, screen-reader/manual accessibility review, WebGL/static fallback review, performance profiling, investigation of the earlier React `use()` warning, and the new Three.js `THREE.Clock` deprecation warning remain open. Phase 08 remains in progress and unapproved.
 
 ## Project constraints
 
@@ -90,8 +92,10 @@ These files and tests are committed to the branch, but this latest Phase 08 slic
 
 ### Creative refoundation — orbit identity and motion stack (2026-11-23)
 
-The owner approved an orbit-centered Home identity: the FORMA core is central, surrounded by meaningful orbiting specimens for Form, Motion, Type, Space, and generative Field. The orbit evolves through a chapter narrative and offers real selection/recomposition interactions. The supplied Otsuka screenshots are used as structural/atmospheric inspiration only; FORMA keeps its own identity.
+The owner approved an orbit-centered Home identity: the FORMA core is central, surrounded by meaningful orbiting specimens for Form, Motion, Type, Space, and generative Field. The supplied Otsuka screenshots inform structure and atmosphere only; FORMA keeps its own brand and visual signature.
 
-GSAP is approved as the primary motion orchestration layer, with @gsap/react integration and ScrollTrigger for progressive chapter choreography. Three.js + React Three Fiber remain the 3D rendering core; Drei is selective. Post-processing, physics, and Theatre.js remain feature-gated candidates, not approved blanket dependencies.
+The first implementation is now committed: a five-chapter Home experience, lazy-loaded R3F orbital scene, five distinct specimen types, selectable territory controls, pointer/touch influence, parameter-driven recomposition, GSAP entrance choreography, and ScrollTrigger-linked scene progress. Existing Playground and Motion Lab routes remain intact.
 
-**Not yet implemented:** GSAP and R3F runtime packages are not yet installed on this branch. Package manifest and lockfile must be updated together after compatibility verification. The existing Home page still uses the previous editorial/CSS-cuboid implementation until the new orbital scene is built. The React use() console warning remains an open investigation. Phase 08 remains in progress and unapproved.
+The creative runtime was installed and peer-resolved on a Node 22 GitHub Actions runner; exact versions are locked in both package manifest and lockfile: GSAP 3.15.1, @gsap/react 2.1.2, Three.js 0.187.0, React Three Fiber 9.8.2, and Drei 10.7.9. The temporary bootstrap workflow removed itself after committing the dependency files.
+
+**Still open:** application lint/typecheck/unit/Playwright/build verification, real browser visual inspection, WebGL fallback and mobile profiling, reduced-motion and assistive-technology review, and investigation of the reported React use() suspension warning. Phase 08 remains in progress and unapproved.

@@ -264,6 +264,17 @@ Still required before Phase 05 acceptance:
 | Editor interaction state | Zustand | Keep separate from timeline/render state where practical |
 | Reproducible generative input | Zod + seeded generators | Validate and bound every public parameter |
 
+### Resolved creative runtime package set
+
+The Phase 08 Node 22 install resolved and locked:
+- GSAP 3.15.1
+- @gsap/react 2.1.2
+- Three.js 0.187.0
+- @react-three/fiber 9.8.2
+- @react-three/drei 10.7.9
+
+These are pinned in package.json and package-lock.json. The npm package install/tree resolution succeeded on Node 22; the Next.js application build and runtime still require validation.
+
 ### GSAP integration rules
 
 - Prefer GSAP timelines for the orbital Home composition and chapter-to-chapter choreography.
