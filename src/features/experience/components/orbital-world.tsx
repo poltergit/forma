@@ -111,11 +111,22 @@ function Specimen({
   const group = useRef<THREE.Group>(null);
   const materialColor = item.color;
   const seededPhase = ((seed * 0.017 + index * 2.399963) % 360) * (Math.PI / 180);
+  const initialAngle = item.phase + seededPhase;
+  const initialRadius = item.radius * (0.84 + intensity * 0.16);
+  const initialPosition: [number, number, number] = [
+    Math.cos(initialAngle) * initialRadius,
+    Math.sin(initialAngle * 0.76 + index) * item.height * (0.78 + intensity * 0.08),
+    Math.sin(initialAngle) * item.depth + Math.cos(initialAngle * 0.5) * 0.22,
+  ];
 
   useFrame(({ clock }, delta) => {
-    if (reducedMotion) return;
     const node = group.current;
     if (!node) return;
+
+    // Keep a deliberately composed, spatially separated arrangement when motion is
+    // reduced. The previous early return left every specimen at the world origin.
+    if (reducedMotion) return;
+
     const scroll = progress.current.value;
     const time = clock.elapsedTime * item.speed * speed + item.phase + seededPhase + scroll * Math.PI * (0.7 + index * 0.12);
     const radius = item.radius * (0.84 + intensity * 0.16) + Math.sin(scroll * Math.PI * 2 + item.phase) * 0.18;
@@ -134,6 +145,9 @@ function Specimen({
   return (
     <group
       ref={group}
+      position={initialPosition}
+      rotation={[index * 0.13, index * 0.27, index * 0.08]}
+      scale={selected ? 1.42 : 1}
       onClick={(event) => { event.stopPropagation(); onSelect(item.id); }}
       onPointerOver={(event) => event.stopPropagation()}
     >
