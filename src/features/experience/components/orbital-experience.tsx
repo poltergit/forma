@@ -104,8 +104,8 @@ export function OrbitalExperience() {
 
   function updatePointer(event: PointerEvent<HTMLElement>) {
     const bounds = event.currentTarget.getBoundingClientRect();
-    pointer.current.x = ((event.clientX - bounds.left) / bounds.width - 0.5) * 2;
-    pointer.current.y = ((event.clientY - bounds.top) / bounds.height - 0.5) * 2;
+    pointer.current.x = (event.clientX / window.innerWidth - 0.5) * 2;
+    pointer.current.y = (event.clientY / window.innerHeight - 0.5) * 2;
   }
 
   function resetPointer() {
@@ -130,8 +130,8 @@ export function OrbitalExperience() {
       <div className={styles.stickyStage} aria-hidden="true">
         <div className={styles.stageAtmosphere} />
         <OrbitalWorld
-          progress={progress.current}
-          pointer={pointer.current}
+          progress={progress}
+          pointer={pointer}
           selected={selected}
           onSelect={setSelected}
           intensity={intensity}
@@ -177,6 +177,16 @@ export function OrbitalExperience() {
               </button>
             ))}
           </div>
+          <div className={styles.selectedDetail} aria-live="polite" aria-atomic="true">
+            <span>{active.descriptor}</span>
+            <strong>{active.name}</strong>
+            <p>{active.description}</p>
+            {active.href ? (
+              <Link href={active.href}>EXPLORE {active.name.toUpperCase()} <i aria-hidden="true">↗</i></Link>
+            ) : (
+              <span className={styles.inDevelopment}>IN DEVELOPMENT</span>
+            )}
+          </div>
         </div>
 
         <div className={`heroFooter ${styles.heroFooter}`}>
@@ -221,7 +231,7 @@ export function OrbitalExperience() {
       <section id="direct" className={`${styles.chapter} ${styles.direct}`} aria-labelledby="direct-title">
         <div className={`${styles.chapterCopy} ${styles.directCopy}`} data-chapter-copy>
           <span className={styles.chapterKicker}>04 / DIRECT THE SYSTEM</span>
-          <h2 id="direct-title">Don't just watch.<br /><em>Change the rules.</em></h2>
+          <h2 id="direct-title">Don&apos;t just watch.<br /><em>Change the rules.</em></h2>
           <p>The orbit is a live generative composition. Change its energy, pace, and field density. Recompose to create a different arrangement from a new seed.</p>
         </div>
         <div className={styles.instrument}>

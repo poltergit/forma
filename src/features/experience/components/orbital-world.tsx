@@ -3,14 +3,16 @@
 import { useMemo, useRef } from "react";
 import { Canvas, useFrame } from "@react-three/fiber";
 import * as THREE from "three";
+import styles from "./orbital-world.module.css";
 
 type MutableValue = { value: number };
 type PointerValue = { x: number; y: number };
+type RefValue<T> = { current: T };
 type SpecimenId = "form" | "motion" | "type" | "space" | "field";
 
 type OrbitalWorldProps = {
-  progress: MutableValue;
-  pointer: PointerValue;
+  progress: RefValue<MutableValue>;
+  pointer: RefValue<PointerValue>;
   selected: SpecimenId;
   onSelect: (id: SpecimenId) => void;
   intensity: number;
@@ -95,7 +97,7 @@ function Specimen({
 }: {
   item: (typeof specimens)[number];
   index: number;
-  progress: MutableValue;
+  progress: RefValue<MutableValue>;
   selected: boolean;
   intensity: number;
   speed: number;
@@ -110,7 +112,7 @@ function Specimen({
   useFrame(({ clock }, delta) => {
     const node = group.current;
     if (!node) return;
-    const scroll = progress.value;
+    const scroll = progress.current.value;
     const time = clock.elapsedTime * item.speed * speed + item.phase + seededPhase + scroll * Math.PI * (0.7 + index * 0.12);
     const radius = item.radius * (0.84 + intensity * 0.16) + Math.sin(scroll * Math.PI * 2 + item.phase) * 0.18;
     node.position.set(
@@ -154,11 +156,11 @@ function Specimen({
   );
 }
 
-function Core({ progress, intensity }: { progress: MutableValue; intensity: number }) {
+function Core({ progress, intensity }: { progress: RefValue<MutableValue>; intensity: number }) {
   const root = useRef<THREE.Group>(null);
-  useFrame(({ clock }, delta) => {
+  useFrame(({ clock }) => {
     if (!root.current) return;
-    root.current.rotation.y = clock.elapsedTime * 0.12 + progress.value * Math.PI * 0.8;
+    root.current.rotation.y = clock.elapsedTime * 0.12 + progress.current.value * Math.PI * 0.8;
     root.current.rotation.x = Math.sin(clock.elapsedTime * 0.16) * 0.08;
     const scale = 1 + Math.sin(clock.elapsedTime * 0.8) * 0.018 * intensity;
     root.current.scale.setScalar(scale);
@@ -190,8 +192,8 @@ function WorldScene(props: OrbitalWorldProps) {
   const world = useRef<THREE.Group>(null);
   useFrame((_, delta) => {
     if (!world.current) return;
-    const targetX = props.pointer.y * 0.16;
-    const targetY = props.pointer.x * 0.2 + props.progress.value * 0.2;
+    const targetX = props.pointer.current.y * 0.16;
+    const targetY = props.pointer.current.x * 0.2 + props.progress.current.value * 0.2;
     world.current.rotation.x = THREE.MathUtils.damp(world.current.rotation.x, targetX, 3.2, delta);
     world.current.rotation.y = THREE.MathUtils.damp(world.current.rotation.y, targetY, 3.2, delta);
   });
@@ -235,7 +237,18 @@ export function OrbitalWorld(props: OrbitalWorldProps) {
       dpr={[1, 1.5]}
       camera={{ position: [0, 0, 12.5], fov: 38, near: 0.1, far: 60 }}
       gl={{ antialias: true, alpha: true, powerPreference: "high-performance" }}
-      fallback={<div className="route-state"><p>THE FORM ENGINE</p><h2>Explore the orbit in static mode.</h2></div>}
+      fallback={
+        <div className={styles.staticFallback} role="img" aria-label="Static preview of the FORMA orbital identity">
+          <div className={styles.staticOrbit} />
+          <div className={styles.staticOrbitAlt} />
+          <div className={styles.staticCore}><span>FORMA</span></div>
+          <i className={styles.staticForm} />
+          <i className={styles.staticMotion} />
+          <i className={styles.staticType} />
+          <i className={styles.staticSpace} />
+          <i className={styles.staticField} />
+        </div>
+      }
     >
       <WorldScene {...props} />
     </Canvas>
