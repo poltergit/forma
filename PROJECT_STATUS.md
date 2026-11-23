@@ -1,6 +1,6 @@
 # FORMA — Project Status
 
-**Last updated:** 2026-11-21
+**Last updated:** 2026-11-23
 
 ## Current position
 
@@ -90,8 +90,10 @@ These files and tests are committed to the branch, but this latest Phase 08 slic
 
 ### Creative refoundation — orbit identity and motion stack (2026-11-23)
 
-The owner approved an orbit-centered Home identity: the FORMA core is central, surrounded by meaningful orbiting specimens for Form, Motion, Type, Space, and generative Field. The orbit evolves through a chapter narrative and offers real selection/recomposition interactions. The supplied Otsuka screenshots are used as structural/atmospheric inspiration only; FORMA keeps its own identity.
+The owner approved an orbit-centered Home identity: the FORMA core is central, surrounded by meaningful orbiting specimens for Form, Motion, Type, Space, and generative Field. The supplied Otsuka screenshots inform structure and atmosphere only; FORMA keeps its own brand and visual signature.
 
-GSAP is approved as the primary motion orchestration layer, with @gsap/react integration and ScrollTrigger for progressive chapter choreography. Three.js + React Three Fiber remain the 3D rendering core; Drei is selective. Post-processing, physics, and Theatre.js remain feature-gated candidates, not approved blanket dependencies.
+The first implementation is now committed: a five-chapter Home experience, lazy-loaded R3F orbital scene, five distinct specimen types, selectable territory controls, pointer/touch influence, parameter-driven recomposition, GSAP entrance choreography, and ScrollTrigger-linked scene progress. Existing Playground and Motion Lab routes remain intact.
 
-**Not yet implemented:** GSAP and R3F runtime packages are not yet installed on this branch. Package manifest and lockfile must be updated together after compatibility verification. The existing Home page still uses the previous editorial/CSS-cuboid implementation until the new orbital scene is built. The React use() console warning remains an open investigation. Phase 08 remains in progress and unapproved.
+The creative runtime was installed and peer-resolved on a Node 22 GitHub Actions runner; exact versions are locked in both package manifest and lockfile: GSAP 3.15.1, @gsap/react 2.1.2, Three.js 0.187.0, React Three Fiber 9.8.2, and Drei 10.7.9. The temporary bootstrap workflow removed itself after committing the dependency files.
+
+**Still open:** application lint/typecheck/unit/Playwright/build verification, real browser visual inspection, WebGL fallback and mobile profiling, reduced-motion and assistive-technology review, and investigation of the reported React use() suspension warning. Phase 08 remains in progress and unapproved.

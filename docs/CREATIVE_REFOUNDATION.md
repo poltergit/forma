@@ -1,7 +1,7 @@
 # FORMA — Creative Refoundation
 
 **Version:** 0.1  
-**Status:** Proposed experience re-foundation; Phase 08 remains in progress and unapproved  
+**Status:** Creative direction approved by product owner; implementation in progress; Phase 08 remains unapproved  
 **Reference supplied by product owner:** Otsuka / zeroz — https://otsuka-air.jp/  
 **Working thesis:** FORMA / A GENERATIVE WORLD OF FORM
 

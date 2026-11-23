@@ -55,6 +55,34 @@ The first Phase 08 slice turns the Playground and Motion Lab from roadmap pillar
 - No backend, cloud persistence, authentication, arbitrary user code, or shader execution is introduced.
 - No new dependency was added.
 
+## Creative refoundation — orbit-centered Home
+
+- Replaced the conventional landing-page hero/manifesto/card sequence with a five-chapter experience: Ignite, Disturb, Compose, Direct, and Build.
+- Added a lazy-loaded React Three Fiber orbital world with a central sculptural core and five semantically distinct orbit specimens: parametric geometry, a motion knot/trace, a spatial glyph, a spatial frame, and a seeded field.
+- Specimens use distinct colors, orbital radii, heights, depth, speeds, and deterministic phase offsets. Selection changes the focused object; pointer/touch influences the scene orientation.
+- Added semantic specimen selection controls, responsive territory navigation, native anchor-based chapter navigation, and a static/reduced-motion presentation path.
+- Added live orbital parameters for energy, speed, and field density plus a deterministic seed increment/recompose action. These controls change actual scene inputs and are labelled as local, not cloud-saved artifacts.
+- Added GSAP + @gsap/react choreography, with ScrollTrigger driving a shared scroll-progress value read by the 3D scene. Native scrolling remains in control.
+- Preserved live Playground and Motion Lab destinations and existing feature routes. No Scene Studio or Archive capability is claimed.
+- The central FORMA wordmark and all essential copy remain semantic HTML; WebGL is an enhancement rather than the only source of meaning.
+
+### Creative runtime dependencies
+
+Resolved and committed on a Node 22 GitHub Actions runner:
+- `gsap` 3.15.1
+- `@gsap/react` 2.1.2
+- `three` 0.187.0
+- `@react-three/fiber` 9.8.2
+- `@react-three/drei` 10.7.9
+
+The runner completed `npm install --save-exact` and `npm ls --depth=0`, updated `package.json` and `package-lock.json` together, then removed its temporary bootstrap workflow. This confirms dependency installation and package-tree resolution, not application build or browser validation.
+
+### Open issues
+
+- The owner's reported React `use()` suspension warning has not yet been reproduced and traced to its originating component/library/runtime.
+- The current implementation uses R3F/Three.js without post-processing or physics; those packages remain deferred until a concrete experience needs them.
+- Visual polish, reduced-motion behavior, WebGL fallback, keyboard/touch, mobile composition, and runtime performance still require automated and manual review.
+
 ## Verification boundary
 
 The files and tests have been committed to the Phase 08 branch. **No Phase 08 lint, typecheck, unit test, Playwright run, production build, browser rendering review, or performance measurement has been executed in this environment.** The new checks are test coverage, not test results. The owner must pull the branch and run the project checks before this slice can be treated as validated.
