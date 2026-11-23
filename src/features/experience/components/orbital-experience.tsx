@@ -70,46 +70,172 @@ export function OrbitalExperience() {
     const root = rootRef.current;
     if (!root) return;
 
-    const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const chapterSections = Array.from(root.querySelectorAll<HTMLElement>(".chapter"));
+    const chapterCopies = Array.from(root.querySelectorAll<HTMLElement>("[data-chapter-copy]"));
+    const territoryCards = Array.from(root.querySelectorAll<HTMLElement>(".territory"));
+    const apertureRings = Array.from(root.querySelectorAll<HTMLElement>(".aperture i"));
+    const buildMark = root.querySelector<HTMLElement>(".buildMark");
+    const instrument = root.querySelector<HTMLElement>(".instrument");
+    const stageIdentity = root.querySelector<HTMLElement>(".centralIdentity");
 
-    if (!reducedMotion) {
-      const intro = gsap.timeline({ defaults: { ease: "power3.out" } });
-      intro
-        .fromTo(".heroEyebrow", { opacity: 0, y: 18 }, { opacity: 1, y: 0, duration: 0.7 })
-        .fromTo(".heroTitle", { opacity: 0, y: 52, rotateX: -12 }, { opacity: 1, y: 0, rotateX: 0, duration: 1.15 }, "-=0.38")
-        .fromTo(".orbitLegend", { opacity: 0, x: 24 }, { opacity: 1, x: 0, duration: 0.8 }, "-=0.55")
-        .fromTo(".heroFooter", { opacity: 0, y: 16 }, { opacity: 1, y: 0, duration: 0.7 }, "-=0.45");
+    if (prefersReducedMotion) return;
 
-      gsap.to(progress.current, {
-        value: 1,
+    const intro = gsap.timeline({ defaults: { ease: "power3.out" } });
+    intro
+      .fromTo(".heroEyebrow", { opacity: 0, y: 18 }, { opacity: 1, y: 0, duration: 0.7 })
+      .fromTo(".heroTitle", { opacity: 0, y: 72, rotateX: -16, skewY: 3 }, { opacity: 1, y: 0, rotateX: 0, skewY: 0, duration: 1.2 }, "-=0.38")
+      .fromTo(".heroSubline", { opacity: 0, x: -28 }, { opacity: 1, x: 0, duration: 0.8 }, "-=0.72")
+      .fromTo(".orbitLegend", { opacity: 0, x: 32, filter: "blur(8px)" }, { opacity: 1, x: 0, filter: "blur(0px)", duration: 0.85 }, "-=0.55")
+      .fromTo(".heroFooter", { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.7 }, "-=0.45");
+
+    gsap.to(progress.current, {
+      value: 1,
+      ease: "none",
+      scrollTrigger: {
+        trigger: root,
+        start: "top top",
+        end: "bottom bottom",
+        scrub: 1.2,
+      },
+    });
+
+    if (stageIdentity) {
+      gsap.to(stageIdentity, {
+        scale: 0.72,
+        yPercent: -24,
+        opacity: 0.52,
         ease: "none",
         scrollTrigger: {
           trigger: root,
           start: "top top",
-          end: "bottom bottom",
-          scrub: 1.2,
+          end: "45% top",
+          scrub: 1,
         },
       });
+    }
 
-      root.querySelectorAll<HTMLElement>("[data-chapter-copy]").forEach((element) => {
+    chapterCopies.forEach((element) => {
+      gsap.fromTo(
+        element,
+        { opacity: 0.25, y: 56, rotateX: -4 },
+        {
+          opacity: 1,
+          y: 0,
+          rotateX: 0,
+          duration: 1,
+          ease: "power2.out",
+          scrollTrigger: {
+            trigger: element.closest("section"),
+            start: "top 82%",
+            end: "top 38%",
+            scrub: 0.7,
+          },
+        },
+      );
+    });
+
+    if (apertureRings.length) {
+      apertureRings.forEach((ring, index) => {
         gsap.fromTo(
-          element,
-          { opacity: 0.38, y: 34 },
+          ring,
+          { rotation: index % 2 ? -48 : 36, scale: 0.52, opacity: 0.15 },
           {
-            opacity: 1,
-            y: 0,
-            duration: 0.9,
-            ease: "power2.out",
+            rotation: index % 2 ? 24 : -30,
+            scale: 1 + index * 0.08,
+            opacity: 0.9,
+            ease: "none",
             scrollTrigger: {
-              trigger: element.closest("section"),
-              start: "top 74%",
-              end: "top 38%",
-              scrub: 0.65,
+              trigger: "#the-idea",
+              start: "top bottom",
+              end: "bottom top",
+              scrub: 1.1,
             },
           },
         );
       });
     }
+
+    if (territoryCards.length) {
+      territoryCards.forEach((card, index) => {
+        gsap.fromTo(
+          card,
+          { y: 110 + index * 16, rotate: (index % 2 ? 1 : -1) * (12 + index * 2), scale: 0.78, opacity: 0 },
+          {
+            y: 0,
+            rotate: 0,
+            scale: 1,
+            opacity: 1,
+            ease: "power3.out",
+            scrollTrigger: {
+              trigger: "#disciplines",
+              start: "top 72%",
+              end: "center center",
+              scrub: 0.85,
+            },
+          },
+        );
+      });
+    }
+
+    if (instrument) {
+      gsap.fromTo(
+        instrument,
+        { x: 90, y: 35, rotate: 2, opacity: 0, clipPath: "inset(0 0 0 100%)" },
+        {
+          x: 0,
+          y: 0,
+          rotate: 0,
+          opacity: 1,
+          clipPath: "inset(0 0 0 0%)",
+          ease: "power3.out",
+          scrollTrigger: {
+            trigger: "#direct",
+            start: "top 72%",
+            end: "center center",
+            scrub: 0.9,
+          },
+        },
+      );
+    }
+
+    if (buildMark) {
+      gsap.fromTo(
+        buildMark,
+        { scale: 0.55, rotate: -24, x: 80, opacity: 0 },
+        {
+          scale: 1,
+          rotate: 0,
+          x: 0,
+          opacity: 1,
+          ease: "power2.out",
+          scrollTrigger: {
+            trigger: "#build",
+            start: "top 75%",
+            end: "center center",
+            scrub: 1,
+          },
+        },
+      );
+    }
+
+    chapterSections.forEach((section, index) => {
+      if (index === 0) return;
+      gsap.fromTo(
+        section,
+        { "--chapter-arrival": 0 } as gsap.TweenVars,
+        {
+          "--chapter-arrival": 1,
+          ease: "none",
+          scrollTrigger: {
+            trigger: section,
+            start: "top bottom",
+            end: "top top",
+            scrub: 0.8,
+          },
+        } as gsap.TweenVars,
+      );
+    });
   }, { scope: rootRef });
 
   function updatePointer(event: PointerEvent<HTMLElement>) {
