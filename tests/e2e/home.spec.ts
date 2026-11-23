@@ -33,3 +33,16 @@ test("reduced-motion keeps the orbital story readable and interactive", async ({
   await energy.press("ArrowRight");
   await expect(page.getByText("1.05×")).toBeVisible();
 });
+
+test("orbital Home remains within the required responsive widths", async ({ page }) => {
+  for (const width of [320, 375, 768, 1024, 1440]) {
+    await page.setViewportSize({ width, height: 900 });
+    await page.goto("/");
+    await expect(page.getByRole("heading", { level: 1 })).toBeVisible();
+    const dimensions = await page.evaluate(() => ({
+      viewport: document.documentElement.clientWidth,
+      document: document.documentElement.scrollWidth,
+    }));
+    expect(dimensions.document).toBeLessThanOrEqual(dimensions.viewport);
+  }
+});
