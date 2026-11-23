@@ -72,11 +72,11 @@ export function OrbitalExperience() {
 
     const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     const chapterCopies = Array.from(root.querySelectorAll<HTMLElement>("[data-chapter-copy]"));
-    const territoryCards = Array.from(root.querySelectorAll<HTMLElement>(".territory"));
-    const apertureRings = Array.from(root.querySelectorAll<HTMLElement>(".aperture i"));
-    const buildMark = root.querySelector<HTMLElement>(".buildMark");
-    const instrument = root.querySelector<HTMLElement>(".instrument");
-    const stageIdentity = root.querySelector<HTMLElement>(".centralIdentity");
+    const territoryCards = Array.from(root.querySelectorAll<HTMLElement>('[data-motion="territory"]'));
+    const apertureRings = Array.from(root.querySelectorAll<HTMLElement>('[data-motion="aperture-ring"]'));
+    const buildMark = root.querySelector<HTMLElement>('[data-motion="build-mark"]');
+    const instrument = root.querySelector<HTMLElement>('[data-motion="instrument"]');
+    const stageIdentity = root.querySelector<HTMLElement>('[data-motion="identity"]');
 
     if (prefersReducedMotion) return;
 
@@ -257,7 +257,7 @@ export function OrbitalExperience() {
           seed={seed}
           reducedMotion={reducedMotion}
         />
-        <div className={styles.centralIdentity}>
+        <div className={styles.centralIdentity} data-motion="identity">
           <span className={styles.identityIndex}>GENERATIVE SYSTEM / 001</span>
           <span className={styles.wordmark}>FORMA<span>®</span></span>
           <span className={styles.identityTag}>WHERE FORM MEETS FUNCTION</span>
@@ -322,7 +322,7 @@ export function OrbitalExperience() {
           <p>It is a set of possibilities. Pull a system out of alignment. Change its rules. Give an idea a new dimension. FORMA is where those possibilities become something you can feel.</p>
           <a href="#disciplines" className={styles.textLink}>EXPLORE THE TERRITORIES <span aria-hidden="true">↗</span></a>
         </div>
-        <div className={styles.aperture} aria-hidden="true"><i /><i /><i /></div>
+        <div className={styles.aperture} aria-hidden="true"><i data-motion="aperture-ring" /><i data-motion="aperture-ring" /><i data-motion="aperture-ring" /></div>
         <span className={styles.chapterAside}>THERE IS ALWAYS ANOTHER WAY TO SHAPE IT.</span>
       </section>
 
@@ -335,7 +335,7 @@ export function OrbitalExperience() {
         <div className={styles.territoryField}>
           <span className={styles.fieldIndex}>THE CREATIVE TERRITORIES / 05</span>
           {territories.map((item, index) => (
-            <article key={item.id} className={`${styles.territory} ${styles[`territory${index + 1}`]}`}>
+            <article key={item.id} className={`${styles.territory} ${styles[`territory${index + 1}`]}`} data-motion="territory">
               <button type="button" onClick={() => setSelected(item.id)} aria-pressed={selected === item.id}>
                 <span>{item.number} / {item.descriptor}</span>
                 <strong>{item.name}</strong>
@@ -352,7 +352,7 @@ export function OrbitalExperience() {
           <h2 id="direct-title">Don&apos;t just watch.<br /><em>Change the rules.</em></h2>
           <p>The orbit is a live generative composition. Change its energy, pace, and field density. Recompose to create a different arrangement from a new seed.</p>
         </div>
-        <div className={styles.instrument}>
+        <div className={styles.instrument} data-motion="instrument">
           <div className={styles.instrumentHead}><span>ORBITAL PARAMETERS</span><span>LIVE / LOCAL</span></div>
           <label>
             <span>ENERGY <output>{intensity.toFixed(2)}×</output></span>
@@ -381,7 +381,7 @@ export function OrbitalExperience() {
             <Link href="/motion-lab">EXPLORE MOTION LAB <span aria-hidden="true">↗</span></Link>
           </div>
         </div>
-        <span className={styles.buildMark}>F<span>∞</span></span>
+        <span className={styles.buildMark} data-motion="build-mark">F<span>∞</span></span>
         <span className={styles.chapterAside}>FORM IS NEVER FINAL.</span>
       </section>
 
