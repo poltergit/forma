@@ -87,18 +87,19 @@ A clean GitHub Actions run on **Node 22.23.5 / npm 10.9.9** validated the latest
 | `npm run lint` | Passed |
 | `npm run typecheck` | Passed |
 | `npm run test` | 6 files / 17 tests passed |
-| Chromium Playwright | 28 tests passed |
+| Chromium Playwright | 30 tests passed (including Home overflow checks at 320, 375, 768, 1024, and 1440px) |
 | `npm run build` | Passed; Next.js 16.4.6 optimized production build |
 
 The npm install audit reported zero vulnerabilities. This is a dependency audit result, not a full application security audit. The lockfile and package manifest are consistent. The temporary `.github/workflows/creative-validate.yml` was removed by the successful workflow.
 
-Workflow: [Validate FORMA orbital experience](https://github.com/poltergit/forma/actions/runs/45112076858)  
-Final branch commit after workflow cleanup: [30795180](https://github.com/poltergit/forma/commit/30795180dfcc5a5d69329e0cd7bef93dda3cb4fa)
+Primary workflow: [Validate FORMA orbital experience](https://github.com/poltergit/forma/actions/runs/45112076858)  
+Responsive Home follow-up workflow: [Validate FORMA orbital experience](https://github.com/poltergit/forma/actions/runs/45112537529)  
+Final branch commit after the second workflow cleanup: [e7d82e5f](https://github.com/poltergit/forma/commit/e7d82e5f366cbf39efde3ef1bb1cf0dd4e8dbcdf)
 
 ### Open issues and review boundary
 
 - The owner's previously reported React `use()` suspension warning has not yet been reproduced and traced to its originating component/library/runtime.
-- Chromium browser logs emitted the Three.js `THREE.Clock` deprecation warning ("Please use THREE.Timer instead") while the R3F stage loaded. This is a separate finding and needs investigation.
+- Chromium browser logs emitted the Three.js `THREE.Clock` deprecation warning ("Please use THREE.Timer instead") while the R3F stage loaded. Inspection of the installed React Three Fiber v9.8.2 source shows its store creates `new THREE.Clock()`, while Three.js r187 deprecates Clock (since r183). The warning is therefore in the R3F/Three compatibility path, not an orbital component call. Do not patch node_modules or hide the warning; track an upstream Timer migration and recheck on a compatible R3F release.
 - Passing automated checks does not replace owner-led visual review. Desktop/tablet/mobile composition, manual keyboard/touch behavior, screen-reader output, reduced-motion presentation, WebGL failure fallback, GPU/frame performance, and the visual quality bar still need inspection.
 - No post-processing or physics package was added; those remain feature-gated until an actual scene requires them.
 - Supabase is not configured; orbit settings are local-only and are not cloud-saved.

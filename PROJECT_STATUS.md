@@ -67,7 +67,7 @@ The [Phase 08 branch](https://github.com/poltergit/forma/tree/phase-08/playgroun
 - A central FORMA core and five meaningful orbit specimens (Form, Motion, Type, Space, Field), with pointer influence, selection, GSAP/ScrollTrigger choreography, and local deterministic recomposition controls.
 - GSAP 3.15.1, @gsap/react 2.1.2, Three.js 0.187.0, React Three Fiber 9.8.2, and Drei 10.7.9 locked in the package manifest and lockfile.
 
-Latest automated validation passed on Node 22: clean `npm ci`, lint, typecheck, 6 Vitest files / 17 tests, 28 Chromium Playwright tests, and optimized Next.js production build. The temporary validation workflow removed itself after success. See [the Actions run](https://github.com/poltergit/forma/actions/runs/45112076858), [Phase 08 Plan](docs/PHASE_08_PLAYGROUND_MOTION_LAB_PLAN.md), and [Phase 08 Implementation Log](docs/PHASE_08_IMPLEMENTATION_LOG.md).
+Latest automated validation passed on Node 22: clean `npm ci`, lint, typecheck, 6 Vitest files / 17 tests, 30 Chromium Playwright tests including Home width checks, and optimized Next.js production build. The temporary validation workflow removed itself after success. See [the Actions run](https://github.com/poltergit/forma/actions/runs/45112076858), [Phase 08 Plan](docs/PHASE_08_PLAYGROUND_MOTION_LAB_PLAN.md), and [Phase 08 Implementation Log](docs/PHASE_08_IMPLEMENTATION_LOG.md).
 
 **Not yet owner-approved:** real-device visual inspection, screen-reader/manual accessibility review, WebGL/static fallback review, performance profiling, investigation of the earlier React `use()` warning, and the new Three.js `THREE.Clock` deprecation warning remain open. Phase 08 remains in progress and unapproved.
 

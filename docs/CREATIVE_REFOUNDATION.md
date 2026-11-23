@@ -307,6 +307,6 @@ The first orbit-centered implementation is committed on `phase-08/playground-mot
 - GSAP and ScrollTrigger coordinate intro/chapter choreography. Native scroll is preserved.
 - Reduced motion skips the GSAP intro/scroll choreography and has a stable scene composition; a static WebGL fallback is supplied.
 
-Automated validation on a clean Node 22 runner succeeded: npm ci, lint, typecheck, 6 Vitest files / 17 tests, 28 Playwright tests across desktop and mobile Chromium projects, and Next.js 16.4.6 production build. See [GitHub Actions run 45112076858](https://github.com/poltergit/forma/actions/runs/45112076858).
+Automated validation on a clean Node 22 runner succeeded: npm ci, lint, typecheck, 6 Vitest files / 17 tests, 30 Playwright tests, including Home overflow checks at 320/375/768/1024/1440px across desktop and mobile Chromium projects, and Next.js 16.4.6 production build. See [GitHub Actions run 45112076858](https://github.com/poltergit/forma/actions/runs/45112076858).
 
-This is not Phase 08 owner approval. Visual inspection on the owner's device, assistive-technology review, performance profiling, and console-warning investigation remain open.
+This is not Phase 08 owner approval. Visual inspection on the owner's device, assistive-technology review, and performance profiling remain open. Browser logs show the separate Three.js `THREE.Clock` deprecation warning: React Three Fiber v9.8.2 constructs `THREE.Clock` in its store, while Three.js r187 marks it deprecated. The owner's earlier React `use()` warning has not been reproduced or traced.
