@@ -2,7 +2,7 @@
 
 import dynamic from "next/dynamic";
 import Link from "next/link";
-import { useRef, useState, type PointerEvent } from "react";
+import { useEffect, useRef, useState, type PointerEvent } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
@@ -51,6 +51,15 @@ export function OrbitalExperience() {
   const progress = useRef<MutableValue>({ value: 0 });
   const pointer = useRef<PointerValue>({ x: 0, y: 0 });
   const [selected, setSelected] = useState<SpecimenId>("form");
+  const [reducedMotion, setReducedMotion] = useState(false);
+
+  useEffect(() => {
+    const preference = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const syncPreference = () => setReducedMotion(preference.matches);
+    syncPreference();
+    preference.addEventListener("change", syncPreference);
+    return () => preference.removeEventListener("change", syncPreference);
+  }, []);
   const [intensity, setIntensity] = useState(1);
   const [speed, setSpeed] = useState(1);
   const [density, setDensity] = useState(14);
@@ -138,6 +147,7 @@ export function OrbitalExperience() {
           speed={speed}
           density={density}
           seed={seed}
+          reducedMotion={reducedMotion}
         />
         <div className={styles.centralIdentity}>
           <span className={styles.identityIndex}>GENERATIVE SYSTEM / 001</span>
