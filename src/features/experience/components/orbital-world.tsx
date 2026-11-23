@@ -125,7 +125,10 @@ function Specimen({
 
     // Keep a deliberately composed, spatially separated arrangement when motion is
     // reduced. The previous early return left every specimen at the world origin.
-    if (reducedMotion) return;
+    if (reducedMotion) {
+      node.scale.setScalar(selected ? 1.42 : 1);
+      return;
+    }
 
     const scroll = progress.current.value;
     const time = clock.elapsedTime * item.speed * speed + item.phase + seededPhase + scroll * Math.PI * (0.7 + index * 0.12);
