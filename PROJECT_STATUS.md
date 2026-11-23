@@ -1,56 +1,101 @@
 # FORMA — Project Status
 
-**Last updated:** 2026-11-21
+**Last updated:** 2026-11-23
 
 ## Current position
+
 - Phase 01 — Product Discovery and Definition: **Approved**
 - Phase 02 — Brand Identity and Creative Direction: **Approved**
 - Phase 03 — UX and Information Architecture: **Approved**
 - Phase 04 — Visual Design System: **Approved**
 - Phase 05 — Technical Architecture: **Approved by product owner (2026-11-21)**
-- Phase 06 — Frontend Foundation: **In progress**\n- Production application implementation: **Foundation work authorized; not yet bootstrapped**
-- Repository: **Initialized and verified**
+- Phase 06 — Frontend Foundation: **Approved for progression by product owner (2026-11-21)**
+- Phase 07 — Landing Page and Immersive Experience: **Approved by product owner (2026-11-21)**
+- Phase 08 — Playground and Motion Lab: **In progress**
+- Current implementation branch: [phase-08/playground-motion-lab](https://github.com/poltergit/forma/tree/phase-08/playground-motion-lab)
+- Production application: **Foundation scaffold and lockfile committed; owner-reported local checks passed. Not deployed.**
 
 ## Approved decisions
+
 - FORMA — Interactive Digital Playground / Creative Technology Platform.
 - Tagline: Where form meets function.
-- Web-first, responsive; free-tier infrastructure wherever practical.
+- Web-first and responsive; free-tier infrastructure wherever practical.
 - Scene Studio cloud persistence, accounts, and invite-only real-time collaboration.
 - Collaboration roles: owner, editor, viewer.
-- Approved stack and supporting libraries: D-014.
+- Approved core stack and supporting recommendations: D-014.
 - Spatial/generative/performative direction: D-015.
 - Ambitious generative first-release scope: D-016.
 - Real-time collaboration in Scene Studio MVP: D-017.
-- Brand, UX, and visual system decisions: docs/BRAND_GUIDELINES.md and docs/UX_SPECIFICATION.md.
+- Phase 05 owner approval and Phase 06 authorization: D-018.
+- Phase 06 owner approval and Phase 07 authorization: D-019.
+- Cross-product creative experience mandate: D-020.
+- Orbit-centered FORMA identity: D-022.
+- GSAP motion choreography layer: D-023.
+- Curated 3D runtime policy: D-024.
+- Phase 07 approval and Phase 08 authorization: D-021.
 
-## Phase 03 — Approved
-See docs/UX_SPECIFICATION.md for sitemap, navigation, page structures, journeys, editor lifecycle, responsive behavior, and accessibility requirements.
+## Phase summaries
 
-## Phase 04 — Approved
-See docs/PHASE_04_REVIEW.md for the approved visual direction and review. Seven standalone prototypes are design artifacts, not production features. Source-level checks were completed; no browser rendering, assistive-technology, or direct reference-site validation is claimed.
+### Phases 01–03 — Approved
 
-## Phase 05 — In progress\n- Added Scene Command Engine contract and atomic RPC migration draft (`docs/SCENE_COMMAND_ENGINE.md`, `supabase/migrations/20261121000200_forma_scene_command_rpc.sql`). Not executed.\n- Added private Realtime Authorization & Recovery contract and migration draft (`docs/REALTIME_AUTHORIZATION_RECOVERY.md`, `supabase/migrations/20261121000400_forma_realtime_authorization_recovery.sql`): membership-based private topics, minimal presence/broadcast payloads, and command receipt recovery. Not executed.\n- Added Invitation & Membership Engine contract and RPC migration draft (`docs/INVITATION_MEMBERSHIP_ENGINE.md`, `supabase/migrations/20261121000300_forma_invitation_membership_rpc.sql`): hash-only tokens, verified-email acceptance, single-use invitations, owner-only invitation listing/revocation, and member removal. Not executed.
-- Added a review-only Supabase schema/RLS migration draft at `supabase/migrations/20261121000100_forma_core_schema.sql` and its review checklist at `docs/DATABASE_MIGRATION_REVIEW.md`. Neither has been applied or executed.
-- Core/supporting stack, ambitious generative scope, and collaboration MVP approved.
-- Collaboration-aware Scene Studio data model and role model documented.
-- Real-time synchronization, command, presence, invitation, and recovery architecture documented.
-- Security threat model: docs/SECURITY_THREAT_MODEL.md.
-- Technical validation plan: docs/PHASE_05_VALIDATION_PLAN.md.
-- Generative artifact model and auth/environment proposal documented.
-- Phase 05 owner approval recorded after the user's “Validated and Approved” confirmation. Remaining provider-specific checks (migration/RLS/RPC execution, invitation delivery, Realtime revocation/recovery, quotas, backups, and deployment) remain mandatory implementation/release validation; no test results are inferred from the approval.
-- Phase 06 is authorized and in progress. See docs/PHASE_06_FOUNDATION_PLAN.md. Phase 07 remains gated on Phase 06 review and explicit owner approval.
+See [Product Requirements](docs/PRODUCT_REQUIREMENTS.md), [Brand Guidelines](docs/BRAND_GUIDELINES.md), and [UX Specification](docs/UX_SPECIFICATION.md).
+
+### Phase 04 — Approved
+
+Seven standalone visual/interaction prototypes and the design token source are committed. Source-level checks were completed; no browser rendering, assistive-technology, or direct reference-site validation is claimed. See [Phase 04 Review](docs/PHASE_04_REVIEW.md).
+
+### Phase 05 — Approved by owner
+
+The architecture, collaboration contracts, proposed schema/RLS/RPC migrations, invitation design, Realtime authorization/recovery, and security model are documented. The SQL has not been applied or executed. Provider-specific migration/RLS/RPC execution, invitation delivery, Realtime revocation/recovery, quotas, backups, and deployment checks remain implementation/release requirements. See [Phase 05 Review](docs/PHASE_05_REVIEW.md).
+
+### Phase 06 — Approved for progression by owner
+
+The foundation branch contains the Next.js App Router/TypeScript scaffold, canonical token integration, responsive shell, route states, font loading, Supabase client boundaries, Zod validation, Zustand UI state, and test tooling. The npm lockfile is committed.
+
+The owner reported successful local ESLint, TypeScript, eight Vitest tests, six Playwright tests, and production build. These results are owner-reported and were not independently re-run here. The local install used Node 26 with `--engine-strict=false`, outside the declared Node range. A clean Node 22 `npm ci`, CI workflow, rendered responsive review, and assistive-technology review remain follow-up validation. See [Phase 06 Review](docs/PHASE_06_REVIEW.md).
+
+### Phase 07 — Approved by product owner
+
+The [Phase 07 branch](https://github.com/poltergit/forma/tree/phase-07/immersive-experience) begins the cinematic landing-page and immersive experience work. The plan defines a four-act narrative, original spatial hero, meaningful interaction, scroll-linked storytelling, responsive art direction, reduced-motion and WebGL fallbacks, and performance/accessibility requirements. The owner confirmed validation succeeded and approved progression to Phase 08. The exact command output was not supplied and checks were not independently rerun here; this approval does not assert independent performance benchmarking or deployment. See [Phase 07 Review](docs/PHASE_07_REVIEW.md) and [Phase 07 Plan](docs/PHASE_07_IMMERSIVE_EXPERIENCE_PLAN.md).
+
+### Phase 08 — In progress; automated validation passed
+
+The [Phase 08 branch](https://github.com/poltergit/forma/tree/phase-08/playground-motion-lab) contains the existing Playground and Motion Lab feature work plus a creative refoundation of Home:
+- Playground with a deterministic, pointer/keyboard-responsive Displacement Field, editorial experiment index, and Elastic Matter typography study.
+- Motion Lab with four behaviors, parameter controls, scrub/freeze timeline, easing visualization, presets, and copyable validated motion recipes.
+- A five-chapter Home experience (Ignite, Disturb, Compose, Direct, Build) with a lazy-loaded React Three Fiber orbital scene.
+- A central FORMA core and five meaningful orbit specimens (Form, Motion, Type, Space, Field), with pointer influence, selection, GSAP/ScrollTrigger choreography, and local deterministic recomposition controls.
+- GSAP 3.15.1, @gsap/react 2.1.2, Three.js 0.187.0, React Three Fiber 9.8.2, and Drei 10.7.9 locked in the package manifest and lockfile.
+
+Latest automated validation passed on Node 22: clean `npm ci`, lint, typecheck, 6 Vitest files / 17 tests, 30 Chromium Playwright tests including Home width checks, and optimized Next.js production build. The temporary validation workflow removed itself after success. See [the Actions run](https://github.com/poltergit/forma/actions/runs/45112076858), [Phase 08 Plan](docs/PHASE_08_PLAYGROUND_MOTION_LAB_PLAN.md), and [Phase 08 Implementation Log](docs/PHASE_08_IMPLEMENTATION_LOG.md).
+
+**Not yet owner-approved:** real-device visual inspection, screen-reader/manual accessibility review, WebGL/static fallback review, performance profiling, investigation of the earlier React `use()` warning, and the new Three.js `THREE.Clock` deprecation warning remain open. Phase 08 remains in progress and unapproved.
 
 ## Project constraints
+
 - Small, reviewable milestones; no unverified claims about tests, builds, deployment, or commits.
 - Accessibility, performance, security, reduced motion, and WebGL fallbacks are mandatory.
 - Collaboration remains private and role-based; no public rooms in MVP.
 - No arbitrary user code execution in generative features.
 - Avoid AI slop, fake functionality, generic templates, and meaningless decorative complexity.
+- Apply the product-wide creative mandate (D-020): memorable, dimensional, generative, performative experiences with controlled chaos and clear usability.
 - Explicit owner approval required before phase advancement.
 
 ## Known limitations
-- No production application code has been implemented.
+
+- Node 22 clean-install validation, CI, and manual rendered/assistive-technology review remain open Phase 06 follow-ups.
 - No Supabase project or Vercel deployment has been configured.
 - Proposed SQL, RLS, RPC, invitation, and Realtime behavior have not been applied or tested.
 - Provider quotas, email delivery, backup/restore, and preview/production isolation remain to be verified.
 - Trademark, domain, and social-handle availability have not been checked.
+- Supabase provider setup and policy validation remain outstanding; Phase 08 must not imply cloud artifact persistence is operational.
+
+### Creative refoundation — orbit identity and motion stack (2026-11-23)
+
+The owner approved an orbit-centered Home identity: the FORMA core is central, surrounded by meaningful orbiting specimens for Form, Motion, Type, Space, and generative Field. The supplied Otsuka screenshots inform structure and atmosphere only; FORMA keeps its own brand and visual signature.
+
+The first implementation is now committed: a five-chapter Home experience, lazy-loaded R3F orbital scene, five distinct specimen types, selectable territory controls, pointer/touch influence, parameter-driven recomposition, GSAP entrance choreography, and ScrollTrigger-linked scene progress. Existing Playground and Motion Lab routes remain intact.
+
+The creative runtime was installed and peer-resolved on a Node 22 GitHub Actions runner; exact versions are locked in both package manifest and lockfile: GSAP 3.15.1, @gsap/react 2.1.2, Three.js 0.187.0, React Three Fiber 9.8.2, and Drei 10.7.9. The temporary bootstrap workflow removed itself after committing the dependency files.
+
+**Still open:** application lint/typecheck/unit/Playwright/build verification, real browser visual inspection, WebGL fallback and mobile profiling, reduced-motion and assistive-technology review, and investigation of the reported React use() suspension warning. Phase 08 remains in progress and unapproved.

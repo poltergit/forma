@@ -131,3 +131,70 @@ This file records decisions that have been explicitly approved. Proposed ideas d
 **Verification boundary:** This approval records the owner's phase-gate decision. It does not assert that proposed Supabase migrations, RLS policies, invitation email delivery, Realtime revocation, provider quotas, backup/restore, or deployment behavior have been executed or verified. Those remain implementation and release-validation requirements.
 
 **Reference:** `docs/PHASE_05_REVIEW.md`, `docs/PHASE_06_FOUNDATION_PLAN.md`.
+
+## D-019 — Phase 06 approval and Phase 07 authorization
+
+**Status:** Accepted  
+**Decision date:** 2026-11-21  
+**Decision:** The product owner stated “Done. Let's proceed to Phase 07” after reporting that the Phase 06 local checks and production build succeeded and confirming that the generated npm lockfile had been committed. This is recorded as owner approval to advance from Phase 06 and begin Phase 07 — Landing Page & Immersive Experience.
+
+**Verification boundary:** The reported local results were ESLint, TypeScript, eight Vitest tests, six Playwright tests, and a Next.js production build. They were not independently rerun in this environment. The install used Node.js 26 with `--engine-strict=false`, outside the declared Node range. A clean Node 22 `npm ci`, CI workflow, and manual rendered/assistive-technology review remain follow-up requirements; no deployment or Supabase integration is implied.
+
+**Reference:** `docs/PHASE_06_REVIEW.md`, `docs/PHASE_07_IMMERSIVE_EXPERIENCE_PLAN.md`.
+## D-020 — Cross-product creative experience mandate
+
+**Status:** Accepted as a product-wide experience requirement  
+**Decision date:** 2026-11-21  
+**Decision:** The product owner reaffirmed that the experience must be interactive, fancy, creative, intentionally messy, generative, performative, and memorable from the first page through every product feature. FORMA should aim to surprise and delight both its audience and its creator—not merely present a polished interface.
+
+**Experience bar:**
+- Art-directed controlled chaos: asymmetric composition, bold scale, overlap, distortion, unexpected rhythm, and expressive typography, all governed by clear hierarchy.
+- Meaningful dimensionality: purposeful 3D, spatial layouts, object transformations, camera movement, and transitions when they strengthen the concept.
+- Interaction throughout: real responses to pointer, touch, keyboard, scrolling, dragging, and user decisions; no decorative controls pretending to work.
+- Generative authorship: procedural variation shaped by understandable parameters, constraints, and reproducible seeds where persistence or sharing is promised.
+- A coherent experiential language across Home, Playground, Motion Lab, Scene Studio, Archive, About, and Account, while each surface retains its own character.
+
+**Non-negotiable distinction:** messy in art direction, never messy in usability. Navigation, reading, editing, and task completion must remain understandable. Spectacle must not compromise accessibility, responsive behavior, performance, reduced-motion support, keyboard/touch operation, or WebGL fallbacks.
+
+**Rejections:** generic AI-looking filler, template layouts, meaningless particles, repetitive 3D decoration, gratuitous effects, fake functionality, scroll hijacking, and complexity without a concept.
+
+**Reference:** `docs/EXPERIENCE_DIRECTION.md`.
+## D-021 — Phase 07 approval and Phase 08 authorization
+
+**Status:** Accepted  
+**Decision date:** 2026-11-21  
+**Decision:** The product owner confirmed “validated and succeeded” for Phase 07 and explicitly directed the project to continue with Phase 08. Phase 07 — Landing Page & Immersive Experience is approved for progression, and Phase 08 — Playground & Motion Lab is authorized to begin on `phase-08/playground-motion-lab`.
+
+**Verification boundary:** This records the owner's validation report and phase-gate approval. The exact command output and detailed browser/device results were not included in the approval message and were not independently rerun in this environment. No specific test count, performance benchmark, deployment, or provider integration is implied.
+
+**References:** `docs/PHASE_07_REVIEW.md`, `docs/PHASE_08_PLAYGROUND_MOTION_LAB_PLAN.md`.
+
+## D-022 — Orbit-centered FORMA identity
+
+**Status:** Accepted as a creative-direction requirement  
+**Decision date:** 2026-11-23  
+**Decision:** The Home experience should center the FORMA identity/core inside a living orbital composition. Meaningful orbiting specimens represent the product's creative territories and systems: form/geometry, motion/trace, typography, space/frames, and generative fields. Objects should use distinct orbital planes, trajectories, scales, and behaviors rather than rotating as a uniform decorative ring.
+
+**Interaction contract:** Pointer/touch influence, selectable territories, deterministic recomposition, and scroll-linked chapter progression must create observable changes. The orbit should evolve into the wider Home narrative and lead into real product destinations. Semantic navigation and copy remain outside the canvas.
+
+**Guardrails:** This does not authorize a particle-heavy or WebGL-only page. The composition must have a stable reduced-motion/static fallback, keyboard-accessible controls, touch support, a non-WebGL fallback, bounded GPU budgets, and no scroll hijacking.
+
+## D-023 — GSAP as FORMA's motion choreography layer
+
+**Status:** Accepted  
+**Decision date:** 2026-11-23  
+**Decision:** Add GSAP as the primary orchestration layer for authored timelines, scene choreography, scroll-triggered chapter progress, and coordinated DOM/3D transitions. Use the React integration package where appropriate. Use ScrollTrigger for progressive scroll-linked choreography while retaining native browser scrolling.
+
+**Implementation boundary:** GSAP coordinates motion; Three.js / React Three Fiber own actual 3D geometry, materials, cameras, and rendering. CSS remains preferred for simple interface transitions and reduced-motion states. Do not introduce multiple competing animation frameworks for the same responsibility.
+
+**Dependencies and verification:** Install exact compatible package versions only after checking the existing Next.js/React runtime and updating the npm lockfile. This decision does not mean GSAP has already been installed or that build/tests have passed.
+
+## D-024 — Curated 3D runtime, not indiscriminate library accumulation
+
+**Status:** Accepted  
+**Decision date:** 2026-11-23  
+**Decision:** Use a curated 3D toolchain: Three.js + React Three Fiber as the core, Drei selectively for scene helpers, and post-processing/physics libraries only when a specific implemented experience demonstrates the need. Do not install every available 3D library or duplicate rendering, animation, physics, and scroll systems.
+
+**Candidate additions subject to feature-level review:** React Three Postprocessing for measured visual effects; Rapier for scenes that need real collision/rigid-body simulation; Theatre.js only if authored scene timelines require a separate visual authoring workflow that GSAP cannot reasonably provide. These are candidates, not approved installed dependencies.
+
+**Quality rule:** Every dependency must earn its place through a concrete user-visible feature, bundle/runtime cost review, compatibility check, accessibility/fallback plan, and maintainability rationale.

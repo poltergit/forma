@@ -248,3 +248,57 @@ Still required before Phase 05 acceptance:
 - Complete final threat-model review and validation evidence package.
 
 **Phase 06 is not authorized until the product owner explicitly approves the completed Phase 05 review.**
+
+## 15. Motion orchestration and curated 3D runtime
+
+### Responsibility boundaries
+
+| Concern | Primary tool | Rule |
+|---|---|---|
+| Timeline choreography and coordinated DOM/scene transitions | GSAP | Primary authored motion orchestration |
+| React lifecycle integration for GSAP | @gsap/react | Scope selectors/timelines and clean up on unmount |
+| Scroll-linked chapter progress | GSAP ScrollTrigger | Progressive enhancement; native scrolling remains in control |
+| 3D scene graph and rendering | Three.js + React Three Fiber | Core spatial engine |
+| Common R3F scene helpers | Drei selectively | Import only helpers used by a feature |
+| Simple UI state transitions | CSS | Avoid GSAP for every hover/focus/short UI transition |
+| Editor interaction state | Zustand | Keep separate from timeline/render state where practical |
+| Reproducible generative input | Zod + seeded generators | Validate and bound every public parameter |
+
+### Resolved creative runtime package set
+
+The Phase 08 Node 22 install resolved and locked:
+- GSAP 3.15.1
+- @gsap/react 2.1.2
+- Three.js 0.187.0
+- @react-three/fiber 9.8.2
+- @react-three/drei 10.7.9
+
+These are pinned in package.json and package-lock.json. The npm package install/tree resolution succeeded on Node 22; the Next.js application build and runtime still require validation.
+
+### GSAP integration rules
+
+- Prefer GSAP timelines for the orbital Home composition and chapter-to-chapter choreography.
+- Register only the plugins a route uses. ScrollTrigger is the initial scroll plugin; Flip is optional and must have a specific layout-transition use case.
+- Use @gsap/react lifecycle scoping and cleanup; do not create unmanaged global timelines from render.
+- Avoid animating the same property concurrently from React state, CSS keyframes, and GSAP.
+- Keep scroll-linked behavior interruptible and progressive. Never hijack wheel/touch scrolling or force the visitor to finish a sequence.
+- Under reduced motion, disable continuous timelines/scroll effects and expose stable scene states with explicit controls.
+- GSAP coordinates R3F values; Three/R3F remains responsible for rendering and resource ownership.
+
+### Orbit-centered Home scene
+
+The signature scene centers the FORMA identity/core within a set of orbiting, semantically meaningful specimens: parametric geometry, motion trace, spatial frame, typographic glyph, and seeded field. Each specimen gets distinct shape language, material, trajectory, speed, and an accessible selection state. Pointer/touch can influence the scene within bounded limits; selection navigates to a real capability; deterministic recomposition changes the seed/parameters; scroll progresses through the Home chapters.
+
+The core wordmark and all essential navigation/copy remain semantic HTML outside the canvas. The scene must ship with a static/CSS fallback and a simplified mobile constellation. Do not use rigid-body physics for orbital motion; a deterministic parametric system is more controllable and reproducible.
+
+### Optional packages — feature-gated
+
+- **@react-three/postprocessing:** evaluate only for a measured need such as restrained bloom or depth effects. Start without expensive post-processing.
+- **@react-three/rapier:** evaluate only when collision/rigid-body simulation becomes a real interaction requirement; not needed for the orbital identity.
+- **Theatre.js:** defer unless visual scene authoring becomes a concrete need that GSAP cannot reasonably meet.
+
+Do not add overlapping animation frameworks, smooth-scroll engines, or multiple physics engines. A larger dependency list is not a quality metric.
+
+### Dependency and lockfile gate
+
+GSAP and @gsap/react are approved architecture additions but are not yet installed. The exact versions of GSAP, @gsap/react, Three.js, @react-three/fiber, and Drei must be checked for the project's React/Next runtime and recorded in package.json/package-lock.json together. Do not commit a manifest-only dependency change. Production build, lint, typecheck, and runtime behavior must be verified after installation.

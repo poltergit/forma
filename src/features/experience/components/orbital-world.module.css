@@ -1,0 +1,64 @@
+.staticFallback {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  overflow: hidden;
+  place-items: center;
+  background:
+    radial-gradient(circle at 50% 50%, rgb(199 243 107 / .2), transparent 30%),
+    radial-gradient(ellipse at 50% 85%, rgb(100 123 255 / .15), transparent 60%),
+    #111214;
+}
+.staticCore {
+  position: relative;
+  z-index: 2;
+  display: grid;
+  width: clamp(7rem, 18vw, 12rem);
+  aspect-ratio: 1;
+  place-items: center;
+  transform: rotateX(58deg) rotateZ(45deg);
+  border: 1px solid rgb(242 240 234 / .75);
+  background: rgb(199 243 107 / .12);
+  box-shadow: 0 0 3rem rgb(199 243 107 / .18), inset 0 0 2rem rgb(199 243 107 / .18);
+}
+.staticCore::before, .staticCore::after {
+  position: absolute;
+  inset: 14%;
+  border: 1px solid rgb(100 123 255 / .8);
+  content: "";
+}
+.staticCore::after { inset: 29%; border-color: rgb(255 118 94 / .85); }
+.staticCore span {
+  transform: rotateZ(-45deg) rotateX(-58deg);
+  color: #F2F0EA;
+  font: 600 clamp(1.3rem, 3vw, 2rem)/1 var(--font-display);
+  letter-spacing: -.09em;
+}
+.staticOrbit, .staticOrbitAlt {
+  position: absolute;
+  width: min(72vw, 42rem);
+  aspect-ratio: 1;
+  border: 1px solid rgb(199 243 107 / .35);
+  border-radius: 50%;
+  transform: rotateX(68deg) rotateZ(-24deg);
+}
+.staticOrbitAlt {
+  width: min(86vw, 50rem);
+  border-color: rgb(100 123 255 / .4);
+  transform: rotateY(62deg) rotateZ(34deg) scaleY(.58);
+}
+.staticForm, .staticMotion, .staticType, .staticSpace, .staticField {
+  position: absolute;
+  width: 1.2rem;
+  aspect-ratio: 1;
+  border: 1px solid #C7F36B;
+  background: rgb(199 243 107 / .18);
+}
+.staticForm { top: 25%; left: 27%; transform: rotate(45deg); }
+.staticMotion { top: 32%; right: 24%; width: 2rem; border: 3px double #647BFF; border-radius: 50%; }
+.staticType { right: 31%; bottom: 25%; width: 1.6rem; background: #FF765E; }
+.staticSpace { bottom: 32%; left: 24%; width: 2rem; border-color: #F2F0EA; transform: rotateX(55deg) rotateZ(45deg); }
+.staticField { top: 18%; right: 42%; width: .5rem; border: 0; border-radius: 50%; background: #A9F5D0; box-shadow: 0 0 1rem #A9F5D0; }
+@media (prefers-reduced-motion: reduce) {
+  .staticCore, .staticForm, .staticMotion, .staticType, .staticSpace, .staticField { animation: none; }
+}
