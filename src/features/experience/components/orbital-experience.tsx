@@ -71,7 +71,6 @@ export function OrbitalExperience() {
     if (!root) return;
 
     const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    const chapterSections = Array.from(root.querySelectorAll<HTMLElement>(".chapter"));
     const chapterCopies = Array.from(root.querySelectorAll<HTMLElement>("[data-chapter-copy]"));
     const territoryCards = Array.from(root.querySelectorAll<HTMLElement>(".territory"));
     const apertureRings = Array.from(root.querySelectorAll<HTMLElement>(".aperture i"));
@@ -219,23 +218,6 @@ export function OrbitalExperience() {
       );
     }
 
-    chapterSections.forEach((section, index) => {
-      if (index === 0) return;
-      gsap.fromTo(
-        section,
-        { "--chapter-arrival": 0 } as gsap.TweenVars,
-        {
-          "--chapter-arrival": 1,
-          ease: "none",
-          scrollTrigger: {
-            trigger: section,
-            start: "top bottom",
-            end: "top top",
-            scrub: 0.8,
-          },
-        } as gsap.TweenVars,
-      );
-    });
   }, { scope: rootRef });
 
   function updatePointer(event: PointerEvent<HTMLElement>) {
