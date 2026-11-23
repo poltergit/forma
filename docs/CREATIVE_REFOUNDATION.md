@@ -232,3 +232,66 @@ The re-foundation is ready for owner review when:
 ---
 
 **Creative bar:** Don't make the website busier. Make every scene more authored, more alive, and more unmistakably FORMA.
+
+## 13. Orbit-centered identity system — approved 2026-11-23
+
+The product owner added a defining Home composition: **FORMA sits at the gravitational center**, with meaningful forms orbiting around it. This is the signature identity system, not an ornamental logo lockup.
+
+### The central core
+
+The FORMA wordmark sits in a stable, legible central core. It may be rendered as a dimensional typographic/graphic object in the 3D scene, but the accessible semantic brand name remains real HTML. The center should feel anchored while the environment around it is alive.
+
+### The orbiting specimens
+
+Use a deliberately curated set of orbiting objects, each with a clear relationship to a product capability:
+
+- **FORM / Geometry specimen:** a modular, faceted, parametric object that can assemble, split, and change topology.
+- **MOTION / Trace specimen:** a ribbon, trajectory, or kinetic marker that communicates time, direction, and rhythm.
+- **TYPE / Glyph specimen:** a typographic fragment or letterform treated as a spatial object, not an arbitrary floating word.
+- **SPACE / Frame specimen:** a wireframe volume, portal, or camera-framing structure that communicates depth and scene construction.
+- **FIELD / Seed specimen:** a bounded cluster of points/fragments whose arrangement is determined by a visible seed/rule.
+
+### Orbital behavior
+
+- Specimens travel on different planes, eccentricities, directions, and speeds; avoid a perfectly even solar-system diagram.
+- The orbital paths should intersect visually without objects clipping through the central identity in confusing ways.
+- Pointer/touch influence can tilt the viewpoint or gently perturb orbital paths within bounded limits.
+- Selecting a specimen brings it into focus, changes its behavior/material, reveals its name and short premise, and provides a real route to the relevant feature.
+- A seeded “recompose” action changes a set of orbital parameters deterministically; show the seed or provide a reproducible state.
+- Scroll progress evolves the composition across the chapter narrative: converge, disturb, open the aperture, disperse into territories, then assemble toward creation.
+- Motion is purposeful and interruptible. The user can navigate away at any time.
+
+### Visual treatment
+
+The orbital scene should combine an atmospheric environment, a ground/horizon or spatial reference plane, dimensional lighting, restrained particle detail, large editorial typography, and a few strong color/material contrasts. Bloom and glow are controlled effects, not a permanent wash over the screen. The orbiting forms must each have unique silhouettes and materials; no repetitive collection of generic spheres.
+
+### Mobile and accessibility behavior
+
+On narrow screens, transform the orbit into a more compact, touch-selectable constellation with fewer simultaneously active objects and simplified paths. A semantic list of the same territories remains available. Reduced motion freezes the orbit into an authored composition and replaces continuous movement with explicit selection/recompose transitions. Keyboard users can move between specimens and select each one without a pointer.
+
+## 14. Motion and 3D library policy
+
+### Approved orchestration
+
+- **GSAP:** primary timeline and choreography system for DOM/3D state coordination, scene entrance/exit, staged reveals, and selected scroll-linked sequences.
+- **@gsap/react:** React lifecycle integration for GSAP timelines and scoped cleanup.
+- **ScrollTrigger:** use for progressive chapter choreography; native scrolling remains in control.
+- **Flip:** consider only for meaningful layout/state transitions where FLIP is better than a simple CSS transition; do not add a visual trick merely to use a plugin.
+
+### 3D responsibilities
+
+- **Three.js + React Three Fiber:** core 3D scene, camera, materials, meshes, custom geometry, and render lifecycle.
+- **Drei:** selected utilities for controls, loaders, helpers, and common scene primitives; avoid pulling broad helpers into unrelated routes.
+- **@react-three/postprocessing:** candidate for carefully budgeted visual treatments (for example, selective bloom) after measuring the visual benefit and mobile GPU cost.
+- **Rapier:** candidate only for experiences that truly need collisions or rigid-body simulation. The orbit itself should be deterministic and parameter-driven, not a physics toy.
+- **Theatre.js:** defer unless a concrete scene-authoring need exceeds GSAP's timeline workflow.
+
+### Avoid overlapping stacks
+
+Do not add Framer Motion, Motion One, Lenis, or a second physics/animation engine simply to increase library count. CSS handles small interface transitions. GSAP handles orchestration. R3F/Three handles spatial rendering. Native scroll remains the source of scroll position.
+
+No third-party library is permitted to replace accessibility semantics, reduced-motion behavior, fallbacks, or resource budgets.
+
+### Installation gate
+
+The repository's existing package manifest and lockfile do not yet include GSAP or the 3D runtime. Add dependencies together with an updated lockfile from a supported runtime, after version/peer-dependency checks. Do not edit only package.json and leave a stale lockfile.
