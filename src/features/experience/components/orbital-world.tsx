@@ -19,6 +19,7 @@ type OrbitalWorldProps = {
   speed: number;
   density: number;
   seed: number;
+  reducedMotion: boolean;
 };
 
 const specimens: Array<{
@@ -93,6 +94,7 @@ function Specimen({
   speed,
   density,
   seed,
+  reducedMotion,
   onSelect,
 }: {
   item: (typeof specimens)[number];
@@ -103,6 +105,7 @@ function Specimen({
   speed: number;
   density: number;
   seed: number;
+  reducedMotion: boolean;
   onSelect: (id: SpecimenId) => void;
 }) {
   const group = useRef<THREE.Group>(null);
@@ -110,6 +113,7 @@ function Specimen({
   const seededPhase = ((seed * 0.017 + index * 2.399963) % 360) * (Math.PI / 180);
 
   useFrame(({ clock }, delta) => {
+    if (reducedMotion) return;
     const node = group.current;
     if (!node) return;
     const scroll = progress.current.value;
@@ -156,10 +160,10 @@ function Specimen({
   );
 }
 
-function Core({ progress, intensity }: { progress: RefValue<MutableValue>; intensity: number }) {
+function Core({ progress, intensity, reducedMotion }: { progress: RefValue<MutableValue>; intensity: number; reducedMotion: boolean }) {
   const root = useRef<THREE.Group>(null);
   useFrame(({ clock }) => {
-    if (!root.current) return;
+    if (reducedMotion || !root.current) return;
     root.current.rotation.y = clock.elapsedTime * 0.12 + progress.current.value * Math.PI * 0.8;
     root.current.rotation.x = Math.sin(clock.elapsedTime * 0.16) * 0.08;
     const scale = 1 + Math.sin(clock.elapsedTime * 0.8) * 0.018 * intensity;
@@ -191,7 +195,7 @@ function Core({ progress, intensity }: { progress: RefValue<MutableValue>; inten
 function WorldScene(props: OrbitalWorldProps) {
   const world = useRef<THREE.Group>(null);
   useFrame((_, delta) => {
-    if (!world.current) return;
+    if (props.reducedMotion || !world.current) return;
     const targetX = props.pointer.current.y * 0.16;
     const targetY = props.pointer.current.x * 0.2 + props.progress.current.value * 0.2;
     world.current.rotation.x = THREE.MathUtils.damp(world.current.rotation.x, targetX, 3.2, delta);
@@ -206,7 +210,7 @@ function WorldScene(props: OrbitalWorldProps) {
       <pointLight position={[4, 1, -4]} intensity={24} color="#FF765E" distance={13} />
       <fog attach="fog" args={["#111214", 11, 23]} />
       <group ref={world}>
-        <Core progress={props.progress} intensity={props.intensity} />
+        <Core progress={props.progress} intensity={props.intensity} reducedMotion={props.reducedMotion} />
         {specimens.map((item, index) => (
           <Specimen
             key={item.id}
@@ -218,6 +222,7 @@ function WorldScene(props: OrbitalWorldProps) {
             speed={props.speed}
             density={props.density}
             seed={props.seed}
+            reducedMotion={props.reducedMotion}
             onSelect={props.onSelect}
           />
         ))}
@@ -234,6 +239,7 @@ function WorldScene(props: OrbitalWorldProps) {
 export function OrbitalWorld(props: OrbitalWorldProps) {
   return (
     <Canvas
+      frameloop={props.reducedMotion ? "demand" : "always"}
       dpr={[1, 1.5]}
       camera={{ position: [0, 0, 12.5], fov: 38, near: 0.1, far: 60 }}
       gl={{ antialias: true, alpha: true, powerPreference: "high-performance" }}
