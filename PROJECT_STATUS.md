@@ -29,6 +29,9 @@
 - Phase 05 owner approval and Phase 06 authorization: D-018.
 - Phase 06 owner approval and Phase 07 authorization: D-019.
 - Cross-product creative experience mandate: D-020.
+- Orbit-centered FORMA identity: D-022.
+- GSAP motion choreography layer: D-023.
+- Curated 3D runtime policy: D-024.
 - Phase 07 approval and Phase 08 authorization: D-021.
 
 ## Phase summaries
