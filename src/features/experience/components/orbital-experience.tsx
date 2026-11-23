@@ -70,46 +70,154 @@ export function OrbitalExperience() {
     const root = rootRef.current;
     if (!root) return;
 
-    const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const chapterCopies = Array.from(root.querySelectorAll<HTMLElement>("[data-chapter-copy]"));
+    const territoryCards = Array.from(root.querySelectorAll<HTMLElement>('[data-motion="territory"]'));
+    const apertureRings = Array.from(root.querySelectorAll<HTMLElement>('[data-motion="aperture-ring"]'));
+    const buildMark = root.querySelector<HTMLElement>('[data-motion="build-mark"]');
+    const instrument = root.querySelector<HTMLElement>('[data-motion="instrument"]');
+    const stageIdentity = root.querySelector<HTMLElement>('[data-motion="identity"]');
 
-    if (!reducedMotion) {
-      const intro = gsap.timeline({ defaults: { ease: "power3.out" } });
-      intro
-        .fromTo(".heroEyebrow", { opacity: 0, y: 18 }, { opacity: 1, y: 0, duration: 0.7 })
-        .fromTo(".heroTitle", { opacity: 0, y: 52, rotateX: -12 }, { opacity: 1, y: 0, rotateX: 0, duration: 1.15 }, "-=0.38")
-        .fromTo(".orbitLegend", { opacity: 0, x: 24 }, { opacity: 1, x: 0, duration: 0.8 }, "-=0.55")
-        .fromTo(".heroFooter", { opacity: 0, y: 16 }, { opacity: 1, y: 0, duration: 0.7 }, "-=0.45");
+    if (prefersReducedMotion) return;
 
-      gsap.to(progress.current, {
-        value: 1,
+    const intro = gsap.timeline({ defaults: { ease: "power3.out" } });
+    intro
+      .fromTo(".heroEyebrow", { opacity: 0, y: 18 }, { opacity: 1, y: 0, duration: 0.7 })
+      .fromTo(".heroTitle", { opacity: 0, y: 72, rotateX: -16, skewY: 3 }, { opacity: 1, y: 0, rotateX: 0, skewY: 0, duration: 1.2 }, "-=0.38")
+      .fromTo(".heroSubline", { opacity: 0, x: -28 }, { opacity: 1, x: 0, duration: 0.8 }, "-=0.72")
+      .fromTo(".orbitLegend", { opacity: 0, x: 32, filter: "blur(8px)" }, { opacity: 1, x: 0, filter: "blur(0px)", duration: 0.85 }, "-=0.55")
+      .fromTo(".heroFooter", { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.7 }, "-=0.45");
+
+    gsap.to(progress.current, {
+      value: 1,
+      ease: "none",
+      scrollTrigger: {
+        trigger: root,
+        start: "top top",
+        end: "bottom bottom",
+        scrub: 1.2,
+      },
+    });
+
+    if (stageIdentity) {
+      gsap.to(stageIdentity, {
+        scale: 0.72,
+        yPercent: -24,
+        opacity: 0.52,
         ease: "none",
         scrollTrigger: {
           trigger: root,
           start: "top top",
-          end: "bottom bottom",
-          scrub: 1.2,
+          end: "45% top",
+          scrub: 1,
         },
       });
+    }
 
-      root.querySelectorAll<HTMLElement>("[data-chapter-copy]").forEach((element) => {
+    chapterCopies.forEach((element) => {
+      gsap.fromTo(
+        element,
+        { opacity: 0.25, y: 56, rotateX: -4 },
+        {
+          opacity: 1,
+          y: 0,
+          rotateX: 0,
+          duration: 1,
+          ease: "power2.out",
+          scrollTrigger: {
+            trigger: element.closest("section"),
+            start: "top 82%",
+            end: "top 38%",
+            scrub: 0.7,
+          },
+        },
+      );
+    });
+
+    if (apertureRings.length) {
+      apertureRings.forEach((ring, index) => {
         gsap.fromTo(
-          element,
-          { opacity: 0.38, y: 34 },
+          ring,
+          { rotation: index % 2 ? -48 : 36, scale: 0.52, opacity: 0.15 },
           {
-            opacity: 1,
-            y: 0,
-            duration: 0.9,
-            ease: "power2.out",
+            rotation: index % 2 ? 24 : -30,
+            scale: 1 + index * 0.08,
+            opacity: 0.9,
+            ease: "none",
             scrollTrigger: {
-              trigger: element.closest("section"),
-              start: "top 74%",
-              end: "top 38%",
-              scrub: 0.65,
+              trigger: "#the-idea",
+              start: "top bottom",
+              end: "bottom top",
+              scrub: 1.1,
             },
           },
         );
       });
     }
+
+    if (territoryCards.length) {
+      territoryCards.forEach((card, index) => {
+        gsap.fromTo(
+          card,
+          { y: 110 + index * 16, rotate: (index % 2 ? 1 : -1) * (12 + index * 2), scale: 0.78, opacity: 0 },
+          {
+            y: 0,
+            rotate: 0,
+            scale: 1,
+            opacity: 1,
+            ease: "power3.out",
+            scrollTrigger: {
+              trigger: "#disciplines",
+              start: "top 72%",
+              end: "center center",
+              scrub: 0.85,
+            },
+          },
+        );
+      });
+    }
+
+    if (instrument) {
+      gsap.fromTo(
+        instrument,
+        { x: 90, y: 35, rotate: 2, opacity: 0, clipPath: "inset(0 0 0 100%)" },
+        {
+          x: 0,
+          y: 0,
+          rotate: 0,
+          opacity: 1,
+          clipPath: "inset(0 0 0 0%)",
+          ease: "power3.out",
+          scrollTrigger: {
+            trigger: "#direct",
+            start: "top 72%",
+            end: "center center",
+            scrub: 0.9,
+          },
+        },
+      );
+    }
+
+    if (buildMark) {
+      gsap.fromTo(
+        buildMark,
+        { scale: 0.55, rotate: -24, x: 80, opacity: 0 },
+        {
+          scale: 1,
+          rotate: 0,
+          x: 0,
+          opacity: 1,
+          ease: "power2.out",
+          scrollTrigger: {
+            trigger: "#build",
+            start: "top 75%",
+            end: "center center",
+            scrub: 1,
+          },
+        },
+      );
+    }
+
   }, { scope: rootRef });
 
   function updatePointer(event: PointerEvent<HTMLElement>) {
@@ -149,7 +257,7 @@ export function OrbitalExperience() {
           seed={seed}
           reducedMotion={reducedMotion}
         />
-        <div className={styles.centralIdentity}>
+        <div className={styles.centralIdentity} data-motion="identity">
           <span className={styles.identityIndex}>GENERATIVE SYSTEM / 001</span>
           <span className={styles.wordmark}>FORMA<span>®</span></span>
           <span className={styles.identityTag}>WHERE FORM MEETS FUNCTION</span>
@@ -214,7 +322,7 @@ export function OrbitalExperience() {
           <p>It is a set of possibilities. Pull a system out of alignment. Change its rules. Give an idea a new dimension. FORMA is where those possibilities become something you can feel.</p>
           <a href="#disciplines" className={styles.textLink}>EXPLORE THE TERRITORIES <span aria-hidden="true">↗</span></a>
         </div>
-        <div className={styles.aperture} aria-hidden="true"><i /><i /><i /></div>
+        <div className={styles.aperture} aria-hidden="true"><i data-motion="aperture-ring" /><i data-motion="aperture-ring" /><i data-motion="aperture-ring" /></div>
         <span className={styles.chapterAside}>THERE IS ALWAYS ANOTHER WAY TO SHAPE IT.</span>
       </section>
 
@@ -227,7 +335,7 @@ export function OrbitalExperience() {
         <div className={styles.territoryField}>
           <span className={styles.fieldIndex}>THE CREATIVE TERRITORIES / 05</span>
           {territories.map((item, index) => (
-            <article key={item.id} className={`${styles.territory} ${styles[`territory${index + 1}`]}`}>
+            <article key={item.id} className={`${styles.territory} ${styles[`territory${index + 1}`]}`} data-motion="territory">
               <button type="button" onClick={() => setSelected(item.id)} aria-pressed={selected === item.id}>
                 <span>{item.number} / {item.descriptor}</span>
                 <strong>{item.name}</strong>
@@ -244,7 +352,7 @@ export function OrbitalExperience() {
           <h2 id="direct-title">Don&apos;t just watch.<br /><em>Change the rules.</em></h2>
           <p>The orbit is a live generative composition. Change its energy, pace, and field density. Recompose to create a different arrangement from a new seed.</p>
         </div>
-        <div className={styles.instrument}>
+        <div className={styles.instrument} data-motion="instrument">
           <div className={styles.instrumentHead}><span>ORBITAL PARAMETERS</span><span>LIVE / LOCAL</span></div>
           <label>
             <span>ENERGY <output>{intensity.toFixed(2)}×</output></span>
@@ -273,7 +381,7 @@ export function OrbitalExperience() {
             <Link href="/motion-lab">EXPLORE MOTION LAB <span aria-hidden="true">↗</span></Link>
           </div>
         </div>
-        <span className={styles.buildMark}>F<span>∞</span></span>
+        <span className={styles.buildMark} data-motion="build-mark">F<span>∞</span></span>
         <span className={styles.chapterAside}>FORM IS NEVER FINAL.</span>
       </section>
 
