@@ -147,7 +147,7 @@ function Specimen({
       ref={group}
       position={initialPosition}
       rotation={[index * 0.13, index * 0.27, index * 0.08]}
-      scale={selected ? 1.42 : 1}
+      scale={1}
       onClick={(event) => { event.stopPropagation(); onSelect(item.id); }}
       onPointerOver={(event) => event.stopPropagation()}
     >
