@@ -168,3 +168,33 @@ This file records decisions that have been explicitly approved. Proposed ideas d
 **Verification boundary:** This records the owner's validation report and phase-gate approval. The exact command output and detailed browser/device results were not included in the approval message and were not independently rerun in this environment. No specific test count, performance benchmark, deployment, or provider integration is implied.
 
 **References:** `docs/PHASE_07_REVIEW.md`, `docs/PHASE_08_PLAYGROUND_MOTION_LAB_PLAN.md`.
+
+## D-022 — Orbit-centered FORMA identity
+
+**Status:** Accepted as a creative-direction requirement  
+**Decision date:** 2026-11-23  
+**Decision:** The Home experience should center the FORMA identity/core inside a living orbital composition. Meaningful orbiting specimens represent the product's creative territories and systems: form/geometry, motion/trace, typography, space/frames, and generative fields. Objects should use distinct orbital planes, trajectories, scales, and behaviors rather than rotating as a uniform decorative ring.
+
+**Interaction contract:** Pointer/touch influence, selectable territories, deterministic recomposition, and scroll-linked chapter progression must create observable changes. The orbit should evolve into the wider Home narrative and lead into real product destinations. Semantic navigation and copy remain outside the canvas.
+
+**Guardrails:** This does not authorize a particle-heavy or WebGL-only page. The composition must have a stable reduced-motion/static fallback, keyboard-accessible controls, touch support, a non-WebGL fallback, bounded GPU budgets, and no scroll hijacking.
+
+## D-023 — GSAP as FORMA's motion choreography layer
+
+**Status:** Accepted  
+**Decision date:** 2026-11-23  
+**Decision:** Add GSAP as the primary orchestration layer for authored timelines, scene choreography, scroll-triggered chapter progress, and coordinated DOM/3D transitions. Use the React integration package where appropriate. Use ScrollTrigger for progressive scroll-linked choreography while retaining native browser scrolling.
+
+**Implementation boundary:** GSAP coordinates motion; Three.js / React Three Fiber own actual 3D geometry, materials, cameras, and rendering. CSS remains preferred for simple interface transitions and reduced-motion states. Do not introduce multiple competing animation frameworks for the same responsibility.
+
+**Dependencies and verification:** Install exact compatible package versions only after checking the existing Next.js/React runtime and updating the npm lockfile. This decision does not mean GSAP has already been installed or that build/tests have passed.
+
+## D-024 — Curated 3D runtime, not indiscriminate library accumulation
+
+**Status:** Accepted  
+**Decision date:** 2026-11-23  
+**Decision:** Use a curated 3D toolchain: Three.js + React Three Fiber as the core, Drei selectively for scene helpers, and post-processing/physics libraries only when a specific implemented experience demonstrates the need. Do not install every available 3D library or duplicate rendering, animation, physics, and scroll systems.
+
+**Candidate additions subject to feature-level review:** React Three Postprocessing for measured visual effects; Rapier for scenes that need real collision/rigid-body simulation; Theatre.js only if authored scene timelines require a separate visual authoring workflow that GSAP cannot reasonably provide. These are candidates, not approved installed dependencies.
+
+**Quality rule:** Every dependency must earn its place through a concrete user-visible feature, bundle/runtime cost review, compatibility check, accessibility/fallback plan, and maintainability rationale.
