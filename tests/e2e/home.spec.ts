@@ -8,7 +8,7 @@ test("home page exposes the orbital identity and skip navigation", async ({ page
     "href",
     "#main-content",
   );
-  await expect(page.locator("canvas, [class*=\\\"staticFallback\\\"]").first()).toBeVisible();
+  await expect(page.locator('canvas, [class*="staticFallback"]').first()).toBeVisible();
 });
 
 test("orbital specimens can be selected and recomposed", async ({ page }) => {

@@ -62,14 +62,15 @@ export function OrbitalExperience() {
     if (!root) return;
 
     const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    const intro = gsap.timeline({ defaults: { ease: "power3.out" } });
-    intro
-      .fromTo(".heroEyebrow", { opacity: 0, y: 18 }, { opacity: 1, y: 0, duration: 0.7 })
-      .fromTo(".heroTitle", { opacity: 0, y: 52, rotateX: -12 }, { opacity: 1, y: 0, rotateX: 0, duration: 1.15 }, "-=0.38")
-      .fromTo(".orbitLegend", { opacity: 0, x: 24 }, { opacity: 1, x: 0, duration: 0.8 }, "-=0.55")
-      .fromTo(".heroFooter", { opacity: 0, y: 16 }, { opacity: 1, y: 0, duration: 0.7 }, "-=0.45");
 
     if (!reducedMotion) {
+      const intro = gsap.timeline({ defaults: { ease: "power3.out" } });
+      intro
+        .fromTo(".heroEyebrow", { opacity: 0, y: 18 }, { opacity: 1, y: 0, duration: 0.7 })
+        .fromTo(".heroTitle", { opacity: 0, y: 52, rotateX: -12 }, { opacity: 1, y: 0, rotateX: 0, duration: 1.15 }, "-=0.38")
+        .fromTo(".orbitLegend", { opacity: 0, x: 24 }, { opacity: 1, x: 0, duration: 0.8 }, "-=0.55")
+        .fromTo(".heroFooter", { opacity: 0, y: 16 }, { opacity: 1, y: 0, duration: 0.7 }, "-=0.45");
+
       gsap.to(progress.current, {
         value: 1,
         ease: "none",
@@ -103,7 +104,6 @@ export function OrbitalExperience() {
   }, { scope: rootRef });
 
   function updatePointer(event: PointerEvent<HTMLElement>) {
-    const bounds = event.currentTarget.getBoundingClientRect();
     pointer.current.x = (event.clientX / window.innerWidth - 0.5) * 2;
     pointer.current.y = (event.clientY / window.innerHeight - 0.5) * 2;
   }

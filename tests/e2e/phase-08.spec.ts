@@ -4,7 +4,7 @@ test("Playground exposes a real interactive generative field", async ({ page }) 
   await page.goto("/playground");
 
   await expect(page.getByRole("heading", { name: /enter the unknown/i })).toBeVisible();
-  await expect(page.locator("canvas, [class*=\\\"staticFallback\\\"]").first()).toBeVisible();
+  await expect(page.locator('canvas, [class*="staticFallback"]').first()).toBeVisible();
   await expect(page.getByText("SEED / 027")).toBeVisible();
   const stage = page.getByRole("group", { name: /interactive displacement field/i });
   await stage.focus();
@@ -116,7 +116,7 @@ test("Elastic Matter controls change the typographic study", async ({ page }) =>
 
 test("Home exposes a selectable orbit and live orbital controls", async ({ page }) => {
   await page.goto("/");
-  await expect(page.locator("canvas, [class*=\\\"staticFallback\\\"]").first()).toBeVisible();
+  await expect(page.locator('canvas, [class*="staticFallback"]').first()).toBeVisible();
 
   const formSpecimen = page.locator("button[aria-pressed]").filter({ hasText: "Form" }).first();
   await formSpecimen.click();
