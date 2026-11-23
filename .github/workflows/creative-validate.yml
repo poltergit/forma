@@ -1,0 +1,60 @@
+name: Validate FORMA orbital experience
+
+on:
+  push:
+    branches:
+      - phase-08/playground-motion-lab
+    paths:
+      - ".github/workflows/creative-validate.yml"
+
+permissions:
+  contents: write
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - name: Check out Phase 08
+        uses: actions/checkout@v4
+        with:
+          ref: phase-08/playground-motion-lab
+          persist-credentials: true
+
+      - name: Set up supported Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+
+      - name: Install from the committed lockfile
+        run: npm ci
+
+      - name: Lint
+        run: npm run lint
+
+      - name: Typecheck
+        run: npm run typecheck
+
+      - name: Unit tests
+        run: npm run test
+
+      - name: Install Playwright Chromium
+        run: npx playwright install --with-deps chromium
+
+      - name: Browser tests
+        run: npm run test:e2e
+
+      - name: Production build
+        run: npm run build
+        env:
+          NEXT_TELEMETRY_DISABLED: "1"
+
+      - name: Remove temporary validation workflow
+        if: success()
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git rm .github/workflows/creative-validate.yml
+          git commit -m "ci: remove temporary validation workflow"
+          git push origin HEAD:phase-08/playground-motion-lab
