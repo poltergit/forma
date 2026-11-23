@@ -177,3 +177,26 @@ Expose a small number of useful controls first; advanced controls should appear 
 - Cloud artifact persistence until Supabase provider setup and policy validation are complete.
 - Public publishing, social feeds, arbitrary user code/shaders, and user-authored plugin execution.
 - Billing, teams, and public multiplayer.
+
+## 13. Creative refoundation — orbit-centered identity (approved direction, implementation pending)
+
+The Home signature composition is now defined as a central FORMA core surrounded by five meaningful orbiting specimen types: Form/geometry, Motion/trace, Type/glyph, Space/frame, and Field/seed. Each specimen needs a distinct silhouette, material, orbital plane, speed, and user-facing meaning. Selection, pointer/touch influence, keyboard control, deterministic recomposition, and scroll-linked chapter progression must change the scene observably.
+
+### Motion and 3D stack
+
+- GSAP is the approved primary choreography layer.
+- @gsap/react is the preferred React lifecycle integration.
+- ScrollTrigger is allowed for progressive chapter choreography without scroll-jacking.
+- Three.js + React Three Fiber remain the spatial rendering engine; Drei is selective.
+- Post-processing and Rapier physics remain feature-gated optional candidates; do not install unused libraries.
+- Use CSS for simple interface transitions; do not introduce competing animation/smooth-scroll frameworks.
+
+### Additional implementation sequence
+
+1. Verify exact package/peer compatibility, add GSAP + @gsap/react with a matching lockfile update, and add the selected R3F packages needed for the actual scene.
+2. Prototype the orbit as a deterministic parametric system, not a physics simulation.
+3. Build a lazy-loaded R3F scene with performance tiers, static/CSS fallback, and semantic controls outside the canvas.
+4. Coordinate the intro, orbit state, and chapter transitions with GSAP timelines and ScrollTrigger.
+5. Recompose the surrounding chapters into the new visual grammar while retaining the working Playground and Motion Lab functionality.
+6. Investigate and resolve the reported React use() suspend warning; do not silence it.
+7. Inspect desktop/mobile, reduced motion, keyboard, touch, WebGL fallback, frame performance, and console behavior before review.

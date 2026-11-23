@@ -29,6 +29,9 @@
 - Phase 05 owner approval and Phase 06 authorization: D-018.
 - Phase 06 owner approval and Phase 07 authorization: D-019.
 - Cross-product creative experience mandate: D-020.
+- Orbit-centered FORMA identity: D-022.
+- GSAP motion choreography layer: D-023.
+- Curated 3D runtime policy: D-024.
 - Phase 07 approval and Phase 08 authorization: D-021.
 
 ## Phase summaries
@@ -84,3 +87,11 @@ These files and tests are committed to the branch, but this latest Phase 08 slic
 - Provider quotas, email delivery, backup/restore, and preview/production isolation remain to be verified.
 - Trademark, domain, and social-handle availability have not been checked.
 - Supabase provider setup and policy validation remain outstanding; Phase 08 must not imply cloud artifact persistence is operational.
+
+### Creative refoundation — orbit identity and motion stack (2026-11-23)
+
+The owner approved an orbit-centered Home identity: the FORMA core is central, surrounded by meaningful orbiting specimens for Form, Motion, Type, Space, and generative Field. The orbit evolves through a chapter narrative and offers real selection/recomposition interactions. The supplied Otsuka screenshots are used as structural/atmospheric inspiration only; FORMA keeps its own identity.
+
+GSAP is approved as the primary motion orchestration layer, with @gsap/react integration and ScrollTrigger for progressive chapter choreography. Three.js + React Three Fiber remain the 3D rendering core; Drei is selective. Post-processing, physics, and Theatre.js remain feature-gated candidates, not approved blanket dependencies.
+
+**Not yet implemented:** GSAP and R3F runtime packages are not yet installed on this branch. Package manifest and lockfile must be updated together after compatibility verification. The existing Home page still uses the previous editorial/CSS-cuboid implementation until the new orbital scene is built. The React use() console warning remains an open investigation. Phase 08 remains in progress and unapproved.
