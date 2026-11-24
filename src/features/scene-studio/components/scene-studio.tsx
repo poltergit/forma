@@ -131,10 +131,17 @@ export function SceneStudio() {
                 const saved = await saveCloudComposition(localScene);
                 merged.set(saved.id, saved);
                 if (typeof saved.revision === "number") cloudRevisions.current.set(saved.id, saved.revision);
-              } else if (localScene.updatedAt > cloudScene.updatedAt) {
-                const saved = await saveCloudComposition({ ...localScene, revision: cloudScene.revision });
-                merged.set(saved.id, saved);
-                if (typeof saved.revision === "number") cloudRevisions.current.set(saved.id, saved.revision);
+              } else {
+                const localDiffers = localScene.name !== cloudScene.name
+                  || localScene.camera !== cloudScene.camera
+                  || JSON.stringify(localScene.objects) !== JSON.stringify(cloudScene.objects);
+                const sameRevision = localScene.revision === cloudScene.revision;
+                const legacyLocalIsNewer = localScene.revision === undefined && localScene.updatedAt > cloudScene.updatedAt;
+                if (localDiffers && (sameRevision || legacyLocalIsNewer)) {
+                  const saved = await saveCloudComposition({ ...localScene, revision: cloudScene.revision });
+                  merged.set(saved.id, saved);
+                  if (typeof saved.revision === "number") cloudRevisions.current.set(saved.id, saved.revision);
+                }
               }
             }
             library = [...merged.values()].sort((a, b) => b.updatedAt.localeCompare(a.updatedAt)).slice(0, 100);
@@ -204,9 +211,26 @@ export function SceneStudio() {
         setCompositions(updated);
         setSaveStatus("CLOUD SYNCED");
       }).catch((error: unknown) => {
-        setSaveStatus(error instanceof Error && error.message.includes("REVISION_CONFLICT")
-          ? "SYNC CONFLICT · RELOAD TO RESOLVE"
-          : "LOCAL SAVED · CLOUD SYNC ERROR");
+        if (error instanceof Error && error.message.includes("REVISION_CONFLICT")) {
+          const conflictCopy: SceneDocument = {
+            ...document,
+            id: window.crypto.randomUUID(),
+            name: `${document.name.slice(0, 58)} — Conflict copy`,
+            revision: undefined,
+            updatedAt: new Date().toISOString(),
+          };
+          const savedLibrary = readSceneLibrary(window.localStorage.getItem(storageKey));
+          const withCopy = [conflictCopy, ...savedLibrary].slice(0, 100);
+          window.localStorage.setItem(storageKey, JSON.stringify(withCopy));
+          setCompositions(withCopy);
+          setActiveCompositionId(conflictCopy.id);
+          setSceneName(conflictCopy.name);
+          setObjects(conflictCopy.objects);
+          setCameraView(conflictCopy.camera);
+          setSaveStatus("CONFLICT COPY CREATED · SAVING");
+          return;
+        }
+        setSaveStatus("LOCAL SAVED · CLOUD SYNC ERROR");
       });
     }, 650);
     return () => window.clearTimeout(timeout);
