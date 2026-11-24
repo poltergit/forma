@@ -314,6 +314,7 @@ export function SceneStudio() {
           <button className={styles.quietButton} onClick={createComposition}>＋ NEW</button>
           <label className={styles.importButton}>IMPORT JSON<input aria-label="Import FORMA JSON" type="file" accept="application/json,.json" onChange={importComposition} /></label>
           <button className={styles.quietButton} onClick={deleteComposition} disabled={compositions.length <= 1}>DELETE</button>
+          <Link className={styles.accountLink} href="/sign-in">{cloudUserId ? "ACCOUNT ↗" : "SIGN IN ↗"}</Link>
         </div>
         <div className={styles.topActions}>
           <button className={styles.quietButton} onClick={() => { setObjects(initialObjects); setSelectedId(1); }}>RESET</button>
