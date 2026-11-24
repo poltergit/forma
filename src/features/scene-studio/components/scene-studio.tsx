@@ -1,6 +1,6 @@
 "use client";
 
-import { Canvas } from "@react-three/fiber";
+import Link from "next/link";\nimport { Canvas } from "@react-three/fiber";
 import { ContactShadows, Environment, OrbitControls, RoundedBox } from "@react-three/drei";
 import { Suspense, useMemo, useState } from "react";
 import type { ReactNode } from "react";
@@ -77,7 +77,7 @@ export function SceneStudio() {
   return (
     <main className={styles.studio}>
       <header className={styles.topbar}>
-        <a className={styles.brand} href="/" aria-label="FORMA home"><span className={styles.brandMark}>F</span> FORMA <span className={styles.slash}>/</span> SCENE STUDIO</a>
+        <Link className={styles.brand} href="/" aria-label="FORMA home"><span className={styles.brandMark}>F</span> FORMA <span className={styles.slash}>/</span> SCENE STUDIO</Link>
         <div className={styles.document}>
           <span className={styles.liveDot} />
           <input aria-label="Scene name" value={sceneName} onChange={(event) => { setSceneName(event.target.value); setSaved(false); }} />
