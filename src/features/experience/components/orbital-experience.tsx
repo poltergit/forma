@@ -70,7 +70,7 @@ export function OrbitalExperience() {
         <div className={styles.artStage} data-intro="scene">
           <div className={styles.artStageTop}><span>STUDY / 001—A</span><span>FORM IN FLUX</span></div>
           <AtelierWorld intensity={intensity} speed={speed} density={density} seed={seed} reducedMotion={reducedMotion} />
-          <div className={styles.artStageFoot}><span>LIVE GENERATIVE STUDY</span><span>DRAG / ROTATE / RECOMPOSE</span></div>
+          <div className={styles.artStageFoot}><span>LIVE GENERATIVE STUDY</span><span>MOVE / ROTATE / RECOMPOSE</span></div>
           <span className={styles.stageCross} aria-hidden="true">✳</span>
         </div>
         <div className={styles.heroIndex}><span>01</span><span>MAKE / UNMAKE / REMAKE</span></div>
