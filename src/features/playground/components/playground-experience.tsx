@@ -38,7 +38,8 @@ export function PlaygroundExperience() {
   const [generator, setGenerator] = useState<GeneratorId>("displacement");
   const [seed, setSeed] = useState(27);
   const [density, setDensity] = useState(64);
-  const [influence, setInfluence] = useState(58);\n  const [paletteId, setPaletteId] = useState<PaletteId>("atelier");
+  const [influence, setInfluence] = useState(58);
+  const [paletteId, setPaletteId] = useState<PaletteId>("atelier");
   const [status, setStatus] = useState("COMPOSITION AT REST");
   const [recipeName, setRecipeName] = useState("Untitled study");
   const [recipes, setRecipes] = useState<PlaygroundRecipe[]>([]);
@@ -49,7 +50,8 @@ export function PlaygroundExperience() {
     return () => window.clearTimeout(timeout);
   }, []);
 
-  const activeGenerator = GENERATORS.find((item) => item.id === generator) ?? GENERATORS[0];\n  const activePalette = PLAYGROUND_PALETTES.find((item) => item.id === paletteId) ?? defaultPalette;
+  const activeGenerator = GENERATORS.find((item) => item.id === generator) ?? GENERATORS[0];
+  const activePalette = PLAYGROUND_PALETTES.find((item) => item.id === paletteId) ?? defaultPalette;
   const persistRecipes = (next: PlaygroundRecipe[]) => {
     setRecipes(next);
     window.localStorage.setItem(PLAYGROUND_RECIPE_KEY, JSON.stringify(next));
