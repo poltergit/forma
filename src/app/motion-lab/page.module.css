@@ -3,7 +3,7 @@
 .meta, .foot, .instrumentHeading > div > span, .closing > span { display: flex; justify-content: space-between; gap: 1rem; color: var(--color-text-muted); font: 10px var(--font-mono); letter-spacing: .12em; }
 .heading { display: grid; grid-template-columns: 1.2fr .8fr; align-items: end; gap: 3rem; padding: clamp(3rem, 8vw, 7rem) 0; }
 .heading h1 { margin: 0; font: 500 clamp(4.5rem, 11vw, 11rem)/.78 var(--font-display); letter-spacing: -.1em; }
-.heading h1 em, .instrumentHeading h2 em, .closing em { color: var(--brand-coral); font-style: normal; }
+.heading h1 em, .instrumentHeading h2 em, .closing em { color: var(--brand-blue); font-style: normal; }
 .heading p { max-width: 26rem; margin: 0 0 .5rem; color: var(--color-text-secondary); font-size: clamp(1rem, 1.5vw, 1.2rem); line-height: 1.7; }
 .foot { border-top: 1px solid var(--color-border); padding-top: 1rem; }
 .instrument { padding: clamp(2rem, 5vw, 4rem) 0 6rem; }
