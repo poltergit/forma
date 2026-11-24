@@ -2,404 +2,147 @@
 
 import dynamic from "next/dynamic";
 import Link from "next/link";
-import { useEffect, useRef, useState, type PointerEvent } from "react";
+import { useEffect, useState } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
 import styles from "./orbital-experience.module.css";
 
-type SpecimenId = "form" | "motion" | "type" | "space" | "field";
-type MutableValue = { value: number };
-type PointerValue = { x: number; y: number };
-
-const OrbitalWorld = dynamic(
-  () => import("./orbital-world").then((module) => module.OrbitalWorld),
-  {
-    ssr: false,
-    loading: () => <div className={styles.fallback}><span>FORM ENGINE / INITIALIZING</span><i /></div>,
-  },
-);
+const AtelierWorld = dynamic(() => import("./atelier-world").then((module) => module.AtelierWorld), {
+  ssr: false,
+  loading: () => <div className={styles.sceneFallback}>PREPARING THE FORM STUDY<span /></div>,
+});
 
 gsap.registerPlugin(ScrollTrigger, useGSAP);
 
-const territories: Array<{
-  id: SpecimenId;
-  number: string;
-  name: string;
-  descriptor: string;
-  description: string;
-  href: string | null;
-  action: string;
-}> = [
-  { id: "form", number: "01", name: "Form", descriptor: "MATTER / GEOMETRY", description: "Parametric objects, displacement, material, and the rules that give a shape its character.", href: "/playground", action: "ENTER PLAYGROUND" },
-  { id: "motion", number: "02", name: "Motion", descriptor: "TIME / FORCE", description: "Trajectories, easing, rhythm, and the feeling hidden inside a transformation.", href: "/motion-lab", action: "ENTER MOTION LAB" },
-  { id: "type", number: "03", name: "Type", descriptor: "GLYPH / TENSION", description: "Letters become matter. Spacing, distortion, and composition become instruments.", href: "/playground#elastic-type", action: "EXPLORE TYPE STUDY" },
-  { id: "space", number: "04", name: "Space", descriptor: "DEPTH / PERSPECTIVE", description: "Frames, cameras, volumes, and scenes that can be assembled and reshaped.", href: null, action: "IN DEVELOPMENT" },
-  { id: "field", number: "05", name: "Field", descriptor: "SEED / VARIATION", description: "A system of parts responding to a seed, a force, and a set of constraints.", href: "/playground#displacement-field", action: "EXPLORE THE FIELD" },
+const studies = [
+  { number: "01", name: "Shape", type: "GENERATIVE GEOMETRY", description: "Build a form from a rule, then bend the rule until something new appears.", href: "/playground", tag: "FORM / MATTER", className: "shape" },
+  { number: "02", name: "Time", type: "MOTION SYSTEMS", description: "Give movement a pulse. Tune the tension between anticipation and release.", href: "/motion-lab", tag: "MOTION / RHYTHM", className: "time" },
+  { number: "03", name: "Letter", type: "KINETIC TYPOGRAPHY", description: "Treat the alphabet as material: stretch it, interrupt it, make it speak.", href: "/playground#elastic-type", tag: "TYPE / VOICE", className: "letter" },
 ];
 
-const chapters = [
-  { id: "ignite", number: "01", label: "IGNITE" },
-  { id: "the-idea", number: "02", label: "DISTURB" },
-  { id: "disciplines", number: "03", label: "COMPOSE" },
-  { id: "direct", number: "04", label: "DIRECT" },
-  { id: "build", number: "05", label: "BUILD" },
-] as const;
-
 export function OrbitalExperience() {
-  const rootRef = useRef<HTMLElement>(null);
-  const progress = useRef<MutableValue>({ value: 0 });
-  const pointer = useRef<PointerValue>({ x: 0, y: 0 });
-  const [selected, setSelected] = useState<SpecimenId>("form");
+  const [intensity, setIntensity] = useState(1);
+  const [speed, setSpeed] = useState(1);
+  const [density, setDensity] = useState(18);
+  const [seed, setSeed] = useState(4137);
   const [reducedMotion, setReducedMotion] = useState(false);
 
   useEffect(() => {
     const preference = window.matchMedia("(prefers-reduced-motion: reduce)");
-    const syncPreference = () => setReducedMotion(preference.matches);
-    syncPreference();
-    preference.addEventListener("change", syncPreference);
-    return () => preference.removeEventListener("change", syncPreference);
+    const sync = () => setReducedMotion(preference.matches);
+    sync();
+    preference.addEventListener("change", sync);
+    return () => preference.removeEventListener("change", sync);
   }, []);
-  const [intensity, setIntensity] = useState(1);
-  const [speed, setSpeed] = useState(1);
-  const [density, setDensity] = useState(14);
-  const [seed, setSeed] = useState(4137);
-  const active = territories.find((item) => item.id === selected) ?? territories[0];
 
   useGSAP(() => {
-    const root = rootRef.current;
-    if (!root) return;
-
-    const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    const chapterCopies = Array.from(root.querySelectorAll<HTMLElement>("[data-chapter-copy]"));
-    const territoryCards = Array.from(root.querySelectorAll<HTMLElement>('[data-motion="territory"]'));
-    const apertureRings = Array.from(root.querySelectorAll<HTMLElement>('[data-motion="aperture-ring"]'));
-    const buildMark = root.querySelector<HTMLElement>('[data-motion="build-mark"]');
-    const instrument = root.querySelector<HTMLElement>('[data-motion="instrument"]');
-    const stageIdentity = root.querySelector<HTMLElement>('[data-motion="identity"]');
-
-    if (prefersReducedMotion) return;
-
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
     const intro = gsap.timeline({ defaults: { ease: "power3.out" } });
-    intro
-      .fromTo(".heroEyebrow", { opacity: 0, y: 18 }, { opacity: 1, y: 0, duration: 0.7 })
-      .fromTo(".heroTitle", { opacity: 0, y: 72, rotateX: -16, skewY: 3 }, { opacity: 1, y: 0, rotateX: 0, skewY: 0, duration: 1.2 }, "-=0.38")
-      .fromTo(".heroSubline", { opacity: 0, x: -28 }, { opacity: 1, x: 0, duration: 0.8 }, "-=0.72")
-      .fromTo(".orbitLegend", { opacity: 0, x: 32, filter: "blur(8px)" }, { opacity: 1, x: 0, filter: "blur(0px)", duration: 0.85 }, "-=0.55")
-      .fromTo(".heroFooter", { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.7 }, "-=0.45");
-
-    gsap.to(progress.current, {
-      value: 1,
-      ease: "none",
-      scrollTrigger: {
-        trigger: root,
-        start: "top top",
-        end: "bottom bottom",
-        scrub: 1.2,
-      },
+    intro.fromTo("[data-intro='eyebrow']", { y: 18, opacity: 0 }, { y: 0, opacity: 1, duration: 0.7 })
+      .fromTo("[data-intro='title']", { y: 70, opacity: 0, rotate: 2 }, { y: 0, opacity: 1, rotate: 0, duration: 1.15 }, "-=0.35")
+      .fromTo("[data-intro='copy']", { y: 24, opacity: 0 }, { y: 0, opacity: 1, duration: 0.8 }, "-=0.55")
+      .fromTo("[data-intro='scene']", { scale: 0.82, opacity: 0, rotate: -8 }, { scale: 1, opacity: 1, rotate: 0, duration: 1.25 }, "-=0.9");
+    gsap.utils.toArray<HTMLElement>("[data-reveal]").forEach((element) => {
+      gsap.fromTo(element, { y: 42, opacity: 0 }, {
+        y: 0, opacity: 1, duration: 0.9, ease: "power3.out",
+        scrollTrigger: { trigger: element, start: "top 86%", once: true },
+      });
     });
-
-    if (stageIdentity) {
-      gsap.to(stageIdentity, {
-        scale: 0.72,
-        yPercent: -24,
-        opacity: 0.52,
-        ease: "none",
-        scrollTrigger: {
-          trigger: root,
-          start: "top top",
-          end: "45% top",
-          scrub: 1,
-        },
-      });
-    }
-
-    chapterCopies.forEach((element) => {
-      gsap.fromTo(
-        element,
-        { opacity: 0.25, y: 56, rotateX: -4 },
-        {
-          opacity: 1,
-          y: 0,
-          rotateX: 0,
-          duration: 1,
-          ease: "power2.out",
-          scrollTrigger: {
-            trigger: element.closest("section"),
-            start: "top 82%",
-            end: "top 38%",
-            scrub: 0.7,
-          },
-        },
-      );
-    });
-
-    if (apertureRings.length) {
-      apertureRings.forEach((ring, index) => {
-        gsap.fromTo(
-          ring,
-          { rotation: index % 2 ? -48 : 36, scale: 0.52, opacity: 0.15 },
-          {
-            rotation: index % 2 ? 24 : -30,
-            scale: 1 + index * 0.08,
-            opacity: 0.9,
-            ease: "none",
-            scrollTrigger: {
-              trigger: "#the-idea",
-              start: "top bottom",
-              end: "bottom top",
-              scrub: 1.1,
-            },
-          },
-        );
-      });
-    }
-
-    if (territoryCards.length) {
-      territoryCards.forEach((card, index) => {
-        gsap.fromTo(
-          card,
-          { y: 110 + index * 16, rotate: (index % 2 ? 1 : -1) * (12 + index * 2), scale: 0.78, opacity: 0 },
-          {
-            y: 0,
-            rotate: 0,
-            scale: 1,
-            opacity: 1,
-            ease: "power3.out",
-            scrollTrigger: {
-              trigger: "#disciplines",
-              start: "top 72%",
-              end: "center center",
-              scrub: 0.85,
-            },
-          },
-        );
-      });
-    }
-
-    if (instrument) {
-      gsap.fromTo(
-        instrument,
-        { x: 90, y: 35, rotate: 2, opacity: 0, clipPath: "inset(0 0 0 100%)" },
-        {
-          x: 0,
-          y: 0,
-          rotate: 0,
-          opacity: 1,
-          clipPath: "inset(0 0 0 0%)",
-          ease: "power3.out",
-          scrollTrigger: {
-            trigger: "#direct",
-            start: "top 72%",
-            end: "center center",
-            scrub: 0.9,
-          },
-        },
-      );
-    }
-
-    if (buildMark) {
-      gsap.fromTo(
-        buildMark,
-        { scale: 0.55, rotate: -24, x: 80, opacity: 0 },
-        {
-          scale: 1,
-          rotate: 0,
-          x: 0,
-          opacity: 1,
-          ease: "power2.out",
-          scrollTrigger: {
-            trigger: "#build",
-            start: "top 75%",
-            end: "center center",
-            scrub: 1,
-          },
-        },
-      );
-    }
-
-  }, { scope: rootRef });
-
-  function updatePointer(event: PointerEvent<HTMLElement>) {
-    pointer.current.x = (event.clientX / window.innerWidth - 0.5) * 2;
-    pointer.current.y = (event.clientY / window.innerHeight - 0.5) * 2;
-  }
-
-  function resetPointer() {
-    pointer.current.x = 0;
-    pointer.current.y = 0;
-  }
-
-  function recompose() {
-    setSeed((value) => value + 1);
-  }
+  });
 
   return (
-    <main
-      id="main-content"
-      ref={rootRef}
-      className={styles.world}
-      onPointerMove={updatePointer}
-      onPointerLeave={resetPointer}
-      onPointerCancel={resetPointer}
-      onPointerUp={(event) => { if (event.pointerType === "touch") resetPointer(); }}
-    >
-      <div className={styles.stickyStage} aria-hidden="true">
-        <div className={styles.stageAtmosphere} />
-        <OrbitalWorld
-          progress={progress}
-          pointer={pointer}
-          selected={selected}
-          onSelect={setSelected}
-          intensity={intensity}
-          speed={speed}
-          density={density}
-          seed={seed}
-          reducedMotion={reducedMotion}
-        />
-        <div className={styles.centralIdentity} data-motion="identity">
-          <span className={styles.identityIndex}>GENERATIVE SYSTEM / 001</span>
-          <span className={styles.wordmark}>FORMA<span>®</span></span>
-          <span className={styles.identityTag}>WHERE FORM MEETS FUNCTION</span>
+    <main id="main-content" className={styles.page}>
+      <section className={styles.hero} aria-labelledby="home-title">
+        <div className={styles.heroGrid} aria-hidden="true" />
+        <div className={styles.heroMeta}>
+          <span data-intro="eyebrow"><i /> AN INDEPENDENT DIGITAL ATELIER</span>
+          <span>ISSUE Nº 001 <b>·</b> EST. 2026</span>
         </div>
-        <div className={styles.orbitCaption} aria-hidden="true">
-          <span>THE FORM ENGINE</span><span data-testid="orbital-seed">SEED / {String(seed).padStart(5, "0")}</span>
-        </div>
-      </div>
-
-      <section id="ignite" className={`${styles.chapter} ${styles.ignite}`} aria-labelledby="ignite-title">
-        <div className={styles.heroTop}>
-          <p className={`heroEyebrow ${styles.eyebrow}`}><i /> AN INTERACTIVE DIGITAL UNIVERSE</p>
-          <span className={styles.heroSerial}>F—001 / A WORLD OF FORM</span>
-        </div>
-        <div className={styles.heroHeadline}>
-          <h1 id="ignite-title" className={`heroTitle ${styles.heroTitle}`}>
-            <span>MAKE FORM</span>
-            <span><em>MOVE.</em></span>
-          </h1>
-          <p className={styles.heroSubline}>A living system of ideas, matter, and motion.</p>
-        </div>
-
-        <div className={`orbitLegend ${styles.orbitLegend}`}>
-          <span className={styles.legendTitle}>SPECIMENS IN ORBIT</span>
-          <div>
-            {territories.map((item) => (
-              <button
-                key={item.id}
-                type="button"
-                className={selected === item.id ? styles.legendActive : ""}
-                aria-pressed={selected === item.id}
-                onClick={() => setSelected(item.id)}
-              >
-                <i aria-hidden="true" />{item.name}<small>{item.number}</small>
-              </button>
-            ))}
-          </div>
-          <div className={styles.selectedDetail} aria-live="polite" aria-atomic="true">
-            <span>{active.descriptor}</span>
-            <strong>{active.name}</strong>
-            <p>{active.description}</p>
-            {active.href ? (
-              <Link href={active.href}>EXPLORE {active.name.toUpperCase()} <i aria-hidden="true">↗</i></Link>
-            ) : (
-              <span className={styles.inDevelopment}>IN DEVELOPMENT</span>
-            )}
+        <div className={styles.heroCopy}>
+          <p className={styles.overline}>IDEAS ARE NOT MEANT TO STAY STILL.</p>
+          <h1 id="home-title" data-intro="title">FORM IS<br /><em>A VERB.</em></h1>
+          <div className={styles.heroBottom} data-intro="copy">
+            <p>A creative instrument for shaping the things that don&apos;t exist yet. Make a mark. Bend a system. Find a form you didn&apos;t know you were looking for.</p>
+            <Link href="/playground" className={styles.primaryLink}>ENTER THE ATELIER <span>↗</span></Link>
           </div>
         </div>
-
-        <div className={`heroFooter ${styles.heroFooter}`}>
-          <span>POINTER / TOUCH TO DISTURB THE FIELD</span>
-          <button type="button" onClick={recompose}>RECOMPOSE <b aria-hidden="true">↗</b></button>
-          <a href="#the-idea">SCROLL TO ENTER <span aria-hidden="true">↓</span></a>
+        <div className={styles.artStage} data-intro="scene">
+          <div className={styles.artStageTop}><span>STUDY / 001—A</span><span>FORM IN FLUX</span></div>
+          <AtelierWorld intensity={intensity} speed={speed} density={density} seed={seed} reducedMotion={reducedMotion} />
+          <div className={styles.artStageFoot}><span>LIVE GENERATIVE STUDY</span><span>DRAG / ROTATE / RECOMPOSE</span></div>
+          <span className={styles.stageCross} aria-hidden="true">✳</span>
         </div>
-        <span className={styles.sideAnnotation}>ORBITAL STUDY / 4137</span>
+        <div className={styles.heroIndex}><span>01</span><span>MAKE / UNMAKE / REMAKE</span></div>
+        <a href="#manifesto" className={styles.scrollCue}><span>SCROLL TO EXPLORE</span><b>↓</b></a>
       </section>
 
-      <section id="the-idea" className={`${styles.chapter} ${styles.disturb}`} aria-labelledby="disturb-title">
-        <div className={`${styles.chapterCopy} ${styles.disturbCopy}`} data-chapter-copy>
-          <span className={styles.chapterKicker}>02 / DISTURB THE EXPECTED</span>
-          <h2 id="disturb-title">Form is not<br /><em>a final state.</em></h2>
-          <p>It is a set of possibilities. Pull a system out of alignment. Change its rules. Give an idea a new dimension. FORMA is where those possibilities become something you can feel.</p>
-          <a href="#disciplines" className={styles.textLink}>EXPLORE THE TERRITORIES <span aria-hidden="true">↗</span></a>
+      <section id="manifesto" className={styles.manifesto}>
+        <div className={styles.sectionLabel} data-reveal><span>01 / THE BELIEF</span><span>NOT A TEMPLATE. A TOOL.</span></div>
+        <div className={styles.manifestoBody} data-reveal>
+          <h2>Good ideas<br />need <em>room</em><br />to misbehave.</h2>
+          <div className={styles.manifestoAside}>
+            <span className={styles.stamp}>F—FORM / 001</span>
+            <p>FORMA is a place to experiment with geometry, motion, type, and digital space. Not to follow a preset. To discover what happens when you change the conditions.</p>
+            <p className={styles.smallNote}>A PLAYGROUND FOR THE CURIOUS. A WORKBENCH FOR THE OBSESSIVE.</p>
+          </div>
         </div>
-        <div className={styles.aperture} aria-hidden="true"><i data-motion="aperture-ring" /><i data-motion="aperture-ring" /><i data-motion="aperture-ring" /></div>
-        <span className={styles.chapterAside}>THERE IS ALWAYS ANOTHER WAY TO SHAPE IT.</span>
+        <div className={styles.manifestoRule}><span>OBSERVE</span><i /><span>INTERVENE</span><i /><span>TRANSFORM</span></div>
       </section>
 
-      <section id="disciplines" className={`${styles.chapter} ${styles.compose}`} aria-labelledby="compose-title">
-        <div className={`${styles.chapterCopy} ${styles.composeCopy}`} data-chapter-copy>
-          <span className={styles.chapterKicker}>03 / COMPOSE A NEW REALITY</span>
-          <h2 id="compose-title">Five forces.<br /><em>One universe.</em></h2>
-          <p>Every specimen belongs to a different creative territory. Select one in the orbit, then enter the tools that let you reshape it.</p>
+      <section className={styles.studies} aria-labelledby="studies-title">
+        <div className={styles.sectionLabel} data-reveal><span>02 / OPEN STUDIES</span><span>SELECT A DIRECTION ↘</span></div>
+        <div className={styles.studiesHeading} data-reveal>
+          <h2 id="studies-title">Three ways<br />to <em>begin.</em></h2>
+          <p>Each study is an invitation, not a finished answer. Enter one, pull it apart, and make it yours.</p>
         </div>
-        <div className={styles.territoryField}>
-          <span className={styles.fieldIndex}>THE CREATIVE TERRITORIES / 05</span>
-          {territories.map((item, index) => (
-            <article key={item.id} className={`${styles.territory} ${styles[`territory${index + 1}`]}`} data-motion="territory">
-              <button type="button" onClick={() => setSelected(item.id)} aria-pressed={selected === item.id}>
-                <span>{item.number} / {item.descriptor}</span>
-                <strong>{item.name}</strong>
-                <i aria-hidden="true">↗</i>
-              </button>
-            </article>
+        <div className={styles.studyGrid}>
+          {studies.map((study) => (
+            <Link key={study.number} href={study.href} className={styles.studyCard} data-study={study.className}>
+              <div className={styles.studyArtwork} aria-hidden="true">
+                {study.className === "shape" && <><i /><b /><span /></>}
+                {study.className === "time" && <><i /><b /><span /></>}
+                {study.className === "letter" && <strong>Ag</strong>}
+                <small>{study.tag}</small>
+              </div>
+              <div className={styles.studyMeta}><span>{study.number} / {study.type}</span><span>↗</span></div>
+              <h3>{study.name}</h3>
+              <p>{study.description}</p>
+              <span className={styles.studyEnter}>OPEN STUDY <b>↗</b></span>
+            </Link>
           ))}
         </div>
       </section>
 
-      <section id="direct" className={`${styles.chapter} ${styles.direct}`} aria-labelledby="direct-title">
-        <div className={`${styles.chapterCopy} ${styles.directCopy}`} data-chapter-copy>
-          <span className={styles.chapterKicker}>04 / DIRECT THE SYSTEM</span>
-          <h2 id="direct-title">Don&apos;t just watch.<br /><em>Change the rules.</em></h2>
-          <p>The orbit is a live generative composition. Change its energy, pace, and field density. Recompose to create a different arrangement from a new seed.</p>
-        </div>
-        <div className={styles.instrument} data-motion="instrument">
-          <div className={styles.instrumentHead}><span>ORBITAL PARAMETERS</span><span>LIVE / LOCAL</span></div>
-          <label>
-            <span>ENERGY <output>{intensity.toFixed(2)}×</output></span>
-            <input aria-label="Orbit energy" type="range" min="0.55" max="1.5" step="0.05" value={intensity} onChange={(event) => setIntensity(Number(event.target.value))} />
-          </label>
-          <label>
-            <span>ORBIT SPEED <output>{speed.toFixed(2)}×</output></span>
-            <input aria-label="Orbit speed" type="range" min="0.35" max="1.8" step="0.05" value={speed} onChange={(event) => setSpeed(Number(event.target.value))} />
-          </label>
-          <label>
-            <span>FIELD DENSITY <output>{density}</output></span>
-            <input aria-label="Field density" type="range" min="6" max="28" step="2" value={density} onChange={(event) => setDensity(Number(event.target.value))} />
-          </label>
-          <div className={styles.instrumentFoot}><span>SEED / {String(seed).padStart(5, "0")}</span><button type="button" onClick={recompose}>GENERATE NEW FORM ↗</button></div>
-          <p className={styles.parameterNote}>Parameters change the orbital composition. This local study is not yet a saved artifact.</p>
-        </div>
-      </section>
-
-      <section id="build" className={`${styles.chapter} ${styles.build}`} aria-labelledby="build-title">
-        <div className={`${styles.chapterCopy} ${styles.buildCopy}`} data-chapter-copy>
-          <span className={styles.chapterKicker}>05 / ENTER THE PLAYGROUND</span>
-          <h2 id="build-title">Make something<br /><em>unexpected.</em></h2>
-          <p>The universe is only the beginning. Step inside the experiments, change the parameters, and make a form that belongs to you.</p>
-          <div className={styles.buildLinks}>
-            <Link href="/playground">ENTER PLAYGROUND <span aria-hidden="true">↗</span></Link>
-            <Link href="/motion-lab">EXPLORE MOTION LAB <span aria-hidden="true">↗</span></Link>
+      <section className={styles.liveStudy} aria-labelledby="live-title">
+        <div className={styles.liveCopy} data-reveal>
+          <div className={styles.sectionLabel}><span>03 / THE INSTRUMENT</span><span>LIVE / LOCAL</span></div>
+          <h2 id="live-title">Change the<br /><em>conditions.</em></h2>
+          <p>Every form is a consequence of its inputs. Change the energy, rhythm, and number of fragments. The study responds in real time.</p>
+          <div className={styles.controls}>
+            <label><span>ENERGY <output>{intensity.toFixed(2)}×</output></span><input aria-label="Energy" type="range" min="0.65" max="1.45" step="0.05" value={intensity} onChange={(event) => setIntensity(Number(event.target.value))} /></label>
+            <label><span>RHYTHM <output>{speed.toFixed(2)}×</output></span><input aria-label="Rhythm" type="range" min="0.3" max="1.8" step="0.05" value={speed} onChange={(event) => setSpeed(Number(event.target.value))} /></label>
+            <label><span>FRAGMENTS <output>{density}</output></span><input aria-label="Fragments" type="range" min="6" max="30" step="2" value={density} onChange={(event) => setDensity(Number(event.target.value))} /></label>
+            <div className={styles.controlFoot}><span>SEED / {String(seed).padStart(5, "0")}</span><button type="button" onClick={() => setSeed((value) => value + 1)}>RECOMPOSE ↗</button></div>
           </div>
+          <p className={styles.localNote}>A live local study. Your experiments are not saved.</p>
         </div>
-        <span className={styles.buildMark} data-motion="build-mark">F<span>∞</span></span>
-        <span className={styles.chapterAside}>FORM IS NEVER FINAL.</span>
+        <div className={styles.liveVisual} aria-hidden="true">
+          <div className={styles.liveVisualLabel}>VARIABLE / 03—B</div>
+          <div className={styles.liveOrbit}><span /><i /><b /></div>
+          <div className={styles.liveVisualFoot}>INPUT → RESPONSE → FORM</div>
+        </div>
       </section>
 
-      <nav className={styles.chapterNav} aria-label="Experience chapters">
-        {chapters.map((item) => (
-          <a key={item.id} href={`#${item.id}`} aria-label={`${item.number} ${item.label}`} title={item.label}>
-            <span>{item.number}</span>
-          </a>
-        ))}
-      </nav>
-
-      <div className={styles.mobileTerritories} aria-label="Explore FORMA territories">
-        {territories.map((item) => (
-          <button key={item.id} type="button" onClick={() => setSelected(item.id)} aria-pressed={selected === item.id}>
-            {item.name}
-          </button>
-        ))}
-      </div>
+      <section className={styles.invitation}>
+        <div className={styles.inviteTop}><span>04 / YOUR TURN</span><span>NO FINAL FORMS</span></div>
+        <div className={styles.inviteMain} data-reveal>
+          <p>THE NEXT FORM IS YOURS.</p>
+          <h2>Make a little<br /><em>beautiful trouble.</em></h2>
+          <Link href="/playground" className={styles.inviteLink}>START MAKING <span>↗</span></Link>
+        </div>
+        <div className={styles.inviteBottom}><span>FORMA® / DIGITAL ATELIER</span><span>MADE TO BE REMADE.</span></div>
+      </section>
     </main>
   );
 }
