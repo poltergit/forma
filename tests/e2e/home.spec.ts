@@ -19,6 +19,13 @@ test("live study controls recompose the generative sculpture", async ({ page }) 
   await energy.focus();
   await energy.press("ArrowRight");
   await expect(page.getByText("1.05×")).toBeVisible();
+  const prism = page.getByRole("button", { name: "PRISM" });
+  await prism.click();
+  await expect(prism).toHaveAttribute("aria-pressed", "true");
+  const signal = page.getByRole("button", { name: "SIGNAL" });
+  await signal.click();
+  await expect(signal).toHaveAttribute("aria-pressed", "true");
+  await expect(prism).toHaveAttribute("aria-pressed", "false");
 });
 
 test("reduced motion keeps the atelier readable and interactive", async ({ page }) => {
