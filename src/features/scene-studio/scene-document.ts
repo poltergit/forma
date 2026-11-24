@@ -30,7 +30,7 @@ function isVector(value: unknown): value is [number, number, number] {
 function isSceneObject(value: unknown): value is SceneObjectDocument {
   if (!value || typeof value !== "object") return false;
   const item = value as Record<string, unknown>;
-  return Number.isInteger(item.id) && typeof item.name === "string" &&
+  return Number.isInteger(item.id) && typeof item.name === "string" && item.name.trim().length > 0 && item.name.length <= 80 &&
     ["box", "sphere", "torus"].includes(String(item.kind)) &&
     typeof item.color === "string" && /^#[\da-f]{6}$/i.test(item.color) &&
     typeof item.emissive === "string" && /^#[\da-f]{6}$/i.test(item.emissive) &&
