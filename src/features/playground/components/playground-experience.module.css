@@ -2,17 +2,17 @@
 .stageHeader, .stageFooter { display: flex; align-items: center; justify-content: space-between; gap: 1rem; padding: .85rem 1rem; color: var(--color-text-muted); font: 10px var(--font-mono); letter-spacing: .1em; }
 .stageHeader { border-bottom: 1px solid #d8d5ca; }
 .live { display: inline-flex; align-items: center; gap: .5rem; color: var(--brand-coral); }
-.live i { width: 6px; height: 6px; border-radius: 50%; background: var(--brand-coral); box-shadow: 0 0 12px var(--brand-lime); }
+.live i { width: 6px; height: 6px; border-radius: 50%; background: var(--brand-coral); box-shadow: 0 0 12px #f05b3e55; }
 .stage { position: relative; min-height: clamp(320px, 48vw, 610px); overflow: hidden; background: #e8e5dc; touch-action: pan-y; cursor: crosshair; }
-.stage:focus-visible { outline: 2px solid var(--brand-lime); outline-offset: 4px; }
+.stage:focus-visible { outline: 2px solid var(--brand-coral); outline-offset: 4px; }
 .staticFallback { position: absolute; inset: 0; display: grid; place-items: center; perspective: 700px; }
-.staticFallback i { position: absolute; width: 20%; aspect-ratio: 1; border: 1px solid var(--brand-lime); transform: rotateX(58deg) rotateZ(45deg) translateZ(0); }
+.staticFallback i { position: absolute; width: 20%; aspect-ratio: 1; border: 1px solid var(--brand-blue); transform: rotateX(58deg) rotateZ(45deg) translateZ(0); }
 .staticFallback i:nth-child(2) { width: 14%; border-color: var(--brand-coral); transform: rotateX(58deg) rotateZ(-35deg) translateZ(2rem); }
 .staticFallback i:nth-child(3) { width: 9%; border-color: var(--brand-blue); transform: rotateX(58deg) rotateZ(75deg) translateZ(4rem); }
-.staticFallback i:nth-child(4) { width: 5%; background: var(--brand-lime); transform: translateZ(6rem); }
+.staticFallback i:nth-child(4) { width: 5%; background: var(--brand-coral); transform: translateZ(6rem); }
 .stage canvas { position: relative; z-index: 1; display: block; width: 100%; height: 100%; min-height: inherit; }
 .stageOverlay { z-index: 2; position: absolute; inset: 1rem 1rem auto; display: flex; justify-content: space-between; gap: 1rem; color: rgb(32 33 31 / .55); font: 9px var(--font-mono); letter-spacing: .1em; pointer-events: none; }
-.stageCrosshair { z-index: 2; position: absolute; right: 1.5rem; bottom: 1.25rem; color: var(--brand-lime); font: 1.5rem var(--font-mono); opacity: .7; pointer-events: none; }
+.stageCrosshair { z-index: 2; position: absolute; right: 1.5rem; bottom: 1.25rem; color: var(--brand-coral); font: 1.5rem var(--font-mono); opacity: .7; pointer-events: none; }
 .stageFooter { border-top: 1px solid #d8d5ca; }
 .controls { display: grid; grid-template-columns: 1.1fr 1fr 1fr auto; align-items: end; gap: 1.5rem; padding: 1.2rem 1rem; border-top: 1px solid var(--color-border); }
 .controlIntro { display: flex; flex-direction: column; align-items: flex-start; gap: .75rem; color: var(--color-text-muted); font: 10px var(--font-mono); letter-spacing: .1em; }
