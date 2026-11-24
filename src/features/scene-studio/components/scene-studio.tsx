@@ -95,6 +95,18 @@ export function SceneStudio() {
   const [mobilePanel, setMobilePanel] = useState<"hierarchy" | "inspector" | null>(null);
   const selected = useMemo(() => objects.find((item) => item.id === selectedId) ?? objects[0], [objects, selectedId]);
 
+  const exportScene = () => {
+    const payload = { format: "forma-scene", version: 1, name: sceneName, camera: cameraView, objects, exportedAt: new Date().toISOString() };
+    const file = new Blob([JSON.stringify(payload, null, 2)], { type: "application/json" });
+    const url = URL.createObjectURL(file);
+    const anchor = document.createElement("a");
+    anchor.href = url;
+    anchor.download = `${sceneName.trim().replace(/[^a-z0-9-_]+/gi, "-").replace(/^-|-$/g, "") || "forma-scene"}.json`;
+    anchor.click();
+    URL.revokeObjectURL(url);
+    setSaved(true);
+  };
+
   const updateSelected = (patch: Partial<SceneObject>) => {
     setObjects((current) => current.map((item) => item.id === selectedId ? { ...item, ...patch } : item));
     setSaved(false);
@@ -121,11 +133,11 @@ export function SceneStudio() {
         <div className={styles.document}>
           <span className={styles.liveDot} />
           <input aria-label="Scene name" value={sceneName} onChange={(event) => { setSceneName(event.target.value); setSaved(false); }} />
-          <span className={styles.saveState}>{saved ? "SAVED LOCALLY" : "LOCAL SESSION"}</span>
+          <span className={styles.saveState}>{saved ? "EXPORTED JSON" : "LOCAL SESSION"}</span>
         </div>
         <div className={styles.topActions}>
           <button className={styles.quietButton} onClick={() => { setObjects(initialObjects); setSelectedId(1); setSaved(false); }}>RESET</button>
-          <button className={styles.publishButton} onClick={() => setSaved(true)}>SAVE STUDY <span>↗</span></button>
+          <button className={styles.publishButton} onClick={exportScene}>EXPORT JSON <span>↗</span></button>
         </div>
       </header>
 
