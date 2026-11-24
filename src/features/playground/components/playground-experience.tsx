@@ -40,7 +40,7 @@ export function PlaygroundExperience() {
   const [seed, setSeed] = useState(27);
   const [density, setDensity] = useState(64);
   const [influence, setInfluence] = useState(58);
-  const [status, setStatus] = useState("FIELD AT REST");
+  const [status, setStatus] = useState("COMPOSITION AT REST");
 
   const recompose = useCallback(() => {
     setSeed((current) => current + 1);
@@ -61,7 +61,7 @@ export function PlaygroundExperience() {
       canvas.width = Math.floor(width * ratio);
       canvas.height = Math.floor(height * ratio);
       context.setTransform(ratio, 0, 0, ratio, 0, 0);
-      context.fillStyle = "#141619";
+      context.fillStyle = "#e8e5dc";
       context.fillRect(0, 0, width, height);
 
       const points = createPoints(seed, density);
@@ -69,7 +69,7 @@ export function PlaygroundExperience() {
       const originY = height * (pointerRef.current.active ? pointerRef.current.y : 0.5);
       const influenceRadius = Math.min(width, height) * (0.12 + influence / 180);
       const cell = Math.sqrt((width * height) / density) * 0.9;
-      const palette = ["#c7f36b", "#ff765e", "#8294ff"];
+      const palette = ["#f05b3e", "#243bd6", "#20211f"];
       const projected = points.map((point) => {
         const baseX = point.x * width;
         const baseY = point.y * height;
@@ -90,7 +90,7 @@ export function PlaygroundExperience() {
       });
 
       context.lineWidth = 0.65;
-      context.strokeStyle = "rgba(242,240,234,0.08)";
+      context.strokeStyle = "rgba(32,33,31,0.16)";
       for (let index = 0; index < projected.length; index += 1) {
         const point = projected[index];
         let nearest = -1;
@@ -125,17 +125,17 @@ export function PlaygroundExperience() {
           polygon(
             context,
             [[x, y - rise], [x + half, y], [x, y + rise], [x - half, y]],
-            `rgba(242,240,234,${0.05 + point.z * 0.08})`,
+            `rgba(255,253,247,${0.18 + point.z * 0.12})`,
           );
           polygon(
             context,
             [[x - half, y], [x, y + rise], [x, y + rise + half * 0.62], [x - half, y + half * 0.62]],
-            `rgba(100,105,112,${alpha * 0.55})`,
+            `rgba(119,119,111,${alpha * 0.55})`,
           );
           polygon(
             context,
             [[x + half, y], [x, y + rise], [x, y + rise + half * 0.62], [x + half, y + half * 0.62]],
-            `rgba(20,22,25,${alpha})`,
+            `rgba(32,33,31,${alpha * 0.7})`,
           );
           polygon(
             context,
@@ -143,14 +143,14 @@ export function PlaygroundExperience() {
             tone,
           );
           context.globalAlpha = 0.12 + point.z * 0.2;
-          context.strokeStyle = "#ffffff";
+          context.strokeStyle = "#fffdf7";
           context.stroke();
           context.globalAlpha = 1;
         });
 
       const glow = context.createRadialGradient(originX, originY, 0, originX, originY, influenceRadius);
-      glow.addColorStop(0, "rgba(199,243,107,0.10)");
-      glow.addColorStop(1, "rgba(199,243,107,0)");
+      glow.addColorStop(0, "rgba(240,91,62,0.13)");
+      glow.addColorStop(1, "rgba(240,91,62,0)");
       context.fillStyle = glow;
       context.fillRect(0, 0, width, height);
     };
@@ -173,7 +173,7 @@ export function PlaygroundExperience() {
       active: true,
     };
     drawRef.current?.();
-    setStatus("FIELD DISPLACED");
+    setStatus("COMPOSITION DISTURBED");
   };
 
   const handleStageKeyDown = (event: KeyboardEvent<HTMLDivElement>) => {
@@ -217,7 +217,7 @@ export function PlaygroundExperience() {
         <div className={styles.staticFallback} aria-hidden="true"><i /><i /><i /><i /></div>
         <canvas ref={canvasRef} aria-hidden="true" />
         <div className={styles.stageOverlay}>
-          <span>MOVE THROUGH MATTER</span>
+          <span>MOVE THROUGH THE FORM</span>
           <span>SEED / {String(seed).padStart(3, "0")}</span>
         </div>
         <span className={styles.stageCrosshair} aria-hidden="true">+</span>
