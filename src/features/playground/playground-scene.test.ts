@@ -1,5 +1,6 @@
 import { describe, expect, it } from "vitest";
-import { createGeneratorPoints, createPlaygroundScene, GENERATORS } from "./playground-scene";\nimport { createPortableRecipe, parsePortableRecipe } from "./playground-recipe";
+import { createGeneratorPoints, createPlaygroundScene, GENERATORS } from "./playground-scene";
+import { createPortableRecipe, parsePortableRecipe } from "./playground-recipe";
 
 describe("Playground generator registry", () => {
   it("exposes three distinct instruments", () => {
