@@ -11,6 +11,7 @@ import { useThree } from "@react-three/fiber";
 import styles from "./scene-studio.module.css";
 import { parseSceneDocument, readSceneLibrary, SCENE_STORAGE_KEY } from "../scene-document";
 import type { SceneDocument } from "../scene-document";
+import { deleteCloudComposition, getSceneCloudSession, loadCloudCompositions, saveCloudComposition } from "../scene-cloud";
 
 type ShapeKind = "box" | "sphere" | "torus";
 type SceneObject = { id: number; name: string; kind: ShapeKind; color: string; roughness: number; metalness: number; emissive: string; position: [number, number, number]; rotation: [number, number, number]; scale: number; visible: boolean };
@@ -93,6 +94,8 @@ export function SceneStudio() {
   const [activeCompositionId, setActiveCompositionId] = useState("");
   const [hydrated, setHydrated] = useState(false);
   const [saveStatus, setSaveStatus] = useState("LOADING LIBRARY");
+  const [cloudUserId, setCloudUserId] = useState<string | null>(null);
+  const cloudRevisions = useRef(new Map<string, number>());
   const [selectedId, setSelectedId] = useState(1);
   const [activeTool, setActiveTool] = useState<"select" | "move" | "rotate" | "scale">("select");
   const [cameraView, setCameraView] = useState<CameraView>("perspective");
@@ -101,43 +104,105 @@ export function SceneStudio() {
   const selected = useMemo(() => objects.find((item) => item.id === selectedId) ?? objects[0], [objects, selectedId]);
 
   useEffect(() => {
+    let active = true;
     const timeout = window.setTimeout(() => {
-      const library = readSceneLibrary(window.localStorage.getItem(SCENE_STORAGE_KEY));
-      if (library.length) {
-        const latest = library[0];
+      void (async () => {
+        let library = readSceneLibrary(window.localStorage.getItem(SCENE_STORAGE_KEY));
+        let status = "LOCAL LIBRARY RESTORED";
+        try {
+          const session = await getSceneCloudSession();
+          if (session.status === "ready") {
+            const cloudLibrary = await loadCloudCompositions();
+            setCloudUserId(session.userId);
+            const cloudById = new Map(cloudLibrary.map((item) => [item.id, item]));
+            for (const cloudScene of cloudLibrary) {
+              if (typeof cloudScene.revision === "number") cloudRevisions.current.set(cloudScene.id, cloudScene.revision);
+            }
+            const merged = new Map(cloudLibrary.map((item) => [item.id, item]));
+            for (const localScene of library) {
+              const cloudScene = cloudById.get(localScene.id);
+              if (!cloudScene) {
+                const saved = await saveCloudComposition(localScene);
+                merged.set(saved.id, saved);
+                if (typeof saved.revision === "number") cloudRevisions.current.set(saved.id, saved.revision);
+              } else if (localScene.updatedAt > cloudScene.updatedAt) {
+                const saved = await saveCloudComposition({ ...localScene, revision: cloudScene.revision });
+                merged.set(saved.id, saved);
+                if (typeof saved.revision === "number") cloudRevisions.current.set(saved.id, saved.revision);
+              }
+            }
+            library = [...merged.values()].sort((a, b) => b.updatedAt.localeCompare(a.updatedAt)).slice(0, 100);
+            status = "CLOUD LIBRARY SYNCED";
+          } else if (session.status === "signed-out") {
+            status = "LOCAL SAVED · SIGN IN TO SYNC";
+          } else {
+            status = "LOCAL SAVED · CLOUD NOT CONFIGURED";
+          }
+        } catch {
+          status = "LOCAL SAVED · CLOUD SYNC ERROR";
+        }
+
+        if (!active) return;
+        if (!library.length) {
+          const id = window.crypto.randomUUID();
+          const starter: SceneDocument = { id, name: "Untitled composition", camera: "perspective", objects: initialObjects, updatedAt: new Date().toISOString() };
+          library = [starter];
+        }
+        library.sort((a, b) => b.updatedAt.localeCompare(a.updatedAt));
         setCompositions(library);
+        const latest = library[0];
         setActiveCompositionId(latest.id);
         setSceneName(latest.name);
         setObjects(latest.objects);
         setCameraView(latest.camera);
         setSelectedId(latest.objects[0]?.id ?? 1);
-        setSaveStatus("LIBRARY RESTORED");
-      } else {
-        const id = window.crypto.randomUUID();
-        const starter: SceneDocument = { id, name: "Untitled composition", camera: "perspective", objects: initialObjects, updatedAt: new Date().toISOString() };
-        setCompositions([starter]);
-        setActiveCompositionId(id);
-        window.localStorage.setItem(SCENE_STORAGE_KEY, JSON.stringify([starter]));
-        setSaveStatus("LOCAL AUTOSAVE");
-      }
-      setHydrated(true);
+        window.localStorage.setItem(SCENE_STORAGE_KEY, JSON.stringify(library));
+        setSaveStatus(status);
+        setHydrated(true);
+      })();
     }, 0);
-    return () => window.clearTimeout(timeout);
+    return () => {
+      active = false;
+      window.clearTimeout(timeout);
+    };
   }, []);
 
   useEffect(() => {
     if (!hydrated || !activeCompositionId) return;
     const timeout = window.setTimeout(() => {
-      setSaveStatus("SAVING CHANGES");
-      const document: SceneDocument = { id: activeCompositionId, name: sceneName.trim().slice(0, 80) || "Untitled composition", camera: cameraView, objects, updatedAt: new Date().toISOString() };
+      const document: SceneDocument = {
+        id: activeCompositionId,
+        name: sceneName.trim().slice(0, 80) || "Untitled composition",
+        camera: cameraView,
+        objects,
+        updatedAt: new Date().toISOString(),
+        revision: cloudRevisions.current.get(activeCompositionId),
+      };
       const current = readSceneLibrary(window.localStorage.getItem(SCENE_STORAGE_KEY));
-      const next = [document, ...current.filter((item) => item.id !== activeCompositionId)].sort((a, b) => b.updatedAt.localeCompare(a.updatedAt)).slice(0, 100);
+      const next = [document, ...current.filter((item) => item.id !== activeCompositionId)]
+        .sort((a, b) => b.updatedAt.localeCompare(a.updatedAt)).slice(0, 100);
       window.localStorage.setItem(SCENE_STORAGE_KEY, JSON.stringify(next));
       setCompositions(next);
-      setSaveStatus("ALL CHANGES SAVED");
-    }, 500);
+      if (!cloudUserId) {
+        setSaveStatus("LOCAL SAVED · SIGN IN TO SYNC");
+        return;
+      }
+      setSaveStatus("SYNCING TO CLOUD");
+      void saveCloudComposition(document).then((saved) => {
+        if (typeof saved.revision === "number") cloudRevisions.current.set(saved.id, saved.revision);
+        const updated = readSceneLibrary(window.localStorage.getItem(SCENE_STORAGE_KEY))
+          .map((item) => item.id === saved.id ? saved : item);
+        window.localStorage.setItem(SCENE_STORAGE_KEY, JSON.stringify(updated));
+        setCompositions(updated);
+        setSaveStatus("CLOUD SYNCED");
+      }).catch((error: unknown) => {
+        setSaveStatus(error instanceof Error && error.message.includes("REVISION_CONFLICT")
+          ? "SYNC CONFLICT · RELOAD TO RESOLVE"
+          : "LOCAL SAVED · CLOUD SYNC ERROR");
+      });
+    }, 650);
     return () => window.clearTimeout(timeout);
-  }, [activeCompositionId, cameraView, hydrated, objects, sceneName]);
+  }, [activeCompositionId, cameraView, cloudUserId, hydrated, objects, sceneName]);
 
   const openComposition = (id: string) => {
     const document = compositions.find((item) => item.id === id);
@@ -189,7 +254,8 @@ export function SceneStudio() {
 
   const deleteComposition = () => {
     if (compositions.length <= 1) return;
-    const next = compositions.filter((item) => item.id !== activeCompositionId);
+    const deletedId = activeCompositionId;
+    const next = compositions.filter((item) => item.id !== deletedId);
     window.localStorage.setItem(SCENE_STORAGE_KEY, JSON.stringify(next));
     setCompositions(next);
     setActiveCompositionId(next[0].id);
@@ -197,6 +263,8 @@ export function SceneStudio() {
     setObjects(next[0].objects);
     setCameraView(next[0].camera);
     setSelectedId(next[0].objects[0]?.id ?? 1);
+    cloudRevisions.current.delete(deletedId);
+    void deleteCloudComposition(deletedId).catch(() => setSaveStatus("LOCAL DELETE · CLOUD DELETE FAILED"));
   };
 
   const exportScene = () => {
