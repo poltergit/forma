@@ -3,15 +3,35 @@
 import Link from "next/link";
 import { Canvas } from "@react-three/fiber";
 import { ContactShadows, Environment, OrbitControls, RoundedBox, TransformControls } from "@react-three/drei";
-import { Suspense, useMemo, useState } from "react";
+import { Suspense, useEffect, useMemo, useState } from "react";
 import type { ReactNode } from "react";
 import { useRef } from "react";
 import type { Mesh } from "three";
+import { useThree } from "@react-three/fiber";
 import styles from "./scene-studio.module.css";
 
 type ShapeKind = "box" | "sphere" | "torus";
-type SceneObject = { id: number; name: string; kind: ShapeKind; color: string; position: [number, number, number]; rotation: [number, number, number]; scale: number; visible: boolean };
+type SceneObject = { id: number; name: string; kind: ShapeKind; color: string; roughness: number; metalness: number; emissive: string; position: [number, number, number]; rotation: [number, number, number]; scale: number; visible: boolean };
+type CameraView = "perspective" | "front" | "top" | "side";
 type TransformTool = "select" | "move" | "rotate" | "scale";
+
+const cameraViews: Record<CameraView, [number, number, number]> = {
+  perspective: [4.3, 3.1, 6.4],
+  front: [0, 0.2, 8],
+  top: [0, 8, 0.001],
+  side: [8, 0.2, 0],
+};
+
+function CameraRig({ view }: { view: CameraView }) {
+  const camera = useThree((state) => state.camera);
+  useEffect(() => {
+    camera.position.set(...cameraViews[view]);
+    camera.up.set(0, 1, 0);
+    camera.lookAt(0, 0, 0);
+    camera.updateProjectionMatrix();
+  }, [camera, view]);
+  return null;
+}
 
 const initialObjects: SceneObject[] = [
   { id: 1, name: "Signal / cube", kind: "box", color: "#f05b3e", position: [-1.05, 0.1, 0], rotation: [0, 0, -0.12], scale: 1, visible: true },
@@ -21,7 +41,7 @@ const initialObjects: SceneObject[] = [
 
 function ObjectMesh({ item, selected, tool, onSelect, onTransform }: { item: SceneObject; selected: boolean; tool: TransformTool; onSelect: () => void; onTransform: (transform: Pick<SceneObject, "position" | "rotation" | "scale">) => void }) {
   const meshRef = useRef<Mesh>(null);
-  const material = { color: item.color, roughness: 0.28, metalness: 0.12 };
+  const material = { color: item.color, roughness: item.roughness, metalness: item.metalness, emissive: item.emissive, emissiveIntensity: item.emissive === "#000000" ? 0 : 0.65 };
   let geometry: ReactNode;
   if (item.kind === "box") geometry = <RoundedBox args={[1.15, 1.15, 1.15]} radius={0.12} smoothness={4}><meshStandardMaterial {...material} /></RoundedBox>;
   else if (item.kind === "sphere") geometry = <sphereGeometry args={[0.68, 64, 48]} />;
@@ -47,14 +67,15 @@ function ObjectMesh({ item, selected, tool, onSelect, onTransform }: { item: Sce
   return mesh;
 }
 
-function SceneCanvas({ objects, selectedId, tool, onSelect, onTransform }: { objects: SceneObject[]; selectedId: number; tool: TransformTool; onSelect: (id: number) => void; onTransform: (id: number, transform: Pick<SceneObject, "position" | "rotation" | "scale">) => void }) {
+function SceneCanvas({ objects, selectedId, tool, view, onSelect, onTransform }: { objects: SceneObject[]; selectedId: number; tool: TransformTool; view: CameraView; onSelect: (id: number) => void; onTransform: (id: number, transform: Pick<SceneObject, "position" | "rotation" | "scale">) => void }) {
   return (
-    <Canvas camera={{ position: [4.3, 3.1, 6.4], fov: 38 }} dpr={[1, 1.7]} gl={{ antialias: true, alpha: true }}>
+    <Canvas camera={{ position: cameraViews.perspective, fov: 38 }} dpr={[1, 1.7]} gl={{ antialias: true, alpha: true }}>
       <color attach="background" args={["#e9e6dd"]} />
       <ambientLight intensity={1.2} />
       <directionalLight position={[4, 6, 4]} intensity={2.3} />
       <pointLight position={[-4, 1, -3]} intensity={55} color="#f05b3e" distance={10} />
       <Suspense fallback={null}>
+        <CameraRig view={view} />
         <Environment preset="studio" />
         {objects.map((item) => <ObjectMesh key={item.id} item={item} selected={item.id === selectedId} tool={tool} onSelect={() => onSelect(item.id)} onTransform={(transform) => onTransform(item.id, transform)} />)}
         <ContactShadows position={[0, -1.7, 0]} opacity={0.28} scale={10} blur={2.5} far={4} />
@@ -68,6 +89,7 @@ export function SceneStudio() {
   const [objects, setObjects] = useState(initialObjects);
   const [selectedId, setSelectedId] = useState(1);
   const [activeTool, setActiveTool] = useState<"select" | "move" | "rotate" | "scale">("select");
+  const [cameraView, setCameraView] = useState<CameraView>("perspective");
   const [sceneName, setSceneName] = useState("Untitled composition");
   const [saved, setSaved] = useState(false);
   const [mobilePanel, setMobilePanel] = useState<"hierarchy" | "inspector" | null>(null);
@@ -80,7 +102,7 @@ export function SceneStudio() {
   const addObject = (kind: ShapeKind) => {
     const id = Math.max(0, ...objects.map((item) => item.id)) + 1;
     const labels: Record<ShapeKind, string> = { box: "Block", sphere: "Orb", torus: "Loop" };
-    setObjects((current) => [...current, { id, name: `${labels[kind]} / ${String(id).padStart(2, "0")}`, kind, color: kind === "box" ? "#f05b3e" : kind === "sphere" ? "#243bd6" : "#c6d83b", position: [((id % 3) - 1) * 0.65, 0, -0.6], rotation: [0, 0, 0], scale: 0.8, visible: true }]);
+    setObjects((current) => [...current, { id, name: `${labels[kind]} / ${String(id).padStart(2, "0")}`, kind, color: kind === "box" ? "#f05b3e" : kind === "sphere" ? "#243bd6" : "#c6d83b", roughness: 0.28, metalness: 0.12, emissive: "#000000", position: [((id % 3) - 1) * 0.65, 0, -0.6], rotation: [0, 0, 0], scale: 0.8, visible: true }]);
     setSelectedId(id);
     setSaved(false);
   };
@@ -135,13 +157,13 @@ export function SceneStudio() {
             <div className={styles.toolGroup}>
               {(["select", "move", "rotate", "scale"] as const).map((tool) => <button key={tool} className={activeTool === tool ? styles.activeTool : ""} aria-pressed={activeTool === tool} onClick={() => setActiveTool(tool)} title={tool}>{tool === "select" ? "↖" : tool === "move" ? "✣" : tool === "rotate" ? "⟳" : "↗"}<span>{tool.toUpperCase()}</span></button>)}
             </div>
-            <span className={styles.viewportLabel}>PERSPECTIVE / REALTIME</span>
+            <div className={styles.cameraPresets}>{(["perspective", "front", "top", "side"] as const).map((view) => <button key={view} className={cameraView === view ? styles.activeCamera : ""} aria-pressed={cameraView === view} onClick={() => setCameraView(view)}>{view.toUpperCase()}</button>)}</div>
             <span className={styles.viewportMeta}>X · Y · Z</span>
           </div>
           <div className={styles.canvasFrame}>
             <div className={styles.canvasStamp}><span>FORMA / LAB 001</span><span>24° 08′ N — 3D SPACE</span></div>
             <div className={styles.canvasGrid} aria-hidden="true" />
-            <div className={styles.canvas}><SceneCanvas objects={objects} selectedId={selected?.id ?? -1} tool={activeTool} onSelect={setSelectedId} onTransform={(id, transform) => { setObjects((current) => current.map((item) => item.id === id ? { ...item, ...transform } : item)); setSaved(false); }} /></div>
+            <div className={styles.canvas}><SceneCanvas objects={objects} selectedId={selected?.id ?? -1} tool={activeTool} view={cameraView} onSelect={setSelectedId} onTransform={(id, transform) => { setObjects((current) => current.map((item) => item.id === id ? { ...item, ...transform } : item)); setSaved(false); }} /></div>
             <div className={styles.canvasHint}>DRAG TO ORBIT <i /> SCROLL TO ZOOM <i /> SELECT TO INSPECT</div>
             <div className={styles.axisWidget}><span>X</span><span>Y</span><span>Z</span></div>
           </div>
@@ -167,6 +189,13 @@ export function SceneStudio() {
               <div className={styles.propertyTitle}>SURFACE <span>⌄</span></div>
               <label className={styles.colorField}><span>BASE COLOR</span><input type="color" value={selected.color} onChange={(event) => updateSelected({ color: event.target.value })} /><code>{selected.color.toUpperCase()}</code></label>
               <div className={styles.swatches}>{["#f05b3e", "#243bd6", "#c6d83b", "#20211f", "#f4f1e8"].map((color) => <button key={color} style={{ backgroundColor: color }} aria-label={`Set color ${color}`} onClick={() => updateSelected({ color })} />)}</div>
+            </section>
+            <section className={styles.propertySection}>
+              <div className={styles.propertyTitle}>MATERIAL LAB <span>⌄</span></div>
+              <label className={styles.rangeField}><span>ROUGHNESS <b>{selected.roughness.toFixed(2)}</b></span><input type="range" min="0" max="1" step="0.01" value={selected.roughness} onChange={(event) => updateSelected({ roughness: Number(event.target.value) })} /></label>
+              <label className={styles.rangeField}><span>METALNESS <b>{selected.metalness.toFixed(2)}</b></span><input type="range" min="0" max="1" step="0.01" value={selected.metalness} onChange={(event) => updateSelected({ metalness: Number(event.target.value) })} /></label>
+              <label className={styles.colorField} style={{ marginTop: "1rem" }}><span>EMISSION</span><input type="color" value={selected.emissive} onChange={(event) => updateSelected({ emissive: event.target.value })} /><code>{selected.emissive.toUpperCase()}</code></label>
+              <button className={styles.resetMaterial} onClick={() => updateSelected({ roughness: 0.28, metalness: 0.12, emissive: "#000000" })}>RESET MATERIAL</button>
             </section>
             <section className={styles.propertySection}>
               <div className={styles.propertyTitle}>OBJECT <span>⌄</span></div>
