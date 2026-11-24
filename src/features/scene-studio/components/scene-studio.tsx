@@ -169,15 +169,18 @@ export function SceneStudio() {
   });
   useEffect(() => {
     if (!activeCompositionId) return;
-    try {
-      const stored = window.localStorage.getItem(versionStorageKey(activeCompositionId));
-      setVersions(stored ? JSON.parse(stored) as SceneVersion[] : []);
-    } catch {
-      setVersions([]);
-    }
-    setShowVersions(false);
-    history.current = { past: [], future: [] };
-    setHistoryState({ canUndo: false, canRedo: false });
+    const timeout = window.setTimeout(() => {
+      try {
+        const stored = window.localStorage.getItem(versionStorageKey(activeCompositionId));
+        setVersions(stored ? JSON.parse(stored) as SceneVersion[] : []);
+      } catch {
+        setVersions([]);
+      }
+      setShowVersions(false);
+      history.current = { past: [], future: [] };
+      setHistoryState({ canUndo: false, canRedo: false });
+    }, 0);
+    return () => window.clearTimeout(timeout);
   }, [activeCompositionId]);
 
   useEffect(() => {
