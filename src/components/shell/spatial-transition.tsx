@@ -5,10 +5,7 @@ import { usePathname, useRouter } from "next/navigation";
 import gsap from "gsap";
 import styles from "./spatial-transition.module.css";
 
-type TransitionContextValue = {
-  navigate: (href: string) => void;
-};
-
+type TransitionContextValue = { navigate: (href: string) => void };
 const TransitionContext = createContext<TransitionContextValue | null>(null);
 
 export function useSpatialNavigation() {
@@ -21,7 +18,6 @@ export function SpatialTransitionProvider({ children }: { children: React.ReactN
   const router = useRouter();
   const pathname = usePathname();
   const [active, setActive] = useState(false);
-  const [revealing, setRevealing] = useState(false);
   const busy = useRef(false);
   const overlay = useRef<HTMLDivElement>(null);
   const pendingPath = useRef<string | null>(null);
@@ -37,8 +33,7 @@ export function SpatialTransitionProvider({ children }: { children: React.ReactN
     pendingPath.current = target.pathname;
     setActive(true);
 
-    const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    if (reduced) {
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
       router.push(href);
       return;
     }
@@ -65,16 +60,13 @@ export function SpatialTransitionProvider({ children }: { children: React.ReactN
     if (!active || !overlay.current) return;
     if (pendingPath.current && pathname !== pendingPath.current) return;
 
-    const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    if (reduced) {
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
       setActive(false);
-      setRevealing(false);
       busy.current = false;
       pendingPath.current = null;
       return;
     }
 
-    setRevealing(true);
     gsap.to(overlay.current, {
       scaleY: 0,
       transformOrigin: "top center",
@@ -83,7 +75,6 @@ export function SpatialTransitionProvider({ children }: { children: React.ReactN
       ease: "power4.inOut",
       onComplete: () => {
         setActive(false);
-        setRevealing(false);
         busy.current = false;
         pendingPath.current = null;
       },
@@ -98,12 +89,7 @@ export function SpatialTransitionProvider({ children }: { children: React.ReactN
     <TransitionContext.Provider value={{ navigate }}>
       {children}
       {active && (
-        <div
-          ref={overlay}
-          className={styles.overlay}
-          data-revealing={revealing ? "true" : "false"}
-          aria-hidden="true"
-        >
+        <div ref={overlay} className={styles.overlay} aria-hidden="true">
           <span className={styles.index}>FORM / SHIFT</span>
           <span className={styles.wordmark}>F<span>·</span></span>
           <span className={styles.caption}>A NEW SPACE TO MAKE</span>
