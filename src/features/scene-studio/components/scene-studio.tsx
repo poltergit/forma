@@ -12,6 +12,7 @@ import styles from "./scene-studio.module.css";
 import { parseSceneDocument, readSceneLibrary, SCENE_STORAGE_KEY } from "../scene-document";
 import type { SceneDocument } from "../scene-document";
 import { deleteCloudComposition, getSceneCloudSession, loadCloudCompositions, saveCloudComposition, signOutCloudSession } from "../scene-cloud";
+import { PLAYGROUND_SCENE_HANDOFF_KEY } from "@/features/playground/playground-scene";
 
 type ShapeKind = "box" | "sphere" | "torus";
 type SceneObject = { id: number; name: string; kind: ShapeKind; color: string; roughness: number; metalness: number; emissive: string; position: [number, number, number]; rotation: [number, number, number]; scale: number; visible: boolean };
@@ -238,6 +239,20 @@ export function SceneStudio() {
         }
 
         if (!active) return;
+        const incomingPlaygroundScene = window.localStorage.getItem(PLAYGROUND_SCENE_HANDOFF_KEY);
+        if (incomingPlaygroundScene) {
+          try {
+            const imported = parseSceneDocument(JSON.parse(incomingPlaygroundScene));
+            const generated: SceneDocument = { ...imported, id: window.crypto.randomUUID(), updatedAt: new Date().toISOString() };
+            library = [generated, ...library].slice(0, 100);
+            status = "PLAYGROUND STUDY RECEIVED";
+          } catch {
+            status = "PLAYGROUND IMPORT INVALID · LOCAL LIBRARY RESTORED";
+          } finally {
+            window.localStorage.removeItem(PLAYGROUND_SCENE_HANDOFF_KEY);
+          }
+        }
+
         if (!library.length) {
           const id = window.crypto.randomUUID();
           const starter: SceneDocument = { id, name: "Untitled composition", camera: "perspective", objects: initialObjects, updatedAt: new Date().toISOString() };

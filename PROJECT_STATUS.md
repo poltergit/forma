@@ -1,6 +1,6 @@
 # FORMA — Project Status
 
-**Last updated:** 2026-11-23
+**Last updated:** 2026-11-24
 
 ## Current position
 
@@ -70,6 +70,12 @@ The [Phase 08 branch](https://github.com/poltergit/forma/tree/phase-08/playgroun
 Latest automated validation passed on Node 22: clean `npm ci`, lint, typecheck, 6 Vitest files / 17 tests, 30 Chromium Playwright tests including Home width checks, and optimized Next.js production build. The temporary validation workflow removed itself after success. See [the Actions run](https://github.com/poltergit/forma/actions/runs/45112076858), [Phase 08 Plan](docs/PHASE_08_PLAYGROUND_MOTION_LAB_PLAN.md), and [Phase 08 Implementation Log](docs/PHASE_08_IMPLEMENTATION_LOG.md).
 
 **Not yet owner-approved:** real-device visual inspection, screen-reader/manual accessibility review, WebGL/static fallback review, performance profiling, investigation of the earlier React `use()` warning, and the new Three.js `THREE.Clock` deprecation warning remain open. Phase 08 remains in progress and unapproved.
+
+### Playground → Scene Studio bridge (2026-11-24)
+
+The Displacement Field now produces a reproducible, bounded scene document from its seed and controls. The Playground action hands that document to Scene Studio through a one-time browser-local handoff. Scene Studio validates it with the existing versioned scene parser, adds it to the active local/account-scoped library, and lets the existing autosave/cloud-sync path persist it when cloud auth is configured.
+
+The bridge requires no database migration, executes no user-supplied code, and promises logical rather than pixel-identical reproducibility. Generator provenance is included in the handoff payload; Scene Studio currently imports the editable object document and ignores the extra provenance metadata.
 
 ## Project constraints
 

@@ -5,6 +5,13 @@ All notable project changes are recorded here.
 ## [Unreleased]
 
 ### Added
+- Added a deterministic Playground-to-Scene-Studio handoff: the Displacement Field can be carried into the 3D editor as an editable composition, with generated objects and generator provenance preserved in the scene payload.
+- Extracted the Displacement Field generator into a bounded pure module with reproducibility and Scene Studio compatibility tests.
+
+### Updated
+- Scene Studio now validates and receives one-time Playground handoffs into the active composition library before autosave and optional cloud sync.
+
+### Added
 - Added docs/AUTH_AND_ENVIRONMENT.md covering Supabase session architecture, auth flows, route access, environment variables, environment separation, and deployment security.
 - Added docs/SCENE_STUDIO_DATA_MODEL.md with the initial scenes table migration, ownership-focused RLS policies, versioned scene document contract, optimistic concurrency protocol, and security test matrix.
 - Added `docs/REFERENCE_LED_ART_DIRECTION.md`, a proposed reference-led creative direction and motion system for FORMA.

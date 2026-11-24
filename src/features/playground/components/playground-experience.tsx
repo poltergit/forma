@@ -2,20 +2,7 @@
 
 import { useCallback, useEffect, useRef, useState, type PointerEvent, type KeyboardEvent } from "react";
 import styles from "./playground-experience.module.css";
-import { createSeededRandom } from "@/lib/generative/seeded-random";
-
-type Point = { x: number; y: number; depth: number; size: number; tone: number };
-
-export function createPoints(seed: number, amount: number): Point[] {
-  const next = createSeededRandom(seed);
-  return Array.from({ length: amount }, () => ({
-    x: next(),
-    y: next(),
-    depth: next(),
-    size: 0.45 + next() * 0.9,
-    tone: Math.floor(next() * 3),
-  }));
-}
+import { createPoints, createPlaygroundScene, PLAYGROUND_SCENE_HANDOFF_KEY } from "../playground-scene";
 
 function polygon(
   context: CanvasRenderingContext2D,
@@ -46,6 +33,16 @@ export function PlaygroundExperience() {
     setSeed((current) => current + 1);
     setStatus("NEW COMPOSITION");
   }, []);
+
+  const continueInSceneStudio = () => {
+    try {
+      const scene = createPlaygroundScene(seed, density, influence);
+      window.localStorage.setItem(PLAYGROUND_SCENE_HANDOFF_KEY, JSON.stringify(scene));
+      window.location.assign("/scene-studio?from=playground");
+    } catch {
+      setStatus("SCENE HANDOFF UNAVAILABLE");
+    }
+  };
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -241,7 +238,11 @@ export function PlaygroundExperience() {
         </label>
         <button className={styles.reset} type="button" onClick={() => { setDensity(64); setInfluence(58); resetPointer(); }}>RESET PARAMETERS</button>
       </div>
-      <p className={styles.caption}>A seeded arrangement of forms. Your movement bends the field; the rules stay yours to tune.</p>
+      <div className={styles.outputActions}>
+        <span>KEEP THIS FIELD / {String(seed).padStart(3, "0")}</span>
+        <button type="button" onClick={continueInSceneStudio}>TAKE INTO SCENE STUDIO <b aria-hidden="true">↗</b></button>
+      </div>
+      <p className={styles.caption}>A seeded arrangement of forms. Your movement bends the field; the rules stay yours to tune. Carry its structure into Scene Studio to edit every generated object in 3D.</p>
     </div>
   );
 }
