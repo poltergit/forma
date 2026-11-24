@@ -28,11 +28,16 @@ create index scene_studio_compositions_owner_updated_idx
 
 alter table public.scene_studio_compositions enable row level security;
 revoke all on public.scene_studio_compositions from anon, authenticated;
-grant select on public.scene_studio_compositions to authenticated;
+grant select, delete on public.scene_studio_compositions to authenticated;
 
 create policy scene_studio_compositions_select_owner
   on public.scene_studio_compositions
   for select to authenticated
+  using (owner_id = (select auth.uid()));
+
+create policy scene_studio_compositions_delete_owner
+  on public.scene_studio_compositions
+  for delete to authenticated
   using (owner_id = (select auth.uid()));
 
 create or replace function public.save_scene_studio_composition(
