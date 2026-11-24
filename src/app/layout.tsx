@@ -3,6 +3,7 @@ import { Inter, JetBrains_Mono, Space_Grotesk } from "next/font/google";
 import "./globals.css";
 import { SiteHeader } from "@/components/shell/site-header";
 import { SiteFooter } from "@/components/shell/site-footer";
+import { SpatialTransitionProvider } from "@/components/shell/spatial-transition";
 
 const displayFont = Space_Grotesk({ subsets: ["latin"], variable: "--font-space-grotesk", display: "swap" });
 const bodyFont = Inter({ subsets: ["latin"], variable: "--font-inter", display: "swap" });
@@ -28,10 +29,12 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
   return (
     <html lang="en" data-scroll-behavior="smooth" className={`${displayFont.variable} ${bodyFont.variable} ${monoFont.variable}`}>
       <body>
-        <a className="skip-link" href="#main-content">Skip to content</a>
-        <SiteHeader />
-        {children}
-        <SiteFooter />
+        <SpatialTransitionProvider>
+          <a className="skip-link" href="#main-content">Skip to content</a>
+          <SiteHeader />
+          {children}
+          <SiteFooter />
+        </SpatialTransitionProvider>
       </body>
     </html>
   );
