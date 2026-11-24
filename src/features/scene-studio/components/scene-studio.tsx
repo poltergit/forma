@@ -18,6 +18,23 @@ type SceneObject = { id: number; name: string; kind: ShapeKind; color: string; r
 type CameraView = "perspective" | "front" | "top" | "side";
 type TransformTool = "select" | "move" | "rotate" | "scale";
 
+type EditorSnapshot = { objects: SceneDocument["objects"]; camera: CameraView; name: string };
+type SceneVersion = EditorSnapshot & { id: string; createdAt: string };
+
+function makeThumbnail(objects: SceneDocument["objects"]) {
+  const visible = objects.filter((item) => item.visible).slice(0, 8);
+  const marks = visible.map((item, index) => {
+    const x = 42 + (index % 4) * 52 + item.position[0] * 7;
+    const y = 42 + Math.floor(index / 4) * 48 - item.position[1] * 7;
+    const size = Math.max(9, Math.min(25, 15 * item.scale));
+    if (item.kind === "sphere") return `<circle cx="${x}" cy="${y}" r="${size}" fill="${item.color}" />`;
+    if (item.kind === "torus") return `<circle cx="${x}" cy="${y}" r="${size}" fill="none" stroke="${item.color}" stroke-width="8" />`;
+    return `<rect x="${x-size}" y="${y-size}" width="${size*2}" height="${size*2}" rx="5" fill="${item.color}" transform="rotate(-12 ${x} ${y})" />`;
+  }).join("");
+  const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 132"><rect width="240" height="132" fill="#e9e6dd"/><path d="M0 44H240M0 88H240M60 0V132M120 0V132M180 0V132" stroke="#20211f" stroke-opacity=".07"/>${marks}</svg>`;
+  return `data:image/svg+xml,${encodeURIComponent(svg)}`;
+}
+
 const cameraViews: Record<CameraView, [number, number, number]> = {
   perspective: [4.3, 3.1, 6.4],
   front: [0, 0.2, 8],
@@ -98,12 +115,70 @@ export function SceneStudio() {
   const [cloudMode, setCloudMode] = useState<"unconfigured" | "signed-out" | "ready" | "error">("unconfigured");
   const [storageKey, setStorageKey] = useState(SCENE_STORAGE_KEY);
   const cloudRevisions = useRef(new Map<string, number>());
+  const history = useRef<{ past: EditorSnapshot[]; future: EditorSnapshot[] }>({ past: [], future: [] });
+  const [historyState, setHistoryState] = useState({ canUndo: false, canRedo: false });
+  const [versions, setVersions] = useState<SceneVersion[]>([]);
+  const [showVersions, setShowVersions] = useState(false);
+  const versionStorageKey = (id: string) => `forma:scene-studio:versions:v1:${id}`;
+  const snapshot = (): EditorSnapshot => ({ objects: structuredClone(objects), camera: cameraView, name: sceneName });
+  const recordHistory = () => {
+    history.current.past = [...history.current.past.slice(-49), snapshot()];
+    history.current.future = [];
+    setHistoryState({ canUndo: true, canRedo: false });
+  };
+  const refreshHistoryState = () => setHistoryState({ canUndo: history.current.past.length > 0, canRedo: history.current.future.length > 0 });
+  const applySnapshot = (entry: EditorSnapshot) => {
+    setObjects(structuredClone(entry.objects));
+    setCameraView(entry.camera);
+    setSceneName(entry.name);
+    setSelectedId(entry.objects[0]?.id ?? 1);
+  };
+  const undo = () => {
+    const previous = history.current.past.pop();
+    if (!previous) return;
+    history.current.future.push(snapshot());
+    applySnapshot(previous);
+    refreshHistoryState();
+    setSaveStatus("UNDO");
+  };
+  const redo = () => {
+    const next = history.current.future.pop();
+    if (!next) return;
+    history.current.past.push(snapshot());
+    applySnapshot(next);
+    refreshHistoryState();
+    setSaveStatus("REDO");
+  };
   const [selectedId, setSelectedId] = useState(1);
   const [activeTool, setActiveTool] = useState<"select" | "move" | "rotate" | "scale">("select");
   const [cameraView, setCameraView] = useState<CameraView>("perspective");
   const [sceneName, setSceneName] = useState("Untitled composition");
   const [mobilePanel, setMobilePanel] = useState<"hierarchy" | "inspector" | null>(null);
   const selected = useMemo(() => objects.find((item) => item.id === selectedId) ?? objects[0], [objects, selectedId]);
+  useEffect(() => {
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (!(event.metaKey || event.ctrlKey) || event.key.toLowerCase() !== "z") return;
+      const target = event.target as HTMLElement | null;
+      if (target?.matches("input, textarea, select, [contenteditable='true']")) return;
+      event.preventDefault();
+      if (event.shiftKey) redo();
+      else undo();
+    };
+    window.addEventListener("keydown", onKeyDown);
+    return () => window.removeEventListener("keydown", onKeyDown);
+  });
+  useEffect(() => {
+    if (!activeCompositionId) return;
+    try {
+      const stored = window.localStorage.getItem(versionStorageKey(activeCompositionId));
+      setVersions(stored ? JSON.parse(stored) as SceneVersion[] : []);
+    } catch {
+      setVersions([]);
+    }
+    setShowVersions(false);
+    history.current = { past: [], future: [] };
+    setHistoryState({ canUndo: false, canRedo: false });
+  }, [activeCompositionId]);
 
   useEffect(() => {
     let active = true;
@@ -237,6 +312,8 @@ export function SceneStudio() {
   }, [activeCompositionId, cameraView, cloudMode, cloudUserId, hydrated, objects, sceneName, storageKey]);
 
   const openComposition = (id: string) => {
+    history.current = { past: [], future: [] };
+    setHistoryState({ canUndo: false, canRedo: false });
     const document = compositions.find((item) => item.id === id);
     if (!document) return;
     setActiveCompositionId(document.id);
@@ -248,6 +325,8 @@ export function SceneStudio() {
   };
 
   const createComposition = () => {
+    history.current = { past: [], future: [] };
+    setHistoryState({ canUndo: false, canRedo: false });
     const id = window.crypto.randomUUID();
     const document: SceneDocument = { id, name: "Untitled composition", camera: "perspective", objects: initialObjects.map((item) => ({ ...item, position: [...item.position] as [number, number, number], rotation: [...item.rotation] as [number, number, number] })), updatedAt: new Date().toISOString() };
     const next = [document, ...compositions];
@@ -285,6 +364,8 @@ export function SceneStudio() {
   };
 
   const deleteComposition = () => {
+    history.current = { past: [], future: [] };
+    setHistoryState({ canUndo: false, canRedo: false });
     if (compositions.length <= 1) return;
     const deletedId = activeCompositionId;
     const next = compositions.filter((item) => item.id !== deletedId);
@@ -300,6 +381,7 @@ export function SceneStudio() {
   };
 
   const signOut = async () => {
+    history.current = { past: [], future: [] };
     try {
       await signOutCloudSession();
       window.location.reload();
@@ -309,6 +391,7 @@ export function SceneStudio() {
   };
 
   const exportScene = () => {
+    setSaveStatus("JSON EXPORTED");
     const payload = { format: "forma-scene", version: 1, name: sceneName, camera: cameraView, objects, exportedAt: new Date().toISOString() };
     const file = new Blob([JSON.stringify(payload, null, 2)], { type: "application/json" });
     const url = URL.createObjectURL(file);
@@ -321,10 +404,12 @@ export function SceneStudio() {
   };
 
   const updateSelected = (patch: Partial<SceneObject>) => {
+    recordHistory();
     setObjects((current) => current.map((item) => item.id === selectedId ? { ...item, ...patch } : item));
     
   };
   const addObject = (kind: ShapeKind) => {
+    recordHistory();
     const id = Math.max(0, ...objects.map((item) => item.id)) + 1;
     const labels: Record<ShapeKind, string> = { box: "Block", sphere: "Orb", torus: "Loop" };
     setObjects((current) => [...current, { id, name: `${labels[kind]} / ${String(id).padStart(2, "0")}`, kind, color: kind === "box" ? "#f05b3e" : kind === "sphere" ? "#243bd6" : "#c6d83b", roughness: 0.28, metalness: 0.12, emissive: "#000000", position: [((id % 3) - 1) * 0.65, 0, -0.6], rotation: [0, 0, 0], scale: 0.8, visible: true }]);
@@ -332,6 +417,39 @@ export function SceneStudio() {
     
   };
   const removeSelected = () => {
+  const duplicateComposition = () => {
+    const source = compositions.find((item) => item.id === activeCompositionId);
+    if (!source) return;
+    const copy: SceneDocument = { ...structuredClone(source), id: window.crypto.randomUUID(), name: `${source.name.slice(0, 68)} copy`, updatedAt: new Date().toISOString(), revision: undefined };
+    const next = [copy, ...compositions].slice(0, 100);
+    window.localStorage.setItem(storageKey, JSON.stringify(next));
+    setCompositions(next);
+    setActiveCompositionId(copy.id);
+    setSceneName(copy.name);
+    setObjects(copy.objects);
+    setCameraView(copy.camera);
+    setSelectedId(copy.objects[0]?.id ?? 1);
+    setSaveStatus("COMPOSITION DUPLICATED");
+  };
+
+  const saveVersion = () => {
+    if (!activeCompositionId) return;
+    const entry: SceneVersion = { ...snapshot(), id: window.crypto.randomUUID(), createdAt: new Date().toISOString() };
+    const next = [entry, ...versions].slice(0, 30);
+    window.localStorage.setItem(versionStorageKey(activeCompositionId), JSON.stringify(next));
+    setVersions(next);
+    setShowVersions(true);
+    setSaveStatus("VERSION SAVED");
+  };
+
+  const restoreVersion = (version: SceneVersion) => {
+    recordHistory();
+    applySnapshot(version);
+    setShowVersions(false);
+    setSaveStatus("VERSION RESTORED");
+  };
+
+    recordHistory();
     if (objects.length <= 1) return;
     const next = objects.filter((item) => item.id !== selectedId);
     setObjects(next);
@@ -353,16 +471,27 @@ export function SceneStudio() {
             {compositions.map((composition) => <option key={composition.id} value={composition.id}>{composition.name}</option>)}
           </select>
           <button className={styles.quietButton} onClick={createComposition}>＋ NEW</button>
+          <button className={styles.quietButton} onClick={duplicateComposition}>DUPLICATE</button>
           <label className={styles.importButton}>IMPORT JSON<input aria-label="Import FORMA JSON" type="file" accept="application/json,.json" onChange={importComposition} /></label>
           <button className={styles.quietButton} onClick={deleteComposition} disabled={compositions.length <= 1}>DELETE</button>
           {cloudUserId ? <button className={styles.accountLink} onClick={signOut}>SIGN OUT</button> : <Link className={styles.accountLink} href="/sign-in">SIGN IN ↗</Link>}
         </div>
         <div className={styles.topActions}>
-          <button className={styles.quietButton} onClick={() => { setObjects(initialObjects); setSelectedId(1); }}>RESET</button>
-          <button className={styles.publishButton} onClick={exportScene}>EXPORT JSON <span>↗</span></button>
+          <button className={styles.quietButton} onClick={() => { recordHistory(); setObjects(initialObjects); setSelectedId(1); }}>RESET</button>
+          <button className={styles.quietButton} onClick={saveVersion}>SAVE VERSION</button><button className={styles.publishButton} onClick={exportScene}>EXPORT JSON <span>↗</span></button>
         </div>
       </header>
 
+      <details className={styles.projectLibrary}>
+        <summary><span>PROJECT LIBRARY</span><span>{String(compositions.length).padStart(2, "0")} COMPOSITIONS</span></summary>
+        <div className={styles.projectGrid}>
+          {compositions.map((composition) => <button key={composition.id} className={`${styles.projectCard} ${composition.id === activeCompositionId ? styles.projectCardActive : ""}`} onClick={() => openComposition(composition.id)}>
+            <span className={styles.projectThumbnail} style={{ backgroundImage: `url("${makeThumbnail(composition.objects)}")` }} />
+            <strong>{composition.name}</strong>
+            <small>{composition.objects.length} OBJECTS · {new Date(composition.updatedAt).toLocaleDateString()}</small>
+          </button>)}
+        </div>
+      </details>
       <div className={styles.workspace}>
         <aside className={`${styles.leftPanel} ${mobilePanel === "hierarchy" ? styles.mobilePanelOpen : ""}`}>
           <div className={styles.panelHeading}><span>01 / HIERARCHY</span><span>{String(objects.length).padStart(2, "0")} OBJECTS</span></div>
@@ -379,7 +508,7 @@ export function SceneStudio() {
                   <span className={styles.objectGlyph}>{item.kind === "box" ? "◇" : item.kind === "sphere" ? "●" : "◎"}</span>
                   <span>{item.name}</span>
                 </button>
-                <button className={styles.visibility} aria-label={item.visible ? `Hide ${item.name}` : `Show ${item.name}`} aria-pressed={item.visible} onClick={() => { setObjects((current) => current.map((object) => object.id === item.id ? { ...object, visible: !object.visible } : object)); }}>{item.visible ? "◉" : "○"}</button>
+                <button className={styles.visibility} aria-label={item.visible ? `Hide ${item.name}` : `Show ${item.name}`} aria-pressed={item.visible} onClick={() => { recordHistory(); setObjects((current) => current.map((object) => object.id === item.id ? { ...object, visible: !object.visible } : object)); }}>{item.visible ? "◉" : "○"}</button>
               </div>
             ))}
           </div>
@@ -389,15 +518,17 @@ export function SceneStudio() {
         <section className={styles.stageColumn} aria-label="3D scene editor">
           <div className={styles.toolbar}>
             <div className={styles.toolGroup}>
+              <button className={styles.quietButton} onClick={undo} disabled={!historyState.canUndo} title="Undo (⌘/Ctrl + Z)">↶</button>
+              <button className={styles.quietButton} onClick={redo} disabled={!historyState.canRedo} title="Redo (⌘/Ctrl + Shift + Z)">↷</button>
               {(["select", "move", "rotate", "scale"] as const).map((tool) => <button key={tool} className={activeTool === tool ? styles.activeTool : ""} aria-pressed={activeTool === tool} onClick={() => setActiveTool(tool)} title={tool}>{tool === "select" ? "↖" : tool === "move" ? "✣" : tool === "rotate" ? "⟳" : "↗"}<span>{tool.toUpperCase()}</span></button>)}
             </div>
-            <div className={styles.cameraPresets}>{(["perspective", "front", "top", "side"] as const).map((view) => <button key={view} className={cameraView === view ? styles.activeCamera : ""} aria-pressed={cameraView === view} onClick={() => setCameraView(view)}>{view.toUpperCase()}</button>)}</div>
+            <div className={styles.cameraPresets}>{(["perspective", "front", "top", "side"] as const).map((view) => <button key={view} className={cameraView === view ? styles.activeCamera : ""} aria-pressed={cameraView === view} onClick={() => { recordHistory(); setCameraView(view); }}>{view.toUpperCase()}</button>)}</div>
             <span className={styles.viewportMeta}>X · Y · Z</span>
           </div>
           <div className={styles.canvasFrame}>
             <div className={styles.canvasStamp}><span>FORMA / LAB 001</span><span>24° 08′ N — 3D SPACE</span></div>
             <div className={styles.canvasGrid} aria-hidden="true" />
-            <div className={styles.canvas}><SceneCanvas objects={objects} selectedId={selected?.id ?? -1} tool={activeTool} view={cameraView} onSelect={setSelectedId} onTransform={(id, transform) => { setObjects((current) => current.map((item) => item.id === id ? { ...item, ...transform } : item)); }} /></div>
+            <div className={styles.canvas}><SceneCanvas objects={objects} selectedId={selected?.id ?? -1} tool={activeTool} view={cameraView} onSelect={setSelectedId} onTransform={(id, transform) => { recordHistory(); setObjects((current) => current.map((item) => item.id === id ? { ...item, ...transform } : item)); }} /></div>
             <div className={styles.canvasHint}>DRAG TO ORBIT <i /> SCROLL TO ZOOM <i /> SELECT TO INSPECT</div>
             <div className={styles.axisWidget}><span>X</span><span>Y</span><span>Z</span></div>
           </div>
@@ -440,6 +571,17 @@ export function SceneStudio() {
           <div className={styles.inspectorFoot}><span>FORM IS A VERB.</span><span>V. 01.0</span></div>
         </aside>
       </div>
+      <section className={styles.versionShelf} aria-label="Scene version history">
+        <button className={styles.versionToggle} onClick={() => setShowVersions((value) => !value)} aria-expanded={showVersions}>
+          <span>VERSION HISTORY</span><span>{String(versions.length).padStart(2, "0")} SAVED SNAPSHOTS</span><b>{showVersions ? "−" : "+"}</b>
+        </button>
+        {showVersions && <div className={styles.versionList}>
+          {versions.length ? versions.map((version) => <article className={styles.versionItem} key={version.id}>
+            <div><strong>{version.name}</strong><small>{new Date(version.createdAt).toLocaleString()} · {version.objects.length} OBJECTS</small></div>
+            <button onClick={() => restoreVersion(version)}>RESTORE ↗</button>
+          </article>) : <p>No saved versions yet. Save a snapshot before making a big change.</p>}
+        </div>}
+      </section>
       {mobilePanel && <button className={styles.mobileBackdrop} aria-label="Close editor panel" onClick={() => setMobilePanel(null)} />}
       <footer className={styles.mobileBar}><button aria-pressed={mobilePanel === "hierarchy"} onClick={() => setMobilePanel(mobilePanel === "hierarchy" ? null : "hierarchy")}>☷ <span>OBJECTS</span></button><span>SCENE / {String(compositions.length).padStart(2, "0")}</span><button aria-pressed={mobilePanel === "inspector"} onClick={() => setMobilePanel(mobilePanel === "inspector" ? null : "inspector")}>◫ <span>INSPECT</span></button></footer>
     </main>
