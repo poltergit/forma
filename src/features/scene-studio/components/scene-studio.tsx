@@ -9,6 +9,8 @@ import { useRef } from "react";
 import type { Mesh } from "three";
 import { useThree } from "@react-three/fiber";
 import styles from "./scene-studio.module.css";
+import { parseSceneDocument, readSceneLibrary, SCENE_STORAGE_KEY } from "../scene-document";
+import type { SceneDocument } from "../scene-document";
 
 type ShapeKind = "box" | "sphere" | "torus";
 type SceneObject = { id: number; name: string; kind: ShapeKind; color: string; roughness: number; metalness: number; emissive: string; position: [number, number, number]; rotation: [number, number, number]; scale: number; visible: boolean };
@@ -87,6 +89,10 @@ function SceneCanvas({ objects, selectedId, tool, view, onSelect, onTransform }:
 
 export function SceneStudio() {
   const [objects, setObjects] = useState(initialObjects);
+  const [compositions, setCompositions] = useState<SceneDocument[]>([]);
+  const [activeCompositionId, setActiveCompositionId] = useState("");
+  const [hydrated, setHydrated] = useState(false);
+  const [saveStatus, setSaveStatus] = useState("LOADING LIBRARY");
   const [selectedId, setSelectedId] = useState(1);
   const [activeTool, setActiveTool] = useState<"select" | "move" | "rotate" | "scale">("select");
   const [cameraView, setCameraView] = useState<CameraView>("perspective");
@@ -94,6 +100,99 @@ export function SceneStudio() {
   const [saved, setSaved] = useState(false);
   const [mobilePanel, setMobilePanel] = useState<"hierarchy" | "inspector" | null>(null);
   const selected = useMemo(() => objects.find((item) => item.id === selectedId) ?? objects[0], [objects, selectedId]);
+
+  useEffect(() => {
+    const library = readSceneLibrary(window.localStorage.getItem(SCENE_STORAGE_KEY));
+    if (library.length) {
+      const latest = library[0];
+      setCompositions(library);
+      setActiveCompositionId(latest.id);
+      setSceneName(latest.name);
+      setObjects(latest.objects);
+      setCameraView(latest.camera);
+      setSelectedId(latest.objects[0]?.id ?? 1);
+      setSaveStatus("LIBRARY RESTORED");
+    } else {
+      const id = window.crypto.randomUUID();
+      const starter: SceneDocument = { id, name: "Untitled composition", camera: "perspective", objects: initialObjects, updatedAt: new Date().toISOString() };
+      setCompositions([starter]);
+      setActiveCompositionId(id);
+      window.localStorage.setItem(SCENE_STORAGE_KEY, JSON.stringify([starter]));
+      setSaveStatus("LOCAL AUTOSAVE");
+    }
+    setHydrated(true);
+  }, []);
+
+  useEffect(() => {
+    if (!hydrated || !activeCompositionId) return;
+    setSaveStatus("UNSAVED CHANGES");
+    const timeout = window.setTimeout(() => {
+      const document: SceneDocument = { id: activeCompositionId, name: sceneName.trim().slice(0, 80) || "Untitled composition", camera: cameraView, objects, updatedAt: new Date().toISOString() };
+      const current = readSceneLibrary(window.localStorage.getItem(SCENE_STORAGE_KEY));
+      const next = [document, ...current.filter((item) => item.id !== activeCompositionId)].sort((a, b) => b.updatedAt.localeCompare(a.updatedAt)).slice(0, 100);
+      window.localStorage.setItem(SCENE_STORAGE_KEY, JSON.stringify(next));
+      setCompositions(next);
+      setSaveStatus("ALL CHANGES SAVED");
+    }, 500);
+    return () => window.clearTimeout(timeout);
+  }, [activeCompositionId, cameraView, hydrated, objects, sceneName]);
+
+  const openComposition = (id: string) => {
+    const document = compositions.find((item) => item.id === id);
+    if (!document) return;
+    setActiveCompositionId(document.id);
+    setSceneName(document.name);
+    setObjects(document.objects);
+    setCameraView(document.camera);
+    setSelectedId(document.objects[0]?.id ?? 1);
+    setSaved(false);
+    setSaveStatus("OPENING COMPOSITION");
+  };
+
+  const createComposition = () => {
+    const id = window.crypto.randomUUID();
+    const document: SceneDocument = { id, name: "Untitled composition", camera: "perspective", objects: initialObjects.map((item) => ({ ...item, position: [...item.position] as [number, number, number], rotation: [...item.rotation] as [number, number, number] })), updatedAt: new Date().toISOString() };
+    const next = [document, ...compositions];
+    setCompositions(next);
+    window.localStorage.setItem(SCENE_STORAGE_KEY, JSON.stringify(next));
+    setActiveCompositionId(id);
+    setSceneName(document.name);
+    setObjects(document.objects);
+    setCameraView(document.camera);
+    setSelectedId(1);
+    setSaved(false);
+    setSaveStatus("NEW COMPOSITION");
+  };
+
+  const importComposition = async (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    event.target.value = "";
+    if (!file) return;
+    try {
+      const imported = parseSceneDocument(JSON.parse(await file.text()));
+      const document: SceneDocument = { ...imported, id: window.crypto.randomUUID(), updatedAt: new Date().toISOString() };
+      const next = [document, ...compositions].slice(0, 100);
+      window.localStorage.setItem(SCENE_STORAGE_KEY, JSON.stringify(next));
+      setCompositions(next);
+      setActiveCompositionId(document.id);
+      setSceneName(document.name);
+      setObjects(document.objects);
+      setCameraView(document.camera);
+      setSelectedId(document.objects[0]?.id ?? 1);
+      setSaved(false);
+      setSaveStatus("JSON IMPORTED");
+    } catch (error) {
+      setSaveStatus(error instanceof Error ? error.message.toUpperCase() : "IMPORT FAILED");
+    }
+  };
+
+  const deleteComposition = () => {
+    if (compositions.length <= 1) return;
+    const next = compositions.filter((item) => item.id !== activeCompositionId);
+    window.localStorage.setItem(SCENE_STORAGE_KEY, JSON.stringify(next));
+    setCompositions(next);
+    openComposition(next[0].id);
+  };
 
   const exportScene = () => {
     const payload = { format: "forma-scene", version: 1, name: sceneName, camera: cameraView, objects, exportedAt: new Date().toISOString() };
@@ -105,6 +204,7 @@ export function SceneStudio() {
     anchor.click();
     URL.revokeObjectURL(url);
     setSaved(true);
+    setSaveStatus("JSON EXPORTED");
   };
 
   const updateSelected = (patch: Partial<SceneObject>) => {
@@ -133,7 +233,7 @@ export function SceneStudio() {
         <div className={styles.document}>
           <span className={styles.liveDot} />
           <input aria-label="Scene name" value={sceneName} onChange={(event) => { setSceneName(event.target.value); setSaved(false); }} />
-          <span className={styles.saveState}>{saved ? "EXPORTED JSON" : "LOCAL SESSION"}</span>
+          <span className={styles.saveState}>{saveStatus}</span>
         </div>
         <div className={styles.topActions}>
           <button className={styles.quietButton} onClick={() => { setObjects(initialObjects); setSelectedId(1); setSaved(false); }}>RESET</button>
@@ -219,7 +319,7 @@ export function SceneStudio() {
         </aside>
       </div>
       {mobilePanel && <button className={styles.mobileBackdrop} aria-label="Close editor panel" onClick={() => setMobilePanel(null)} />}
-      <footer className={styles.mobileBar}><button aria-pressed={mobilePanel === "hierarchy"} onClick={() => setMobilePanel(mobilePanel === "hierarchy" ? null : "hierarchy")}>☷ <span>OBJECTS</span></button><span>SCENE / 001</span><button aria-pressed={mobilePanel === "inspector"} onClick={() => setMobilePanel(mobilePanel === "inspector" ? null : "inspector")}>◫ <span>INSPECT</span></button></footer>
+      <footer className={styles.mobileBar}><button aria-pressed={mobilePanel === "hierarchy"} onClick={() => setMobilePanel(mobilePanel === "hierarchy" ? null : "hierarchy")}>☷ <span>OBJECTS</span></button><span>SCENE / {String(compositions.length).padStart(2, "0")}</span><button aria-pressed={mobilePanel === "inspector"} onClick={() => setMobilePanel(mobilePanel === "inspector" ? null : "inspector")}>◫ <span>INSPECT</span></button></footer>
     </main>
   );
 }
