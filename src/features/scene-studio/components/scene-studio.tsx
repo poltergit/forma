@@ -97,7 +97,6 @@ export function SceneStudio() {
   const [activeTool, setActiveTool] = useState<"select" | "move" | "rotate" | "scale">("select");
   const [cameraView, setCameraView] = useState<CameraView>("perspective");
   const [sceneName, setSceneName] = useState("Untitled composition");
-  const [saved, setSaved] = useState(false);
   const [mobilePanel, setMobilePanel] = useState<"hierarchy" | "inspector" | null>(null);
   const selected = useMemo(() => objects.find((item) => item.id === selectedId) ?? objects[0], [objects, selectedId]);
 
@@ -145,7 +144,6 @@ export function SceneStudio() {
     setObjects(document.objects);
     setCameraView(document.camera);
     setSelectedId(document.objects[0]?.id ?? 1);
-    setSaved(false);
     setSaveStatus("OPENING COMPOSITION");
   };
 
@@ -207,7 +205,6 @@ export function SceneStudio() {
     anchor.download = `${sceneName.trim().replace(/[^a-z0-9-_]+/gi, "-").replace(/^-|-$/g, "") || "forma-scene"}.json`;
     anchor.click();
     URL.revokeObjectURL(url);
-    setSaved(true);
     setSaveStatus("JSON EXPORTED");
   };
 
