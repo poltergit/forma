@@ -13,18 +13,18 @@
 .cardVisual { position: relative; display: grid; min-height: 19rem; overflow: hidden; place-items: center; background: #d9d6cc; }
 .cardVisual > span { position: absolute; top: .8rem; left: .8rem; }
 .formMark { position: relative; width: 8rem; aspect-ratio: 1; transform: rotateX(58deg) rotateZ(45deg); transform-style: preserve-3d; }
-.formMark i { position: absolute; inset: 8%; border: 1px solid var(--brand-lime); }
+.formMark i { position: absolute; inset: 8%; border: 1px solid var(--brand-blue); }
 .formMark i:nth-child(2) { inset: 22%; border-color: var(--brand-blue); transform: translateZ(2.2rem) rotate(35deg); }
 .formMark i:nth-child(3) { inset: 37%; border: 0; background: var(--brand-coral); transform: translateZ(4rem); }
 .typeMark { color: var(--brand-coral); font: 500 clamp(6rem, 12vw, 12rem)/.8 var(--font-display); letter-spacing: -.12em; transform: rotate(-12deg) skewY(-8deg); text-shadow: .04em .04em 0 rgb(255 118 94 / .2), .08em .08em 0 rgb(100 123 255 / .35); }
 .cardCopy { display: flex; flex-direction: column; align-items: flex-start; justify-content: center; padding: clamp(1rem, 2.5vw, 2.2rem); }
 .cardCopy > div { display: flex; flex-wrap: wrap; justify-content: space-between; width: 100%; gap: .5rem; }
-.cardCopy > div span:first-child { color: var(--brand-lime); }
+.cardCopy > div span:first-child { color: var(--brand-coral); }
 .card[data-tone="coral"] .cardCopy > div span:first-child { color: var(--brand-coral); }
 .cardCopy h3 { margin: 1.4rem 0 .6rem; font: 500 clamp(1.5rem, 2.6vw, 2.8rem)/.95 var(--font-display); letter-spacing: -.07em; }
 .cardCopy p { margin: 0; color: var(--color-text-secondary); font-size: .85rem; line-height: 1.6; }
 .cardCopy a { margin-top: 1.6rem; border-bottom: 1px solid var(--color-border-strong); padding-bottom: .55rem; color: var(--color-text); font: 9px var(--font-mono); letter-spacing: .1em; text-decoration: none; }
-.cardCopy a:hover { color: var(--brand-lime); border-color: var(--brand-lime); }
+.cardCopy a:hover { color: var(--brand-lime); border-color: var(--brand-coral); }
 .cardCopy a i { padding-left: .6rem; font-style: normal; }
 .reset { margin-top: 1rem; border: 0; padding: .6rem 0; background: transparent; color: var(--color-text-muted); font: 9px var(--font-mono); letter-spacing: .1em; cursor: pointer; }
 .reset:disabled { opacity: .35; cursor: default; }
