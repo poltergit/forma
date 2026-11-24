@@ -95,6 +95,7 @@ export function SceneStudio() {
   const [hydrated, setHydrated] = useState(false);
   const [saveStatus, setSaveStatus] = useState("LOADING LIBRARY");
   const [cloudUserId, setCloudUserId] = useState<string | null>(null);
+  const [cloudMode, setCloudMode] = useState<"unconfigured" | "signed-out" | "ready" | "error">("unconfigured");
   const [storageKey, setStorageKey] = useState(SCENE_STORAGE_KEY);
   const cloudRevisions = useRef(new Map<string, number>());
   const [selectedId, setSelectedId] = useState(1);
@@ -113,6 +114,7 @@ export function SceneStudio() {
         let status = "LOCAL LIBRARY RESTORED";
         try {
           const session = await getSceneCloudSession();
+          setCloudMode(session.status);
           if (session.status === "ready") {
             const cloudLibrary = await loadCloudCompositions();
             activeStorageKey = `${SCENE_STORAGE_KEY}:${session.userId}`;
@@ -143,6 +145,7 @@ export function SceneStudio() {
             status = "LOCAL SAVED · CLOUD NOT CONFIGURED";
           }
         } catch {
+          setCloudMode("error");
           status = "LOCAL SAVED · CLOUD SYNC ERROR";
         }
 
@@ -189,7 +192,7 @@ export function SceneStudio() {
       window.localStorage.setItem(storageKey, JSON.stringify(next));
       setCompositions(next);
       if (!cloudUserId) {
-        setSaveStatus("LOCAL SAVED · SIGN IN TO SYNC");
+        setSaveStatus(cloudMode === "unconfigured" ? "LOCAL SAVED · CLOUD NOT CONFIGURED" : "LOCAL SAVED · SIGN IN TO SYNC");
         return;
       }
       setSaveStatus("SYNCING TO CLOUD");
@@ -207,7 +210,7 @@ export function SceneStudio() {
       });
     }, 650);
     return () => window.clearTimeout(timeout);
-  }, [activeCompositionId, cameraView, cloudUserId, hydrated, objects, sceneName, storageKey]);
+  }, [activeCompositionId, cameraView, cloudMode, cloudUserId, hydrated, objects, sceneName, storageKey]);
 
   const openComposition = (id: string) => {
     const document = compositions.find((item) => item.id === id);
