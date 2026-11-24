@@ -116,10 +116,10 @@ export function SceneStudio() {
           const session = await getSceneCloudSession();
           setCloudMode(session.status);
           if (session.status === "ready") {
-            const cloudLibrary = await loadCloudCompositions();
             activeStorageKey = `${SCENE_STORAGE_KEY}:${session.userId}`;
             library = readSceneLibrary(window.localStorage.getItem(activeStorageKey));
             setCloudUserId(session.userId);
+            const cloudLibrary = await loadCloudCompositions();
             const cloudById = new Map(cloudLibrary.map((item) => [item.id, item]));
             for (const cloudScene of cloudLibrary) {
               if (typeof cloudScene.revision === "number") cloudRevisions.current.set(cloudScene.id, cloudScene.revision);
