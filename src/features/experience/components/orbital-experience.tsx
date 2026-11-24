@@ -21,7 +21,7 @@ const studies = [
   { number: "03", name: "Letter", type: "KINETIC TYPOGRAPHY", description: "Treat the alphabet as material: stretch it, interrupt it, make it speak.", href: "/playground#elastic-type", tag: "TYPE / VOICE", className: "letter" },
 ];
 
-export function OrbitalExperience() {
+export function AtelierExperience() {
   const [intensity, setIntensity] = useState(1);
   const [speed, setSpeed] = useState(1);
   const [density, setDensity] = useState(18);
