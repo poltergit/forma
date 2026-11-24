@@ -243,7 +243,7 @@ export function SceneStudio() {
       const imported = parseSceneDocument(JSON.parse(await file.text()));
       const document: SceneDocument = { ...imported, id: window.crypto.randomUUID(), updatedAt: new Date().toISOString() };
       const next = [document, ...compositions].slice(0, 100);
-      window.localStorage.setItem(SCENE_STORAGE_KEY, JSON.stringify(next));
+      window.localStorage.setItem(storageKey, JSON.stringify(next));
       setCompositions(next);
       setActiveCompositionId(document.id);
       setSceneName(document.name);
@@ -261,7 +261,7 @@ export function SceneStudio() {
     if (compositions.length <= 1) return;
     const deletedId = activeCompositionId;
     const next = compositions.filter((item) => item.id !== deletedId);
-    window.localStorage.setItem(SCENE_STORAGE_KEY, JSON.stringify(next));
+    window.localStorage.setItem(storageKey, JSON.stringify(next));
     setCompositions(next);
     setActiveCompositionId(next[0].id);
     setSceneName(next[0].name);
