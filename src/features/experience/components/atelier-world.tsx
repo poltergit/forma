@@ -74,9 +74,9 @@ function LivingSurface({ intensity, seed, reducedMotion, mode }: Pick<Props, "in
   const material = useMemo(() => new THREE.ShaderMaterial({
     uniforms: {
       uTime: { value: 0 },
-      uIntensity: { value: intensity },
-      uSeed: { value: seed },
-      uMode: { value: mode === "flow" ? 0 : mode === "prism" ? 1 : 2 },
+      uIntensity: { value: 1 },
+      uSeed: { value: 0 },
+      uMode: { value: 0 },
       uPointer: { value: new THREE.Vector2() },
     },
     vertexShader,
