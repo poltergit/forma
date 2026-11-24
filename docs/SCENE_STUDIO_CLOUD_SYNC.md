@@ -11,7 +11,7 @@
 - Debounced autosave to local storage and, for authenticated users, Supabase.
 - First sign-in on a device loads that account's cloud library. Account-local caches are namespaced by Supabase user ID.
 - Existing anonymous local compositions remain in the anonymous local library; they are not silently copied into an account.
-- A stale revision is rejected rather than silently overwriting another device's newer save.
+- A stale revision is rejected rather than silently overwriting another device's newer save. The local edit is preserved as a separate conflict-copy composition and can sync independently.
 
 ## 1. Configure Supabase
 
@@ -60,4 +60,4 @@ Enable email/password authentication. If email confirmation is enabled, configur
 
 ## Current synchronization boundary
 
-Cloud persistence synchronizes when the editor opens and when it autosaves. It is not yet live collaborative editing: no Realtime subscription, presence, or automatic conflict merge is enabled. On a revision conflict, reload the latest cloud version before continuing. Local autosave remains available when Supabase is unavailable or the user is signed out.
+Cloud persistence synchronizes when the editor opens and when it autosaves. It is not yet live collaborative editing: no Realtime subscription, presence, or automatic conflict merge is enabled. On a revision conflict, the editor preserves the in-progress local edit as a separate conflict-copy composition instead of overwriting the newer cloud revision. Open the original to work from the latest cloud version, or continue from the conflict copy. Local autosave remains available when Supabase is unavailable or the user is signed out.
