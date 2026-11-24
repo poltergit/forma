@@ -101,31 +101,34 @@ export function SceneStudio() {
   const selected = useMemo(() => objects.find((item) => item.id === selectedId) ?? objects[0], [objects, selectedId]);
 
   useEffect(() => {
-    const library = readSceneLibrary(window.localStorage.getItem(SCENE_STORAGE_KEY));
-    if (library.length) {
-      const latest = library[0];
-      setCompositions(library);
-      setActiveCompositionId(latest.id);
-      setSceneName(latest.name);
-      setObjects(latest.objects);
-      setCameraView(latest.camera);
-      setSelectedId(latest.objects[0]?.id ?? 1);
-      setSaveStatus("LIBRARY RESTORED");
-    } else {
-      const id = window.crypto.randomUUID();
-      const starter: SceneDocument = { id, name: "Untitled composition", camera: "perspective", objects: initialObjects, updatedAt: new Date().toISOString() };
-      setCompositions([starter]);
-      setActiveCompositionId(id);
-      window.localStorage.setItem(SCENE_STORAGE_KEY, JSON.stringify([starter]));
-      setSaveStatus("LOCAL AUTOSAVE");
-    }
-    setHydrated(true);
+    const timeout = window.setTimeout(() => {
+      const library = readSceneLibrary(window.localStorage.getItem(SCENE_STORAGE_KEY));
+      if (library.length) {
+        const latest = library[0];
+        setCompositions(library);
+        setActiveCompositionId(latest.id);
+        setSceneName(latest.name);
+        setObjects(latest.objects);
+        setCameraView(latest.camera);
+        setSelectedId(latest.objects[0]?.id ?? 1);
+        setSaveStatus("LIBRARY RESTORED");
+      } else {
+        const id = window.crypto.randomUUID();
+        const starter: SceneDocument = { id, name: "Untitled composition", camera: "perspective", objects: initialObjects, updatedAt: new Date().toISOString() };
+        setCompositions([starter]);
+        setActiveCompositionId(id);
+        window.localStorage.setItem(SCENE_STORAGE_KEY, JSON.stringify([starter]));
+        setSaveStatus("LOCAL AUTOSAVE");
+      }
+      setHydrated(true);
+    }, 0);
+    return () => window.clearTimeout(timeout);
   }, []);
 
   useEffect(() => {
     if (!hydrated || !activeCompositionId) return;
-    setSaveStatus("UNSAVED CHANGES");
     const timeout = window.setTimeout(() => {
+      setSaveStatus("SAVING CHANGES");
       const document: SceneDocument = { id: activeCompositionId, name: sceneName.trim().slice(0, 80) || "Untitled composition", camera: cameraView, objects, updatedAt: new Date().toISOString() };
       const current = readSceneLibrary(window.localStorage.getItem(SCENE_STORAGE_KEY));
       const next = [document, ...current.filter((item) => item.id !== activeCompositionId)].sort((a, b) => b.updatedAt.localeCompare(a.updatedAt)).slice(0, 100);
