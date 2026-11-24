@@ -161,7 +161,7 @@ export function SceneStudio() {
     setObjects(document.objects);
     setCameraView(document.camera);
     setSelectedId(1);
-    setSaved(false);
+    
     setSaveStatus("NEW COMPOSITION");
   };
 
@@ -180,7 +180,7 @@ export function SceneStudio() {
       setObjects(document.objects);
       setCameraView(document.camera);
       setSelectedId(document.objects[0]?.id ?? 1);
-      setSaved(false);
+      
       setSaveStatus("JSON IMPORTED");
     } catch (error) {
       setSaveStatus(error instanceof Error ? error.message.toUpperCase() : "IMPORT FAILED");
@@ -213,21 +213,21 @@ export function SceneStudio() {
 
   const updateSelected = (patch: Partial<SceneObject>) => {
     setObjects((current) => current.map((item) => item.id === selectedId ? { ...item, ...patch } : item));
-    setSaved(false);
+    
   };
   const addObject = (kind: ShapeKind) => {
     const id = Math.max(0, ...objects.map((item) => item.id)) + 1;
     const labels: Record<ShapeKind, string> = { box: "Block", sphere: "Orb", torus: "Loop" };
     setObjects((current) => [...current, { id, name: `${labels[kind]} / ${String(id).padStart(2, "0")}`, kind, color: kind === "box" ? "#f05b3e" : kind === "sphere" ? "#243bd6" : "#c6d83b", roughness: 0.28, metalness: 0.12, emissive: "#000000", position: [((id % 3) - 1) * 0.65, 0, -0.6], rotation: [0, 0, 0], scale: 0.8, visible: true }]);
     setSelectedId(id);
-    setSaved(false);
+    
   };
   const removeSelected = () => {
     if (objects.length <= 1) return;
     const next = objects.filter((item) => item.id !== selectedId);
     setObjects(next);
     setSelectedId(next[0].id);
-    setSaved(false);
+    
   };
 
   return (
@@ -236,7 +236,7 @@ export function SceneStudio() {
         <Link className={styles.brand} href="/" aria-label="FORMA home"><span className={styles.brandMark}>F</span> FORMA <span className={styles.slash}>/</span> SCENE STUDIO</Link>
         <div className={styles.document}>
           <span className={styles.liveDot} />
-          <input aria-label="Scene name" value={sceneName} onChange={(event) => { setSceneName(event.target.value); setSaved(false); }} />
+          <input aria-label="Scene name" value={sceneName} onChange={(event) => { setSceneName(event.target.value); }} />
           <span className={styles.saveState}>{saveStatus}</span>
         </div>
         <div className={styles.libraryControls}>
@@ -248,7 +248,7 @@ export function SceneStudio() {
           <button className={styles.quietButton} onClick={deleteComposition} disabled={compositions.length <= 1}>DELETE</button>
         </div>
         <div className={styles.topActions}>
-          <button className={styles.quietButton} onClick={() => { setObjects(initialObjects); setSelectedId(1); setSaved(false); }}>RESET</button>
+          <button className={styles.quietButton} onClick={() => { setObjects(initialObjects); setSelectedId(1); }}>RESET</button>
           <button className={styles.publishButton} onClick={exportScene}>EXPORT JSON <span>↗</span></button>
         </div>
       </header>
@@ -269,7 +269,7 @@ export function SceneStudio() {
                   <span className={styles.objectGlyph}>{item.kind === "box" ? "◇" : item.kind === "sphere" ? "●" : "◎"}</span>
                   <span>{item.name}</span>
                 </button>
-                <button className={styles.visibility} aria-label={item.visible ? `Hide ${item.name}` : `Show ${item.name}`} aria-pressed={item.visible} onClick={() => { setObjects((current) => current.map((object) => object.id === item.id ? { ...object, visible: !object.visible } : object)); setSaved(false); }}>{item.visible ? "◉" : "○"}</button>
+                <button className={styles.visibility} aria-label={item.visible ? `Hide ${item.name}` : `Show ${item.name}`} aria-pressed={item.visible} onClick={() => { setObjects((current) => current.map((object) => object.id === item.id ? { ...object, visible: !object.visible } : object)); }}>{item.visible ? "◉" : "○"}</button>
               </div>
             ))}
           </div>
@@ -287,7 +287,7 @@ export function SceneStudio() {
           <div className={styles.canvasFrame}>
             <div className={styles.canvasStamp}><span>FORMA / LAB 001</span><span>24° 08′ N — 3D SPACE</span></div>
             <div className={styles.canvasGrid} aria-hidden="true" />
-            <div className={styles.canvas}><SceneCanvas objects={objects} selectedId={selected?.id ?? -1} tool={activeTool} view={cameraView} onSelect={setSelectedId} onTransform={(id, transform) => { setObjects((current) => current.map((item) => item.id === id ? { ...item, ...transform } : item)); setSaved(false); }} /></div>
+            <div className={styles.canvas}><SceneCanvas objects={objects} selectedId={selected?.id ?? -1} tool={activeTool} view={cameraView} onSelect={setSelectedId} onTransform={(id, transform) => { setObjects((current) => current.map((item) => item.id === id ? { ...item, ...transform } : item)); }} /></div>
             <div className={styles.canvasHint}>DRAG TO ORBIT <i /> SCROLL TO ZOOM <i /> SELECT TO INSPECT</div>
             <div className={styles.axisWidget}><span>X</span><span>Y</span><span>Z</span></div>
           </div>
