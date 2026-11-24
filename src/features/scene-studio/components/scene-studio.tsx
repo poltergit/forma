@@ -157,6 +157,10 @@ export function SceneStudio() {
               <div className={styles.axisFields}>
                 {(["x", "y", "z"] as const).map((axis, index) => <label key={axis}><span>{axis.toUpperCase()}</span><input type="number" step="0.1" value={selected.position[index]} onChange={(event) => { const position: [number, number, number] = [...selected.position]; position[index] = Number(event.target.value); updateSelected({ position }); }} /></label>)}
               </div>
+              <div className={styles.propertyTitle} style={{ marginTop: "1rem" }}>ROTATION / DEG</div>
+              <div className={styles.axisFields}>
+                {(["x", "y", "z"] as const).map((axis, index) => <label key={axis}><span>{axis.toUpperCase()}</span><input type="number" step="5" value={Math.round(selected.rotation[index] * 180 / Math.PI)} onChange={(event) => { const rotation: [number, number, number] = [...selected.rotation]; rotation[index] = Number(event.target.value) * Math.PI / 180; updateSelected({ rotation }); }} /></label>)}
+              </div>
               <label className={styles.rangeField}><span>UNIFORM SCALE <b>{selected.scale.toFixed(2)}</b></span><input type="range" min="0.25" max="1.8" step="0.05" value={selected.scale} onChange={(event) => updateSelected({ scale: Number(event.target.value) })} /></label>
             </section>
             <section className={styles.propertySection}>
