@@ -416,7 +416,6 @@ export function SceneStudio() {
     setSelectedId(id);
     
   };
-  const removeSelected = () => {
   const duplicateComposition = () => {
     const source = compositions.find((item) => item.id === activeCompositionId);
     if (!source) return;
@@ -449,6 +448,7 @@ export function SceneStudio() {
     setSaveStatus("VERSION RESTORED");
   };
 
+  const removeSelected = () => {
     recordHistory();
     if (objects.length <= 1) return;
     const next = objects.filter((item) => item.id !== selectedId);
