@@ -51,9 +51,9 @@ export function createPoints(seed: number, amount: number): FieldPoint[] {
   return createGeneratorPoints(seed, amount, "displacement");
 }
 
-export function createPlaygroundScene(seed: number, density: number, influence: number, generator: GeneratorId = "displacement") {
+export function createPlaygroundScene(seed: number, density: number, influence: number, generator: GeneratorId = "displacement", paletteColors?: [string, string, string]) {
   if (!Number.isFinite(influence) || influence < 0 || influence > 100) throw new RangeError("Influence must be between 0 and 100.");
-  const palette = ["#f05b3e", "#243bd6", "#c6d83b"];
+  const palette = paletteColors ?? ["#f05b3e", "#243bd6", "#c6d83b"];
   const kinds = ["box", "sphere", "torus"] as const;
   const objects = createGeneratorPoints(seed, density, generator).map((point, index) => {
     const spread = generator === "orbital-bloom" ? 7 : generator === "woven-lattice" ? 6.4 : 6;

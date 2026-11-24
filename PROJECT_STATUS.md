@@ -111,3 +111,10 @@ The first implementation is now committed: a five-chapter Home experience, lazy-
 The creative runtime was installed and peer-resolved on a Node 22 GitHub Actions runner; exact versions are locked in both package manifest and lockfile: GSAP 3.15.1, @gsap/react 2.1.2, Three.js 0.187.0, React Three Fiber 9.8.2, and Drei 10.7.9. The temporary bootstrap workflow removed itself after committing the dependency files.
 
 **Still open:** application lint/typecheck/unit/Playwright/build verification, real browser visual inspection, WebGL fallback and mobile profiling, reduced-motion and assistive-technology review, and investigation of the reported React use() suspension warning. Phase 08 remains in progress and unapproved.
+
+
+### Portable generative recipe engine (2026-11-24)
+
+Playground now includes four curated remix presets and four named color systems (Atelier, Citrus, Nocturne, Mineral). Palette selection affects the live canvas and the exported Scene Studio object colors. Presets load a complete instrument/density/influence/palette starting point while leaving seed and pointer interaction editable.
+
+Recipes can be exported as versioned `forma-playground-recipe` JSON files and imported on another device. Import validates format/version, generator and palette allowlists, field bounds, density/influence increments, name length, and a 16 KB input ceiling before applying values. The format carries only declarative settings; it cannot execute code. Local saved recipes remain device-local; portable JSON is the cross-device transfer mechanism. No cloud sync or migration was added.

@@ -7,7 +7,7 @@ import {
   type GeneratorId, type PlaygroundRecipe,
 } from "../playground-scene";
 
-const palette = ["#f05b3e", "#243bd6", "#20211f"];
+const defaultPalette = PLAYGROUND_PALETTES[0];
 
 function polygon(context: CanvasRenderingContext2D, points: Array<[number, number]>, fill: string) {
   context.beginPath();
@@ -24,7 +24,7 @@ function readRecipes(): PlaygroundRecipe[] {
       item.name.length > 0 && item.name.length <= 48 && ["displacement", "orbital-bloom", "woven-lattice"].includes(item.generator) &&
       Number.isInteger(item.seed) && item.seed >= 0 && item.seed <= 9_999_999 &&
       Number.isInteger(item.density) && item.density >= 12 && item.density <= 96 &&
-      Number.isFinite(item.influence) && item.influence >= 0 && item.influence <= 100 && typeof item.createdAt === "string",
+      Number.isFinite(item.influence) && item.influence >= 0 && item.influence <= 100 && typeof item.createdAt === "string" && (item.palette === undefined || PLAYGROUND_PALETTES.some((paletteItem) => paletteItem.id === item.palette)),
     ).slice(0, 24);
   } catch { return []; }
 }
@@ -37,7 +37,7 @@ export function PlaygroundExperience() {
   const [generator, setGenerator] = useState<GeneratorId>("displacement");
   const [seed, setSeed] = useState(27);
   const [density, setDensity] = useState(64);
-  const [influence, setInfluence] = useState(58);
+  const [influence, setInfluence] = useState(58);\n  const [paletteId, setPaletteId] = useState<PaletteId>("atelier");
   const [status, setStatus] = useState("COMPOSITION AT REST");
   const [recipeName, setRecipeName] = useState("Untitled study");
   const [recipes, setRecipes] = useState<PlaygroundRecipe[]>([]);
@@ -48,7 +48,7 @@ export function PlaygroundExperience() {
     return () => window.clearTimeout(timeout);
   }, []);
 
-  const activeGenerator = GENERATORS.find((item) => item.id === generator) ?? GENERATORS[0];
+  const activeGenerator = GENERATORS.find((item) => item.id === generator) ?? GENERATORS[0];\n  const activePalette = PLAYGROUND_PALETTES.find((item) => item.id === paletteId) ?? defaultPalette;
   const persistRecipes = (next: PlaygroundRecipe[]) => {
     setRecipes(next);
     window.localStorage.setItem(PLAYGROUND_RECIPE_KEY, JSON.stringify(next));
@@ -62,13 +62,13 @@ export function PlaygroundExperience() {
   const saveRecipe = () => {
     const cleanName = recipeName.trim().slice(0, 48);
     if (!cleanName) { setStatus("GIVE YOUR STUDY A NAME"); return; }
-    const recipe: PlaygroundRecipe = { id: window.crypto.randomUUID(), name: cleanName, generator, seed, density, influence, createdAt: new Date().toISOString() };
+    const recipe: PlaygroundRecipe = { id: window.crypto.randomUUID(), name: cleanName, generator, seed, density, influence, palette: paletteId, createdAt: new Date().toISOString() };
     persistRecipes([recipe, ...recipes].slice(0, 24));
     setStatus("RECIPE SAVED TO THIS DEVICE");
   };
 
   const loadRecipe = (recipe: PlaygroundRecipe) => {
-    setGenerator(recipe.generator); setSeed(recipe.seed); setDensity(recipe.density); setInfluence(recipe.influence);
+    setGenerator(recipe.generator); setSeed(recipe.seed); setDensity(recipe.density); setInfluence(recipe.influence); setPaletteId((recipe.palette as PaletteId) ?? "atelier");
     setRecipeName(recipe.name); pointerRef.current = { x: 0.5, y: 0.5, active: false }; setStatus("RECIPE RESTORED");
   };
 
@@ -76,7 +76,7 @@ export function PlaygroundExperience() {
 
   const continueInSceneStudio = () => {
     try {
-      const scene = createPlaygroundScene(seed, density, influence, generator);
+      const scene = createPlaygroundScene(seed, density, influence, generator, activePalette.colors);
       window.localStorage.setItem(PLAYGROUND_SCENE_HANDOFF_KEY, JSON.stringify(scene));
       window.location.assign("/scene-studio?from=playground");
     } catch { setStatus("SCENE HANDOFF UNAVAILABLE"); }
@@ -95,7 +95,7 @@ export function PlaygroundExperience() {
       const height = Math.max(1, Math.floor(bounds.height));
       canvas.width = Math.floor(width * ratio); canvas.height = Math.floor(height * ratio);
       context.setTransform(ratio, 0, 0, ratio, 0, 0);
-      context.fillStyle = "#e8e5dc"; context.fillRect(0, 0, width, height);
+      context.fillStyle = activePalette.background; context.fillRect(0, 0, width, height);
 
       const points = createGeneratorPoints(seed, density, generator);
       const originX = width * (pointerRef.current.active ? pointerRef.current.x : 0.5);
@@ -141,7 +141,7 @@ export function PlaygroundExperience() {
       projected.slice().sort((a, b) => a.z - b.z).forEach((point, index) => {
         const half = point.size * (generator === "orbital-bloom" ? 0.68 : 1);
         const rise = half * (0.42 + point.z * 0.72); const x = point.x; const y = point.y;
-        const tone = palette[point.tone]; const alpha = 0.25 + point.z * 0.62;
+        const tone = activePalette.colors[point.tone]; const alpha = 0.25 + point.z * 0.62;
         if (generator === "orbital-bloom") {
           context.save(); context.translate(x, y); context.rotate((index / projected.length) * Math.PI);
           context.beginPath(); context.ellipse(0, 0, half * 0.48, half * 1.5, 0, 0, Math.PI * 2);
@@ -166,7 +166,7 @@ export function PlaygroundExperience() {
     drawRef.current = draw; draw();
     const observer = new ResizeObserver(draw); observer.observe(frame);
     return () => { observer.disconnect(); drawRef.current = null; };
-  }, [density, generator, influence, seed]);
+  }, [activePalette, density, generator, influence, seed]);
 
   const updatePointer = (event: PointerEvent<HTMLDivElement>) => {
     const bounds = event.currentTarget.getBoundingClientRect();
@@ -199,6 +199,17 @@ export function PlaygroundExperience() {
         <div className={styles.stageOverlay}><span>MOVE THROUGH THE FORM</span><span>SEED / {String(seed).padStart(3, "0")}</span></div><span className={styles.stageCrosshair} aria-hidden="true">+</span>
       </div>
       <div className={styles.stageFooter}><span>{status}</span><span>POINTER / TOUCH / KEYBOARD</span></div>
+      <section className={styles.presetStudio} aria-label="Curated starting points">
+        <div className={styles.presetHeading}><span>START WITH A GESTURE</span><small>PRESETS ARE STARTING POINTS — KEEP REMIXING</small></div>
+        <div className={styles.presetList}>{PLAYGROUND_PRESETS.map((preset) => <button type="button" key={preset.id} onClick={() => { setGenerator(preset.generator); setDensity(preset.density); setInfluence(preset.influence); setPaletteId(preset.palette); setStatus(`${preset.name.toUpperCase()} LOADED`); }}>
+          <span>{preset.note}</span><strong>{preset.name}</strong><small>{preset.generator.replace("-", " ").toUpperCase()} / {preset.density} FORMS</small>
+        </button>)}</div>
+      </section>
+      <div className={styles.paletteStudio} aria-label="Color palettes">
+        <span>COLOR LANGUAGE</span>{PLAYGROUND_PALETTES.map((item) => <button type="button" key={item.id} aria-pressed={paletteId === item.id} onClick={() => setPaletteId(item.id)}>
+          <i>{item.colors.map((color) => <b key={color} style={{ backgroundColor: color }} />)}</i><small>{item.name}</small>
+        </button>)}
+      </div>
       <div className={styles.controls}>
         <div className={styles.controlIntro}><span>INSTRUMENT PARAMETERS</span><button type="button" onClick={recompose}>RECOMPOSE <b aria-hidden="true">↗</b></button></div>
         <label className={styles.rangeControl}><span><span>DENSITY</span><output>{density}</output></span><input type="range" min="12" max="96" step="4" value={density} onChange={(event) => setDensity(Number(event.target.value))} /></label>
@@ -211,6 +222,18 @@ export function PlaygroundExperience() {
         <div className={styles.recipeSave}>
           <label><span>NAME THIS STUDY</span><input value={recipeName} maxLength={48} onChange={(event) => setRecipeName(event.target.value)} /></label>
           <button type="button" onClick={saveRecipe}>SAVE RECIPE <b aria-hidden="true">＋</b></button>
+        </div>
+        <div className={styles.portableActions}>
+          <button type="button" onClick={() => {
+            const recipe = createPortableRecipe({ id: "export", name: recipeName.trim() || "Untitled study", generator, seed, density, influence, palette: paletteId, createdAt: new Date().toISOString() });
+            const blob = new Blob([JSON.stringify(recipe, null, 2)], { type: "application/json" });
+            const url = URL.createObjectURL(blob); const anchor = document.createElement("a"); anchor.href = url; anchor.download = `forma-${generator}-${seed}.json`; anchor.click(); URL.revokeObjectURL(url); setStatus("PORTABLE RECIPE EXPORTED");
+          }}>EXPORT .JSON ↗</button>
+          <label className={styles.importRecipe}>IMPORT .JSON ↗<input type="file" accept="application/json,.json" onChange={async (event) => {
+            const file = event.currentTarget.files?.[0]; event.currentTarget.value = ""; if (!file) return;
+            try { const imported = parsePortableRecipe(await file.text()); const recipe: PlaygroundRecipe = { ...imported, id: window.crypto.randomUUID(), createdAt: new Date().toISOString() }; loadRecipe(recipe); setStatus("PORTABLE RECIPE IMPORTED"); }
+            catch (error) { setStatus(error instanceof Error ? error.message.toUpperCase() : "RECIPE IMPORT FAILED"); }
+          }} /></label>
         </div>
         <div className={styles.recipeList} aria-live="polite">
           {!recipesReady ? <p>Loading your local recipes…</p> : recipes.length === 0 ? <p>No saved recipes yet. Tune an instrument and save your first study.</p> : recipes.map((recipe) => <article key={recipe.id}>

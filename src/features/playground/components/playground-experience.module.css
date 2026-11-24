@@ -69,3 +69,27 @@
 @media (max-width: 800px) { .controls { grid-template-columns: 1fr 1fr; } .seedControl { grid-column: auto; } .recipeHeading { align-items: flex-start; flex-direction: column; gap: .8rem; } }
 @media (max-width: 560px) { .generatorPicker { grid-template-columns: 1fr; } .generatorPicker button { display: grid; grid-template-columns: 2.5rem 1fr; gap: .25rem .6rem; border-right: 0; border-bottom: 1px solid #d8d5ca; } .generatorPicker button small { grid-column: 2; } .recipeSave, .recipeList { grid-template-columns: 1fr; } .recipeSave button { width: 100%; } }
 @media (prefers-reduced-motion: reduce) { .generatorPicker button { transition: none; } }
+
+.presetStudio { padding: 1.1rem 1rem; border-top: 1px solid #d8d5ca; background: #e2dfd5; }
+.presetHeading { display: flex; justify-content: space-between; gap: 1rem; margin-bottom: .8rem; color: #696961; font: 9px var(--font-mono); letter-spacing: .1em; }
+.presetHeading small { font: inherit; text-align: right; }
+.presetList { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: .5rem; }
+.presetList button { display: flex; min-width: 0; flex-direction: column; align-items: flex-start; gap: .55rem; border: 1px solid #c9c6bb; padding: .8rem; background: transparent; color: #20211f; text-align: left; cursor: pointer; }
+.presetList button:hover, .presetList button:focus-visible { border-color: #f05b3e; background: #e8e5dc; }
+.presetList button > span, .presetList button small { color: #696961; font: 9px/1.4 var(--font-mono); }
+.presetList button strong { font: 500 1rem var(--font-display); letter-spacing: -.03em; }
+.paletteStudio { display: flex; flex-wrap: wrap; align-items: center; gap: .7rem; padding: .9rem 1rem; border-top: 1px solid #d8d5ca; background: #e8e5dc; }
+.paletteStudio > span { margin-right: auto; color: #696961; font: 9px var(--font-mono); letter-spacing: .1em; }
+.paletteStudio button { display: flex; align-items: center; gap: .4rem; border: 1px solid transparent; padding: .35rem; background: transparent; cursor: pointer; }
+.paletteStudio button[aria-pressed="true"] { border-color: #20211f; }
+.paletteStudio button i { display: flex; }
+.paletteStudio button i b { width: 12px; height: 20px; }
+.paletteStudio button small { color: #20211f; font: 9px var(--font-mono); }
+.portableActions { display: flex; flex-wrap: wrap; gap: .5rem; margin-top: 1rem; }
+.portableActions button, .importRecipe { display: inline-flex; align-items: center; justify-content: center; min-height: 2.4rem; border: 1px solid #77766e; padding: .6rem .8rem; background: transparent; color: #20211f; font: 9px var(--font-mono); letter-spacing: .08em; cursor: pointer; }
+.portableActions button:hover, .importRecipe:hover { border-color: #f05b3e; color: #f05b3e; }
+.importRecipe { position: relative; overflow: hidden; }
+.importRecipe input { position: absolute; inset: 0; width: 100%; height: 100%; opacity: 0; cursor: pointer; }
+@media (max-width: 800px) { .presetList { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 420px) { .presetHeading { flex-direction: column; } .presetHeading small { text-align: left; } .presetList { grid-template-columns: 1fr 1fr; } }
+@media (prefers-reduced-motion: reduce) { .presetList button { transition: none; } }
