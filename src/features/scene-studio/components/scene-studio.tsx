@@ -119,6 +119,9 @@ export function SceneStudio() {
   const [historyState, setHistoryState] = useState({ canUndo: false, canRedo: false });
   const [versions, setVersions] = useState<SceneVersion[]>([]);
   const [showVersions, setShowVersions] = useState(false);
+  const [archivedIds, setArchivedIds] = useState<string[]>([]);
+  const [showArchived, setShowArchived] = useState(false);
+
   const versionStorageKey = (id: string) => `forma:scene-studio:versions:v1:${id}`;
   const snapshot = (): EditorSnapshot => ({ objects: structuredClone(objects), camera: cameraView, name: sceneName });
   const recordHistory = () => {
@@ -242,6 +245,13 @@ export function SceneStudio() {
         }
         library.sort((a, b) => b.updatedAt.localeCompare(a.updatedAt));
         setStorageKey(activeStorageKey);
+        try {
+          const archived = window.localStorage.getItem(`${activeStorageKey}:archived`);
+          setArchivedIds(archived ? JSON.parse(archived) as string[] : []);
+        } catch {
+          setArchivedIds([]);
+        }
+
         setCompositions(library);
         const latest = library[0];
         setActiveCompositionId(latest.id);
@@ -420,6 +430,17 @@ export function SceneStudio() {
     
   };
   const duplicateComposition = () => {
+  const toggleArchiveComposition = () => {
+    if (!activeCompositionId) return;
+    const next = archivedIds.includes(activeCompositionId)
+      ? archivedIds.filter((id) => id !== activeCompositionId)
+      : [...archivedIds, activeCompositionId];
+    window.localStorage.setItem(`${storageKey}:archived`, JSON.stringify(next));
+    setArchivedIds(next);
+    setSaveStatus(next.includes(activeCompositionId) ? "COMPOSITION ARCHIVED" : "COMPOSITION RESTORED");
+  };
+
+
     const source = compositions.find((item) => item.id === activeCompositionId);
     if (!source) return;
     const copy: SceneDocument = { ...structuredClone(source), id: window.crypto.randomUUID(), name: `${source.name.slice(0, 68)} copy`, updatedAt: new Date().toISOString(), revision: undefined };
@@ -487,11 +508,15 @@ export function SceneStudio() {
 
       <details className={styles.projectLibrary}>
         <summary><span>PROJECT LIBRARY</span><span>{String(compositions.length).padStart(2, "0")} COMPOSITIONS</span></summary>
+        <div className={styles.projectLibraryActions}>
+          <button onClick={() => setShowArchived((value) => !value)} aria-pressed={showArchived}>{showArchived ? "SHOW ACTIVE" : "SHOW ARCHIVED"} ({archivedIds.length})</button>
+          <button onClick={toggleArchiveComposition}>{archivedIds.includes(activeCompositionId) ? "RESTORE CURRENT" : "ARCHIVE CURRENT"}</button>
+        </div>
         <div className={styles.projectGrid}>
-          {compositions.map((composition) => <button key={composition.id} className={`${styles.projectCard} ${composition.id === activeCompositionId ? styles.projectCardActive : ""}`} onClick={() => openComposition(composition.id)}>
+          {compositions.filter((composition) => archivedIds.includes(composition.id) === showArchived).map((composition) => <button key={composition.id} className={`${styles.projectCard} ${composition.id === activeCompositionId ? styles.projectCardActive : ""}`} onClick={() => openComposition(composition.id)}>
             <span className={styles.projectThumbnail} style={{ backgroundImage: `url("${makeThumbnail(composition.objects)}")` }} />
             <strong>{composition.name}</strong>
-            <small>{composition.objects.length} OBJECTS · {new Date(composition.updatedAt).toLocaleDateString()}</small>
+            <small>{archivedIds.includes(composition.id) ? "ARCHIVED · " : ""}{composition.objects.length} OBJECTS · {new Date(composition.updatedAt).toLocaleDateString()}</small>
           </button>)}
         </div>
       </details>
