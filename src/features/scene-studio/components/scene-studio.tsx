@@ -11,7 +11,7 @@ import { useThree } from "@react-three/fiber";
 import styles from "./scene-studio.module.css";
 import { parseSceneDocument, readSceneLibrary, SCENE_STORAGE_KEY } from "../scene-document";
 import type { SceneDocument } from "../scene-document";
-import { deleteCloudComposition, getSceneCloudSession, loadCloudCompositions, saveCloudComposition } from "../scene-cloud";
+import { deleteCloudComposition, getSceneCloudSession, loadCloudCompositions, saveCloudComposition, signOutCloudSession } from "../scene-cloud";
 
 type ShapeKind = "box" | "sphere" | "torus";
 type SceneObject = { id: number; name: string; kind: ShapeKind; color: string; roughness: number; metalness: number; emissive: string; position: [number, number, number]; rotation: [number, number, number]; scale: number; visible: boolean };
@@ -95,6 +95,7 @@ export function SceneStudio() {
   const [hydrated, setHydrated] = useState(false);
   const [saveStatus, setSaveStatus] = useState("LOADING LIBRARY");
   const [cloudUserId, setCloudUserId] = useState<string | null>(null);
+  const [storageKey, setStorageKey] = useState(SCENE_STORAGE_KEY);
   const cloudRevisions = useRef(new Map<string, number>());
   const [selectedId, setSelectedId] = useState(1);
   const [activeTool, setActiveTool] = useState<"select" | "move" | "rotate" | "scale">("select");
@@ -107,12 +108,15 @@ export function SceneStudio() {
     let active = true;
     const timeout = window.setTimeout(() => {
       void (async () => {
-        let library = readSceneLibrary(window.localStorage.getItem(SCENE_STORAGE_KEY));
+        let activeStorageKey = SCENE_STORAGE_KEY;
+        let library = readSceneLibrary(window.localStorage.getItem(activeStorageKey));
         let status = "LOCAL LIBRARY RESTORED";
         try {
           const session = await getSceneCloudSession();
           if (session.status === "ready") {
             const cloudLibrary = await loadCloudCompositions();
+            activeStorageKey = `${SCENE_STORAGE_KEY}:${session.userId}`;
+            library = readSceneLibrary(window.localStorage.getItem(activeStorageKey));
             setCloudUserId(session.userId);
             const cloudById = new Map(cloudLibrary.map((item) => [item.id, item]));
             for (const cloudScene of cloudLibrary) {
@@ -149,6 +153,7 @@ export function SceneStudio() {
           library = [starter];
         }
         library.sort((a, b) => b.updatedAt.localeCompare(a.updatedAt));
+        setStorageKey(activeStorageKey);
         setCompositions(library);
         const latest = library[0];
         setActiveCompositionId(latest.id);
@@ -156,7 +161,7 @@ export function SceneStudio() {
         setObjects(latest.objects);
         setCameraView(latest.camera);
         setSelectedId(latest.objects[0]?.id ?? 1);
-        window.localStorage.setItem(SCENE_STORAGE_KEY, JSON.stringify(library));
+        window.localStorage.setItem(activeStorageKey, JSON.stringify(library));
         setSaveStatus(status);
         setHydrated(true);
       })();
@@ -178,10 +183,10 @@ export function SceneStudio() {
         updatedAt: new Date().toISOString(),
         revision: cloudRevisions.current.get(activeCompositionId),
       };
-      const current = readSceneLibrary(window.localStorage.getItem(SCENE_STORAGE_KEY));
+      const current = readSceneLibrary(window.localStorage.getItem(storageKey));
       const next = [document, ...current.filter((item) => item.id !== activeCompositionId)]
         .sort((a, b) => b.updatedAt.localeCompare(a.updatedAt)).slice(0, 100);
-      window.localStorage.setItem(SCENE_STORAGE_KEY, JSON.stringify(next));
+      window.localStorage.setItem(storageKey, JSON.stringify(next));
       setCompositions(next);
       if (!cloudUserId) {
         setSaveStatus("LOCAL SAVED · SIGN IN TO SYNC");
@@ -192,7 +197,7 @@ export function SceneStudio() {
         if (typeof saved.revision === "number") cloudRevisions.current.set(saved.id, saved.revision);
         const updated = readSceneLibrary(window.localStorage.getItem(SCENE_STORAGE_KEY))
           .map((item) => item.id === saved.id ? saved : item);
-        window.localStorage.setItem(SCENE_STORAGE_KEY, JSON.stringify(updated));
+        window.localStorage.setItem(storageKey, JSON.stringify(updated));
         setCompositions(updated);
         setSaveStatus("CLOUD SYNCED");
       }).catch((error: unknown) => {
@@ -202,7 +207,7 @@ export function SceneStudio() {
       });
     }, 650);
     return () => window.clearTimeout(timeout);
-  }, [activeCompositionId, cameraView, cloudUserId, hydrated, objects, sceneName]);
+  }, [activeCompositionId, cameraView, cloudUserId, hydrated, objects, sceneName, storageKey]);
 
   const openComposition = (id: string) => {
     const document = compositions.find((item) => item.id === id);
@@ -267,7 +272,7 @@ export function SceneStudio() {
     void deleteCloudComposition(deletedId).catch(() => setSaveStatus("LOCAL DELETE · CLOUD DELETE FAILED"));
   };
 
-  const exportScene = () => {
+  const signOut = async () => {\n    try {\n      await signOutCloudSession();\n      window.location.reload();\n    } catch {\n      setSaveStatus("SIGN OUT FAILED");\n    }\n  };\n\n  const exportScene = () => {
     const payload = { format: "forma-scene", version: 1, name: sceneName, camera: cameraView, objects, exportedAt: new Date().toISOString() };
     const file = new Blob([JSON.stringify(payload, null, 2)], { type: "application/json" });
     const url = URL.createObjectURL(file);
@@ -314,7 +319,7 @@ export function SceneStudio() {
           <button className={styles.quietButton} onClick={createComposition}>＋ NEW</button>
           <label className={styles.importButton}>IMPORT JSON<input aria-label="Import FORMA JSON" type="file" accept="application/json,.json" onChange={importComposition} /></label>
           <button className={styles.quietButton} onClick={deleteComposition} disabled={compositions.length <= 1}>DELETE</button>
-          <Link className={styles.accountLink} href="/sign-in">{cloudUserId ? "ACCOUNT ↗" : "SIGN IN ↗"}</Link>
+          {cloudUserId ? <button className={styles.accountLink} onClick={signOut}>SIGN OUT</button> : <Link className={styles.accountLink} href="/sign-in">SIGN IN ↗</Link>}
         </div>
         <div className={styles.topActions}>
           <button className={styles.quietButton} onClick={() => { setObjects(initialObjects); setSelectedId(1); }}>RESET</button>
