@@ -4,19 +4,19 @@
 .heading h2 { margin: 1rem 0 0; font: 500 clamp(3rem, 6vw, 6rem)/.9 var(--font-display); letter-spacing: -.08em; }
 .heading h2 em { color: var(--brand-coral); font-style: normal; }
 .heading p { max-width: 24rem; margin: 0 0 .35rem; color: var(--color-text-secondary); line-height: 1.65; }
-.stage { position: relative; display: grid; min-height: clamp(300px, 42vw, 520px); overflow: hidden; place-items: center; border: 1px solid var(--color-border); background: #211b1c; isolation: isolate; }
-.stage::before { position: absolute; inset: 0; z-index: -1; background: repeating-linear-gradient(90deg, transparent 0 8.25%, rgb(255 255 255 / .035) 8.3% 8.4%), radial-gradient(ellipse at 50% 50%, rgb(255 118 94 / .13), transparent 55%); content: ""; }
-.stage[data-inverted="true"] { background: #171b24; }
-.stage[data-inverted="true"]::before { background: repeating-linear-gradient(90deg, transparent 0 8.25%, rgb(255 255 255 / .035) 8.3% 8.4%), radial-gradient(ellipse at 50% 50%, rgb(100 123 255 / .16), transparent 55%); }
+.stage { position: relative; display: grid; min-height: clamp(300px, 42vw, 520px); overflow: hidden; place-items: center; border: 1px solid var(--color-border); background: #e9d5ca; isolation: isolate; }
+.stage::before { position: absolute; inset: 0; z-index: -1; background: repeating-linear-gradient(90deg, transparent 0 8.25%, rgb(32 33 31 / .06) 8.3% 8.4%), radial-gradient(ellipse at 50% 50%, rgb(240 91 62 / .13), transparent 55%); content: ""; }
+.stage[data-inverted="true"] { background: #dfe2f2; }
+.stage[data-inverted="true"]::before { background: repeating-linear-gradient(90deg, transparent 0 8.25%, rgb(255 255 255 / .035) 8.3% 8.4%), radial-gradient(ellipse at 50% 50%, rgb(36 59 214 / .13), transparent 55%); }
 .coordinate, .baseline { position: absolute; color: var(--color-text-muted); font: 9px var(--font-mono); letter-spacing: .12em; }
 .coordinate { top: 1rem; left: 1rem; }
 .baseline { right: 1rem; bottom: 1rem; }
 .specimen { display: flex; align-items: center; justify-content: center; width: 100%; gap: calc(.03em + (var(--release) * .14em)); padding: 1rem; color: var(--brand-coral); font: 500 clamp(4rem, 15vw, 15rem)/.8 var(--font-display); letter-spacing: calc(-.11em + (var(--release) * .04em)); transform: scaleX(var(--tension)); transform-origin: center; transition: transform 240ms cubic-bezier(.2,.8,.2,1), letter-spacing 240ms ease, gap 240ms ease, color 240ms ease; }
 .stage[data-inverted="true"] .specimen { color: var(--brand-blue); transform: scaleX(calc(1.8 - var(--tension))); }
-.controls { display: grid; grid-template-columns: 1fr 1fr auto auto; align-items: end; gap: 1.2rem; padding: 1.2rem; border: 1px solid var(--color-border); border-top: 0; background: #17191c; }
+.controls { display: grid; grid-template-columns: 1fr 1fr auto auto; align-items: end; gap: 1.2rem; padding: 1.2rem; border: 1px solid var(--color-border); border-top: 0; background: #e8e5dc; }
 .controls label { display: grid; gap: .7rem; color: var(--color-text-muted); font: 9px var(--font-mono); letter-spacing: .1em; }
 .controls label span { display: flex; justify-content: space-between; gap: .5rem; }
-.controls output { color: var(--brand-lime); }
+.controls output { color: var(--brand-coral); }
 .controls input { width: 100%; accent-color: var(--brand-coral); }
 .controls button { min-height: 2.4rem; border: 1px solid var(--color-border); padding: .6rem .7rem; background: transparent; color: var(--color-text-secondary); font: 8px var(--font-mono); letter-spacing: .08em; cursor: pointer; }
 .controls button:hover, .controls button[aria-pressed="true"] { border-color: var(--brand-coral); color: var(--brand-coral); }
