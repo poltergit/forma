@@ -5,6 +5,9 @@ All notable project changes are recorded here.
 ## [Unreleased]
 
 ### Added
+- Added three deterministic Playground instruments: Displacement Field, Orbital Bloom, and Woven Lattice, each with distinct geometry logic and Scene Studio export.
+- Added a local recipe library with named save, restore, and delete actions, plus editable seed control.
+- Added generator-registry, deterministic-output, resource-bound, and Scene Studio export tests.
 - Added a deterministic Playground-to-Scene-Studio handoff: the Displacement Field can be carried into the 3D editor as an editable composition, with generated objects and generator provenance preserved in the scene payload.
 - Extracted the Displacement Field generator into a bounded pure module with reproducibility and Scene Studio compatibility tests.
 

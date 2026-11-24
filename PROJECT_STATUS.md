@@ -71,6 +71,12 @@ Latest automated validation passed on Node 22: clean `npm ci`, lint, typecheck, 
 
 **Not yet owner-approved:** real-device visual inspection, screen-reader/manual accessibility review, WebGL/static fallback review, performance profiling, investigation of the earlier React `use()` warning, and the new Three.js `THREE.Clock` deprecation warning remain open. Phase 08 remains in progress and unapproved.
 
+### Generative instrument system and local recipes (2026-11-24)
+
+Playground now exposes three allowlisted deterministic instruments: Displacement Field, Orbital Bloom, and Woven Lattice. Each has distinct point-generation and canvas-rendering logic, shares bounded density/influence/seed controls, and exports editable Scene Studio objects with generator ID/version and parameter provenance. Users can save, restore, and delete up to 24 named recipes in browser-local storage. Recipe storage is device/browser-local, not cloud-synced or cross-device.
+
+The registry is explicit; no dynamic code execution, plugin loading, or database migration is involved. Automated tests cover distinct outputs, seed reproducibility, bounds, and Scene Studio export. Visual and real-device review remains outstanding.
+
 ### Playground → Scene Studio bridge (2026-11-24)
 
 The Displacement Field now produces a reproducible, bounded scene document from its seed and controls. The Playground action hands that document to Scene Studio through a one-time browser-local handoff. Scene Studio validates it with the existing versioned scene parser, adds it to the active local/account-scoped library, and lets the existing autosave/cloud-sync path persist it when cloud auth is configured.

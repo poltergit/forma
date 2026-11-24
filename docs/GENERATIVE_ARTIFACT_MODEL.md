@@ -199,13 +199,24 @@ Test in an isolated environment with Alice, Bob, and anonymous sessions:
 | Unsupported artifact schema | Application rejects |
 | Saved artifact loads after generator upgrade | Exact version retained or explicit unsupported/migration state |
 
-## 10. MVP recommendation
+## 10. Implemented local Playground registry (2026-11-24)
+
+The first client-side instrument registry is allowlisted in `src/features/playground/playground-scene.ts`:
+- `displacement` — seeded scattered field;
+- `orbital-bloom` — five-arm radial bloom;
+- `woven-lattice` — seeded jittered grid.
+
+All three currently use generator version `1.0.0`, bounded seed values (0–9,999,999), density values (12–96), and influence values (0–100). Logical point output is deterministic for the same generator, seed, and density. Pointer position is a live presentation input and is intentionally not part of the saved recipe. Scene handoff includes generator ID, version, seed, density, and influence. Named recipes are stored locally in the current browser/device (maximum 24); this is not cloud persistence.
+
+This is a first authored registry, not the future full artifact envelope or cloud artifact persistence model. Generator-specific schema validation, version migration, server-side allowlist enforcement, and RLS remain future work before cloud-backed artifacts are introduced.
+
+## 11. MVP recommendation
 
 Start with a small number of authored generators and a private save/restore workflow only if it fits the first release. Do not introduce a generic node editor, arbitrary code execution, AI prompt-to-generator authoring, public sharing, collaboration, marketplace, or a user-uploaded plugin system.
 
 The generator registry should remain simple and explicit. Add a new generator by implementing and testing a bounded module, not by dynamically evaluating stored code.
 
-## 11. Acceptance criteria
+## 12. Acceptance criteria
 
 - Generator ID/version registry is explicit and allowlisted.
 - Seed and parameters reproduce the documented logical output.

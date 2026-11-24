@@ -1,25 +1,40 @@
 import { describe, expect, it } from "vitest";
-import { createPoints, createPlaygroundScene } from "./playground-scene";
+import { createGeneratorPoints, createPlaygroundScene, GENERATORS } from "./playground-scene";
 
-describe("playground generator", () => {
-  it("reproduces the same points for the same seed", () => {
-    expect(createPoints(42, 12)).toEqual(createPoints(42, 12));
+describe("Playground generator registry", () => {
+  it("exposes three distinct instruments", () => {
+    expect(GENERATORS.map((item) => item.id)).toEqual(["displacement", "orbital-bloom", "woven-lattice"]);
   });
-  it("produces a different composition for a different seed", () => {
-    expect(createPoints(42, 12)).not.toEqual(createPoints(43, 12));
+  it("reproduces the same output for the same instrument, seed, and density", () => {
+    for (const generator of GENERATORS) expect(createGeneratorPoints(42, 24, generator.id)).toEqual(createGeneratorPoints(42, 24, generator.id));
   });
-  it("respects the requested point count", () => {
-    expect(createPoints(42, 7)).toHaveLength(7);
+  it("changes logical output when the seed changes", () => {
+    expect(createGeneratorPoints(42, 24, "orbital-bloom")).not.toEqual(createGeneratorPoints(43, 24, "orbital-bloom"));
   });
-  it("creates a bounded Scene Studio-compatible composition", () => {
-    const scene = createPlaygroundScene(27, 64, 58);
-    expect(scene.format).toBe("forma-scene");
-    expect(scene.objects).toHaveLength(64);
-    expect(scene.objects[0]).toMatchObject({ id: 1, visible: true, roughness: 0.28 });
-    expect(scene.objects.every((item) => item.position.every(Number.isFinite))).toBe(true);
+  it("creates visibly distinct point systems for each instrument", () => {
+    const displacement = createGeneratorPoints(42, 36, "displacement");
+    const bloom = createGeneratorPoints(42, 36, "orbital-bloom");
+    const lattice = createGeneratorPoints(42, 36, "woven-lattice");
+    expect(bloom).not.toEqual(displacement);
+    expect(lattice).not.toEqual(displacement);
+    expect(bloom).not.toEqual(lattice);
   });
-  it("rejects out-of-range generator parameters", () => {
-    expect(() => createPlaygroundScene(1, 100, 50)).toThrow(/density/i);
+  it("enforces generator, density, and seed bounds", () => {
+    expect(() => createGeneratorPoints(1, 11, "displacement")).toThrow(/density/i);
+    expect(() => createGeneratorPoints(1, 100, "displacement")).toThrow(/density/i);
+    expect(() => createGeneratorPoints(-1, 24, "displacement")).toThrow(/seed/i);
+    expect(() => createGeneratorPoints(1, 24, "invalid" as never)).toThrow(/instrument/i);
+  });
+  it("exports each instrument as an editable Scene Studio document", () => {
+    for (const generator of GENERATORS) {
+      const scene = createPlaygroundScene(27, 64, 58, generator.id);
+      expect(scene.format).toBe("forma-scene");
+      expect(scene.objects).toHaveLength(64);
+      expect(scene.name).toContain(generator.name);
+      expect(scene.objects.every((item) => item.position.every(Number.isFinite))).toBe(true);
+    }
+  });
+  it("rejects out-of-range influence values", () => {
     expect(() => createPlaygroundScene(1, 24, 101)).toThrow(/influence/i);
   });
 });
