@@ -18,6 +18,7 @@ export type SceneDocument = {
   camera: "perspective" | "front" | "top" | "side";
   objects: SceneObjectDocument[];
   updatedAt: string;
+  revision?: number;
 };
 
 export const SCENE_STORAGE_KEY = "forma:scene-studio:compositions:v1";
