@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import type { FormEvent } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { createSupabaseBrowserClient } from "@/lib/supabase/client";
@@ -16,7 +17,7 @@ export function AuthForm() {
   const [status, setStatus] = useState("");
   const [busy, setBusy] = useState(false);
 
-  const submit = async (event: React.FormEvent<HTMLFormElement>) => {
+  const submit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     setStatus("");
     if (!getPublicSupabaseEnvironment().configured) {
