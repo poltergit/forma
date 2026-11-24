@@ -52,7 +52,7 @@ export function SceneStudio() {
   const [selectedId, setSelectedId] = useState(1);
   const [activeTool, setActiveTool] = useState<"select" | "move" | "rotate" | "scale">("select");
   const [sceneName, setSceneName] = useState("Untitled composition");
-  const [saved, setSaved] = useState(false);
+  const [saved, setSaved] = useState(false);\n  const [mobilePanel, setMobilePanel] = useState<"hierarchy" | "inspector" | null>(null);
   const selected = useMemo(() => objects.find((item) => item.id === selectedId) ?? objects[0], [objects, selectedId]);
 
   const updateSelected = (patch: Partial<SceneObject>) => {
@@ -90,7 +90,7 @@ export function SceneStudio() {
       </header>
 
       <div className={styles.workspace}>
-        <aside className={styles.leftPanel}>
+        <aside className={`${styles.leftPanel} ${mobilePanel === "hierarchy" ? styles.mobilePanelOpen : ""}`}>
           <div className={styles.panelHeading}><span>01 / HIERARCHY</span><span>{String(objects.length).padStart(2, "0")} OBJECTS</span></div>
           <div className={styles.addTools}>
             <button onClick={() => addObject("box")}><b>＋</b> BLOCK</button>
@@ -130,7 +130,7 @@ export function SceneStudio() {
           <div className={styles.statusbar}><span><i /> ENGINE READY</span><span>WEBGL / THREE.JS</span><span>{objects.filter((item) => item.visible).length} VISIBLE OBJECTS</span><span>100% VIEW</span></div>
         </section>
 
-        <aside className={styles.rightPanel}>
+        <aside className={`${styles.rightPanel} ${mobilePanel === "inspector" ? styles.mobilePanelOpen : ""}`}>
           <div className={styles.panelHeading}><span>02 / INSPECTOR</span><span>PROPERTIES</span></div>
           {selected ? <div className={styles.inspector}>
             <div className={styles.selectionIntro}><span>ACTIVE OBJECT / {String(selected.id).padStart(3, "0")}</span><strong>{selected.name}</strong><small>{selected.kind.toUpperCase()} · MESH STANDARD</small></div>
@@ -155,7 +155,7 @@ export function SceneStudio() {
           <div className={styles.inspectorFoot}><span>FORM IS A VERB.</span><span>V. 01.0</span></div>
         </aside>
       </div>
-      <footer className={styles.mobileBar}><span>SCENE STUDIO / 001</span><span>ROTATE YOUR VIEWPORT ↗</span></footer>
+      {mobilePanel && <button className={styles.mobileBackdrop} aria-label="Close editor panel" onClick={() => setMobilePanel(null)} />}\n      <footer className={styles.mobileBar}><button aria-pressed={mobilePanel === "hierarchy"} onClick={() => setMobilePanel(mobilePanel === "hierarchy" ? null : "hierarchy")}>☷ <span>OBJECTS</span></button><span>SCENE / 001</span><button aria-pressed={mobilePanel === "inspector"} onClick={() => setMobilePanel(mobilePanel === "inspector" ? null : "inspector")}>◫ <span>INSPECT</span></button></footer>
     </main>
   );
 }
