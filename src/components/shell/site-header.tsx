@@ -4,6 +4,7 @@ import styles from "./site-header.module.css";
 const navigation = [
   { label: "STUDIES", href: "/playground" },
   { label: "MOTION", href: "/motion-lab" },
+  { label: "SCENE STUDIO", href: "/scene-studio" },
   { label: "THE BELIEF", href: "/#manifesto" },
 ];
 
