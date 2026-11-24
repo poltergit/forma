@@ -2,10 +2,9 @@ import Link from "next/link";
 import styles from "./site-header.module.css";
 
 const navigation = [
-  { label: "PLAYGROUND", href: "/playground" },
-  { label: "MOTION LAB", href: "/motion-lab" },
-  { label: "EXPERIENCE", href: "/#the-idea" },
-  { label: "DISCIPLINES", href: "/#disciplines" },
+  { label: "STUDIES", href: "/playground" },
+  { label: "MOTION", href: "/motion-lab" },
+  { label: "THE BELIEF", href: "/#manifesto" },
 ];
 
 export function SiteHeader() {
@@ -13,21 +12,13 @@ export function SiteHeader() {
     <header className={styles.header}>
       <div className={styles.inner}>
         <Link className={styles.brand} href="/" aria-label="FORMA home">
-          <span className={styles.mark} aria-hidden="true">
-            <span />
-            <span />
-            <span />
-          </span>
-          <span>FORMA</span>
+          <span className={styles.mark} aria-hidden="true"><i /><i /><i /></span>
+          <span>FORMA<span className={styles.registered}>®</span></span>
         </Link>
         <nav className={styles.nav} aria-label="Main navigation">
-          {navigation.map((item) => (
-            <Link key={item.label} href={item.href}>
-              {item.label}
-            </Link>
-          ))}
+          {navigation.map((item) => <Link key={item.label} href={item.href}>{item.label}</Link>)}
         </nav>
-        <span className={styles.edition}>DIGITAL PLAYGROUND <span>®</span></span>
+        <Link className={styles.contact} href="/playground">MAKE SOMETHING <span>↗</span></Link>
       </div>
     </header>
   );
