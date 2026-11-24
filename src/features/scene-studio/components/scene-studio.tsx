@@ -195,7 +195,7 @@ export function SceneStudio() {
       setSaveStatus("SYNCING TO CLOUD");
       void saveCloudComposition(document).then((saved) => {
         if (typeof saved.revision === "number") cloudRevisions.current.set(saved.id, saved.revision);
-        const updated = readSceneLibrary(window.localStorage.getItem(SCENE_STORAGE_KEY))
+        const updated = readSceneLibrary(window.localStorage.getItem(storageKey))
           .map((item) => item.id === saved.id ? saved : item);
         window.localStorage.setItem(storageKey, JSON.stringify(updated));
         setCompositions(updated);
@@ -225,7 +225,7 @@ export function SceneStudio() {
     const document: SceneDocument = { id, name: "Untitled composition", camera: "perspective", objects: initialObjects.map((item) => ({ ...item, position: [...item.position] as [number, number, number], rotation: [...item.rotation] as [number, number, number] })), updatedAt: new Date().toISOString() };
     const next = [document, ...compositions];
     setCompositions(next);
-    window.localStorage.setItem(SCENE_STORAGE_KEY, JSON.stringify(next));
+    window.localStorage.setItem(storageKey, JSON.stringify(next));
     setActiveCompositionId(id);
     setSceneName(document.name);
     setObjects(document.objects);
@@ -272,7 +272,16 @@ export function SceneStudio() {
     void deleteCloudComposition(deletedId).catch(() => setSaveStatus("LOCAL DELETE · CLOUD DELETE FAILED"));
   };
 
-  const signOut = async () => {\n    try {\n      await signOutCloudSession();\n      window.location.reload();\n    } catch {\n      setSaveStatus("SIGN OUT FAILED");\n    }\n  };\n\n  const exportScene = () => {
+  const signOut = async () => {
+    try {
+      await signOutCloudSession();
+      window.location.reload();
+    } catch {
+      setSaveStatus("SIGN OUT FAILED");
+    }
+  };
+
+  const exportScene = () => {
     const payload = { format: "forma-scene", version: 1, name: sceneName, camera: cameraView, objects, exportedAt: new Date().toISOString() };
     const file = new Blob([JSON.stringify(payload, null, 2)], { type: "application/json" });
     const url = URL.createObjectURL(file);
