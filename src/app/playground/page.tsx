@@ -15,23 +15,23 @@ export default function PlaygroundPage() {
       <section className={styles.intro}>
         <div className={styles.introMeta}><span>01 / THE PLAYGROUND</span><span>AN INDEX OF EXPERIMENTS</span></div>
         <div className={styles.introGrid}>
-          <h1>Enter the<br /><em>unknown.</em></h1>
-          <p>Not a gallery of finished answers. A field of strange little worlds. Move through them, change the rules, and see what happens.</p>
+          <h1>Enter the<br /><em>unmade.</em></h1>
+          <p>Not a gallery of finished answers. An open workbench for curious minds. Pull at a system, interrupt its logic, and see what else it can become.</p>
         </div>
         <div className={styles.introFoot}><span>FORM / FORCE / FEELING</span><span>SCROLL TO INTERACT ↓</span></div>
       </section>
       <section className={styles.experiment} id="displacement-field" aria-labelledby="experiment-title">
         <div className={styles.experimentHeading}>
-          <div><span>FEATURED EXPERIMENT / 001</span><h2 id="experiment-title">Displacement<br /><em>field.</em></h2></div>
-          <p>A seeded field of dimensional forms. Your movement bends the composition; parameters let you change its density and influence.</p>
+          <div><span>OPEN STUDY / 001</span><h2 id="experiment-title">Displacement<br /><em>field.</em></h2></div>
+          <p>A responsive field of geometry. Move through the composition, change its density, and give the forms a new center of gravity.</p>
         </div>
         <PlaygroundExperience />
       </section>
       <ExperimentIndex />
       <ElasticType />
       <section className={styles.next}>
-        <span>MORE WORLDS ARE TAKING SHAPE</span>
-        <p>One experiment at a time.<br /><em>No two rules need to be alike.</em></p>
+        <span>THE INDEX IS NEVER FINISHED</span>
+        <p>One rule becomes another.<br /><em>Keep pulling the thread.</em></p>
       </section>
     </main>
   );
