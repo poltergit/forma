@@ -429,7 +429,6 @@ export function SceneStudio() {
     setSelectedId(id);
     
   };
-  const duplicateComposition = () => {
   const toggleArchiveComposition = () => {
     if (!activeCompositionId) return;
     const next = archivedIds.includes(activeCompositionId)
@@ -440,8 +439,7 @@ export function SceneStudio() {
     setSaveStatus(next.includes(activeCompositionId) ? "COMPOSITION ARCHIVED" : "COMPOSITION RESTORED");
   };
 
-
-    const source = compositions.find((item) => item.id === activeCompositionId);
+  const duplicateComposition = () => {    const source = compositions.find((item) => item.id === activeCompositionId);
     if (!source) return;
     const copy: SceneDocument = { ...structuredClone(source), id: window.crypto.randomUUID(), name: `${source.name.slice(0, 68)} copy`, updatedAt: new Date().toISOString(), revision: undefined };
     const next = [copy, ...compositions].slice(0, 100);
