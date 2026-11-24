@@ -100,3 +100,10 @@ export async function deleteCloudComposition(id: string): Promise<void> {
     .eq("owner_id", authData.user.id);
   if (error) throw error;
 }
+
+export async function signOutCloudSession(): Promise<void> {
+  const supabase = getClient();
+  if (!supabase) return;
+  const { error } = await supabase.auth.signOut();
+  if (error) throw error;
+}
