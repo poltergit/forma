@@ -1,7 +1,7 @@
 -- FORMA Scene Studio cloud composition library.
--- Apply after the existing Phase 05 core schema. This table is intentionally
--- separate from public.scenes: the current editor document format is versioned
--- independently from the collaboration command model in public.scenes.
+-- This migration is self-contained and uses Supabase Auth for ownership.
+-- The table is intentionally separate from public.scenes: the current editor
+-- document format is versioned independently from the collaboration model.
 
 begin;
 
@@ -13,9 +13,8 @@ declare
   v_item jsonb;
   v_number numeric;
 begin
-  if jsonb_typeof(p_value) is distinct from 'array' or jsonb_array_length(p_value) <> 3 then
-    return false;
-  end if;
+  if jsonb_typeof(p_value) is distinct from 'array' then return false; end if;
+  if jsonb_array_length(p_value) <> 3 then return false; end if;
   for v_item in select value from jsonb_array_elements(p_value)
   loop
     if jsonb_typeof(v_item) is distinct from 'number' then return false; end if;
@@ -40,6 +39,7 @@ begin
      or (p_object ->> 'id') !~ '^[0-9]+$'
      or (p_object ->> 'id')::numeric < 1
      or jsonb_typeof(p_object -> 'name') is distinct from 'string'
+     or jsonb_typeof(p_object -> 'kind') is distinct from 'string'
      or char_length(btrim(p_object ->> 'name')) not between 1 and 80
      or p_object ->> 'kind' not in ('box','sphere','torus')
      or jsonb_typeof(p_object -> 'color') is distinct from 'string'
@@ -74,10 +74,10 @@ begin
   if jsonb_typeof(p_document) is distinct from 'object'
      or jsonb_typeof(p_document -> 'camera') is distinct from 'string'
      or p_document ->> 'camera' not in ('perspective','front','top','side')
-     or jsonb_typeof(p_document -> 'objects') is distinct from 'array'
      or octet_length(p_document::text) > 262144 then
     return false;
   end if;
+  if jsonb_typeof(p_document -> 'objects') is distinct from 'array' then return false; end if;
   v_count := jsonb_array_length(p_document -> 'objects');
   if v_count not between 1 and 250 then return false; end if;
   for v_item in select value from jsonb_array_elements(p_document -> 'objects')
