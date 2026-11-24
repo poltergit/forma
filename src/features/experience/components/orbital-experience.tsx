@@ -146,7 +146,7 @@ export function AtelierExperience() {
         </div>
         <div className={styles.liveVisual} aria-hidden="true">
           <div className={styles.liveVisualLabel}>VARIABLE / 03—B</div>
-          <AtelierWorld intensity={intensity} speed={speed} density={density} seed={seed} reducedMotion={reducedMotion} />
+          <AtelierWorld intensity={intensity} speed={speed} density={density} seed={seed} reducedMotion={reducedMotion} mode={mode} />
           <div className={styles.liveVisualFoot}>INPUT → RESPONSE → FORM</div>
         </div>
       </section>
