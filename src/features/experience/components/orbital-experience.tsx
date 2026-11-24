@@ -7,6 +7,7 @@ import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
 import styles from "./orbital-experience.module.css";
+import type { MaterialMode } from "./atelier-world";
 
 const AtelierWorld = dynamic(() => import("./atelier-world").then((module) => module.AtelierWorld), {
   ssr: false,
@@ -26,6 +27,7 @@ export function AtelierExperience() {
   const [speed, setSpeed] = useState(1);
   const [density, setDensity] = useState(18);
   const [seed, setSeed] = useState(4137);
+  const [mode, setMode] = useState<MaterialMode>("flow");
   const [reducedMotion, setReducedMotion] = useState(false);
 
   useEffect(() => {
@@ -76,7 +78,7 @@ export function AtelierExperience() {
         </div>
         <div className={styles.artStage} data-intro="scene">
           <div className={styles.artStageTop}><span>STUDY / 001—A</span><span>FORM IN FLUX</span></div>
-          <div className={styles.heroScene} data-hero-scene><AtelierWorld intensity={intensity} speed={speed} density={density} seed={seed} reducedMotion={reducedMotion} /></div>
+          <div className={styles.heroScene} data-hero-scene><AtelierWorld intensity={intensity} speed={speed} density={density} seed={seed} reducedMotion={reducedMotion} mode={mode} /></div>
           <div className={styles.artStageFoot}><span>LIVE GENERATIVE STUDY</span><span>MOVE / ROTATE / RECOMPOSE</span></div>
           <span className={styles.stageCross} aria-hidden="true">✳</span>
         </div>
@@ -130,6 +132,14 @@ export function AtelierExperience() {
             <label><span>ENERGY <output>{intensity.toFixed(2)}×</output></span><input aria-label="Energy" type="range" min="0.65" max="1.45" step="0.05" value={intensity} onChange={(event) => setIntensity(Number(event.target.value))} /></label>
             <label><span>RHYTHM <output>{speed.toFixed(2)}×</output></span><input aria-label="Rhythm" type="range" min="0.3" max="1.8" step="0.05" value={speed} onChange={(event) => setSpeed(Number(event.target.value))} /></label>
             <label><span>FRAGMENTS <output>{density}</output></span><input aria-label="Fragments" type="range" min="6" max="30" step="2" value={density} onChange={(event) => setDensity(Number(event.target.value))} /></label>
+            <div className={styles.modeControl}>
+              <span>FIELD BEHAVIOR</span>
+              <div role="group" aria-label="Choose material behavior">
+                {(["flow", "prism", "signal"] as const).map((value) => (
+                  <button key={value} type="button" aria-pressed={mode === value} onClick={() => setMode(value)}>{value.toUpperCase()}</button>
+                ))}
+              </div>
+            </div>
             <div className={styles.controlFoot}><span>SEED / {String(seed).padStart(5, "0")}</span><button type="button" onClick={() => setSeed((value) => value + 1)}>RECOMPOSE ↗</button></div>
           </div>
           <p className={styles.localNote}>A live local study. Your experiments are not saved.</p>
