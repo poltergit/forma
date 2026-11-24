@@ -83,13 +83,15 @@ function LivingSurface({ intensity, seed, reducedMotion, mode }: Pick<Props, "in
     fragmentShader,
     side: THREE.DoubleSide,
   }), []);
+  const materialRef = useRef(material);
 
   useFrame(({ clock, pointer }) => {
-    material.uniforms.uTime.value = reducedMotion ? 0 : clock.elapsedTime;
-    material.uniforms.uIntensity.value = intensity;
-    material.uniforms.uSeed.value = seed;
-    material.uniforms.uMode.value = mode === "flow" ? 0 : mode === "prism" ? 1 : 2;
-    material.uniforms.uPointer.value.set(pointer.x, pointer.y);
+    const shader = materialRef.current;
+    shader.uniforms.uTime.value = reducedMotion ? 0 : clock.elapsedTime;
+    shader.uniforms.uIntensity.value = intensity;
+    shader.uniforms.uSeed.value = seed;
+    shader.uniforms.uMode.value = mode === "flow" ? 0 : mode === "prism" ? 1 : 2;
+    shader.uniforms.uPointer.value.set(pointer.x, pointer.y);
   });
 
   return <primitive object={material} attach="material" />;
