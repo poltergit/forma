@@ -2,15 +2,15 @@
 .indexTop { display: flex; justify-content: space-between; align-items: end; gap: 2rem; }
 .indexTop > div > span, .filters > span, .cardCopy > div, .cardVisual > span { color: var(--color-text-muted); font: 9px var(--font-mono); letter-spacing: .12em; }
 .indexTop h2 { margin: 1rem 0 0; font: 500 clamp(3rem, 6vw, 6rem)/.9 var(--font-display); letter-spacing: -.08em; }
-.indexTop h2 em { color: var(--brand-lime); font-style: normal; }
+.indexTop h2 em { color: var(--brand-coral); font-style: normal; }
 .indexTop p { max-width: 20rem; margin: 0 0 .3rem; color: var(--color-text-secondary); line-height: 1.6; }
 .filters { display: flex; justify-content: space-between; align-items: center; gap: 1rem; margin-top: 3rem; padding: 1rem 0; border-block: 1px solid var(--color-border); }
 .filters > div { display: flex; gap: .45rem; }
 .filters button { min-width: 3.5rem; min-height: 2.5rem; border: 1px solid var(--color-border); padding: .5rem .8rem; background: transparent; color: var(--color-text-secondary); font: 9px var(--font-mono); cursor: pointer; }
-.filters button[aria-pressed="true"] { border-color: var(--brand-lime); background: rgb(199 243 107 / .08); color: var(--brand-lime); }
+.filters button[aria-pressed="true"] { border-color: var(--brand-coral); background: rgb(240 91 62 / .08); color: var(--brand-coral); }
 .results { display: grid; grid-template-columns: 1.15fr .85fr; gap: 1rem; padding-top: 1rem; }
-.card { display: grid; min-width: 0; grid-template-columns: 1fr 1fr; border: 1px solid var(--color-border); background: #17191c; }
-.cardVisual { position: relative; display: grid; min-height: 19rem; overflow: hidden; place-items: center; background: #202226; }
+.card { display: grid; min-width: 0; grid-template-columns: 1fr 1fr; border: 1px solid var(--color-border); background: #e8e5dc; }
+.cardVisual { position: relative; display: grid; min-height: 19rem; overflow: hidden; place-items: center; background: #d9d6cc; }
 .cardVisual > span { position: absolute; top: .8rem; left: .8rem; }
 .formMark { position: relative; width: 8rem; aspect-ratio: 1; transform: rotateX(58deg) rotateZ(45deg); transform-style: preserve-3d; }
 .formMark i { position: absolute; inset: 8%; border: 1px solid var(--brand-lime); }
