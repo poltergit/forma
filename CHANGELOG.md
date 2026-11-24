@@ -5,6 +5,8 @@ All notable project changes are recorded here.
 ## [Unreleased]
 
 ### Added
+- Added four remix presets and four named color palettes to the Playground instrument system.
+- Added versioned portable recipe JSON export/import with strict allowlist, bounds, and file-size validation.
 - Added three deterministic Playground instruments: Displacement Field, Orbital Bloom, and Woven Lattice, each with distinct geometry logic and Scene Studio export.
 - Added a local recipe library with named save, restore, and delete actions, plus editable seed control.
 - Added generator-registry, deterministic-output, resource-bound, and Scene Studio export tests.
