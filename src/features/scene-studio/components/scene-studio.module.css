@@ -34,3 +34,8 @@
 .versionItem button{flex:none;padding:.45rem .55rem;border:1px solid var(--line);background:transparent;color:var(--ink);font:8px var(--font-mono);cursor:pointer}
 .versionItem button:hover{border-color:var(--brand-coral)}
 @media(max-width:700px){.projectLibrary{padding:.65rem .75rem}.projectGrid{grid-template-columns:repeat(2,minmax(0,1fr))}.versionList{grid-template-columns:1fr}.versionToggle{padding:.7rem .75rem}.versionToggle span:nth-child(2){font-size:7px}}
+
+
+.projectLibraryActions{display:flex;justify-content:flex-end;gap:.45rem;margin-top:.75rem}
+.projectLibraryActions button{padding:.45rem .6rem;border:1px solid var(--line);background:transparent;color:#77746b;font:8px var(--font-mono);letter-spacing:.05em;cursor:pointer}
+.projectLibraryActions button:hover,.projectLibraryActions button[aria-pressed=true]{border-color:var(--brand-coral);color:var(--ink)}
