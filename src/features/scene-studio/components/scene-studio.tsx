@@ -34,9 +34,9 @@ function CameraRig({ view }: { view: CameraView }) {
 }
 
 const initialObjects: SceneObject[] = [
-  { id: 1, name: "Signal / cube", kind: "box", color: "#f05b3e", position: [-1.05, 0.1, 0], rotation: [0, 0, -0.12], scale: 1, visible: true },
-  { id: 2, name: "Orbit / ring", kind: "torus", color: "#243bd6", position: [0.95, 0.35, -0.2], rotation: [0.35, 0.2, 0], scale: 0.9, visible: true },
-  { id: 3, name: "Core / sphere", kind: "sphere", color: "#c6d83b", position: [0.05, -0.85, 0.55], rotation: [0, 0, 0], scale: 0.72, visible: true },
+  { id: 1, name: "Signal / cube", kind: "box", color: "#f05b3e", roughness: 0.28, metalness: 0.12, emissive: "#000000", position: [-1.05, 0.1, 0], rotation: [0, 0, -0.12], scale: 1, visible: true },
+  { id: 2, name: "Orbit / ring", kind: "torus", color: "#243bd6", roughness: 0.28, metalness: 0.12, emissive: "#000000", position: [0.95, 0.35, -0.2], rotation: [0.35, 0.2, 0], scale: 0.9, visible: true },
+  { id: 3, name: "Core / sphere", kind: "sphere", color: "#c6d83b", roughness: 0.28, metalness: 0.12, emissive: "#000000", position: [0.05, -0.85, 0.55], rotation: [0, 0, 0], scale: 0.72, visible: true },
 ];
 
 function ObjectMesh({ item, selected, tool, onSelect, onTransform }: { item: SceneObject; selected: boolean; tool: TransformTool; onSelect: () => void; onTransform: (transform: Pick<SceneObject, "position" | "rotation" | "scale">) => void }) {
