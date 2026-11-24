@@ -68,7 +68,7 @@ function Scene(props: Props) {
 
 export function AtelierWorld(props: Props) {
   return (
-    <div className={styles.canvas} aria-label="Interactive three-dimensional generative sculpture">
+    <div className={styles.canvas} aria-hidden="true">
       <Canvas frameloop={props.reducedMotion ? "demand" : "always"} dpr={[1, 1.5]} camera={{ position: [0, 0, 6.8], fov: 38, near: 0.1, far: 40 }} gl={{ antialias: true, alpha: true, powerPreference: "high-performance" }} fallback={<div className={styles.fallback} role="img" aria-label="Abstract sculptural form in coral, blue and chartreuse"><span>F</span></div>}>
         <Scene {...props} />
       </Canvas>
