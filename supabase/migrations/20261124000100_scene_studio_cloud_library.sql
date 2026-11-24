@@ -5,19 +5,102 @@
 
 begin;
 
+create or replace function public.is_valid_scene_studio_vec3(p_value jsonb)
+returns boolean
+language plpgsql immutable set search_path = ''
+as $fn$
+declare
+  v_item jsonb;
+  v_number numeric;
+begin
+  if jsonb_typeof(p_value) is distinct from 'array' or jsonb_array_length(p_value) <> 3 then
+    return false;
+  end if;
+  for v_item in select value from jsonb_array_elements(p_value)
+  loop
+    if jsonb_typeof(v_item) is distinct from 'number' then return false; end if;
+    v_number := (v_item #>> '{}')::numeric;
+    if v_number < -10000 or v_number > 10000 then return false; end if;
+  end loop;
+  return true;
+end;
+$fn$;
+
+create or replace function public.is_valid_scene_studio_object(p_object jsonb)
+returns boolean
+language plpgsql immutable set search_path = ''
+as $fn$
+declare
+  v_scale numeric;
+  v_roughness numeric;
+  v_metalness numeric;
+begin
+  if jsonb_typeof(p_object) is distinct from 'object'
+     or jsonb_typeof(p_object -> 'id') is distinct from 'number'
+     or (p_object ->> 'id') !~ '^[0-9]+$'
+     or (p_object ->> 'id')::numeric < 1
+     or jsonb_typeof(p_object -> 'name') is distinct from 'string'
+     or char_length(btrim(p_object ->> 'name')) not between 1 and 80
+     or p_object ->> 'kind' not in ('box','sphere','torus')
+     or jsonb_typeof(p_object -> 'color') is distinct from 'string'
+     or (p_object ->> 'color') !~ '^#[0-9A-Fa-f]{6}$'
+     or jsonb_typeof(p_object -> 'emissive') is distinct from 'string'
+     or (p_object ->> 'emissive') !~ '^#[0-9A-Fa-f]{6}$'
+     or jsonb_typeof(p_object -> 'roughness') is distinct from 'number'
+     or jsonb_typeof(p_object -> 'metalness') is distinct from 'number'
+     or jsonb_typeof(p_object -> 'scale') is distinct from 'number'
+     or jsonb_typeof(p_object -> 'visible') is distinct from 'boolean'
+     or not public.is_valid_scene_studio_vec3(p_object -> 'position')
+     or not public.is_valid_scene_studio_vec3(p_object -> 'rotation') then
+    return false;
+  end if;
+  v_scale := (p_object ->> 'scale')::numeric;
+  v_roughness := (p_object ->> 'roughness')::numeric;
+  v_metalness := (p_object ->> 'metalness')::numeric;
+  return v_scale > 0 and v_scale <= 100
+    and v_roughness between 0 and 1
+    and v_metalness between 0 and 1;
+end;
+$fn$;
+
+create or replace function public.is_valid_scene_studio_document(p_document jsonb)
+returns boolean
+language plpgsql immutable set search_path = ''
+as $fn$
+declare
+  v_item jsonb;
+  v_count integer;
+begin
+  if jsonb_typeof(p_document) is distinct from 'object'
+     or jsonb_typeof(p_document -> 'camera') is distinct from 'string'
+     or p_document ->> 'camera' not in ('perspective','front','top','side')
+     or jsonb_typeof(p_document -> 'objects') is distinct from 'array'
+     or octet_length(p_document::text) > 262144 then
+    return false;
+  end if;
+  v_count := jsonb_array_length(p_document -> 'objects');
+  if v_count not between 1 and 250 then return false; end if;
+  for v_item in select value from jsonb_array_elements(p_document -> 'objects')
+  loop
+    if not public.is_valid_scene_studio_object(v_item) then return false; end if;
+  end loop;
+  if exists (
+    select 1 from jsonb_array_elements(p_document -> 'objects') e(value)
+    group by e.value ->> 'id' having count(*) > 1
+  ) then return false; end if;
+  return true;
+end;
+$fn$;
+
+revoke all on function public.is_valid_scene_studio_vec3(jsonb) from public, anon, authenticated;
+revoke all on function public.is_valid_scene_studio_object(jsonb) from public, anon, authenticated;
+revoke all on function public.is_valid_scene_studio_document(jsonb) from public, anon, authenticated;
+
 create table public.scene_studio_compositions (
   id uuid primary key,
   owner_id uuid not null default auth.uid() references auth.users(id) on delete cascade,
   title text not null check (char_length(btrim(title)) between 1 and 80),
-  document jsonb not null check (
-    jsonb_typeof(document) = 'object'
-    and document ? 'camera'
-    and document ? 'objects'
-    and document ->> 'camera' in ('perspective', 'front', 'top', 'side')
-    and jsonb_typeof(document -> 'objects') = 'array'
-    and jsonb_array_length(document -> 'objects') between 1 and 250
-    and octet_length(document::text) <= 262144
-  ),
+  document jsonb not null check (public.is_valid_scene_studio_document(document)),
   revision bigint not null default 1 check (revision >= 1),
   created_at timestamptz not null default now(),
   updated_at timestamptz not null default now()
@@ -63,11 +146,7 @@ begin
      or p_title is null
      or char_length(btrim(p_title)) not between 1 and 80
      or p_document is null
-     or jsonb_typeof(p_document) is distinct from 'object'
-     or p_document ->> 'camera' not in ('perspective', 'front', 'top', 'side')
-     or jsonb_typeof(p_document -> 'objects') is distinct from 'array'
-     or jsonb_array_length(p_document -> 'objects') not between 1 and 250
-     or octet_length(p_document::text) > 262144 then
+     or not public.is_valid_scene_studio_document(p_document) then
     raise exception using errcode = '22023', message = 'FORMA_INVALID_SCENE_DOCUMENT';
   end if;
 
