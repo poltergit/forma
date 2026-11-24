@@ -29,14 +29,14 @@ export function SpatialTransitionProvider({ children }: { children: React.ReactN
       return;
     }
     if (busy.current) return;
-    busy.current = true;
-    pendingPath.current = target.pathname;
-    setActive(true);
-
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
       router.push(href);
       return;
     }
+
+    busy.current = true;
+    pendingPath.current = target.pathname;
+    setActive(true);
 
     requestAnimationFrame(() => {
       if (!overlay.current) {
@@ -59,13 +59,6 @@ export function SpatialTransitionProvider({ children }: { children: React.ReactN
   useEffect(() => {
     if (!active || !overlay.current) return;
     if (pendingPath.current && pathname !== pendingPath.current) return;
-
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-      setActive(false);
-      busy.current = false;
-      pendingPath.current = null;
-      return;
-    }
 
     gsap.to(overlay.current, {
       scaleY: 0,
