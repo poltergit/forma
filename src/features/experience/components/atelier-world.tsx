@@ -47,6 +47,7 @@ function Sculpture({ intensity, speed, density, seed, reducedMotion }: Props) {
         </mesh>
       ))}
     </group>
+    </Float>
   );
 }
 
