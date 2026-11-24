@@ -43,7 +43,14 @@ export function AtelierExperience() {
       .fromTo("[data-intro='title']", { y: 70, opacity: 0, rotate: 2 }, { y: 0, opacity: 1, rotate: 0, duration: 1.15 }, "-=0.35")
       .fromTo("[data-intro='copy']", { y: 24, opacity: 0 }, { y: 0, opacity: 1, duration: 0.8 }, "-=0.55")
       .fromTo("[data-intro='scene']", { scale: 0.82, opacity: 0, rotate: -8 }, { scale: 1, opacity: 1, rotate: 0, duration: 1.25 }, "-=0.9");
-    gsap.to("[data-hero-scene]", {\n      yPercent: 13,\n      rotate: 7,\n      scale: 0.9,\n      ease: "none",\n      scrollTrigger: { trigger: "[data-hero]", start: "top top", end: "bottom top", scrub: 1 },\n    });\n    gsap.utils.toArray<HTMLElement>("[data-reveal]").forEach((element) => {
+    gsap.to("[data-hero-scene]", {
+      yPercent: 13,
+      rotate: 7,
+      scale: 0.9,
+      ease: "none",
+      scrollTrigger: { trigger: "[data-hero]", start: "top top", end: "bottom top", scrub: 1 },
+    });
+    gsap.utils.toArray<HTMLElement>("[data-reveal]").forEach((element) => {
       gsap.fromTo(element, { y: 42, opacity: 0 }, {
         y: 0, opacity: 1, duration: 0.9, ease: "power3.out",
         scrollTrigger: { trigger: element, start: "top 86%", once: true },
