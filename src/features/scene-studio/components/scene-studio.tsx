@@ -1,36 +1,53 @@
 "use client";
 
-import Link from "next/link";\nimport { Canvas } from "@react-three/fiber";
-import { ContactShadows, Environment, OrbitControls, RoundedBox } from "@react-three/drei";
+import Link from "next/link";
+import { Canvas } from "@react-three/fiber";
+import { ContactShadows, Environment, OrbitControls, RoundedBox, TransformControls } from "@react-three/drei";
 import { Suspense, useMemo, useState } from "react";
 import type { ReactNode } from "react";
+import { useRef } from "react";
+import type { Mesh } from "three";
 import styles from "./scene-studio.module.css";
 
 type ShapeKind = "box" | "sphere" | "torus";
-type SceneObject = { id: number; name: string; kind: ShapeKind; color: string; position: [number, number, number]; scale: number; visible: boolean };
+type SceneObject = { id: number; name: string; kind: ShapeKind; color: string; position: [number, number, number]; rotation: [number, number, number]; scale: number; visible: boolean };
+type TransformTool = "select" | "move" | "rotate" | "scale";
 
 const initialObjects: SceneObject[] = [
-  { id: 1, name: "Signal / cube", kind: "box", color: "#f05b3e", position: [-1.05, 0.1, 0], scale: 1, visible: true },
-  { id: 2, name: "Orbit / ring", kind: "torus", color: "#243bd6", position: [0.95, 0.35, -0.2], scale: 0.9, visible: true },
-  { id: 3, name: "Core / sphere", kind: "sphere", color: "#c6d83b", position: [0.05, -0.85, 0.55], scale: 0.72, visible: true },
+  { id: 1, name: "Signal / cube", kind: "box", color: "#f05b3e", position: [-1.05, 0.1, 0], rotation: [0, 0, -0.12], scale: 1, visible: true },
+  { id: 2, name: "Orbit / ring", kind: "torus", color: "#243bd6", position: [0.95, 0.35, -0.2], rotation: [0.35, 0.2, 0], scale: 0.9, visible: true },
+  { id: 3, name: "Core / sphere", kind: "sphere", color: "#c6d83b", position: [0.05, -0.85, 0.55], rotation: [0, 0, 0], scale: 0.72, visible: true },
 ];
 
-function ObjectMesh({ item, selected, onSelect }: { item: SceneObject; selected: boolean; onSelect: () => void }) {
+function ObjectMesh({ item, selected, tool, onSelect, onTransform }: { item: SceneObject; selected: boolean; tool: TransformTool; onSelect: () => void; onTransform: (transform: Pick<SceneObject, "position" | "rotation" | "scale">) => void }) {
+  const meshRef = useRef<Mesh>(null);
   const material = { color: item.color, roughness: 0.28, metalness: 0.12 };
   let geometry: ReactNode;
   if (item.kind === "box") geometry = <RoundedBox args={[1.15, 1.15, 1.15]} radius={0.12} smoothness={4}><meshStandardMaterial {...material} /></RoundedBox>;
   else if (item.kind === "sphere") geometry = <sphereGeometry args={[0.68, 64, 48]} />;
   else geometry = <torusGeometry args={[0.62, 0.19, 24, 80]} />;
-  return (
-    <mesh position={item.position} scale={item.scale} visible={item.visible} onClick={(event) => { event.stopPropagation(); onSelect(); }}>
+  const mesh = (
+    <mesh ref={meshRef} position={item.position} rotation={item.rotation} scale={item.scale} visible={item.visible} onClick={(event) => { event.stopPropagation(); onSelect(); }}>
       {geometry}
       {item.kind !== "box" && <meshStandardMaterial {...material} />}
       {selected && <mesh scale={1.035}><sphereGeometry args={[item.kind === "sphere" ? 0.69 : 0.82, 24, 24]} /><meshBasicMaterial color="#20211f" wireframe transparent opacity={0.18} /></mesh>}
     </mesh>
   );
+  if (selected && tool !== "select") {
+    const mode = tool === "move" ? "translate" : tool;
+    return <TransformControls mode={mode} onMouseUp={() => {
+      const target = meshRef.current;
+      if (target) onTransform({
+        position: [Number(target.position.x.toFixed(3)), Number(target.position.y.toFixed(3)), Number(target.position.z.toFixed(3))],
+        rotation: [Number(target.rotation.x.toFixed(3)), Number(target.rotation.y.toFixed(3)), Number(target.rotation.z.toFixed(3))],
+        scale: Number(((target.scale.x + target.scale.y + target.scale.z) / 3).toFixed(3)),
+      });
+    }}>{mesh}</TransformControls>;
+  }
+  return mesh;
 }
 
-function SceneCanvas({ objects, selectedId, onSelect }: { objects: SceneObject[]; selectedId: number; onSelect: (id: number) => void }) {
+function SceneCanvas({ objects, selectedId, tool, onSelect, onTransform }: { objects: SceneObject[]; selectedId: number; tool: TransformTool; onSelect: (id: number) => void; onTransform: (id: number, transform: Pick<SceneObject, "position" | "rotation" | "scale">) => void }) {
   return (
     <Canvas camera={{ position: [4.3, 3.1, 6.4], fov: 38 }} dpr={[1, 1.7]} gl={{ antialias: true, alpha: true }}>
       <color attach="background" args={["#e9e6dd"]} />
@@ -39,7 +56,7 @@ function SceneCanvas({ objects, selectedId, onSelect }: { objects: SceneObject[]
       <pointLight position={[-4, 1, -3]} intensity={55} color="#f05b3e" distance={10} />
       <Suspense fallback={null}>
         <Environment preset="studio" />
-        {objects.map((item) => <ObjectMesh key={item.id} item={item} selected={item.id === selectedId} onSelect={() => onSelect(item.id)} />)}
+        {objects.map((item) => <ObjectMesh key={item.id} item={item} selected={item.id === selectedId} tool={tool} onSelect={() => onSelect(item.id)} onTransform={(transform) => onTransform(item.id, transform)} />)}
         <ContactShadows position={[0, -1.7, 0]} opacity={0.28} scale={10} blur={2.5} far={4} />
       </Suspense>
       <OrbitControls makeDefault enableDamping dampingFactor={0.08} minDistance={3.5} maxDistance={11} />
@@ -52,7 +69,8 @@ export function SceneStudio() {
   const [selectedId, setSelectedId] = useState(1);
   const [activeTool, setActiveTool] = useState<"select" | "move" | "rotate" | "scale">("select");
   const [sceneName, setSceneName] = useState("Untitled composition");
-  const [saved, setSaved] = useState(false);\n  const [mobilePanel, setMobilePanel] = useState<"hierarchy" | "inspector" | null>(null);
+  const [saved, setSaved] = useState(false);
+  const [mobilePanel, setMobilePanel] = useState<"hierarchy" | "inspector" | null>(null);
   const selected = useMemo(() => objects.find((item) => item.id === selectedId) ?? objects[0], [objects, selectedId]);
 
   const updateSelected = (patch: Partial<SceneObject>) => {
@@ -62,7 +80,7 @@ export function SceneStudio() {
   const addObject = (kind: ShapeKind) => {
     const id = Math.max(0, ...objects.map((item) => item.id)) + 1;
     const labels: Record<ShapeKind, string> = { box: "Block", sphere: "Orb", torus: "Loop" };
-    setObjects((current) => [...current, { id, name: `${labels[kind]} / ${String(id).padStart(2, "0")}`, kind, color: kind === "box" ? "#f05b3e" : kind === "sphere" ? "#243bd6" : "#c6d83b", position: [((id % 3) - 1) * 0.65, 0, -0.6], scale: 0.8, visible: true }]);
+    setObjects((current) => [...current, { id, name: `${labels[kind]} / ${String(id).padStart(2, "0")}`, kind, color: kind === "box" ? "#f05b3e" : kind === "sphere" ? "#243bd6" : "#c6d83b", position: [((id % 3) - 1) * 0.65, 0, -0.6], rotation: [0, 0, 0], scale: 0.8, visible: true }]);
     setSelectedId(id);
     setSaved(false);
   };
@@ -123,7 +141,7 @@ export function SceneStudio() {
           <div className={styles.canvasFrame}>
             <div className={styles.canvasStamp}><span>FORMA / LAB 001</span><span>24° 08′ N — 3D SPACE</span></div>
             <div className={styles.canvasGrid} aria-hidden="true" />
-            <div className={styles.canvas}><SceneCanvas objects={objects} selectedId={selected?.id ?? -1} onSelect={setSelectedId} /></div>
+            <div className={styles.canvas}><SceneCanvas objects={objects} selectedId={selected?.id ?? -1} tool={activeTool} onSelect={setSelectedId} onTransform={(id, transform) => { setObjects((current) => current.map((item) => item.id === id ? { ...item, ...transform } : item)); setSaved(false); }} /></div>
             <div className={styles.canvasHint}>DRAG TO ORBIT <i /> SCROLL TO ZOOM <i /> SELECT TO INSPECT</div>
             <div className={styles.axisWidget}><span>X</span><span>Y</span><span>Z</span></div>
           </div>
@@ -155,7 +173,8 @@ export function SceneStudio() {
           <div className={styles.inspectorFoot}><span>FORM IS A VERB.</span><span>V. 01.0</span></div>
         </aside>
       </div>
-      {mobilePanel && <button className={styles.mobileBackdrop} aria-label="Close editor panel" onClick={() => setMobilePanel(null)} />}\n      <footer className={styles.mobileBar}><button aria-pressed={mobilePanel === "hierarchy"} onClick={() => setMobilePanel(mobilePanel === "hierarchy" ? null : "hierarchy")}>☷ <span>OBJECTS</span></button><span>SCENE / 001</span><button aria-pressed={mobilePanel === "inspector"} onClick={() => setMobilePanel(mobilePanel === "inspector" ? null : "inspector")}>◫ <span>INSPECT</span></button></footer>
+      {mobilePanel && <button className={styles.mobileBackdrop} aria-label="Close editor panel" onClick={() => setMobilePanel(null)} />}
+      <footer className={styles.mobileBar}><button aria-pressed={mobilePanel === "hierarchy"} onClick={() => setMobilePanel(mobilePanel === "hierarchy" ? null : "hierarchy")}>☷ <span>OBJECTS</span></button><span>SCENE / 001</span><button aria-pressed={mobilePanel === "inspector"} onClick={() => setMobilePanel(mobilePanel === "inspector" ? null : "inspector")}>◫ <span>INSPECT</span></button></footer>
     </main>
   );
 }
