@@ -1,7 +1,7 @@
 "use client";
 
 import { useMemo, useRef } from "react";
-import { Canvas, useFrame } from "@react-three/fiber";
+import { Canvas, useFrame } from "@react-three/fiber";\nimport { Float, Sparkles } from "@react-three/drei";
 import * as THREE from "three";
 import styles from "./atelier-world.module.css";
 
@@ -25,7 +25,7 @@ function Sculpture({ intensity, speed, density, seed, reducedMotion }: Props) {
   });
 
   return (
-    <group ref={sculpture}>
+    <Float speed={1.25 * speed} rotationIntensity={0.2} floatIntensity={0.32}>\n    <group ref={sculpture}>
       <mesh rotation={[0.4, 0.2, 0.1]}>
         <torusKnotGeometry args={[0.78, 0.23, 220, 24, 2, 5]} />
         <meshPhysicalMaterial color="#f05b3e" metalness={0.34} roughness={0.2} clearcoat={1} clearcoatRoughness={0.16} />
@@ -60,7 +60,7 @@ function Scene(props: Props) {
       <ambientLight intensity={1.25} />
       <directionalLight position={[4, 5, 6]} intensity={3.2} />
       <pointLight position={[-4, 1, 3]} color="#f05b3e" intensity={24} distance={12} />
-      <pointLight position={[4, -2, -3]} color="#243bd6" intensity={18} distance={10} />
+      <pointLight position={[4, -2, -3]} color="#243bd6" intensity={18} distance={10} />\n      <Sparkles count={72} scale={5.6} size={2.1} speed={0.24 * props.speed} opacity={0.58} color="#243bd6" />
       <group ref={group}><Sculpture {...props} /></group>
     </>
   );
