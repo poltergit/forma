@@ -6,6 +6,7 @@ import {
   createGeneratorPoints, createPlaygroundScene, GENERATORS, PLAYGROUND_RECIPE_KEY, PLAYGROUND_SCENE_HANDOFF_KEY,
   type GeneratorId, type PlaygroundRecipe,
 } from "../playground-scene";
+import { createPortableRecipe, parsePortableRecipe, PLAYGROUND_PALETTES, PLAYGROUND_PRESETS, type PaletteId } from "../playground-recipe";
 
 const defaultPalette = PLAYGROUND_PALETTES[0];
 

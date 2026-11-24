@@ -13,7 +13,7 @@ export const GENERATORS: Array<{ id: GeneratorId; number: string; name: string; 
 ];
 
 export type PlaygroundRecipe = {
-  id: string; name: string; generator: GeneratorId; seed: number; density: number; influence: number; createdAt: string;
+  id: string; name: string; generator: GeneratorId; seed: number; density: number; influence: number; palette?: string; createdAt: string;
 };
 
 export function createGeneratorPoints(seed: number, amount: number, generator: GeneratorId): FieldPoint[] {
