@@ -4,7 +4,7 @@ import Link from "next/link";
 import { Canvas } from "@react-three/fiber";
 import { ContactShadows, Environment, OrbitControls, RoundedBox, TransformControls } from "@react-three/drei";
 import { Suspense, useEffect, useMemo, useState } from "react";
-import type { ReactNode } from "react";
+import type { ChangeEvent, ReactNode } from "react";
 import { useRef } from "react";
 import type { Mesh } from "three";
 import { useThree } from "@react-three/fiber";
@@ -164,7 +164,7 @@ export function SceneStudio() {
     setSaveStatus("NEW COMPOSITION");
   };
 
-  const importComposition = async (event: React.ChangeEvent<HTMLInputElement>) => {
+  const importComposition = async (event: ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     event.target.value = "";
     if (!file) return;
@@ -191,7 +191,11 @@ export function SceneStudio() {
     const next = compositions.filter((item) => item.id !== activeCompositionId);
     window.localStorage.setItem(SCENE_STORAGE_KEY, JSON.stringify(next));
     setCompositions(next);
-    openComposition(next[0].id);
+    setActiveCompositionId(next[0].id);
+    setSceneName(next[0].name);
+    setObjects(next[0].objects);
+    setCameraView(next[0].camera);
+    setSelectedId(next[0].objects[0]?.id ?? 1);
   };
 
   const exportScene = () => {
@@ -234,6 +238,14 @@ export function SceneStudio() {
           <span className={styles.liveDot} />
           <input aria-label="Scene name" value={sceneName} onChange={(event) => { setSceneName(event.target.value); setSaved(false); }} />
           <span className={styles.saveState}>{saveStatus}</span>
+        </div>
+        <div className={styles.libraryControls}>
+          <select aria-label="Open composition" value={activeCompositionId} onChange={(event) => openComposition(event.target.value)}>
+            {compositions.map((composition) => <option key={composition.id} value={composition.id}>{composition.name}</option>)}
+          </select>
+          <button className={styles.quietButton} onClick={createComposition}>＋ NEW</button>
+          <label className={styles.importButton}>IMPORT JSON<input aria-label="Import FORMA JSON" type="file" accept="application/json,.json" onChange={importComposition} /></label>
+          <button className={styles.quietButton} onClick={deleteComposition} disabled={compositions.length <= 1}>DELETE</button>
         </div>
         <div className={styles.topActions}>
           <button className={styles.quietButton} onClick={() => { setObjects(initialObjects); setSelectedId(1); setSaved(false); }}>RESET</button>
