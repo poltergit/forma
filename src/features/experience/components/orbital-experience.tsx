@@ -91,6 +91,40 @@ export function AtelierExperience() {
       ease: "power3.out",
       scrollTrigger: { trigger: ".instrumentStage", start: "top 82%", once: true },
     });
+
+    // A restrained pointer-driven shift gives the specimen a sense of depth
+    // without taking control away from the interactive Three.js scene.
+    const hero = document.querySelector<HTMLElement>("[data-hero]");
+    const specimen = document.querySelector<HTMLElement>(".specimenCanvas");
+    if (!hero || !specimen || window.matchMedia("(hover: none)").matches) return;
+
+    const moveX = gsap.quickTo(specimen, "x", { duration: 0.9, ease: "power3.out" });
+    const moveY = gsap.quickTo(specimen, "y", { duration: 0.9, ease: "power3.out" });
+    const tiltX = gsap.quickTo(specimen, "rotateX", { duration: 1.1, ease: "power3.out" });
+    const tiltY = gsap.quickTo(specimen, "rotateY", { duration: 1.1, ease: "power3.out" });
+
+    const onPointerMove = (event: PointerEvent) => {
+      const bounds = hero.getBoundingClientRect();
+      const x = (event.clientX - bounds.left) / bounds.width - 0.5;
+      const y = (event.clientY - bounds.top) / bounds.height - 0.5;
+      moveX(x * 18);
+      moveY(y * 14);
+      tiltX(y * -5);
+      tiltY(x * 7);
+    };
+    const onPointerLeave = () => {
+      moveX(0);
+      moveY(0);
+      tiltX(0);
+      tiltY(0);
+    };
+
+    hero.addEventListener("pointermove", onPointerMove, { passive: true });
+    hero.addEventListener("pointerleave", onPointerLeave);
+    return () => {
+      hero.removeEventListener("pointermove", onPointerMove);
+      hero.removeEventListener("pointerleave", onPointerLeave);
+    };
   });
 
   return (
