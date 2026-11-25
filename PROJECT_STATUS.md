@@ -139,6 +139,11 @@ Scene Studio now uses Three.js MeshPhysicalMaterial with bounded transmission, t
 Added five lighting moods and a configurable three-point rig to Scene Studio. Key, fill, and rim lights expose color, intensity, and position controls; ambient and environment intensity, curated environment presets, and contact-shadow settings are adjustable. Lighting persists in scene documents, local/cloud library payloads, version snapshots, and portable JSON. Legacy scenes receive Softbox defaults. Environment presets are provided by Drei; no external HDRI assets or new dependencies were added. Automated validation covers preset availability, legacy defaults, and bounded custom values. Manual rendered/device QA remains outstanding.
 
 
-### Camera & Render System — implementation in progress (2026-11-25)
+### Camera & Render System — implemented; automated validation passed (2026-11-25)
 
-The owner approved the next Scene Studio milestone: perspective/orthographic projection, cinematic focus, bloom/vignette/chromatic aberration, tone mapping, render quality, and image export. The scene-document contract now includes backwards-compatible, bounded render settings. The implementation remains in progress until the renderer, controls, export path, automated checks, and CI are complete. This milestone is part of the broader creative mandate: every expressive treatment must communicate a useful creative choice rather than add visual noise.
+Scene Studio now supports perspective and orthographic projection, depth of field with adjustable focus/aperture, Unreal Bloom, vignette, chromatic aberration, ACES/Neutral/Linear/None tone mapping, and Draft/Studio/Ultra pixel-ratio quality profiles. The post-processing chain includes an output pass for renderer tone mapping and display color-space conversion. PNG export captures the active rendered canvas at its selected quality; portable JSON export remains available.
+
+Render settings are normalized with backwards-compatible defaults and persisted in scene documents, local libraries, version snapshots, portable JSON, and the Supabase document payload. The existing cloud SQL document validator accepts these optional top-level fields without a schema migration; the previously documented Supabase setup and material-validation migration requirements still apply.
+
+Automated Node 22 validation passed: npm ci, ESLint, TypeScript, Vitest, and production build. No browser/device visual QA or GPU performance profiling is claimed. The broader atelier-wide visual refoundation remains an ongoing product direction, not a completed redesign.
+

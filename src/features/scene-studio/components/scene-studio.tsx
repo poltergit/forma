@@ -12,6 +12,7 @@ import { RenderPass } from "three/addons/postprocessing/RenderPass.js";
 import { UnrealBloomPass } from "three/addons/postprocessing/UnrealBloomPass.js";
 import { BokehPass } from "three/addons/postprocessing/BokehPass.js";
 import { ShaderPass } from "three/addons/postprocessing/ShaderPass.js";
+import { OutputPass } from "three/addons/postprocessing/OutputPass.js";
 import { useThree } from "@react-three/fiber";
 import styles from "./scene-studio.module.css";
 import { parseSceneDocument, readSceneLibrary, SCENE_STORAGE_KEY } from "../scene-document";
@@ -141,6 +142,7 @@ function SceneRenderPipeline({ settings }: { settings: SceneRenderDocument }) {
     chromatic.uniforms.amount.value = settings.chromaticAberration;
     chromatic.enabled = settings.chromaticAberration > 0;
     composer.addPass(chromatic);
+    composer.addPass(new OutputPass());
     composer.setSize(size.width, size.height);
     return () => {
       composer.dispose();
