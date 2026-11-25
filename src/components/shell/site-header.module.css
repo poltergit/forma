@@ -49,13 +49,13 @@
   .nav a,.contact { font-size: .49rem; }
   .contact { padding: .55rem; }
   .navIndex { display: none; }
-  .nav a:last-child { display: none; }
 }
 @media(max-width:420px) {
   .nav { gap: .55rem; }
   .nav a { gap: .18rem; }
   .nav a small { font-size: 6px; }
   .contact { gap: .35rem; padding: .5rem; }
+  .nav a:nth-of-type(2) { display: none; }
   .brand { gap: .45rem; font-size: .9rem; }
 }
 @media(prefers-reduced-motion:reduce) {
