@@ -17,3 +17,17 @@
 .next p { margin: 0; font: 500 clamp(1.7rem, 4vw, 3.6rem)/1.05 var(--font-display); letter-spacing: -.06em; }
 @media (max-width: 700px) { .introGrid { grid-template-columns: 1fr; gap: 2rem; padding-block: 3.5rem; } .introGrid h1 { font-size: clamp(4.3rem, 17vw, 7rem); } .experimentHeading { align-items: start; flex-direction: column; } .next { flex-direction: column; } }
 @media (max-width: 380px) { .introMeta, .introFoot { font-size: 8px; } }
+
+.process{position:relative;display:grid;grid-template-columns:.8fr 1.2fr;gap:2rem;align-items:center;margin:0 0 clamp(3rem,7vw,6rem);padding:1.1rem 0;border-block:1px solid var(--color-border)}
+.processLead>span{color:var(--color-text-muted);font:9px var(--font-mono);letter-spacing:.12em}
+.processLead p{max-width:17rem;margin:.7rem 0 0;font:500 clamp(1.2rem,2.2vw,2rem)/1 var(--font-display);letter-spacing:-.055em}
+.processSteps{display:grid;grid-template-columns:repeat(3,1fr);gap:.6rem}
+.processSteps>div{position:relative;display:flex;min-height:5.2rem;flex-direction:column;justify-content:space-between;padding:.7rem;border:1px solid var(--color-border);background:color-mix(in srgb,var(--color-surface) 55%,transparent);transition:transform .25s ease,border-color .25s ease}
+.processSteps>div:nth-child(2){transform:translateY(.65rem) rotate(1.2deg);background:rgb(240 91 62 / .08)}
+.processSteps>div:nth-child(3){transform:translateY(-.25rem) rotate(-1deg)}
+.processSteps>div:hover{z-index:1;transform:translateY(-.35rem) rotate(0);border-color:var(--brand-coral)}
+.processSteps b{color:var(--brand-coral);font:10px var(--font-mono)}
+.processSteps span{font:500 clamp(.65rem,1.1vw,.9rem) var(--font-mono);letter-spacing:.06em}
+.processSteps i{position:absolute;right:.65rem;top:.55rem;color:var(--brand-blue);font:normal 1.2rem var(--font-display)}
+@media(max-width:700px){.process{grid-template-columns:1fr;gap:1.25rem}.processLead p{max-width:24rem}.processSteps>div{min-height:4.5rem;padding:.55rem}.processSteps span{font-size:clamp(.55rem,2.2vw,.75rem)}}
+@media(prefers-reduced-motion:reduce){.processSteps>div{transition:none}}
