@@ -80,6 +80,16 @@ export function AtelierExperience() {
           <div className={styles.artStageTop}><span>STUDY / 001—A</span><span>FORM IN FLUX</span></div>
           <div className={styles.heroScene} data-hero-scene><AtelierWorld intensity={intensity} speed={speed} density={density} seed={seed} reducedMotion={reducedMotion} mode={mode} /></div>
           <div className={styles.artStageFoot}><span>LIVE GENERATIVE STUDY</span><span>MOVE / ROTATE / RECOMPOSE</span></div>
+          <div className={styles.heroModeDock} role="group" aria-label="Change the live hero material behavior">
+            <span>LIVE MATERIAL / {mode.toUpperCase()}</span>
+            {([
+              ["flow", "FLOW", "Liquid movement"],
+              ["prism", "PRISM", "Refracted geometry"],
+              ["signal", "SIGNAL", "Kinetic signal"],
+            ] as const).map(([value, label, description]) => (
+              <button key={value} type="button" aria-label={description} aria-pressed={mode === value} onClick={() => setMode(value)}>{label}</button>
+            ))}
+          </div>
           <span className={styles.stageCross} aria-hidden="true">✳</span>
         </div>
         <div className={styles.heroIndex}><span>01</span><span>MAKE / UNMAKE / REMAKE</span></div>
