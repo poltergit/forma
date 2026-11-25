@@ -38,3 +38,73 @@
 @media (prefers-reduced-motion: reduce) {
   .overlay { display: none; }
 }
+
+
+/* A spatial interstitial: the page changes state like a specimen,
+   rather than disappearing behind a generic loading curtain. */
+.overlay {
+  grid-template-columns: 1fr minmax(0, 1.3fr) 1fr;
+  grid-template-rows: 1fr auto;
+  background:
+    radial-gradient(ellipse at 50% 45%, rgb(104 85 245 / .28), transparent 38rem),
+    radial-gradient(ellipse at 84% 18%, rgb(255 91 69 / .12), transparent 24rem),
+    #17151d;
+  color: #f1ede3;
+  isolation: isolate;
+}
+.overlay::before,
+.overlay::after {
+  position: absolute;
+  z-index: -1;
+  top: 50%;
+  left: 50%;
+  width: min(78vw, 72rem);
+  aspect-ratio: 1;
+  border: 1px solid rgb(241 237 227 / .2);
+  border-radius: 50%;
+  content: "";
+  transform: translate(-50%, -50%) rotate(-24deg) scaleY(.64);
+}
+.overlay::after {
+  width: min(58vw, 52rem);
+  border-style: dashed;
+  border-color: rgb(255 91 69 / .56);
+  transform: translate(-50%, -50%) rotate(32deg) scaleY(.8);
+}
+.index,
+.caption {
+  position: relative;
+  z-index: 1;
+  align-self: end;
+  padding-top: 1rem;
+  border-top: 1px solid rgb(241 237 227 / .22);
+  font-size: .58rem;
+}
+.index { color: #c0bac7; }
+.caption { color: #d8ff38; }
+.wordmark {
+  position: relative;
+  z-index: 1;
+  font-size: clamp(10rem, 29vw, 28rem);
+  line-height: .68;
+  letter-spacing: -.17em;
+  text-shadow: .045em .045em 0 rgb(255 91 69 / .75), -.025em -.025em 0 rgb(104 85 245 / .8);
+  animation: transition-mark 1.4s cubic-bezier(.2,.8,.2,1) both;
+}
+.wordmark span {
+  color: #d8ff38;
+  text-shadow: none;
+}
+@keyframes transition-mark {
+  from { opacity: 0; filter: blur(18px); transform: scale(.72) rotate(-9deg); }
+  to { opacity: 1; filter: blur(0); transform: scale(1) rotate(0); }
+}
+@media (max-width: 560px) {
+  .overlay { grid-template-columns: 1fr 1fr; }
+  .overlay::before { width: 125vw; }
+  .overlay::after { width: 95vw; }
+  .wordmark { font-size: clamp(10rem, 48vw, 17rem); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .wordmark { animation: none; }
+}
