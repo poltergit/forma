@@ -65,3 +65,173 @@
 @media(max-width:1100px){.compositionModes button{padding:.38rem .3rem;font-size:6px}}
 @media(max-width:700px){.compositionModes{order:4;flex:1;justify-content:space-between}.compositionModes button{flex:1;padding:.42rem .18rem;font-size:6px}.recomposeButton{order:5;margin-left:0}}
 @media(prefers-reduced-motion:reduce){.compositionModes button{transition:none}}
+
+
+/* Phase 10 — compact, chromatic atelier workspace */
+.studio{
+  --ink:#191720;
+  --paper:#f3f0e8;
+  --line:#d9d4ca;
+  height:calc(100svh - 10rem);
+  min-height:34rem;
+  overflow:hidden;
+  border-top:3px solid var(--brand-coral);
+  background:var(--paper);
+}
+.topbar{
+  height:auto;
+  min-height:3.55rem;
+  flex:none;
+  flex-wrap:wrap;
+  gap:.55rem 1rem;
+  padding:.45rem clamp(.75rem,1.6vw,1.5rem);
+  background:#fbf9f3;
+}
+.brand{font-size:.82rem;gap:.45rem}
+.brandMark{width:1.5rem;height:1.5rem;background:var(--brand-blue);color:#fff;transform:rotate(-10deg)}
+.document{flex:1 1 145px;gap:.45rem}
+.document input{width:min(18vw,180px);font-size:.74rem}
+.saveState{font-size:7px;letter-spacing:.045em}
+.libraryControls{gap:.28rem}
+.libraryControls select{max-width:125px;min-width:90px;padding:.48rem .4rem;font-size:8px}
+.quietButton,.publishButton{padding:.48rem .58rem;font-size:8px;letter-spacing:.055em}
+.topActions{gap:.28rem}
+.accountLink{padding:.48rem .55rem;font-size:8px}
+.projectLibrary{
+  flex:none;
+  max-height:38svh;
+  overflow:auto;
+  padding:.48rem clamp(.75rem,1.6vw,1.5rem);
+  background:#f8f6ef;
+}
+.projectLibrary summary{min-height:1.45rem;font-size:8px}
+.workspace{
+  flex:1 1 0;
+  min-height:0;
+  overflow:hidden;
+  grid-template-columns:clamp(170px,16.5vw,235px) minmax(0,1fr) clamp(215px,20vw,285px);
+}
+.leftPanel,.rightPanel{min-height:0;overflow:hidden;background:#fbf9f3}
+.panelHeading{height:2.65rem;flex:none;font-size:8px}
+.addTools{flex:none;padding:.55rem;gap:.3rem}
+.addTools button{padding:.48rem .12rem;font-size:7px}
+.objectList{flex:1;min-height:0;overflow:auto;overscroll-behavior:contain;padding:.2rem .45rem}
+.objectSelect{padding:.56rem .4rem;font-size:.65rem}
+.panelFoot{flex:none;padding:.65rem .8rem;font-size:8px}
+.stageColumn{min-height:0;overflow:hidden;background:#191720}
+.toolbar{
+  height:auto;
+  min-height:2.8rem;
+  flex:none;
+  flex-wrap:wrap;
+  gap:.25rem .5rem;
+  padding:.3rem .65rem;
+  border-bottom:1px solid rgb(243 240 232 / .13);
+  background:#211f2b;
+}
+.toolGroup{gap:.12rem}
+.toolGroup button{padding:.38rem .42rem;color:#b8b3c2;font-size:8px}
+.toolGroup button:hover,.toolGroup .activeTool{border-color:rgb(243 240 232 / .18);background:#302d3b;color:#fff}
+.toolGroup .activeTool{box-shadow:inset 0 -2px var(--brand-lime)}
+.compositionModes{border-color:#484452;background:#2a2734}
+.compositionModes button{padding:.36rem .34rem;color:#b8b3c2;font-size:7px}
+.compositionModes button:hover,.compositionModes button:focus-visible{border-color:var(--brand-lilac);background:#393545;color:#fff}
+.compositionModes button:active{background:var(--brand-lime);color:var(--ink)}
+.recomposeButton{padding:.42rem .62rem;border-color:var(--brand-lime);background:var(--brand-lime);color:var(--ink);font-size:7px}
+.recomposeButton:hover{background:#e3ff82}
+.cameraPresets{gap:.08rem}
+.cameraPresets button{padding:.36rem .34rem;color:#aaa5b4;font-size:7px}
+.cameraPresets button:hover,.cameraPresets .activeCamera{border-color:#484452;background:#302d3b;color:#fff}
+.cameraPresets .activeCamera{box-shadow:inset 0 -2px var(--brand-blue)}
+.viewportMeta{color:#777381;font-size:8px}
+.canvasFrame{
+  flex:1 1 0;
+  min-height:0;
+  background-color:#191720;
+  background-image:
+    linear-gradient(rgb(243 240 232 / .055) 1px,transparent 1px),
+    linear-gradient(90deg,rgb(243 240 232 / .055) 1px,transparent 1px),
+    radial-gradient(ellipse at 50% 48%,rgb(98 88 245 / .13),transparent 68%);
+  background-size:32px 32px,32px 32px,auto;
+}
+.canvasGrid{
+  background:
+    radial-gradient(ellipse at 50% 45%,rgb(98 88 245 / .18),transparent 48%),
+    radial-gradient(ellipse at 82% 18%,rgb(255 101 79 / .12),transparent 35%);
+}
+.canvasStamp{color:#8f899c;font-size:8px}
+.canvasHint{color:#aaa5b4;font-size:8px}
+.canvasHint i{background:var(--brand-lime)}
+.axisWidget span{border-color:#4c4757;background:#211f2bcc;color:#f3f0e8}
+.axisWidget span:first-child{color:var(--brand-coral)}
+.axisWidget span:nth-child(2){color:var(--brand-lime)}
+.axisWidget span:last-child{color:var(--brand-lilac)}
+.statusbar{
+  height:1.9rem;
+  flex:none;
+  border-color:rgb(243 240 232 / .13);
+  background:#211f2b;
+  color:#827c8e;
+  font-size:8px;
+}
+.statusbar span:first-child{color:#e7e3ee}
+.statusbar i{background:var(--brand-lime);box-shadow:0 0 10px rgb(215 244 91 / .45)}
+.compositionSignature{
+  top:2.8rem;
+  right:1.2rem;
+  background:var(--brand-lime);
+  box-shadow:5px 6px 0 rgb(0 0 0 / .24);
+}
+.inspector{flex:1;min-height:0;overflow:auto;overscroll-behavior:contain;padding:0 .85rem}
+.selectionIntro{padding:.85rem 0 .75rem}
+.selectionIntro strong{margin:.35rem 0 .25rem;font-size:1.08rem}
+.propertySection{padding:.85rem 0}
+.propertyTitle{margin-bottom:.75rem;font-size:8px}
+.rangeField{margin-top:.75rem}
+.axisFields input,.nameField input,.selectField select{padding:.46rem .38rem}
+.materialPresets{margin:.6rem 0}
+.materialPresets button,.lightingPresets button,.renderQuality button{padding:.48rem .42rem}
+.inspectorFoot{flex:none;margin:0;padding:.65rem .85rem;border-top:1px solid var(--line);font-size:8px}
+.inspectorFoot span:first-child{color:var(--brand-blue)}
+.versionShelf{flex:none;background:#f8f6ef}
+.versionToggle{min-height:2.45rem;padding:.48rem clamp(.75rem,1.6vw,1.5rem);font-size:8px}
+.versionList{max-height:24svh;overflow:auto}
+.emptyState{margin:0}
+@media(max-width:1100px) and (min-width:701px){
+  .topbar{column-gap:.5rem}
+  .brand{font-size:.75rem}
+  .libraryControls select{max-width:105px;min-width:75px}
+  .libraryControls .quietButton,.importButton{padding:.45rem .35rem;font-size:7px}
+  .topActions .quietButton{padding:.45rem .35rem;font-size:7px}
+  .accountLink{padding:.45rem .35rem;font-size:7px}
+  .workspace{grid-template-columns:165px minmax(0,1fr) 215px}
+  .cameraPresets button{padding:.32rem .25rem;font-size:6px}
+}
+@media(max-height:780px) and (min-width:701px){
+  .studio{height:calc(100svh - 9.5rem);min-height:31rem}
+  .topbar{min-height:3.2rem;padding-block:.3rem}
+  .panelHeading{height:2.35rem}
+  .addTools{padding:.4rem}
+  .selectionIntro{padding:.65rem 0}
+  .propertySection{padding:.65rem 0}
+  .versionToggle{min-height:2.2rem;padding-block:.35rem}
+}
+@media(max-width:700px){
+  .studio{height:auto;min-height:0;overflow:visible;border-top-width:2px}
+  .topbar{min-height:0;padding:.55rem .7rem;row-gap:.4rem}
+  .projectLibrary{max-height:34svh;padding:.5rem .75rem}
+  .workspace{height:calc(100svh - 18rem);min-height:360px;max-height:720px;overflow:hidden}
+  .stageColumn{height:100%;min-height:0}
+  .toolbar{min-height:2.7rem;padding:.35rem .5rem}
+  .canvasFrame{min-height:0;flex:1}
+  .statusbar{height:1.8rem}
+  .versionToggle{min-height:2.6rem;padding:.55rem .75rem}
+  .versionList{max-height:28svh}
+  .mobileBar{background:#211f2b;color:#b8b3c2;border-top-color:#403b4b}
+  .mobileBar>button{color:#b8b3c2}
+  .mobileBar>button[aria-pressed=true]{color:var(--brand-lime)}
+  .leftPanel.mobilePanelOpen,.rightPanel.mobilePanelOpen{background:#f8f6ef}
+}
+@media(prefers-reduced-motion:reduce){
+  .studio *{scroll-behavior:auto!important;transition:none!important;animation:none!important}
+}
