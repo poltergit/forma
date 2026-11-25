@@ -37,14 +37,14 @@
   --color-danger: #C63F36;
   --color-info: #5148C8;
 
-  /* Legacy aliases retained while feature surfaces migrate */
+  /* Compatibility aliases — all resolve to the official Matter in Motion palette */
   --brand-obsidian: var(--forma-carbon-ink);
   --brand-canvas: var(--forma-studio-bone);
   --brand-lime: var(--forma-acid-voltage);
   --brand-coral: var(--forma-signal-vermilion);
   --brand-blue: var(--forma-electric-iris);
   --brand-stone: var(--forma-ash);
-  --brand-lilac: #A99CF5;
+  --brand-lilac: var(--forma-electric-iris);
   --brand-mint: var(--forma-soft-matter);
 
   /* Type: voice, instruction, measurement */
