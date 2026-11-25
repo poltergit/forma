@@ -17,7 +17,10 @@ html {
 body {
   min-height: 100vh;
   margin: 0;
-  background: var(--color-page);
+  background:
+    radial-gradient(ellipse at 7% 8%, rgb(104 85 245 / .09), transparent 28rem),
+    radial-gradient(ellipse at 94% 34%, rgb(255 91 69 / .06), transparent 26rem),
+    var(--color-page);
   color: var(--color-text);
   font-family: var(--font-body);
 }
@@ -31,12 +34,12 @@ button:focus-visible,
 input:focus-visible,
 textarea:focus-visible,
 select:focus-visible {
-  outline: 2px solid var(--color-accent);
+  outline: 2px solid var(--color-accent-secondary);
   outline-offset: 4px;
 }
 
 ::selection {
-  color: var(--brand-obsidian);
+  color: var(--forma-carbon-ink);
   background: var(--brand-lime);
 }
 
@@ -48,7 +51,7 @@ select:focus-visible {
   padding: 0.75rem 1rem;
   transform: translateY(-180%);
   border-radius: var(--radius-sm);
-  background: var(--color-accent);
+  background: var(--forma-acid-voltage);
   color: var(--brand-obsidian);
   font-weight: var(--weight-semibold);
   transition: transform var(--duration-fast) var(--ease-standard);

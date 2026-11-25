@@ -117,3 +117,29 @@
 @media (max-width: 900px) { .materialStudio { grid-template-columns: repeat(3, minmax(0, 1fr)); } .materialStudio > span { grid-column: 1 / -1; } }
 @media (max-width: 420px) { .materialStudio { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
 @media (prefers-reduced-motion: reduce) { .materialStudio button { transition: none; } }
+
+/* Open Field: a responsive instrument, not a neutral widget */
+.experience{border:1px solid var(--forma-carbon-ink);background:#e6e1d8;box-shadow:12px 12px 0 rgb(104 85 245 / .12)}
+.stageHeader,.stageFooter{color:#6b6571}
+.stage{background:#e6e1d8;background-image:linear-gradient(rgb(23 21 29 / .075) 1px,transparent 1px),linear-gradient(90deg,rgb(23 21 29 / .075) 1px,transparent 1px);background-size:32px 32px}
+.live{color:var(--forma-signal-vermilion)}
+.live i{background:var(--forma-signal-vermilion);box-shadow:0 0 0 4px rgb(255 91 69 / .15)}
+.stage:focus-visible{outline-color:var(--forma-electric-iris)}
+.controls{background:var(--forma-carbon-ink);border-color:var(--forma-carbon-ink);color:var(--forma-studio-bone)}
+.controlIntro,.rangeControl,.rangeControl>span{color:#c4bdca}
+.controlIntro button,.rangeControl output{color:var(--forma-acid-voltage)}
+.rangeControl input{accent-color:var(--forma-signal-vermilion)}
+.reset{color:#c4bdca}
+.outputActions{background:var(--forma-carbon-ink)}
+.outputActions button:hover,.outputActions button:focus-visible{background:var(--forma-acid-voltage);border-color:var(--forma-acid-voltage)}
+.generatorPicker button[aria-pressed=true]{box-shadow:inset 0 -3px var(--forma-signal-vermilion)}
+.generatorPicker button:hover{background:#ded8cd}
+@media(prefers-reduced-motion:reduce){.experience{box-shadow:none}}
+
+
+/* Generative bridge actions */
+.outputActions{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:1rem}
+.outputLinks{display:flex;flex-wrap:wrap;gap:.45rem}
+.outputLinks button{min-height:2.8rem;border:1px solid rgb(241 237 227 / .28);padding:.7rem .9rem;background:transparent;color:var(--forma-studio-bone);font:500 .55rem var(--font-mono);letter-spacing:.07em;cursor:pointer}
+.outputLinks button:hover,.outputLinks button:focus-visible{border-color:var(--forma-acid-voltage);background:var(--forma-acid-voltage);color:var(--forma-carbon-ink)}
+@media(max-width:700px){.outputActions{align-items:stretch}.outputLinks{display:grid;grid-template-columns:1fr}.outputLinks button{width:100%;text-align:left}}

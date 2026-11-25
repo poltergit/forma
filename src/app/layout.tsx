@@ -11,19 +11,19 @@ const monoFont = JetBrains_Mono({ subsets: ["latin"], variable: "--font-jetbrain
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL;
 
 export const metadata: Metadata = {
-  title: { default: "FORMA — An independent digital atelier", template: "%s — FORMA" },
-  description: "A creative instrument for shaping ideas through geometry, motion, typography, and digital space.",
+  title: { default: "FORMA — Matter in Motion", template: "%s — FORMA" },
+  description: "Nothing is finished. Everything is becoming. FORMA is a digital atelier for shaping ideas through matter, force, motion, and trace.",
   applicationName: "FORMA",
   metadataBase: siteUrl ? new URL(siteUrl) : undefined,
   openGraph: {
     type: "website",
     siteName: "FORMA",
-    title: "FORMA — An independent digital atelier",
-    description: "Make a mark. Bend a system. Find a form you didn't know you were looking for.",
+    title: "FORMA — Matter in Motion",
+    description: "Nothing is finished. Everything is becoming. Enter the digital atelier of Matter in Motion.",
   },
 };
 
-export const viewport: Viewport = { themeColor: "#f4f1e8", colorScheme: "light" };
+export const viewport: Viewport = { themeColor: "#F1EDE3", colorScheme: "light" };
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (

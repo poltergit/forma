@@ -1,12 +1,14 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState, type PointerEvent, type KeyboardEvent } from "react";
+import { useRouter } from "next/navigation";
 import styles from "./playground-experience.module.css";
 import {
   createGeneratorPoints, createPlaygroundScene, GENERATORS, PLAYGROUND_RECIPE_KEY, PLAYGROUND_SCENE_HANDOFF_KEY,
   type GeneratorId, type PlaygroundRecipe,
 } from "../playground-scene";
 import { createPortableRecipe, parsePortableRecipe, PLAYGROUND_PALETTES, PLAYGROUND_PRESETS, type PaletteId, type AnimationMode, type MaterialId, PLAYGROUND_MATERIALS, getAnimationMotion, getMaterialTreatment } from "../playground-recipe";
+import { createArchiveImprint, createPlaygroundMotionHandoff, saveArchiveImprint, PLAYGROUND_MOTION_HANDOFF_KEY } from "@/features/atelier/atelier-bridge";
 
 const defaultPalette = PLAYGROUND_PALETTES[0];
 
@@ -31,6 +33,7 @@ function readRecipes(): PlaygroundRecipe[] {
 }
 
 export function PlaygroundExperience() {
+  const router = useRouter();
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const frameRef = useRef<HTMLDivElement>(null);
   const pointerRef = useRef({ x: 0.5, y: 0.5, active: false });
@@ -50,6 +53,27 @@ export function PlaygroundExperience() {
 
   useEffect(() => {
     const timeout = window.setTimeout(() => { setRecipes(readRecipes()); setRecipesReady(true); }, 0);
+    return () => window.clearTimeout(timeout);
+  }, []);
+
+  useEffect(() => {
+    const timeout = window.setTimeout(() => {
+          const params = new URLSearchParams(window.location.search);
+          const nextGenerator = params.get("generator");
+          const nextSeed = Number(params.get("seed"));
+          const nextDensity = Number(params.get("density"));
+          const nextInfluence = Number(params.get("influence"));
+          if (["displacement", "orbital-bloom", "woven-lattice"].includes(nextGenerator ?? "") &&
+            Number.isInteger(nextSeed) && nextSeed >= 0 && nextSeed <= 9_999_999 &&
+            Number.isInteger(nextDensity) && nextDensity >= 12 && nextDensity <= 96 &&
+            Number.isInteger(nextInfluence) && nextInfluence >= 0 && nextInfluence <= 100) {
+            setGenerator(nextGenerator as GeneratorId); setSeed(nextSeed); setDensity(nextDensity); setInfluence(nextInfluence);
+            const nextPalette = params.get("palette"); if (PLAYGROUND_PALETTES.some((item) => item.id === nextPalette)) setPaletteId(nextPalette as PaletteId);
+            const nextMaterial = params.get("material"); if (PLAYGROUND_MATERIALS.some((item) => item.id === nextMaterial)) setMaterialId(nextMaterial as MaterialId);
+            const nextAnimation = params.get("animation"); if (["still", "drift", "pulse"].includes(nextAnimation ?? "")) setAnimationMode(nextAnimation as AnimationMode);
+            setStatus("ARCHIVE SPECIMEN RESTORED");
+          }
+    }, 0);
     return () => window.clearTimeout(timeout);
   }, []);
 
@@ -80,11 +104,36 @@ export function PlaygroundExperience() {
 
   const deleteRecipe = (id: string) => { persistRecipes(recipes.filter((recipe) => recipe.id !== id)); setStatus("RECIPE REMOVED"); };
 
+  const continueInMotionLab = () => {
+    try {
+      const handoff = createPlaygroundMotionHandoff({
+        title: recipeName.trim().slice(0, 48) || activeGenerator.name,
+        generator, seed, density, influence, palette: paletteId, animation: animationMode, material: materialId,
+      });
+      window.localStorage.setItem(PLAYGROUND_MOTION_HANDOFF_KEY, JSON.stringify(handoff));
+      router.push("/motion-lab?from=field");
+    } catch { setStatus("MOTION HANDOFF UNAVAILABLE"); }
+  };
+
+  const leaveArchiveTrace = () => {
+    try {
+      const title = recipeName.trim().slice(0, 48) || activeGenerator.name;
+      const params = new URLSearchParams({ generator, seed: String(seed), density: String(density), influence: String(influence), palette: paletteId, animation: animationMode, material: materialId });
+      saveArchiveImprint(createArchiveImprint({
+        id: window.crypto.randomUUID(), title, room: "OPEN FIELD",
+        detail: `${activeGenerator.name} · ${density} forms · ${influence}% influence`,
+        href: `/playground?${params.toString()}`, createdAt: new Date().toISOString(),
+        parameters: { generator, seed, density, influence, palette: paletteId, animation: animationMode, material: materialId },
+      }));
+      setStatus("TRACE LEFT IN THE ARCHIVE");
+    } catch { setStatus("ARCHIVE TRACE UNAVAILABLE"); }
+  };
+
   const continueInSceneStudio = () => {
     try {
       const scene = createPlaygroundScene(seed, density, influence, generator, activePalette.colors, materialId);
       window.localStorage.setItem(PLAYGROUND_SCENE_HANDOFF_KEY, JSON.stringify(scene));
-      window.location.assign("/scene-studio?from=playground");
+      router.push("/scene-studio?from=playground");
     } catch { setStatus("SCENE HANDOFF UNAVAILABLE"); }
   };
 
@@ -302,7 +351,14 @@ export function PlaygroundExperience() {
           </article>)}
         </div>
       </section>
-      <div className={styles.outputActions}><span>EXPORT STUDY / {activeGenerator.number} · SEED {seed}</span><button type="button" onClick={continueInSceneStudio}>TAKE INTO SCENE STUDIO <b aria-hidden="true">↗</b></button></div>
+      <div className={styles.outputActions}>
+        <span>EXPORT STUDY / {activeGenerator.number} · SEED {seed}</span>
+        <div className={styles.outputLinks}>
+          <button type="button" onClick={leaveArchiveTrace}>LEAVE A TRACE ↗</button>
+          <button type="button" onClick={continueInMotionLab}>CARRY INTO MOTION ↗</button>
+          <button type="button" onClick={continueInSceneStudio}>TAKE INTO SCENE STUDIO ↗</button>
+        </div>
+      </div>
       <p className={styles.caption}>{activeGenerator.note} The same seed, material, and settings reproduce the same logical composition. Save a recipe to return to its exact rules, or carry the generated forms into Scene Studio.</p>
     </div>
   );

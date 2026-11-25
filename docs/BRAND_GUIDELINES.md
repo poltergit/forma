@@ -1,143 +1,151 @@
 # FORMA — Brand Guidelines
 
-**Version:** 1.1  
-**Phase:** 02 — Brand Identity and Creative Direction  
-**Status:** Approved  
-**Tagline:** Where form meets function.
+**Version:** 2.0  
+**Phase:** Identity Renaissance — Phase A  
+**Status:** Working foundation — owner review required  
+**Creative premise:** Nothing is finished. Everything is becoming.
 
 ## 1. Brand foundation
 
-FORMA represents the relationship between shape, structure, appearance, and function. It expresses the belief that visual creativity and technical engineering should work together.
+FORMA is an independent digital atelier: a place to shape ideas by changing their conditions. Its identity is built around **Matter in Motion** — the visible behavior of form as it responds to force, rhythm, material, and time.
 
-The brand must be credible as a personal flagship while remaining capable of standing independently as a product.
+FORMA is not a conventional SaaS dashboard with decorative 3D. It is an evolving workbench and exhibition for creative technology. The interface, the objects, the motion, and the traces left by interaction belong to one creative system.
 
-Trademark, domain, and social-handle availability must be verified before commercial adoption.
+The brand must be credible as a flagship product while remaining capable of standing independently. Trademark, domain, and social-handle availability must be verified before commercial adoption.
 
 ## 2. Brand personality
 
-- **Experimental:** explores unconventional ideas.
-- **Intelligent:** technically thoughtful.
-- **Expressive:** visually confident.
-- **Precise:** intentional in detail and execution.
-- **Approachable:** inviting to explore.
+- **Restless:** forms feel in progress, not frozen.
+- **Art-directed:** disruption has intention.
+- **Tactile:** surfaces and materials have character.
+- **Intelligent:** technical notation makes experiments legible.
+- **Playful:** surprise is welcome; confusion is not.
+- **Precise beneath the mess:** structure and behavior remain deliberate.
 
-FORMA should feel sophisticated without becoming cold and playful without becoming childish.
+FORMA should feel sophisticated without becoming cold and expressive without becoming chaotic for its own sake.
 
 ## 3. Creative direction
 
-**Editorial precision meets interactive experimentation.**
+**Matter in Motion — the digital atelier of becoming.**
 
-The visual identity combines strong typography, asymmetric editorial layouts, deliberate negative space, restrained accent colors, custom graphic compositions, and interactive 2D/3D experiences.
+The identity is built from four primitives:
+- **Matter:** the specimen being explored.
+- **Force:** the condition acting upon it.
+- **Trace:** the visible evidence of transformation.
+- **Notation:** the human intelligence that makes the experiment legible.
 
-Individual sections may have different visual personalities while sharing a coherent system. Do not force every page into the same layout.
+FORMA's signature visual device is **the Afterform**: an intentional trace of a previous or possible state, such as an offset contour, displaced duplicate, motion path, registration mark, or layered silhouette. It must communicate transformation, direction, repetition, or memory—not act as a generic glow or particle effect.
 
-## 4. Approved color palette
+Individual sections may have different visual personalities while sharing this grammar. Do not force every page into the same layout.
+
+## 4. Core color palette
 
 | Role | Name | HEX |
 |---|---|---|
-| Primary dark | Obsidian | `#111214` |
-| Primary light | Soft Canvas | `#F2F0EA` |
-| Signature accent | Electric Lime | `#C7F36B` |
-| Supporting accent | Signal Coral | `#FF765E` |
-| Supporting accent | Digital Blue | `#647BFF` |
-| Secondary text | Stone Gray | `#92938F` |
+| Primary light | Studio Bone | `#F1EDE3` |
+| Primary dark | Carbon Ink | `#17151D` |
+| Generative signal | Acid Voltage | `#D8FF38` |
+| Human signal | Signal Vermilion | `#FF5B45` |
+| Spatial signal | Electric Iris | `#6855F5` |
+| Organic counterpoint | Soft Matter | `#A8E5D2` |
 
 ### Usage
-
-- Obsidian and Soft Canvas establish primary surfaces.
-- Electric Lime is the recognizable brand accent.
-- Coral and Blue are supporting colors for selected experiment identities and interaction states.
-- Stone Gray is for secondary information.
-- Avoid using every accent simultaneously.
+- Bone and Carbon establish the stage; alternate surfaces to create rhythm.
+- Acid Voltage is a punctuation mark, not a default fill for every active control.
+- Vermilion introduces warmth and impact.
+- Electric Iris belongs naturally to spatial and dimensional systems.
+- Soft Matter balances the more intense signals.
+- Avoid using all accents at equal strength in one composition.
 - Maintain sufficient contrast for readable interface text.
 
-## 5. Approved typography
+## 5. Typography
 
-- **Space Grotesk — Display:** headlines, prominent statements, expressive compositions.
-- **Inter — Interface and body:** paragraphs, navigation, controls, longer content.
-- **JetBrains Mono — Technical:** coordinates, code references, parameters, technical annotations.
+- **Space Grotesk — Voice:** display headlines, expressive compositions, and deliberate line breaks.
+- **Inter — Instruction:** interface, body copy, and sustained reading.
+- **JetBrains Mono — Measurement:** coordinates, indices, parameters, status, and technical annotations.
 
-Use scale and contrast to establish hierarchy. Favor intentional line breaks. Keep body text readable. Use monospace functionally rather than decoratively.
+Use oversized display type as a compositional object. Crop, overlap, rotate, or displace type only when reading order remains clear. Do not use tiny technical labels as decoration.
 
-## 6. Logo direction
+## 6. Logo and signature device
 
-### Primary wordmark
+The wordmark must remain legible at small sizes, work in monochrome, and support both light and dark surfaces.
 
-A custom FORMA wordmark using clean, confident letterforms. It must remain legible at small sizes, work in monochrome, support light and dark surfaces, and not rely on gradients or 3D effects.
+The secondary symbol should explore transformation, structure, and the relationship between flat and dimensional form. Avoid generic cubes, glowing orbs, and unnecessarily complex emblems.
 
-### Secondary symbol
-
-A compact geometric symbol based on form, structure, transformation, or the relationship between two dimensions.
-
-Preferred explorations:
-- A modular geometric F.
-- An abstract flat-to-dimensional transformation.
-- A minimal structural frame.
-
-The symbol must work independently as a favicon and application icon. Avoid generic cubes, glowing orbs, and unnecessarily complex emblems.
+The Afterform is a recurring graphic signature, not a replacement for the logo. It should adapt to the medium: contour, echo, path, imprint, or offset silhouette.
 
 ## 7. 2D art direction
 
-Use typography, grids, lines, SVG, masks, layered compositions, and generative graphics. Prioritize clear composition, strong hierarchy, intentional negative space, crisp rendering, and meaningful interaction.
+Use a loose grid with hard anchors: a clear subject, a stable alignment edge, and an understandable reading path. Creative freedom may include offset columns, oversized type, cropped specimens, layered planes, asymmetric negative space, and external annotations.
+
+Do not force every page into a card grid. Use open compositions, specimen sheets, workbenches, rails, and editorial sequences where appropriate.
 
 ## 8. 3D art direction
 
-Use dimensional forms, material contrast, lighting, depth, and camera movement. 3D must support the experience's purpose, respond naturally to interaction, respect device constraints, and never obstruct essential content or navigation.
+Use constructed, organic, kinetic, and typographic shape families. Pair contrasting material behaviors: matte and polished, opaque and translucent, rigid and flexible, flat and volumetric.
 
-2D and 3D should complement each other. Neither is compulsory on every page.
+3D must support transformation, material, spatial relationships, or composition. Avoid making everything glass, chrome, or iridescent. Respect device constraints and keep essential controls accessible.
 
 ## 9. Motion identity
 
-Motion communicates state, hierarchy, transformation, and cause-and-effect.
+Motion is the visible behavior of matter. Core verbs:
+- Pull — attraction, orbit, magnetic alignment.
+- Push — displacement, pressure, recoil.
+- Bend — deformation and elastic response.
+- Repeat — rhythm and iteration.
+- Break — fragmentation and controlled scatter.
+- Resolve — assembly and settling.
 
-Approved vocabulary:
-- Responsive hover and focus feedback.
-- Interface-state transitions.
-- Scroll storytelling where useful.
-- Physics-inspired interaction.
-- Purposeful camera and object movement.
+Motion should have weight, timing, and a visible cause. Prefer a few memorable transitions over constant ambient movement. Respect reduced-motion preferences with meaningful static alternatives.
 
-Avoid constant movement without purpose, excessive parallax, delayed access to content, distracting cursor effects, and motion that harms readability or performance.
+## 10. Feature personalities
 
-All experiences must remain usable with reduced motion enabled.
+| Experience | Personality | Visual emphasis |
+|---|---|---|
+| Landing | The Manifestation | Signature specimen, oversized voice, Afterform traces, annotations |
+| Playground | The Open Field | Exploratory compositions and generative studies |
+| Scene Studio | The Workbench | Compact, viewport-first, dense but calm |
+| Motion Lab | The Force Room | Paths, echoes, timing, and visible rhythm |
+| Archive | The Specimen Index | Curated records, variations, and technical notation |
 
-## 10. Imagery and assets
+A shared identity does not mean identical layouts. Feature personality comes from composition, density, color balance, and interaction—not unrelated palettes or logos.
 
-Prioritize original 3D objects and scenes, generative graphics, diagrams, illustrations, real project screenshots, and process documentation.
+## 11. Motion, interaction, and usability
 
-Never fabricate project screenshots, product interfaces, testimonials, or metrics.
+- Essential navigation and core actions remain predictable.
+- Dense creative controls are grouped by task and use progressive disclosure.
+- Workspaces fit the available viewport where appropriate; secondary panels scroll internally.
+- The canvas or primary work area receives the strongest visual priority.
+- Responsive layouts re-compose the experience rather than merely shrinking desktop columns.
+- Keyboard access, focus visibility, contrast, and reduced motion are part of the identity.
 
-## 11. Brand voice
+## 12. Imagery and assets
+
+Prioritize original 3D specimens, generative graphics, diagrams, illustrations, real project screenshots, and process documentation. Never fabricate project screenshots, testimonials, or metrics.
+
+## 13. Brand voice
 
 **Voice:** concise, thoughtful, experimental, technically literate.
 
-Example language:
-- "Explore the interaction."
-- "Shape the scene."
-- "Built to be experienced."
-- "Where form meets function."
+The brand can be expressive without becoming vague. Explain what an experiment does; do not rely on abstract slogans to hide missing functionality.
 
-Avoid exaggerated claims and unsupported superlatives.
+## 14. Anti-patterns
 
-## 12. Applications
+- Generic startup gradients as the primary identity.
+- Repetitive rounded cards as the default layout.
+- Glassmorphism without a functional reason.
+- Random floating objects with no relationship to content.
+- Fake controls, metrics, testimonials, or functionality.
+- Constant motion that adds no information.
+- Overuse of neon, glow, blur, and chrome.
+- Decorative microtype that is unreadable.
+- A different unrelated design language for every feature.
+- Copying another studio's distinctive composition, animation, code, imagery, or identity.
 
-The identity must work across the landing page, Playground, experiments, Scene Studio, archive, case studies, favicon, application icon, social preview graphics, and documentation.
+## 15. Acceptance
 
-## 13. Anti-AI-slop standards
+A major visual decision should express Matter, Force, Trace, or Notation; establish a clear focal point; have meaningful behavior; remain understandable and accessible; and work responsively with reduced motion.
 
-- No generic startup gradients by default.
-- No glassmorphism without a clear purpose.
-- No repetitive card grids replacing thoughtful composition.
-- No random floating objects or decorative blobs.
-- No fake metrics, testimonials, or functionality.
-- No unnecessary rounded containers or effects.
-- No excessive animation or dependency bloat.
-- No imitation of another brand's identity.
+This is a working creative foundation for owner review. It is not considered finally approved until the visual direction has been reviewed in the product itself.
 
-Every design decision must support purpose, usability, or creative character.
-
-## 14. Acceptance
-
-Brand foundation, palette, typography, logo direction, 2D/3D art direction, motion principles, voice, and application guidance are approved.
-
-**Phase 02: Approved.**
+**Identity statement:** FORMA is the digital atelier of Matter in Motion. It gives ideas a form, gives form a force, and leaves a trace of what they could become.

@@ -6,8 +6,8 @@ export function SiteFooter() {
     <footer className={styles.footer}>
       <div className={styles.inner}>
         <SpatialLink href="/" className={styles.wordmark}>FORMA<span>®</span></SpatialLink>
-        <span>AN INDEPENDENT DIGITAL ATELIER</span>
-        <span>MAKE / UNMAKE / REMAKE · 2026</span>
+        <span>MATTER IN MOTION</span>
+        <span>NOTHING IS FINISHED · MMXXVI</span>
       </div>
     </footer>
   );
