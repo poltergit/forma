@@ -6,6 +6,14 @@ import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import styles from "./spatial-transition.module.css";
 
+import dynamic from "next/dynamic";
+
+const FormaMark3D = dynamic(() => import("./forma-mark-3d").then((module) => module.FormaMark3D), {
+  ssr: false,
+  loading: () => <div className={styles.markViewport} aria-hidden="true"><svg className={styles.brandMark} viewBox="0 0 240 240"><circle className={styles.markOrbit} cx="120" cy="120" r="101" /><circle className={styles.markOrbitAlt} cx="120" cy="120" r="76" /><path d="M72 190V50h112M72 112h82M72 190l82-140" /><path className={styles.markCut} d="M91 119h58" /><circle className={styles.markCoreDot} cx="120" cy="120" r="8" /></svg></div>,
+});
+
+
 gsap.registerPlugin(ScrollTrigger);
 
 type TransitionContextValue = { navigate: (href: string) => void };
@@ -105,7 +113,7 @@ export function SpatialTransitionProvider({ children }: { children: React.ReactN
       {active && (
         <div ref={overlay} className={styles.overlay} aria-hidden="true">
           <span className={styles.index}>FORM / SHIFT</span>
-          <div className={styles.brandCore}><svg className={styles.brandMark} viewBox="0 0 240 240"><circle className={styles.markOrbit} cx="120" cy="120" r="101" /><circle className={styles.markOrbitAlt} cx="120" cy="120" r="76" /><path d="M72 190V50h112M72 112h82M72 190l82-140" /><path className={styles.markCut} d="M91 119h58" /><circle className={styles.markCoreDot} cx="120" cy="120" r="8" /></svg><span className={styles.wordmark}>FORMA</span></div>
+          <div className={styles.brandCore}><FormaMark3D /><span className={styles.wordmark}>FORMA</span></div>
           <span className={styles.caption}>A NEW SPACE TO MAKE</span>
         </div>
       )}
