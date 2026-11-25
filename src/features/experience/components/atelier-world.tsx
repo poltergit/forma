@@ -46,9 +46,9 @@ void main() {
   float filament = smoothstep(0.76, 0.98, abs(bands));
   float fresnel = pow(1.0 - max(dot(normalize(vNormal), normalize(vViewPosition)), 0.0), 2.15);
 
-  vec3 coral = vec3(0.94, 0.20, 0.12);
-  vec3 blue = vec3(0.08, 0.15, 0.84);
-  vec3 acid = vec3(0.76, 0.86, 0.16);
+  vec3 coral = vec3(1.0, 0.357, 0.271);
+  vec3 blue = vec3(0.408, 0.333, 0.961);
+  vec3 acid = vec3(0.847, 1.0, 0.220);
   vec3 baseColor = mix(coral, blue, wave);
 
   if (uMode > 0.5 && uMode < 1.5) {
@@ -122,7 +122,7 @@ function Sculpture({ intensity, speed, density, seed, reducedMotion, mode }: Pro
       </mesh>
       <mesh rotation={[0.8, 0.3, 0.6]} scale={0.72}>
         <icosahedronGeometry args={[1, 1]} />
-        <meshStandardMaterial color="#243bd6" metalness={0.78} roughness={0.24} wireframe />
+        <meshStandardMaterial color="#6855f5" metalness={0.78} roughness={0.24} wireframe />
       </mesh>
       <mesh rotation={[Math.PI / 2.2, 0.4, 0]}>
         <torusGeometry args={[1.55, 0.012, 8, 180]} />
@@ -149,9 +149,9 @@ function Scene(props: Props) {
     <>
       <ambientLight intensity={1.25} />
       <directionalLight position={[4, 5, 6]} intensity={3.2} />
-      <pointLight position={[-4, 1, 3]} color="#f05b3e" intensity={24} distance={12} />
-      <pointLight position={[4, -2, -3]} color="#243bd6" intensity={18} distance={10} />
-      {!props.reducedMotion && <Sparkles count={Math.min(props.density * 3, 90)} scale={5.6} size={2.1} speed={0.24 * props.speed} opacity={0.58} color="#243bd6" />}
+      <pointLight position={[-4, 1, 3]} color="#ff5b45" intensity={24} distance={12} />
+      <pointLight position={[4, -2, -3]} color="#6855f5" intensity={18} distance={10} />
+      {!props.reducedMotion && <Sparkles count={Math.min(props.density * 3, 90)} scale={5.6} size={2.1} speed={0.24 * props.speed} opacity={0.58} color="#6855f5" />}
       <group ref={group}><Sculpture {...props} /></group>
     </>
   );
