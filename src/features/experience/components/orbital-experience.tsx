@@ -96,6 +96,12 @@ export function AtelierExperience() {
         <a href="#manifesto" className={styles.scrollCue}><span>SCROLL TO EXPLORE</span><b>↓</b></a>
       </section>
 
+      <div className={styles.kineticRibbon} role="img" aria-label="Make. Unmake. Remake. A creative process in motion.">
+        <div className={styles.kineticTrack} aria-hidden="true">
+          <span>MAKE</span><i>✳</i><span>UNMAKE</span><i>↗</i><span>REMAKE</span><i>✳</i><span>MAKE</span><i>↗</i><span>UNMAKE</span><i>✳</i><span>REMAKE</span><i>↗</i>
+        </div>
+      </div>
+
       <section id="manifesto" className={styles.manifesto}>
         <div className={styles.sectionLabel} data-reveal><span>01 / THE BELIEF</span><span>NOT A TEMPLATE. A TOOL.</span></div>
         <div className={styles.manifestoBody} data-reveal>
