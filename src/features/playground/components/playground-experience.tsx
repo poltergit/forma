@@ -1,6 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState, type PointerEvent, type KeyboardEvent } from "react";
+import { useRouter } from "next/navigation";
 import styles from "./playground-experience.module.css";
 import {
   createGeneratorPoints, createPlaygroundScene, GENERATORS, PLAYGROUND_RECIPE_KEY, PLAYGROUND_SCENE_HANDOFF_KEY,
@@ -32,6 +33,7 @@ function readRecipes(): PlaygroundRecipe[] {
 }
 
 export function PlaygroundExperience() {
+  const router = useRouter();
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const frameRef = useRef<HTMLDivElement>(null);
   const pointerRef = useRef({ x: 0.5, y: 0.5, active: false });
@@ -55,21 +57,24 @@ export function PlaygroundExperience() {
   }, []);
 
   useEffect(() => {
-    const params = new URLSearchParams(window.location.search);
-    const nextGenerator = params.get("generator");
-    const nextSeed = Number(params.get("seed"));
-    const nextDensity = Number(params.get("density"));
-    const nextInfluence = Number(params.get("influence"));
-    if (["displacement", "orbital-bloom", "woven-lattice"].includes(nextGenerator ?? "") &&
-      Number.isInteger(nextSeed) && nextSeed >= 0 && nextSeed <= 9_999_999 &&
-      Number.isInteger(nextDensity) && nextDensity >= 12 && nextDensity <= 96 &&
-      Number.isInteger(nextInfluence) && nextInfluence >= 0 && nextInfluence <= 100) {
-      setGenerator(nextGenerator as GeneratorId); setSeed(nextSeed); setDensity(nextDensity); setInfluence(nextInfluence);
-      const nextPalette = params.get("palette"); if (PLAYGROUND_PALETTES.some((item) => item.id === nextPalette)) setPaletteId(nextPalette as PaletteId);
-      const nextMaterial = params.get("material"); if (PLAYGROUND_MATERIALS.some((item) => item.id === nextMaterial)) setMaterialId(nextMaterial as MaterialId);
-      const nextAnimation = params.get("animation"); if (["still", "drift", "pulse"].includes(nextAnimation ?? "")) setAnimationMode(nextAnimation as AnimationMode);
-      setStatus("ARCHIVE SPECIMEN RESTORED");
-    }
+    const timeout = window.setTimeout(() => {
+          const params = new URLSearchParams(window.location.search);
+          const nextGenerator = params.get("generator");
+          const nextSeed = Number(params.get("seed"));
+          const nextDensity = Number(params.get("density"));
+          const nextInfluence = Number(params.get("influence"));
+          if (["displacement", "orbital-bloom", "woven-lattice"].includes(nextGenerator ?? "") &&
+            Number.isInteger(nextSeed) && nextSeed >= 0 && nextSeed <= 9_999_999 &&
+            Number.isInteger(nextDensity) && nextDensity >= 12 && nextDensity <= 96 &&
+            Number.isInteger(nextInfluence) && nextInfluence >= 0 && nextInfluence <= 100) {
+            setGenerator(nextGenerator as GeneratorId); setSeed(nextSeed); setDensity(nextDensity); setInfluence(nextInfluence);
+            const nextPalette = params.get("palette"); if (PLAYGROUND_PALETTES.some((item) => item.id === nextPalette)) setPaletteId(nextPalette as PaletteId);
+            const nextMaterial = params.get("material"); if (PLAYGROUND_MATERIALS.some((item) => item.id === nextMaterial)) setMaterialId(nextMaterial as MaterialId);
+            const nextAnimation = params.get("animation"); if (["still", "drift", "pulse"].includes(nextAnimation ?? "")) setAnimationMode(nextAnimation as AnimationMode);
+            setStatus("ARCHIVE SPECIMEN RESTORED");
+          }
+    }, 0);
+    return () => window.clearTimeout(timeout);
   }, []);
 
   const activeGenerator = GENERATORS.find((item) => item.id === generator) ?? GENERATORS[0];
@@ -106,7 +111,7 @@ export function PlaygroundExperience() {
         generator, seed, density, influence, palette: paletteId, animation: animationMode, material: materialId,
       });
       window.localStorage.setItem(PLAYGROUND_MOTION_HANDOFF_KEY, JSON.stringify(handoff));
-      window.location.assign("/motion-lab?from=field");
+      router.push("/motion-lab?from=field");
     } catch { setStatus("MOTION HANDOFF UNAVAILABLE"); }
   };
 
@@ -128,7 +133,7 @@ export function PlaygroundExperience() {
     try {
       const scene = createPlaygroundScene(seed, density, influence, generator, activePalette.colors, materialId);
       window.localStorage.setItem(PLAYGROUND_SCENE_HANDOFF_KEY, JSON.stringify(scene));
-      window.location.assign("/scene-studio?from=playground");
+      router.push("/scene-studio?from=playground");
     } catch { setStatus("SCENE HANDOFF UNAVAILABLE"); }
   };
 
