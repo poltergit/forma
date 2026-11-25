@@ -8,8 +8,8 @@
   align-items: center;
   padding: clamp(1.25rem, 4vw, 3.5rem);
   overflow: hidden;
-  background: #171717;
-  color: #f4f1e8;
+  background: var(--forma-carbon-ink);
+  color: var(--forma-studio-bone);
   transform: scaleY(0);
   transform-origin: bottom center;
   pointer-events: none;
@@ -28,7 +28,6 @@
   font: 700 clamp(5rem, 17vw, 15rem)/.8 var(--font-display);
   letter-spacing: -.12em;
 }
-.wordmark span { color: #ff654f; }
 @media (max-width: 560px) {
   .overlay { grid-template-columns: 1fr 1fr; }
   .wordmark { grid-column: 1 / -1; grid-row: 1; justify-self: center; }
