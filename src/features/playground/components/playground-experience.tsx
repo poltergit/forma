@@ -153,9 +153,9 @@ export function PlaygroundExperience() {
       context.setTransform(ratio, 0, 0, ratio, 0, 0);
       context.fillStyle = activePalette.background; context.fillRect(0, 0, width, height);
       const material = getMaterialTreatment(materialId);
-      if (materialId === "ink") { context.fillStyle = "rgba(20,20,19,0.16)"; context.fillRect(0, 0, width, height); }
-      if (materialId === "glass") { const wash = context.createLinearGradient(0, 0, width, height); wash.addColorStop(0, "rgba(255,255,255,0.2)"); wash.addColorStop(0.5, "rgba(255,255,255,0)"); wash.addColorStop(1, "rgba(36,59,214,0.08)"); context.fillStyle = wash; context.fillRect(0, 0, width, height); }
-      if (materialId === "liquid") { const wash = context.createRadialGradient(width * 0.25, height * 0.2, 0, width * 0.25, height * 0.2, Math.max(width, height) * 0.8); wash.addColorStop(0, "rgba(255,255,255,0.22)"); wash.addColorStop(1, "rgba(240,91,62,0)"); context.fillStyle = wash; context.fillRect(0, 0, width, height); }
+      if (materialId === "ink") { context.fillStyle = "rgba(23,21,29,0.16)"; context.fillRect(0, 0, width, height); }
+      if (materialId === "glass") { const wash = context.createLinearGradient(0, 0, width, height); wash.addColorStop(0, "rgba(255,255,255,0.2)"); wash.addColorStop(0.5, "rgba(255,255,255,0)"); wash.addColorStop(1, "rgba(104,85,245,0.08)"); context.fillStyle = wash; context.fillRect(0, 0, width, height); }
+      if (materialId === "liquid") { const wash = context.createRadialGradient(width * 0.25, height * 0.2, 0, width * 0.25, height * 0.2, Math.max(width, height) * 0.8); wash.addColorStop(0, "rgba(255,255,255,0.22)"); wash.addColorStop(1, "rgba(255,91,69,0)"); context.fillStyle = wash; context.fillRect(0, 0, width, height); }
 
       const points = createGeneratorPoints(seed, density, generator);
       const originX = width * (pointerRef.current.active ? pointerRef.current.x : 0.5);
@@ -172,7 +172,7 @@ export function PlaygroundExperience() {
       });
 
       context.lineWidth = generator === "woven-lattice" ? 1 : 0.65;
-      context.strokeStyle = "rgba(32,33,31,0.2)";
+      context.strokeStyle = "rgba(23,21,29,0.2)";
       if (generator === "displacement") {
         for (let index = 0; index < projected.length; index += 1) {
           const point = projected[index]; let nearest = -1; let nearestDistance = cell * 1.7;
@@ -200,7 +200,7 @@ export function PlaygroundExperience() {
       }
 
       context.globalCompositeOperation = material.blend;
-      context.shadowColor = material.shadow > 0 ? "rgba(32,33,31,0.22)" : "transparent";
+      context.shadowColor = material.shadow > 0 ? "rgba(23,21,29,0.22)" : "transparent";
       context.shadowBlur = material.shadow * 18;
       projected.slice().sort((a, b) => a.z - b.z).forEach((point, index) => {
         const half = point.size * (generator === "orbital-bloom" ? 0.68 : 1);
@@ -214,18 +214,18 @@ export function PlaygroundExperience() {
           context.save(); context.translate(x, y); context.rotate(Math.PI / 4); context.fillStyle = tone;
           context.globalAlpha = alpha; context.fillRect(-half * 0.45, -half * 0.45, half * 0.9, half * 0.9); context.restore();
         } else {
-          polygon(context, [[x, y - rise], [x + half, y], [x, y + rise], [x - half, y]], `rgba(255,253,247,${0.18 + point.z * 0.12})`);
-          polygon(context, [[x - half, y], [x, y + rise], [x, y + rise + half * 0.62], [x - half, y + half * 0.62]], `rgba(119,119,111,${alpha * 0.55})`);
-          polygon(context, [[x + half, y], [x, y + rise], [x, y + rise + half * 0.62], [x + half, y + half * 0.62]], `rgba(32,33,31,${alpha * 0.7})`);
+          polygon(context, [[x, y - rise], [x + half, y], [x, y + rise], [x - half, y]], `rgba(241,237,227,${0.18 + point.z * 0.12})`);
+          polygon(context, [[x - half, y], [x, y + rise], [x, y + rise + half * 0.62], [x - half, y + half * 0.62]], `rgba(119,114,125,${alpha * 0.55})`);
+          polygon(context, [[x + half, y], [x, y + rise], [x, y + rise + half * 0.62], [x + half, y + half * 0.62]], `rgba(23,21,29,${alpha * 0.7})`);
           polygon(context, [[x, y - rise], [x + half, y], [x, y + rise], [x - half, y]], tone);
-          context.globalAlpha = 0.12 + point.z * 0.2; context.strokeStyle = "#fffdf7"; context.stroke(); context.globalAlpha = 1;
+          context.globalAlpha = 0.12 + point.z * 0.2; context.strokeStyle = "#f1ede3"; context.stroke(); context.globalAlpha = 1;
         }
       });
 
-      if (materialId === "paper" && material.grain > 0) { context.save(); context.globalAlpha = material.grain; context.fillStyle = "#20211f"; for (let index = 0; index < 180; index += 1) { const x = ((index * 73) % 997) / 997 * width; const y = ((index * 193) % 991) / 991 * height; context.fillRect(x, y, 1, 1); } context.restore(); }
+      if (materialId === "paper" && material.grain > 0) { context.save(); context.globalAlpha = material.grain; context.fillStyle = "#17151d"; for (let index = 0; index < 180; index += 1) { const x = ((index * 73) % 997) / 997 * width; const y = ((index * 193) % 991) / 991 * height; context.fillRect(x, y, 1, 1); } context.restore(); }
       context.globalCompositeOperation = "source-over"; context.shadowBlur = 0; context.shadowColor = "transparent";
       const glow = context.createRadialGradient(originX, originY, 0, originX, originY, influenceRadius);
-      glow.addColorStop(0, "rgba(240,91,62,0.13)"); glow.addColorStop(1, "rgba(240,91,62,0)");
+      glow.addColorStop(0, "rgba(255,91,69,0.13)"); glow.addColorStop(1, "rgba(255,91,69,0)");
       context.fillStyle = glow; context.fillRect(0, 0, width, height);
     };
 
