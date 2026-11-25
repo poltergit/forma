@@ -91,5 +91,7 @@ export function parsePortableRecipe(input: string): Omit<PlaygroundRecipe, "id" 
   if (!paletteIds.includes(recipe.palette as PaletteId)) throw new TypeError("Recipe uses an unknown palette.");
   const animation = recipe.animation === undefined ? "still" : recipe.animation;
   if (!["still", "drift", "pulse"].includes(animation as string)) throw new TypeError("Recipe uses an unknown animation mode.");
-  const material = recipe.material === undefined ? "paper" : recipe.material;\n  if (!materialIds.includes(material as MaterialId)) throw new TypeError("Recipe uses an unknown material.");\n  return { material: material as MaterialId, name: recipe.name.trim(), generator: recipe.generator as GeneratorId, seed: recipe.seed as number, density: recipe.density as number, influence: recipe.influence as number, palette: recipe.palette as PaletteId, animation: animation as AnimationMode };
+  const material = recipe.material === undefined ? "paper" : recipe.material;
+  if (!materialIds.includes(material as MaterialId)) throw new TypeError("Recipe uses an unknown material.");
+  return { material: material as MaterialId, name: recipe.name.trim(), generator: recipe.generator as GeneratorId, seed: recipe.seed as number, density: recipe.density as number, influence: recipe.influence as number, palette: recipe.palette as PaletteId, animation: animation as AnimationMode };
 }

@@ -102,7 +102,11 @@ export function PlaygroundExperience() {
       const pixelWidth = Math.floor(width * ratio); const pixelHeight = Math.floor(height * ratio);
       if (canvas.width !== pixelWidth || canvas.height !== pixelHeight) { canvas.width = pixelWidth; canvas.height = pixelHeight; }
       context.setTransform(ratio, 0, 0, ratio, 0, 0);
-      context.fillStyle = activePalette.background; context.fillRect(0, 0, width, height);\n      const material = getMaterialTreatment(materialId);\n      if (materialId === "ink") { context.fillStyle = "rgba(20,20,19,0.16)"; context.fillRect(0, 0, width, height); }\n      if (materialId === "glass") { const wash = context.createLinearGradient(0, 0, width, height); wash.addColorStop(0, "rgba(255,255,255,0.2)"); wash.addColorStop(0.5, "rgba(255,255,255,0)"); wash.addColorStop(1, "rgba(36,59,214,0.08)"); context.fillStyle = wash; context.fillRect(0, 0, width, height); }\n      if (materialId === "liquid") { const wash = context.createRadialGradient(width * 0.25, height * 0.2, 0, width * 0.25, height * 0.2, Math.max(width, height) * 0.8); wash.addColorStop(0, "rgba(255,255,255,0.22)"); wash.addColorStop(1, "rgba(240,91,62,0)"); context.fillStyle = wash; context.fillRect(0, 0, width, height); }
+      context.fillStyle = activePalette.background; context.fillRect(0, 0, width, height);
+      const material = getMaterialTreatment(materialId);
+      if (materialId === "ink") { context.fillStyle = "rgba(20,20,19,0.16)"; context.fillRect(0, 0, width, height); }
+      if (materialId === "glass") { const wash = context.createLinearGradient(0, 0, width, height); wash.addColorStop(0, "rgba(255,255,255,0.2)"); wash.addColorStop(0.5, "rgba(255,255,255,0)"); wash.addColorStop(1, "rgba(36,59,214,0.08)"); context.fillStyle = wash; context.fillRect(0, 0, width, height); }
+      if (materialId === "liquid") { const wash = context.createRadialGradient(width * 0.25, height * 0.2, 0, width * 0.25, height * 0.2, Math.max(width, height) * 0.8); wash.addColorStop(0, "rgba(255,255,255,0.22)"); wash.addColorStop(1, "rgba(240,91,62,0)"); context.fillStyle = wash; context.fillRect(0, 0, width, height); }
 
       const points = createGeneratorPoints(seed, density, generator);
       const originX = width * (pointerRef.current.active ? pointerRef.current.x : 0.5);
@@ -166,7 +170,8 @@ export function PlaygroundExperience() {
         }
       });
 
-      if (materialId === "paper" && material.grain > 0) { context.save(); context.globalAlpha = material.grain; context.fillStyle = "#20211f"; for (let index = 0; index < 180; index += 1) { const x = ((index * 73) % 997) / 997 * width; const y = ((index * 193) % 991) / 991 * height; context.fillRect(x, y, 1, 1); } context.restore(); }\n      const glow = context.createRadialGradient(originX, originY, 0, originX, originY, influenceRadius);
+      if (materialId === "paper" && material.grain > 0) { context.save(); context.globalAlpha = material.grain; context.fillStyle = "#20211f"; for (let index = 0; index < 180; index += 1) { const x = ((index * 73) % 997) / 997 * width; const y = ((index * 193) % 991) / 991 * height; context.fillRect(x, y, 1, 1); } context.restore(); }
+      const glow = context.createRadialGradient(originX, originY, 0, originX, originY, influenceRadius);
       glow.addColorStop(0, "rgba(240,91,62,0.13)"); glow.addColorStop(1, "rgba(240,91,62,0)");
       context.fillStyle = glow; context.fillRect(0, 0, width, height);
     };
@@ -249,7 +254,11 @@ export function PlaygroundExperience() {
         </button>)}
       </div>
 
-      <div className={styles.materialStudio} role="group" aria-label="Material treatment">\n        <span>MATERIAL / SURFACE</span>\n        {PLAYGROUND_MATERIALS.map((material) => <button key={material.id} type="button" aria-pressed={materialId === material.id} onClick={() => { setMaterialId(material.id); setStatus(`${material.name.toUpperCase()} SURFACE`); }}><strong>{material.name}</strong><small>{material.note}</small></button>)}\n      </div>\n      <div className={styles.animationStudio} role="group" aria-label="Animation mode">
+      <div className={styles.materialStudio} role="group" aria-label="Material treatment">
+        <span>MATERIAL / SURFACE</span>
+        {PLAYGROUND_MATERIALS.map((material) => <button key={material.id} type="button" aria-pressed={materialId === material.id} onClick={() => { setMaterialId(material.id); setStatus(`${material.name.toUpperCase()} SURFACE`); }}><strong>{material.name}</strong><small>{material.note}</small></button>)}
+      </div>
+      <div className={styles.animationStudio} role="group" aria-label="Animation mode">
         <span>TIME / BEHAVIOR</span>
         {([{ id: "still", label: "Still", note: "STATIC" }, { id: "drift", label: "Drift", note: "SLOW FIELD" }, { id: "pulse", label: "Pulse", note: "BREATHING FORM" }] as const).map((mode) => <button key={mode.id} type="button" aria-pressed={animationMode === mode.id} onClick={() => { setAnimationMode(mode.id); setStatus(`${mode.label.toUpperCase()} MODE`); }}><strong>{mode.label}</strong><small>{mode.note}</small></button>)}
         <small className={styles.motionNote}>Motion pauses when this tab is hidden and is disabled by reduced-motion preferences.</small>

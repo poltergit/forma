@@ -57,7 +57,26 @@ describe("Portable Playground recipes", () => {
 });
 
 
-describe("Playground material treatments", () => {\n  it("provides six deterministic, distinct renderer treatments", () => {\n    expect(PLAYGROUND_MATERIALS.map((item) => item.id)).toEqual(["paper", "ink", "metal", "glass", "liquid", "ceramic"]);\n    const values = PLAYGROUND_MATERIALS.map((item) => getMaterialTreatment(item.id));\n    expect(new Set(values.map((item) => JSON.stringify(item))).size).toBe(6);\n    expect(getMaterialTreatment("glass").alpha).toBeLessThan(getMaterialTreatment("metal").alpha);\n  });\n  it("round-trips material and defaults legacy recipes to Paper", () => {\n    const portable = createPortableRecipe({ id: "surface", name: "Glass study", generator: "orbital-bloom", seed: 3, density: 32, influence: 40, palette: "atelier", material: "glass", createdAt: new Date(0).toISOString() });\n    expect(parsePortableRecipe(JSON.stringify(portable)).material).toBe("glass");\n    const legacy = { ...portable, recipe: { ...portable.recipe, material: undefined } };\n    expect(parsePortableRecipe(JSON.stringify(legacy)).material).toBe("paper");\n  });\n  it("rejects unknown imported materials", () => {\n    const portable = createPortableRecipe({ id: "surface", name: "Unknown", generator: "displacement", seed: 2, density: 24, influence: 20, palette: "atelier", createdAt: new Date(0).toISOString() });\n    expect(() => parsePortableRecipe(JSON.stringify({ ...portable, recipe: { ...portable.recipe, material: "plasma" } }))).toThrow(/material/i);\n  });\n});\n\ndescribe("Playground motion modes", () => {
+describe("Playground material treatments", () => {
+  it("provides six deterministic, distinct renderer treatments", () => {
+    expect(PLAYGROUND_MATERIALS.map((item) => item.id)).toEqual(["paper", "ink", "metal", "glass", "liquid", "ceramic"]);
+    const values = PLAYGROUND_MATERIALS.map((item) => getMaterialTreatment(item.id));
+    expect(new Set(values.map((item) => JSON.stringify(item))).size).toBe(6);
+    expect(getMaterialTreatment("glass").alpha).toBeLessThan(getMaterialTreatment("metal").alpha);
+  });
+  it("round-trips material and defaults legacy recipes to Paper", () => {
+    const portable = createPortableRecipe({ id: "surface", name: "Glass study", generator: "orbital-bloom", seed: 3, density: 32, influence: 40, palette: "atelier", material: "glass", createdAt: new Date(0).toISOString() });
+    expect(parsePortableRecipe(JSON.stringify(portable)).material).toBe("glass");
+    const legacy = { ...portable, recipe: { ...portable.recipe, material: undefined } };
+    expect(parsePortableRecipe(JSON.stringify(legacy)).material).toBe("paper");
+  });
+  it("rejects unknown imported materials", () => {
+    const portable = createPortableRecipe({ id: "surface", name: "Unknown", generator: "displacement", seed: 2, density: 24, influence: 20, palette: "atelier", createdAt: new Date(0).toISOString() });
+    expect(() => parsePortableRecipe(JSON.stringify({ ...portable, recipe: { ...portable.recipe, material: "plasma" } }))).toThrow(/material/i);
+  });
+});
+
+describe("Playground motion modes", () => {
   it("keeps still mode motionless and bounds drift and pulse transforms", () => {
     expect(getAnimationMotion("still", 2)).toEqual({ offsetX: 0, offsetY: 0, scale: 1 });
     const drift = getAnimationMotion("drift", Math.PI / 2);
