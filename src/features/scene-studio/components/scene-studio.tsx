@@ -6,7 +6,12 @@ import { ContactShadows, Environment, OrbitControls, RoundedBox, TransformContro
 import { Suspense, useEffect, useMemo, useState } from "react";
 import type { ChangeEvent, ReactNode } from "react";
 import { useRef } from "react";
-import type { Mesh } from "three";
+import { ACESFilmicToneMapping, LinearToneMapping, NeutralToneMapping, NoToneMapping, OrthographicCamera, Vector2, type Mesh } from "three";
+import { EffectComposer } from "three/addons/postprocessing/EffectComposer.js";
+import { RenderPass } from "three/addons/postprocessing/RenderPass.js";
+import { UnrealBloomPass } from "three/addons/postprocessing/UnrealBloomPass.js";
+import { BokehPass } from "three/addons/postprocessing/BokehPass.js";
+import { ShaderPass } from "three/addons/postprocessing/ShaderPass.js";
 import { useThree } from "@react-three/fiber";
 import styles from "./scene-studio.module.css";
 import { parseSceneDocument, readSceneLibrary, SCENE_STORAGE_KEY } from "../scene-document";
@@ -15,13 +20,14 @@ import { deleteCloudComposition, getSceneCloudSession, loadCloudCompositions, sa
 import { PLAYGROUND_SCENE_HANDOFF_KEY } from "@/features/playground/playground-scene";
 import { applySceneMaterialPreset, SCENE_MATERIAL_PRESETS, type SceneMaterialId } from "../scene-materials";
 import { DEFAULT_SCENE_LIGHTING, normalizeSceneLighting, SCENE_ENVIRONMENTS, SCENE_LIGHTING_PRESETS, type SceneLightingDocument } from "../scene-lighting";
+import { DEFAULT_SCENE_RENDER, normalizeSceneRender, SCENE_RENDER_QUALITY, type SceneRenderDocument } from "../scene-render";
 
 type ShapeKind = "box" | "sphere" | "torus";
 type SceneObject = { id: number; name: string; kind: ShapeKind; color: string; roughness: number; metalness: number; emissive: string; transmission: number; thickness: number; ior: number; clearcoat: number; clearcoatRoughness: number; opacity: number; position: [number, number, number]; rotation: [number, number, number]; scale: number; visible: boolean };
 type CameraView = "perspective" | "front" | "top" | "side";
 type TransformTool = "select" | "move" | "rotate" | "scale";
 
-type EditorSnapshot = { objects: SceneDocument["objects"]; camera: CameraView; name: string; lighting: SceneLightingDocument };
+type EditorSnapshot = { objects: SceneDocument["objects"]; camera: CameraView; name: string; lighting: SceneLightingDocument; render: SceneRenderDocument };
 type SceneVersion = EditorSnapshot & { id: string; createdAt: string };
 
 function makeThumbnail(objects: SceneDocument["objects"]) {
@@ -45,14 +51,15 @@ const cameraViews: Record<CameraView, [number, number, number]> = {
   side: [8, 0.2, 0],
 };
 
-function CameraRig({ view }: { view: CameraView }) {
+function CameraRig({ view, projection }: { view: CameraView; projection: SceneRenderDocument["projection"] }) {
   const camera = useThree((state) => state.camera);
   useEffect(() => {
     camera.position.set(...cameraViews[view]);
     camera.up.set(0, 1, 0);
     camera.lookAt(0, 0, 0);
+    if (camera instanceof OrthographicCamera) camera.zoom = 85;
     camera.updateProjectionMatrix();
-  }, [camera, view]);
+  }, [camera, view, projection]);
   return null;
 }
 
@@ -90,16 +97,62 @@ function ObjectMesh({ item, selected, tool, onSelect, onTransform }: { item: Sce
   return mesh;
 }
 
-function SceneCanvas({ objects, selectedId, tool, view, lighting, onSelect, onTransform }: { objects: SceneObject[]; selectedId: number; tool: TransformTool; view: CameraView; lighting: SceneLightingDocument; onSelect: (id: number) => void; onTransform: (id: number, transform: Pick<SceneObject, "position" | "rotation" | "scale">) => void }) {
+const chromaticShader = {
+  uniforms: { tDiffuse: { value: null }, amount: { value: 0 } },
+  vertexShader: `varying vec2 vUv; void main(){ vUv=uv; gl_Position=projectionMatrix*modelViewMatrix*vec4(position,1.0); }`,
+  fragmentShader: `uniform sampler2D tDiffuse; uniform float amount; varying vec2 vUv; void main(){ vec2 shift=vec2(amount,0.0); vec4 color; color.r=texture2D(tDiffuse,vUv+shift).r; color.g=texture2D(tDiffuse,vUv).g; color.b=texture2D(tDiffuse,vUv-shift).b; color.a=texture2D(tDiffuse,vUv).a; gl_FragColor=color; }`,
+};
+const vignetteShader = {
+  uniforms: { tDiffuse: { value: null }, strength: { value: 0 } },
+  vertexShader: `varying vec2 vUv; void main(){ vUv=uv; gl_Position=projectionMatrix*modelViewMatrix*vec4(position,1.0); }`,
+  fragmentShader: `uniform sampler2D tDiffuse; uniform float strength; varying vec2 vUv; void main(){ vec4 color=texture2D(tDiffuse,vUv); vec2 uv=(vUv-0.5)*0.9; float vignette=smoothstep(0.82,0.18,dot(uv,uv)*1.45); color.rgb*=mix(1.0,vignette,strength); gl_FragColor=color; }`,
+};
+
+function SceneRenderPipeline({ settings }: { settings: SceneRenderDocument }) {
+  const { gl, scene, camera, size } = useThree();
+  const composer = useMemo(() => new EffectComposer(gl), [gl]);
+  useEffect(() => {
+    gl.toneMapping = settings.toneMapping === "linear" ? LinearToneMapping
+      : settings.toneMapping === "neutral" ? NeutralToneMapping
+      : settings.toneMapping === "none" ? NoToneMapping : ACESFilmicToneMapping;
+    gl.toneMappingExposure = 1;
+    composer.addPass(new RenderPass(scene, camera));
+    const bloom = new UnrealBloomPass(new Vector2(size.width, size.height), settings.bloom, 0.42, 0.82);
+    bloom.enabled = settings.bloom > 0;
+    composer.addPass(bloom);
+    const depth = new BokehPass(scene, camera, { focus: settings.focusDistance, aperture: settings.aperture, maxblur: 0.012 });
+    depth.enabled = settings.aperture > 0;
+    composer.addPass(depth);
+    const vignette = new ShaderPass(vignetteShader);
+    vignette.uniforms.strength.value = settings.vignette;
+    vignette.enabled = settings.vignette > 0;
+    composer.addPass(vignette);
+    const chromatic = new ShaderPass(chromaticShader);
+    chromatic.uniforms.amount.value = settings.chromaticAberration;
+    chromatic.enabled = settings.chromaticAberration > 0;
+    composer.addPass(chromatic);
+    composer.setSize(size.width, size.height);
+    return () => {
+      composer.passes.forEach((pass) => pass.dispose?.());
+      composer.dispose();
+      gl.toneMapping = ACESFilmicToneMapping;
+    };
+  }, [camera, composer, gl, scene, settings, size.height, size.width]);
+  useFrame((_, delta) => composer.render(delta), 1);
+  return null;
+}
+
+function SceneCanvas({ objects, selectedId, tool, view, lighting, render, onSelect, onTransform }: { objects: SceneObject[]; selectedId: number; tool: TransformTool; view: CameraView; lighting: SceneLightingDocument; render: SceneRenderDocument; onSelect: (id: number) => void; onTransform: (id: number, transform: Pick<SceneObject, "position" | "rotation" | "scale">) => void }) {
   return (
-    <Canvas camera={{ position: cameraViews.perspective, fov: 38 }} dpr={[1, 1.7]} gl={{ antialias: true, alpha: true }}>
+    <Canvas key={render.projection} orthographic={render.projection === "orthographic"} camera={render.projection === "orthographic" ? { position: cameraViews.perspective, zoom: 85 } : { position: cameraViews.perspective, fov: 38 }} dpr={render.quality === "draft" ? 1 : render.quality === "studio" ? 1.5 : 2} gl={{ antialias: true, alpha: true, preserveDrawingBuffer: true }}>
       <color attach="background" args={["#e9e6dd"]} />
       <ambientLight intensity={lighting.ambientIntensity} />
       <directionalLight position={lighting.key.position} intensity={lighting.key.intensity} color={lighting.key.color} castShadow />
       <directionalLight position={lighting.fill.position} intensity={lighting.fill.intensity} color={lighting.fill.color} />
       <directionalLight position={lighting.rim.position} intensity={lighting.rim.intensity} color={lighting.rim.color} />
       <Suspense fallback={null}>
-        <CameraRig view={view} />
+        <CameraRig view={view} projection={render.projection} />
+        <SceneRenderPipeline settings={render} />
         <Environment preset={lighting.environment} environmentIntensity={lighting.environmentIntensity} />
         {objects.map((item) => <ObjectMesh key={item.id} item={item} selected={item.id === selectedId} tool={tool} onSelect={() => onSelect(item.id)} onTransform={(transform) => onTransform(item.id, transform)} />)}
         {lighting.shadows && <ContactShadows position={[0, -1.7, 0]} opacity={lighting.shadowOpacity} scale={10} blur={lighting.shadowBlur} far={4} />}
@@ -112,6 +165,7 @@ function SceneCanvas({ objects, selectedId, tool, view, lighting, onSelect, onTr
 export function SceneStudio() {
   const [objects, setObjects] = useState(initialObjects);
   const [lighting, setLighting] = useState<SceneLightingDocument>(DEFAULT_SCENE_LIGHTING);
+  const [renderSettings, setRenderSettings] = useState<SceneRenderDocument>(DEFAULT_SCENE_RENDER);
   const [compositions, setCompositions] = useState<SceneDocument[]>([]);
   const [activeCompositionId, setActiveCompositionId] = useState("");
   const [hydrated, setHydrated] = useState(false);
@@ -128,7 +182,7 @@ export function SceneStudio() {
   const [showArchived, setShowArchived] = useState(false);
 
   const versionStorageKey = (id: string) => `forma:scene-studio:versions:v1:${id}`;
-  const snapshot = (): EditorSnapshot => ({ objects: structuredClone(objects), camera: cameraView, name: sceneName, lighting: structuredClone(lighting) });
+  const snapshot = (): EditorSnapshot => ({ objects: structuredClone(objects), camera: cameraView, name: sceneName, lighting: structuredClone(lighting), render: structuredClone(renderSettings) });
   const recordHistory = () => {
     history.current.past = [...history.current.past.slice(-49), snapshot()];
     history.current.future = [];
@@ -140,6 +194,7 @@ export function SceneStudio() {
     setCameraView(entry.camera);
     setSceneName(entry.name);
     setLighting(normalizeSceneLighting(entry.lighting));
+    setRenderSettings(normalizeSceneRender(entry.render));
     setSelectedId(entry.objects[0]?.id ?? 1);
   };
   const undo = () => {
@@ -280,6 +335,7 @@ export function SceneStudio() {
         setObjects(latest.objects);
         setCameraView(latest.camera);
         setLighting(normalizeSceneLighting(latest.lighting));
+        setRenderSettings(normalizeSceneRender(latest.render));
         setSelectedId(latest.objects[0]?.id ?? 1);
         window.localStorage.setItem(activeStorageKey, JSON.stringify(library));
         setSaveStatus(status);
@@ -301,6 +357,7 @@ export function SceneStudio() {
         camera: cameraView,
         objects,
         lighting,
+        render: renderSettings,
         updatedAt: new Date().toISOString(),
         revision: cloudRevisions.current.get(activeCompositionId),
       };
@@ -357,6 +414,7 @@ export function SceneStudio() {
     setObjects(document.objects);
     setCameraView(document.camera);
         setLighting(normalizeSceneLighting(document.lighting));
+    setRenderSettings(normalizeSceneRender(document.render));
     setSelectedId(document.objects[0]?.id ?? 1);
     setSaveStatus("OPENING COMPOSITION");
   };
@@ -373,6 +431,7 @@ export function SceneStudio() {
     setSceneName(document.name);
     setObjects(document.objects);
     setCameraView(document.camera);
+    setRenderSettings(DEFAULT_SCENE_RENDER);
     setSelectedId(1);
     
     setSaveStatus("NEW COMPOSITION");
@@ -392,6 +451,7 @@ export function SceneStudio() {
       setSceneName(document.name);
       setObjects(document.objects);
       setCameraView(document.camera);
+      setRenderSettings(normalizeSceneRender(document.render));
       setSelectedId(document.objects[0]?.id ?? 1);
       
       setSaveStatus("JSON IMPORTED");
@@ -428,9 +488,24 @@ export function SceneStudio() {
     }
   };
 
+  const exportRender = () => {
+    const canvas = document.querySelector<HTMLCanvasElement>(`.${styles.canvas} canvas`);
+    if (!canvas) { setSaveStatus("RENDER CANVAS NOT READY"); return; }
+    canvas.toBlob((blob) => {
+      if (!blob) { setSaveStatus("PNG EXPORT FAILED"); return; }
+      const url = URL.createObjectURL(blob);
+      const anchor = document.createElement("a");
+      anchor.href = url;
+      anchor.download = `${sceneName.trim().replace(/[^a-z0-9-_]+/gi, "-").replace(/^-|-$/g, "") || "forma-render"}.png`;
+      anchor.click();
+      URL.revokeObjectURL(url);
+      setSaveStatus("PNG RENDER EXPORTED");
+    }, "image/png");
+  };
+
   const exportScene = () => {
     setSaveStatus("JSON EXPORTED");
-    const payload = { format: "forma-scene", version: 1, name: sceneName, camera: cameraView, objects, lighting, exportedAt: new Date().toISOString() };
+    const payload = { format: "forma-scene", version: 1, name: sceneName, camera: cameraView, objects, lighting, render: renderSettings, exportedAt: new Date().toISOString() };
     const file = new Blob([JSON.stringify(payload, null, 2)], { type: "application/json" });
     const url = URL.createObjectURL(file);
     const anchor = document.createElement("a");
@@ -474,7 +549,8 @@ export function SceneStudio() {
     setSceneName(copy.name);
     setObjects(copy.objects);
     setCameraView(copy.camera);
-        setLighting(normalizeSceneLighting(copy.lighting));
+    setLighting(normalizeSceneLighting(copy.lighting));
+    setRenderSettings(normalizeSceneRender(copy.render));
     setSelectedId(copy.objects[0]?.id ?? 1);
     setSaveStatus("COMPOSITION DUPLICATED");
   };
@@ -526,7 +602,7 @@ export function SceneStudio() {
         </div>
         <div className={styles.topActions}>
           <button className={styles.quietButton} onClick={() => { recordHistory(); setObjects(initialObjects); setSelectedId(1); }}>RESET</button>
-          <button className={styles.quietButton} onClick={saveVersion}>SAVE VERSION</button><button className={styles.publishButton} onClick={exportScene}>EXPORT JSON <span>↗</span></button>
+          <button className={styles.quietButton} onClick={saveVersion}>SAVE VERSION</button><button className={styles.quietButton} onClick={exportRender}>EXPORT PNG</button><button className={styles.publishButton} onClick={exportScene}>EXPORT JSON <span>↗</span></button>
         </div>
       </header>
 
@@ -574,13 +650,13 @@ export function SceneStudio() {
               <button className={styles.quietButton} onClick={redo} disabled={!historyState.canRedo} title="Redo (⌘/Ctrl + Shift + Z)">↷</button>
               {(["select", "move", "rotate", "scale"] as const).map((tool) => <button key={tool} className={activeTool === tool ? styles.activeTool : ""} aria-pressed={activeTool === tool} onClick={() => setActiveTool(tool)} title={tool}>{tool === "select" ? "↖" : tool === "move" ? "✣" : tool === "rotate" ? "⟳" : "↗"}<span>{tool.toUpperCase()}</span></button>)}
             </div>
-            <div className={styles.cameraPresets}>{(["perspective", "front", "top", "side"] as const).map((view) => <button key={view} className={cameraView === view ? styles.activeCamera : ""} aria-pressed={cameraView === view} onClick={() => { recordHistory(); setCameraView(view); }}>{view.toUpperCase()}</button>)}</div>
+            <div className={styles.cameraPresets}><button className={renderSettings.projection === "perspective" ? styles.activeCamera : ""} aria-pressed={renderSettings.projection === "perspective"} onClick={() => { recordHistory(); setRenderSettings(current => ({ ...current, projection: "perspective" })); }}>PERSPECTIVE</button><button className={renderSettings.projection === "orthographic" ? styles.activeCamera : ""} aria-pressed={renderSettings.projection === "orthographic"} onClick={() => { recordHistory(); setRenderSettings(current => ({ ...current, projection: "orthographic" })); }}>ORTHO</button>{(["front", "top", "side"] as const).map((view) => <button key={view} className={cameraView === view ? styles.activeCamera : ""} aria-pressed={cameraView === view} onClick={() => { recordHistory(); setCameraView(view); }}>{view.toUpperCase()}</button>)}</div>
             <span className={styles.viewportMeta}>X · Y · Z</span>
           </div>
           <div className={styles.canvasFrame}>
             <div className={styles.canvasStamp}><span>FORMA / LAB 001</span><span>24° 08′ N — 3D SPACE</span></div>
             <div className={styles.canvasGrid} aria-hidden="true" />
-            <div className={styles.canvas}><SceneCanvas objects={objects} selectedId={selected?.id ?? -1} tool={activeTool} view={cameraView} lighting={lighting} onSelect={setSelectedId} onTransform={(id, transform) => { recordHistory(); setObjects((current) => current.map((item) => item.id === id ? { ...item, ...transform } : item)); }} /></div>
+            <div className={styles.canvas}><SceneCanvas objects={objects} selectedId={selected?.id ?? -1} tool={activeTool} view={cameraView} lighting={lighting} render={renderSettings} onSelect={setSelectedId> onTransform={(id, transform) => { recordHistory(); setObjects((current) => current.map((item) => item.id === id ? { ...item, ...transform } : item)); }} /></div>
             <div className={styles.canvasHint}>DRAG TO ORBIT <i /> SCROLL TO ZOOM <i /> SELECT TO INSPECT</div>
             <div className={styles.axisWidget}><span>X</span><span>Y</span><span>Z</span></div>
           </div>
@@ -623,6 +699,16 @@ export function SceneStudio() {
             </section>
             <section className={styles.propertySection}>
               <section className={styles.propertySection}>
+              <div className={styles.propertyTitle}>CAMERA & RENDER <span>OPTICS / OUTPUT</span></div>
+              <div className={styles.renderQuality} role="group" aria-label="Render quality">{SCENE_RENDER_QUALITY.map((quality) => <button key={quality.id} type="button" aria-pressed={renderSettings.quality === quality.id} className={renderSettings.quality === quality.id ? styles.renderQualityActive : ""} onClick={() => { recordHistory(); setRenderSettings(current => ({ ...current, quality: quality.id })); }}><strong>{quality.name}</strong><small>{quality.detail}</small></button>)}</div>
+              <label className={styles.selectField}><span>TONE MAPPING</span><select value={renderSettings.toneMapping} onChange={event => setRenderSettings(current => ({ ...current, toneMapping: event.target.value as SceneRenderDocument["toneMapping"] }))}><option value="aces">ACES FILMIC</option><option value="neutral">NEUTRAL</option><option value="linear">LINEAR</option><option value="none">NONE</option></select></label>
+              <label className={styles.rangeField}><span>FOCUS DISTANCE <b>{renderSettings.focusDistance.toFixed(1)}</b></span><input type="range" min="0.5" max="20" step="0.1" value={renderSettings.focusDistance} onChange={event => setRenderSettings(current => ({ ...current, focusDistance: Number(event.target.value) }))}/></label>
+              <label className={styles.rangeField}><span>DEPTH OF FIELD <b>{(renderSettings.aperture * 100000).toFixed(1)}</b></span><input type="range" min="0" max="0.0002" step="0.000005" value={renderSettings.aperture} onChange={event => setRenderSettings(current => ({ ...current, aperture: Number(event.target.value) }))}/></label>
+              <label className={styles.rangeField}><span>BLOOM <b>{renderSettings.bloom.toFixed(2)}</b></span><input type="range" min="0" max="2" step="0.01" value={renderSettings.bloom} onChange={event => setRenderSettings(current => ({ ...current, bloom: Number(event.target.value) }))}/></label>
+              <label className={styles.rangeField}><span>VIGNETTE <b>{renderSettings.vignette.toFixed(2)}</b></span><input type="range" min="0" max="1" step="0.01" value={renderSettings.vignette} onChange={event => setRenderSettings(current => ({ ...current, vignette: Number(event.target.value) }))}/></label>
+              <label className={styles.rangeField}><span>CHROMATIC ABERRATION <b>{renderSettings.chromaticAberration.toFixed(3)}</b></span><input type="range" min="0" max="0.012" step="0.0002" value={renderSettings.chromaticAberration} onChange={event => setRenderSettings(current => ({ ...current, chromaticAberration: Number(event.target.value) }))}/></label>
+            </section>
+            <section className={styles.propertySection}>
 <div className={styles.propertyTitle}>STUDIO LIGHTING <span>3-POINT RIG</span></div>
 <div className={styles.lightingPresets} role="group" aria-label="Lighting presets">{SCENE_LIGHTING_PRESETS.map((preset)=><button key={preset.id} type="button" aria-pressed={lighting.preset===preset.id} className={lighting.preset===preset.id?styles.lightingPresetActive:""} onClick={()=>{recordHistory();setLighting(structuredClone(preset.lighting));}}><strong>{preset.name}</strong><small>{preset.description}</small></button>)}</div>
 <label className={styles.selectField}><span>ENVIRONMENT / HDRI</span><select value={lighting.environment} onChange={event=>setLighting(current=>({...current,environment:event.target.value as SceneLightingDocument["environment"]}))}>{SCENE_ENVIRONMENTS.map(environment=><option key={environment} value={environment}>{environment.toUpperCase()}</option>)}</select></label>
