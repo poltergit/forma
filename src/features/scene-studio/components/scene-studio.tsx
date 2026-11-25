@@ -115,15 +115,14 @@ const vignetteShader = {
 function SceneRenderPipeline({ settings }: { settings: SceneRenderDocument }) {
   const { gl, scene, camera, size } = useThree();
   const composerRef = useRef<EffectComposer | null>(null);
+  // This effect intentionally configures the Three.js renderer as an imperative WebGL side effect.
+  // eslint-disable-next-line react-hooks/immutability
   useEffect(() => {
     const composer = new EffectComposer(gl);
     composerRef.current = composer;
-    // The renderer is configured imperatively as part of the WebGL render pipeline.
-    // eslint-disable-next-line react-hooks/immutability
     gl.toneMapping = settings.toneMapping === "linear" ? LinearToneMapping
       : settings.toneMapping === "neutral" ? NeutralToneMapping
       : settings.toneMapping === "none" ? NoToneMapping : ACESFilmicToneMapping;
-    // eslint-disable-next-line react-hooks/immutability
     gl.toneMappingExposure = 1;
     composer.addPass(new RenderPass(scene, camera));
     const bloom = new UnrealBloomPass(new Vector2(size.width, size.height), settings.bloom, 0.42, 0.82);
