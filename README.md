@@ -17,9 +17,11 @@ FORMA is not a template library or a conventional SaaS dashboard with decorative
 
 ## Creative direction
 
-The new FORMA identity is editorial, tactile, and experimental: warm paper, near-black ink, signal coral, electric blue, and acid chartreuse. Large typographic gestures establish the voice; generative forms bring it into three dimensions; controls make the work respond.
+FORMA's creative premise is **Matter in Motion**: nothing is finished; everything is becoming. Its visual language is built from four primitives — Matter (the specimen), Force (the condition acting on it), Trace (the evidence of transformation), and Notation (the intelligence that makes an experiment legible).
 
-The guiding principle is simple: **make every interaction change something real.**
+Its signature device is **the Afterform**: an intentional trace of a previous or possible state, expressed as an offset contour, displaced duplicate, motion path, registration mark, or layered silhouette. The palette combines Studio Bone, Carbon Ink, Acid Voltage, Signal Vermilion, Electric Iris, and Soft Matter. Each feature has its own composition and personality while sharing this visual grammar.
+
+The guiding principle is simple: **make every interaction change something real.** See [Creative DNA](docs/CREATIVE_DNA.md) for the working identity system.
 
 ## Technical architecture
 
@@ -32,9 +34,9 @@ The guiding principle is simple: **make every interaction change something real.
 
 ## Project status
 
-FORMA is undergoing a creative re-foundation. The homepage has been reimagined around the digital atelier concept and a new visual language. The Playground, Motion Lab, and Scene Studio remain active product surfaces and are being brought into the new direction in subsequent passes. The redesign is published to `main`; automated validation and owner-led visual review are still required before the new direction is considered approved.
+FORMA is undergoing a creative re-foundation. The Identity Renaissance is being developed in review branches and has not been merged into `main`. The Creative DNA is a working foundation for owner review; visual implementation and browser/device validation follow after the identity direction is accepted.
 
-See [Project Status](PROJECT_STATUS.md), [Technical Architecture](docs/TECHNICAL_ARCHITECTURE.md), [Security Threat Model](docs/SECURITY_THREAT_MODEL.md), and [Brand Guidelines](docs/BRAND_GUIDELINES.md).
+See [Project Status](PROJECT_STATUS.md), [Technical Architecture](docs/TECHNICAL_ARCHITECTURE.md), [Security Threat Model](docs/SECURITY_THREAT_MODEL.md), and [Brand Guidelines](docs/BRAND_GUIDELINES.md), and [Creative DNA](docs/CREATIVE_DNA.md).
 
 ## Run locally
 
