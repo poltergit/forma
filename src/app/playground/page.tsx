@@ -20,6 +20,17 @@ export default function PlaygroundPage() {
         </div>
         <div className={styles.introFoot}><span>FORM / FORCE / FEELING</span><span>SCROLL TO INTERACT ↓</span></div>
       </section>
+      <section className={styles.process} aria-label="The FORMA process">
+        <div className={styles.processLead}>
+          <span>THE ATELIER METHOD / 00—∞</span>
+          <p>There is no straight line from idea to object.</p>
+        </div>
+        <div className={styles.processSteps}>
+          <div><b>01</b><span>OBSERVE</span><i aria-hidden="true">↘</i></div>
+          <div><b>02</b><span>DISTORT</span><i aria-hidden="true">↗</i></div>
+          <div><b>03</b><span>RECOMPOSE</span><i aria-hidden="true">✳</i></div>
+        </div>
+      </section>
       <section className={styles.experiment} id="displacement-field" aria-labelledby="experiment-title">
         <div className={styles.experimentHeading}>
           <div><span>OPEN STUDY / 001</span><h2 id="experiment-title">Displacement<br /><em>field.</em></h2></div>
