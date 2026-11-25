@@ -18,8 +18,8 @@ body {
   min-height: 100vh;
   margin: 0;
   background:
-    radial-gradient(ellipse at 7% 8%, rgb(104 85 245 / .09), transparent 28rem),
-    radial-gradient(ellipse at 94% 34%, rgb(255 91 69 / .06), transparent 26rem),
+    radial-gradient(ellipse at 7% 8%, color-mix(in srgb, var(--forma-electric-iris) 9%, transparent), transparent 28rem),
+    radial-gradient(ellipse at 94% 34%, color-mix(in srgb, var(--forma-signal-vermilion) 6%, transparent), transparent 26rem),
     var(--color-page);
   color: var(--color-text);
   font-family: var(--font-body);
@@ -110,3 +110,5 @@ button { color: inherit; }
     transition-duration: 1ms !important;
   }
 }
+:root{--forma-depth-near:18px;--forma-depth-mid:42px;--forma-depth-far:88px}
+body{isolation:isolate}
