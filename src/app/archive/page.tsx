@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import styles from "./page.module.css";
+import styles from "./page.module.css";\nimport { ArchiveImprints } from "@/features/archive/components/archive-imprints";
 
 export const metadata: Metadata = {
   title: "The Archive",
@@ -45,7 +45,7 @@ export default function ArchivePage() {
         </div>
       </section>
 
-      <section className={styles.marginNotes} aria-labelledby="notes-title">
+      <ArchiveImprints />\n\n      <section className={styles.marginNotes} aria-labelledby="notes-title">
         <div className={styles.notesMeta}><span>02 / MARGIN NOTES</span><span>THINGS WE KEEP LEARNING</span></div>
         <h2 id="notes-title">A form is<br /><em>a question.</em></h2>
         <div className={styles.notesGrid}>
