@@ -143,3 +143,54 @@
 .outputLinks button{min-height:2.8rem;border:1px solid rgb(241 237 227 / .28);padding:.7rem .9rem;background:transparent;color:var(--forma-studio-bone);font:500 .55rem var(--font-mono);letter-spacing:.07em;cursor:pointer}
 .outputLinks button:hover,.outputLinks button:focus-visible{border-color:var(--forma-acid-voltage);background:var(--forma-acid-voltage);color:var(--forma-carbon-ink)}
 @media(max-width:700px){.outputActions{align-items:stretch}.outputLinks{display:grid;grid-template-columns:1fr}.outputLinks button{width:100%;text-align:left}}
+
+/* MATTER IN MOTION / OPEN FIELD — expressive instrument finish */
+.experience{position:relative;isolation:isolate;border:1px solid var(--forma-carbon-ink);background:var(--forma-studio-bone);box-shadow:16px 16px 0 var(--forma-electric-iris);transition:box-shadow .35s ease,transform .35s ease}
+.experience::before{position:absolute;inset:0;z-index:-1;background:radial-gradient(circle at 8% 4%,rgb(255 91 69 / .11),transparent 24rem),radial-gradient(circle at 92% 92%,rgb(104 85 245 / .1),transparent 28rem);content:"";pointer-events:none}
+.stageHeader{min-height:3.4rem;background:var(--forma-carbon-ink);color:var(--forma-studio-bone);border:0}
+.stageFooter{background:var(--forma-carbon-ink);color:#c4bdca;border-color:rgb(241 237 227 / .18)}
+.stage{min-height:clamp(390px,56vw,700px);background-color:#e6e1d8;background-image:linear-gradient(rgb(23 21 29 / .09) 1px,transparent 1px),linear-gradient(90deg,rgb(23 21 29 / .09) 1px,transparent 1px),radial-gradient(ellipse at 50% 48%,rgb(104 85 245 / .1),transparent 62%);background-size:28px 28px,28px 28px,auto;transition:background-color .3s ease}
+.stage::after{position:absolute;inset:1.2rem;border:1px solid rgb(23 21 29 / .13);content:"";pointer-events:none}
+.stageOverlay{inset:1.65rem 1.7rem auto;color:rgb(23 21 29 / .7);font-size:9px}
+.stageCrosshair{right:2rem;bottom:1.8rem;font-size:2rem;animation:field-crosshair 5s ease-in-out infinite}
+.staticFallback i{filter:drop-shadow(0 18px 22px rgb(23 21 29 / .08));transition:transform .7s cubic-bezier(.2,.8,.2,1),border-color .4s ease}
+.staticFallback i:nth-child(1){width:27%;border-color:var(--forma-electric-iris);transform:rotateX(62deg) rotateZ(45deg) translateZ(-1rem)}
+.staticFallback i:nth-child(2){width:19%;border-color:var(--forma-signal-vermilion);transform:rotateX(62deg) rotateZ(-35deg) translateZ(2rem)}
+.staticFallback i:nth-child(3){width:11%;border-color:var(--forma-carbon-ink);transform:rotateX(62deg) rotateZ(75deg) translateZ(4rem)}
+.staticFallback i:nth-child(4){width:5%;background:var(--forma-acid-voltage);border-color:var(--forma-carbon-ink);transform:translateZ(6rem)}
+.generatorPicker{background:#dcd7cd;border-color:rgb(23 21 29 / .22)}
+.generatorPicker button{position:relative;min-height:7rem;padding:1.15rem 1.2rem;transition:background .28s ease,color .28s ease,transform .28s ease}
+.generatorPicker button>span{color:var(--forma-signal-vermilion)}
+.generatorPicker button strong{font-size:clamp(1.05rem,1.8vw,1.45rem)}
+.generatorPicker button[aria-pressed=true]{background:var(--forma-carbon-ink);color:var(--forma-studio-bone);box-shadow:inset 0 -4px var(--forma-acid-voltage)}
+.generatorPicker button[aria-pressed=true]>span,.generatorPicker button[aria-pressed=true] small{color:#c4bdca}
+.generatorPicker button:hover{background:#cec8bd}
+.generatorPicker button[aria-pressed=true]:hover{background:#292530}
+.controls{padding:1.5rem 1.25rem;background:var(--forma-carbon-ink)}
+.controlIntro{gap:.9rem}
+.controlIntro button{border-bottom:1px solid var(--forma-acid-voltage);padding:.35rem 0 .55rem}
+.rangeControl{gap:.9rem}
+.rangeControl input{height:4px}
+.rangeControl input:focus-visible{outline:2px solid var(--forma-acid-voltage);outline-offset:5px}
+.recipeStudio{background:#d9d4ca;border-color:rgb(23 21 29 / .2);padding:clamp(1.25rem,3vw,2.4rem)}
+.recipeHeading h3{font-size:clamp(2.3rem,5vw,4.8rem);letter-spacing:-.085em}
+.recipeHeading>p{max-width:27rem}
+.recipeSave input{border-color:rgb(23 21 29 / .35);background:rgb(241 237 227 / .55);transition:border-color .2s ease,background .2s ease}
+.recipeSave input:focus{outline:2px solid var(--forma-electric-iris);outline-offset:2px;background:var(--forma-studio-bone)}
+.recipeSave button{border-color:var(--forma-carbon-ink);background:var(--forma-carbon-ink);transition:background .2s ease,color .2s ease,transform .2s ease}
+.recipeSave button:hover{border-color:var(--forma-signal-vermilion);background:var(--forma-signal-vermilion);color:var(--forma-carbon-ink);transform:translateY(-2px)}
+.recipeList article{transition:transform .25s ease,border-color .25s ease,box-shadow .25s ease}
+.recipeList article:hover{transform:translateY(-3px);border-color:var(--forma-electric-iris);box-shadow:4px 4px 0 rgb(104 85 245 / .14)}
+.presetStudio,.animationStudio,.materialStudio{background:#d9d4ca;border-color:rgb(23 21 29 / .2);padding:1.1rem 1.25rem}
+.presetList button,.animationStudio button,.materialStudio button{min-height:4rem;border-color:rgb(23 21 29 / .22);transition:transform .22s ease,border-color .22s ease,background .22s ease}
+.presetList button:hover,.animationStudio button:hover,.materialStudio button:hover{transform:translateY(-2px);border-color:var(--forma-electric-iris);background:var(--forma-studio-bone)}
+.paletteStudio{background:#d9d4ca;border-color:rgb(23 21 29 / .2)}
+.paletteStudio button{transition:transform .2s ease}
+.paletteStudio button:hover{transform:translateY(-3px)}
+.outputActions{padding:1.1rem 1.25rem;background:var(--forma-carbon-ink)}
+.outputActions button{min-height:2.9rem}
+.outputLinks button{transition:background .2s ease,color .2s ease,border-color .2s ease,transform .2s ease}
+.outputLinks button:hover{transform:translateY(-2px)}
+@keyframes field-crosshair{0%,100%{transform:rotate(0) scale(1)}50%{transform:rotate(90deg) scale(1.18)}}
+@media(max-width:700px){.experience{box-shadow:8px 8px 0 var(--forma-electric-iris)}.stage{min-height:390px}.stage::after{inset:.65rem}.generatorPicker button{min-height:5.4rem;padding:.8rem 1rem}.controls{padding:1.1rem}.recipeStudio{padding:1.2rem}.outputActions{padding:1rem}}
+@media(prefers-reduced-motion:reduce){.experience,.generatorPicker button,.staticFallback i,.recipeList article,.presetList button,.animationStudio button,.materialStudio button,.paletteStudio button,.recipeSave button,.outputLinks button{transition:none;transform:none}.stageCrosshair{animation:none}}
