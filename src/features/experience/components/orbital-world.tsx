@@ -31,11 +31,11 @@ const specimens: Array<{
   phase: number;
   color: string;
 }> = [
-  { id: "form", radius: 3.1, height: 1.72, depth: 0.22, speed: 0.32, phase: 0.2, color: "#C7F36B" },
-  { id: "motion", radius: 4.12, height: 2.32, depth: 0.56, speed: -0.22, phase: 2.1, color: "#647BFF" },
-  { id: "type", radius: 4.72, height: 1.35, depth: 0.18, speed: 0.16, phase: 4.4, color: "#FF765E" },
-  { id: "space", radius: 3.8, height: 2.76, depth: 0.82, speed: -0.27, phase: 1.25, color: "#F2F0EA" },
-  { id: "field", radius: 5.15, height: 2.02, depth: 0.42, speed: 0.12, phase: 3.45, color: "#A9F5D0" },
+  { id: "form", radius: 3.1, height: 1.72, depth: 0.22, speed: 0.32, phase: 0.2, color: "#D8FF38" },
+  { id: "motion", radius: 4.12, height: 2.32, depth: 0.56, speed: -0.22, phase: 2.1, color: "#6855F5" },
+  { id: "type", radius: 4.72, height: 1.35, depth: 0.18, speed: 0.16, phase: 4.4, color: "#FF5B45" },
+  { id: "space", radius: 3.8, height: 2.76, depth: 0.82, speed: -0.27, phase: 1.25, color: "#F1EDE3" },
+  { id: "field", radius: 5.15, height: 2.02, depth: 0.42, speed: 0.12, phase: 3.45, color: "#A8E5D2" },
 ];
 
 function GlyphForm({ color }: { color: string }) {
@@ -191,19 +191,19 @@ function Core({ progress, intensity, reducedMotion }: { progress: RefValue<Mutab
     <group ref={root}>
       <mesh rotation={[Math.PI / 4, Math.PI / 4, 0]}>
         <octahedronGeometry args={[0.92, 1]} />
-        <meshStandardMaterial color="#F2F0EA" metalness={0.78} roughness={0.2} wireframe />
+        <meshStandardMaterial color="#F1EDE3" metalness={0.78} roughness={0.2} wireframe />
       </mesh>
       <mesh rotation={[0.2, 0.45, 0.1]}>
         <icosahedronGeometry args={[0.58, 1]} />
-        <meshPhysicalMaterial color="#C7F36B" metalness={0.45} roughness={0.24} clearcoat={0.85} clearcoatRoughness={0.16} />
+        <meshPhysicalMaterial color="#D8FF38" metalness={0.45} roughness={0.24} clearcoat={0.85} clearcoatRoughness={0.16} />
       </mesh>
       <mesh rotation={[Math.PI / 2.5, 0, 0]}>
         <torusGeometry args={[1.22, 0.009, 8, 140]} />
-        <meshBasicMaterial color="#647BFF" transparent opacity={0.75} />
+        <meshBasicMaterial color="#6855F5" transparent opacity={0.75} />
       </mesh>
       <mesh rotation={[0.4, 0.2, Math.PI / 2.8]}>
         <torusGeometry args={[1.48, 0.006, 8, 140]} />
-        <meshBasicMaterial color="#FF765E" transparent opacity={0.62} />
+        <meshBasicMaterial color="#FF5B45" transparent opacity={0.62} />
       </mesh>
     </group>
   );
@@ -222,10 +222,10 @@ function WorldScene(props: OrbitalWorldProps) {
   return (
     <>
       <ambientLight intensity={0.62} />
-      <pointLight position={[0, 4, 5]} intensity={36} color="#C7F36B" distance={15} />
-      <pointLight position={[-5, -2, 1]} intensity={18} color="#647BFF" distance={12} />
-      <pointLight position={[4, 1, -4]} intensity={24} color="#FF765E" distance={13} />
-      <fog attach="fog" args={["#111214", 11, 23]} />
+      <pointLight position={[0, 4, 5]} intensity={36} color="#D8FF38" distance={15} />
+      <pointLight position={[-5, -2, 1]} intensity={18} color="#6855F5" distance={12} />
+      <pointLight position={[4, 1, -4]} intensity={24} color="#FF5B45" distance={13} />
+      <fog attach="fog" args={["#17151D", 11, 23]} />
       <group ref={world}>
         <Core progress={props.progress} intensity={props.intensity} reducedMotion={props.reducedMotion} />
         {specimens.map((item, index) => (
@@ -245,9 +245,9 @@ function WorldScene(props: OrbitalWorldProps) {
         ))}
         <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, -3.8, 0]}>
           <planeGeometry args={[80, 80, 1, 1]} />
-          <meshStandardMaterial color="#111214" roughness={0.84} metalness={0.16} />
+          <meshStandardMaterial color="#17151D" roughness={0.84} metalness={0.16} />
         </mesh>
-        <gridHelper args={[24, 48, "#313A30", "#202722"]} position={[0, -3.78, 0]} />
+        <gridHelper args={[24, 48, "#45404D", "#201D27"]} position={[0, -3.78, 0]} />
       </group>
     </>
   );
