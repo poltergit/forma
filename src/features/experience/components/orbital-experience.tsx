@@ -46,24 +46,27 @@ export function AtelierExperience() {
       .fromTo("[data-intro='headline'] > *", { yPercent: 115, rotate: 3, opacity: 0 }, { yPercent: 0, rotate: 0, opacity: 1, duration: 1.05, stagger: 0.12 }, "-=0.25")
       .fromTo("[data-intro='copy']", { y: 24, opacity: 0 }, { y: 0, opacity: 1, duration: 0.7 }, "-=0.55")
       .fromTo("[data-intro='specimen']", { scale: 0.78, rotate: -8, opacity: 0 }, { scale: 1, rotate: 1.4, opacity: 1, duration: 1.35 }, "-=1")
-      .fromTo(".specimenAnnotation, .specimenLegend", { y: 12, opacity: 0 }, { y: 0, opacity: 1, duration: 0.55, stagger: 0.1 }, "-=0.6")
-      .fromTo(".materialDock", { y: 18, opacity: 0, rotate: -3 }, { y: 0, opacity: 1, rotate: 0, duration: 0.65 }, "-=0.35")
-      .fromTo(".heroFoot", { y: 12, opacity: 0 }, { y: 0, opacity: 1, duration: 0.55 }, "-=0.2");
+      .fromTo(".${styles.specimenAnnotation}, .${styles.specimenLegend}", { y: 12, opacity: 0 }, { y: 0, opacity: 1, duration: 0.55, stagger: 0.1 }, "-=0.6")
+      .fromTo(".${styles.materialDock}", { y: 18, opacity: 0, rotate: -3 }, { y: 0, opacity: 1, rotate: 0, duration: 0.65 }, "-=0.35")
+      .fromTo(".${styles.heroFoot}", { y: 12, opacity: 0 }, { y: 0, opacity: 1, duration: 0.55 }, "-=0.2");
 
     gsap.to("[data-specimen]", {
-      yPercent: 8,
+      yPercent: 12,
+      rotateX: -7,
+      rotateY: 5,
       rotate: 5,
-      scale: 0.96,
+      scale: 0.92,
+      transformPerspective: 1100,
       ease: "none",
       scrollTrigger: { trigger: "[data-hero]", start: "top top", end: "bottom top", scrub: 1 },
     });
-    gsap.to(".heroGrid", {
+    gsap.to(".${styles.heroGrid}", {
       yPercent: 18,
       opacity: 0.12,
       ease: "none",
       scrollTrigger: { trigger: "[data-hero]", start: "top top", end: "bottom top", scrub: 1.2 },
     });
-    gsap.to(".heroSideNote", {
+    gsap.to(".${styles.heroSideNote}", {
       yPercent: 55,
       opacity: 0,
       ease: "none",
@@ -77,14 +80,14 @@ export function AtelierExperience() {
       });
     });
 
-    gsap.utils.toArray<HTMLElement>(".studyArtwork").forEach((artwork, index) => {
-      gsap.fromTo(artwork, { y: 28, rotate: index % 2 ? 3 : -3, scale: 0.94 }, {
-        y: 0, rotate: 0, scale: 1, duration: 0.9, ease: "power3.out",
+    gsap.utils.toArray<HTMLElement>(".${styles.studyArtwork}").forEach((artwork, index) => {
+      gsap.fromTo(artwork, { y: 42, rotateX: index % 2 ? -14 : 14, rotateY: index % 2 ? 9 : -9, rotate: index % 2 ? 3 : -3, scale: 0.88, transformPerspective: 900 }, {
+        y: 0, rotateX: 0, rotateY: 0, rotate: 0, scale: 1, duration: 1.15, ease: "power3.out",
         scrollTrigger: { trigger: artwork, start: "top 90%", once: true },
       });
     });
 
-    gsap.fromTo(".instrumentStage", { clipPath: "inset(8% 8% 8% 8%)", opacity: 0.6 }, {
+    gsap.fromTo(".${styles.instrumentStage}", { clipPath: "inset(8% 8% 8% 8%)", opacity: 0.6 }, {
       clipPath: "inset(0% 0% 0% 0%)",
       opacity: 1,
       duration: 1.15,
@@ -95,7 +98,7 @@ export function AtelierExperience() {
     // A restrained pointer-driven shift gives the specimen a sense of depth
     // without taking control away from the interactive Three.js scene.
     const hero = document.querySelector<HTMLElement>("[data-hero]");
-    const specimen = document.querySelector<HTMLElement>(".specimenCanvas");
+    const specimen = document.querySelector<HTMLElement>(`.${styles.specimenCanvas}`);
     if (!hero || !specimen || window.matchMedia("(hover: none)").matches) return;
 
     const moveX = gsap.quickTo(specimen, "x", { duration: 0.9, ease: "power3.out" });
