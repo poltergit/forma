@@ -41,7 +41,9 @@ describe("Playground generator registry", () => {
       const scene = createPlaygroundScene(27, 12, 30, "displacement", undefined, surface as keyof typeof expected);
       expect(scene.objects[0].roughness).toBe(roughness);
       expect(scene.objects[0].metalness).toBe(metalness);
-      expect(scene.objects[0].emissive).toMatch(/^#[0-9a-f]{6}$/i);\n      expect(scene.objects[0].transmission).toBe(surface === "glass" ? 1 : surface === "liquid" ? 0.82 : 0);\n      expect(scene.objects[0].clearcoat).toBeGreaterThanOrEqual(0);
+      expect(scene.objects[0].emissive).toMatch(/^#[0-9a-f]{6}$/i);
+      expect(scene.objects[0].transmission).toBe(surface === "glass" ? 1 : surface === "liquid" ? 0.82 : 0);
+      expect(scene.objects[0].clearcoat).toBeGreaterThanOrEqual(0);
     }
     expect(() => createPlaygroundScene(1, 12, 30, "displacement", undefined, "plasma" as never)).toThrow(/surface/i);
   });
