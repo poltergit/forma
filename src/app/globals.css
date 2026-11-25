@@ -17,7 +17,10 @@ html {
 body {
   min-height: 100vh;
   margin: 0;
-  background: var(--color-page);
+  background:
+    radial-gradient(ellipse at 7% 8%, rgb(98 88 245 / .075), transparent 28rem),
+    radial-gradient(ellipse at 94% 34%, rgb(255 101 79 / .055), transparent 26rem),
+    var(--color-page);
   color: var(--color-text);
   font-family: var(--font-body);
 }
@@ -31,7 +34,7 @@ button:focus-visible,
 input:focus-visible,
 textarea:focus-visible,
 select:focus-visible {
-  outline: 2px solid var(--color-accent);
+  outline: 2px solid var(--color-accent-secondary);
   outline-offset: 4px;
 }
 
