@@ -16,4 +16,4 @@
 @media(max-width:620px) {
   .inner { align-items: flex-start; flex-direction: column; justify-content: center; gap: .5rem; padding-block: 1rem; font-size: .5rem; }
 }
-.wordmark{display:inline-flex;align-items:center;gap:.55rem}.wordmark svg{width:1.55rem;height:1.55rem;fill:none;stroke:var(--forma-acid-voltage);stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;transform:rotate(-12deg)}.wordmark svg path{stroke:var(--forma-signal-vermilion)}.wordmark svg circle{stroke:var(--forma-electric-iris);stroke-dasharray:3 4}
+.wordmark{display:inline-flex;align-items:center;gap:.55rem}.wordmark svg{width:1.55rem;height:1.55rem;fill:none;stroke:var(--forma-acid-voltage);stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;transform:rotate(-12deg)}.wordmark svg path:nth-child(2){stroke:var(--forma-signal-vermilion)}.wordmark svg circle{stroke:var(--forma-electric-iris);stroke-dasharray:3 4}
