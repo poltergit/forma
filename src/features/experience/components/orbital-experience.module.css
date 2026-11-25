@@ -440,3 +440,555 @@
   .processTrack { animation: none; }
   .studyRow,.studyArrow,.enterLink,.invitationLink,.materialDock button,.instrumentModes button { transition: none; }
 }
+
+
+/* ─────────────────────────────────────────────────────────────
+   MATTER IN MOTION — art-direction pass
+   Keeps the existing editorial structure; gives each surface a
+   stronger sense of depth, material, and intentional composition.
+   ───────────────────────────────────────────────────────────── */
+
+.page {
+  --paper-shadow: #e6e0d5;
+  --line-strong: rgb(23 21 29 / .24);
+  background: var(--paper);
+}
+
+.hero {
+  min-height: min(940px, calc(100svh - 5rem));
+  padding-top: clamp(1.25rem, 2.4vw, 2.1rem);
+  background:
+    radial-gradient(ellipse at 76% 47%, rgb(104 85 245 / .16), transparent 31rem),
+    radial-gradient(ellipse at 22% 82%, rgb(255 91 69 / .1), transparent 28rem),
+    linear-gradient(135deg, rgb(255 255 255 / .24), transparent 42%),
+    var(--paper);
+}
+.hero::after {
+  position: absolute;
+  z-index: -1;
+  inset: 0;
+  background-image: radial-gradient(rgb(23 21 29 / .22) .55px, transparent .55px);
+  background-size: 5px 5px;
+  content: "";
+  opacity: .12;
+  pointer-events: none;
+  mask-image: linear-gradient(120deg, #000, transparent 72%);
+}
+.heroGrid {
+  opacity: .46;
+  mask-image: linear-gradient(to bottom, #000 0%, #000 48%, transparent 94%);
+}
+.heroComposition {
+  min-height: clamp(620px, 70vh, 790px);
+  grid-template-columns: minmax(0, 1.08fr) minmax(0, .92fr);
+}
+.heroCopy {
+  z-index: 4;
+  margin-top: -2.8rem;
+  transform: translateX(-1.2%);
+}
+.heroCopy::before {
+  position: absolute;
+  z-index: -1;
+  top: -4.8rem;
+  left: -3.5rem;
+  color: rgb(23 21 29 / .035);
+  content: "F";
+  font: 700 clamp(19rem, 35vw, 37rem)/.7 var(--font-display);
+  letter-spacing: -.16em;
+  pointer-events: none;
+}
+.overline {
+  margin-bottom: 1.8rem;
+  color: #625c68;
+}
+.overline span {
+  display: inline-grid;
+  width: 1.5rem;
+  height: 1.5rem;
+  place-items: center;
+  border: 1px solid rgb(255 91 69 / .45);
+  border-radius: 50%;
+  animation: forma-orbit 12s linear infinite;
+}
+.heroCopy h1 {
+  font-size: clamp(5.4rem, 9.2vw, 10.2rem);
+  letter-spacing: -.112em;
+  line-height: .735;
+}
+.heroCopy h1 span:first-child { transform: translateX(-.025em); }
+.heroCopy h1 span:nth-child(2) {
+  margin-top: .1em;
+  margin-left: .11em;
+  font-size: .83em;
+}
+.heroCopy h1 em {
+  position: relative;
+  display: inline-block;
+  color: var(--coral);
+  font-weight: 600;
+}
+.heroCopy h1 em::after {
+  position: absolute;
+  right: -.08em;
+  bottom: -.1em;
+  left: .04em;
+  height: .055em;
+  background: var(--acid);
+  content: "";
+  transform: skewX(-28deg) scaleX(.88);
+  transform-origin: left;
+}
+.heroDescription {
+  max-width: 36rem;
+  margin-top: clamp(2rem, 3vw, 3rem);
+  margin-left: 10%;
+  align-items: center;
+}
+.heroDescription p {
+  max-width: 18rem;
+  font-size: clamp(.92rem, 1.12vw, 1.08rem);
+}
+.enterLink {
+  position: relative;
+  min-width: 13.8rem;
+  border: 1px solid var(--ink);
+  box-shadow: 5px 5px 0 rgb(23 21 29 / .12);
+}
+.enterLink:hover {
+  box-shadow: 1px 1px 0 rgb(23 21 29 / .12);
+}
+.specimenStage {
+  width: min(112%, 780px);
+  margin: -1.5rem -5% 0 -10%;
+  transform: rotate(1.4deg);
+}
+.specimenField {
+  aspect-ratio: 1.04;
+  background:
+    linear-gradient(90deg, transparent 49.8%, rgb(23 21 29 / .11) 50%, transparent 50.2%),
+    linear-gradient(transparent 49.8%, rgb(23 21 29 / .11) 50%, transparent 50.2%),
+    radial-gradient(circle at 50% 50%, rgb(255 255 255 / .62), transparent 61%);
+  background-size: 100% 100%, 100% 100%, 100% 100%;
+}
+.specimenField::before {
+  inset: 7% 9%;
+  border-width: 1.5px;
+  border-color: rgb(104 85 245 / .4);
+  box-shadow: 0 0 0 1.3rem rgb(104 85 245 / .025), 0 0 0 2.6rem rgb(255 91 69 / .025);
+}
+.specimenField::after {
+  inset: -1% 16%;
+  border-color: rgb(255 91 69 / .48);
+  animation: forma-orbit 38s linear infinite;
+}
+.fieldAxis {
+  inset: 9%;
+  border-color: rgb(23 21 29 / .16);
+}
+.afterform {
+  inset: 15%;
+  filter: drop-shadow(0 0 1.1rem rgb(104 85 245 / .12));
+}
+.afterform i {
+  border-width: 1.5px;
+}
+.specimenCanvas {
+  inset: -1%;
+  filter: drop-shadow(0 1.4rem 1.5rem rgb(23 21 29 / .14));
+}
+.specimenMark {
+  top: 13%;
+  right: 12%;
+  display: grid;
+  width: 2.7rem;
+  height: 2.7rem;
+  place-items: center;
+  border: 1px solid rgb(255 91 69 / .45);
+  border-radius: 50%;
+  font-size: 1.25rem;
+  animation: forma-mark 7s ease-in-out infinite;
+}
+.specimenCoordinate { left: 1%; }
+.specimenAnnotation {
+  top: 1%;
+  left: 0;
+  right: 0;
+}
+.specimenLegend {
+  margin-top: .2rem;
+  padding-top: .8rem;
+  border-color: rgb(23 21 29 / .2);
+}
+.materialDock {
+  right: 0;
+  bottom: 7%;
+  border-color: rgb(23 21 29 / .22);
+  background: rgb(241 237 227 / .88);
+  box-shadow: .45rem .45rem 0 rgb(23 21 29 / .1), 0 1rem 2rem rgb(23 21 29 / .08);
+}
+.materialDock button[aria-pressed="true"] {
+  box-shadow: inset 0 -2px 0 var(--coral);
+}
+.heroFoot {
+  padding-top: 1rem;
+  border-top: 1px solid rgb(23 21 29 / .18);
+}
+.heroFoot a {
+  gap: 1rem;
+  transition: gap 240ms cubic-bezier(.2,.8,.2,1);
+}
+.heroFoot a:hover { gap: 1.4rem; }
+.heroFoot a b {
+  width: 2rem;
+  height: 2rem;
+  transition: transform 300ms cubic-bezier(.2,.8,.2,1), background 200ms ease;
+}
+.heroFoot a:hover b {
+  transform: translateY(.2rem);
+  background: var(--acid);
+}
+.heroSideNote {
+  right: 1.15rem;
+  color: #77717d;
+}
+
+.processStrip {
+  border-block-width: 1.5px;
+  box-shadow: 0 .6rem 1.8rem rgb(23 21 29 / .08);
+}
+.processTrack { min-height: clamp(4.4rem, 6.5vw, 6rem); }
+.processTrack i { animation: forma-twinkle 3.5s ease-in-out infinite; }
+.processTrack i:nth-of-type(even) { animation-delay: -1.7s; }
+
+.belief {
+  position: relative;
+  isolation: isolate;
+  background:
+    radial-gradient(ellipse at 9% 88%, rgb(104 85 245 / .14), transparent 35rem),
+    radial-gradient(ellipse at 95% 15%, rgb(255 91 69 / .09), transparent 30rem),
+    var(--ink);
+}
+.belief::before {
+  position: absolute;
+  z-index: -1;
+  top: 14%;
+  right: -8%;
+  width: min(52vw, 48rem);
+  aspect-ratio: 1;
+  border: 1px solid rgb(241 237 227 / .1);
+  border-radius: 50%;
+  box-shadow: 0 0 0 3rem rgb(241 237 227 / .018), 0 0 0 6rem rgb(241 237 227 / .014);
+  content: "";
+  pointer-events: none;
+}
+.beliefLayout {
+  grid-template-columns: 1.2fr .8fr;
+  gap: 7vw;
+}
+.beliefHeadline h2 {
+  font-size: clamp(4.7rem, 9vw, 9.3rem);
+  letter-spacing: -.105em;
+}
+.beliefHeadline h2 em:last-child {
+  color: var(--coral);
+}
+.beliefAside {
+  position: relative;
+  padding: 1.5rem 0 1.5rem 1.8rem;
+  border-left: 1px solid rgb(241 237 227 / .22);
+}
+.afterformStamp {
+  width: 9.4rem;
+  height: 5.8rem;
+  box-shadow: .35rem .35rem 0 rgb(255 91 69 / .18);
+}
+.primitiveList {
+  gap: 1rem;
+}
+.primitiveList span {
+  min-height: 2rem;
+  border-bottom: 1px solid rgb(241 237 227 / .12);
+}
+.primitiveList small { color: #aaa4b0; }
+.beliefFoot {
+  text-transform: uppercase;
+}
+
+.studies {
+  position: relative;
+}
+.studiesIntro {
+  align-items: end;
+  padding-top: clamp(4rem, 8vw, 7rem);
+}
+.studiesIntro h2 {
+  font-size: clamp(4.8rem, 8.7vw, 9rem);
+  letter-spacing: -.105em;
+}
+.studiesIntro h2 em {
+  display: inline-block;
+  color: var(--coral);
+  transform: translateX(.12em) rotate(-2deg);
+}
+.studiesIntro p {
+  max-width: 18rem;
+  padding-bottom: .7rem;
+  border-bottom: 1px solid var(--rule);
+}
+.studyList {
+  border-top: 1px solid var(--ink);
+}
+.studyRow {
+  position: relative;
+  min-height: 17rem;
+  grid-template-columns: .42fr 1fr 1.2fr 3rem;
+  gap: clamp(1.2rem, 3vw, 3rem);
+  transition: padding var(--duration-panel) var(--ease-inertia), background var(--duration-panel) ease, border-color 240ms ease;
+}
+.studyRow::before {
+  position: absolute;
+  z-index: 0;
+  inset: 0 auto 0 0;
+  width: 3px;
+  background: var(--coral);
+  content: "";
+  transform: scaleY(0);
+  transform-origin: bottom;
+  transition: transform 420ms cubic-bezier(.2,.8,.2,1);
+}
+.studyRow:hover::before,
+.studyRow:focus-visible::before { transform: scaleY(1); }
+.studyIndex,.studyArtwork,.studyText,.studyArrow { position: relative; z-index: 1; }
+.studyArtwork {
+  max-width: 21rem;
+  box-shadow: .55rem .55rem 0 rgb(23 21 29 / .07);
+  transition: transform 500ms cubic-bezier(.2,.8,.2,1), box-shadow 500ms ease;
+}
+.studyRow:hover .studyArtwork {
+  transform: translateY(-.45rem) rotate(-1.5deg);
+  box-shadow: .9rem 1rem 0 rgb(23 21 29 / .09);
+}
+.studyRow[data-study="matter"] .studyArtwork i {
+  animation: matter-breathe 8s ease-in-out infinite;
+}
+.studyRow[data-study="force"] .studyArtwork i {
+  animation: force-orbit 12s linear infinite;
+}
+.studyRow[data-study="notation"] .studyArtwork strong {
+  transition: transform 500ms cubic-bezier(.2,.8,.2,1);
+}
+.studyRow[data-study="notation"]:hover .studyArtwork strong {
+  transform: rotate(-13deg) translateY(-.3rem) scale(1.06);
+}
+.studyText h3 {
+  font-size: clamp(2rem, 3.3vw, 3.6rem);
+  transition: color 240ms ease, transform 400ms cubic-bezier(.2,.8,.2,1);
+}
+.studyRow:hover .studyText h3 {
+  color: var(--iris);
+  transform: translateX(.3rem);
+}
+.studyArrow {
+  width: 3rem;
+  height: 3rem;
+  border-color: rgb(23 21 29 / .35);
+}
+.studyRow:hover .studyArrow {
+  transform: rotate(45deg) scale(1.06);
+  background: var(--acid);
+  color: var(--ink);
+}
+
+.instrument {
+  position: relative;
+  overflow: hidden;
+  background:
+    radial-gradient(ellipse at 82% 50%, rgb(104 85 245 / .09), transparent 33rem),
+    linear-gradient(125deg, #e9e4da, #e1dbd1);
+}
+.instrument::before {
+  position: absolute;
+  top: 13%;
+  right: -14rem;
+  width: 38rem;
+  aspect-ratio: 1;
+  border: 1px solid rgb(23 21 29 / .12);
+  border-radius: 50%;
+  box-shadow: 0 0 0 2.5rem rgb(23 21 29 / .025), 0 0 0 5rem rgb(23 21 29 / .02);
+  content: "";
+  pointer-events: none;
+}
+.instrumentLayout {
+  grid-template-columns: .72fr 1.28fr;
+  gap: 6vw;
+}
+.instrumentCopy h2 {
+  font-size: clamp(4.2rem, 7vw, 7.6rem);
+  letter-spacing: -.105em;
+}
+.instrumentCopy h2 em { color: var(--coral); }
+.controls {
+  padding: 1.3rem;
+  border: 1px solid rgb(23 21 29 / .17);
+  background: rgb(241 237 227 / .55);
+  box-shadow: .4rem .4rem 0 rgb(23 21 29 / .045);
+}
+.controls label > span {
+  font-size: .61rem;
+}
+.controls input {
+  accent-color: var(--iris);
+}
+.instrumentStage {
+  min-height: 38rem;
+  border: 1px solid rgb(241 237 227 / .22);
+  box-shadow: 1rem 1rem 0 rgb(23 21 29 / .12), 0 2rem 4rem rgb(23 21 29 / .12);
+  background:
+    radial-gradient(ellipse at 50% 46%, rgb(104 85 245 / .25), transparent 46%),
+    radial-gradient(ellipse at 72% 76%, rgb(255 91 69 / .12), transparent 34%),
+    #17151d;
+}
+.instrumentStage::after {
+  position: absolute;
+  inset: .7rem;
+  border: 1px solid rgb(241 237 227 / .12);
+  content: "";
+  pointer-events: none;
+}
+.instrumentStageTop,.instrumentStageBottom {
+  right: 1.6rem;
+  left: 1.6rem;
+}
+.instrumentStageTop { top: 1.4rem; }
+.instrumentStageBottom { bottom: 1.4rem; }
+
+.invitation {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  min-height: 48rem;
+  background:
+    radial-gradient(ellipse at 80% 45%, rgb(241 237 227 / .17), transparent 32rem),
+    var(--coral);
+}
+.invitation::before,
+.invitation::after {
+  position: absolute;
+  z-index: -1;
+  top: 50%;
+  right: -8%;
+  width: min(58vw, 58rem);
+  aspect-ratio: 1;
+  border: 1px solid rgb(23 21 29 / .28);
+  border-radius: 50%;
+  content: "";
+  transform: translateY(-50%) rotate(-24deg) scaleY(.62);
+  pointer-events: none;
+}
+.invitation::after {
+  right: 0;
+  width: min(45vw, 44rem);
+  border-style: dashed;
+  border-color: rgb(241 237 227 / .6);
+  transform: translateY(-50%) rotate(32deg) scaleY(.8);
+}
+.invitationMain {
+  position: relative;
+  z-index: 1;
+}
+.invitationMain > p {
+  display: inline-flex;
+  align-items: center;
+  gap: .7rem;
+}
+.invitationMain > p::before {
+  width: .55rem;
+  height: .55rem;
+  border-radius: 50%;
+  background: var(--acid);
+  box-shadow: 0 0 0 .3rem rgb(216 255 56 / .2);
+  content: "";
+}
+.invitationMain h2 {
+  font-size: clamp(4.8rem, 10vw, 10.5rem);
+  letter-spacing: -.11em;
+}
+.invitationMain h2 em {
+  display: inline-block;
+  color: var(--paper);
+  transform: rotate(-2deg) translateX(.06em);
+}
+.invitationLink {
+  min-width: 14rem;
+  border: 1px solid var(--ink);
+  box-shadow: .45rem .45rem 0 rgb(23 21 29 / .18);
+}
+.invitationLink:hover { box-shadow: .1rem .1rem 0 rgb(23 21 29 / .18); }
+.invitationBottom { position: relative; z-index: 1; }
+
+@keyframes forma-orbit { to { transform: rotate(338deg); } }
+@keyframes forma-mark {
+  0%, 100% { transform: rotate(0deg) scale(1); }
+  50% { transform: rotate(90deg) scale(1.08); }
+}
+@keyframes forma-twinkle {
+  0%, 100% { opacity: .7; transform: rotate(0deg) scale(1); }
+  50% { opacity: 1; transform: rotate(35deg) scale(1.15); }
+}
+@keyframes matter-breathe {
+  0%, 100% { border-radius: 42% 58% 61% 39%; transform: rotate(-28deg) scale(1); }
+  50% { border-radius: 58% 42% 38% 62%; transform: rotate(-12deg) scale(1.07); }
+}
+@keyframes force-orbit {
+  to { transform: rotate(328deg); }
+}
+
+@media (max-width: 1100px) {
+  .heroComposition { grid-template-columns: minmax(0, 1fr) minmax(0, .92fr); }
+  .heroCopy h1 { font-size: clamp(4.8rem, 8.6vw, 8rem); }
+  .specimenStage { width: 112%; margin-left: -13%; }
+  .heroDescription { margin-left: 4%; }
+  .beliefLayout { grid-template-columns: 1fr .86fr; }
+  .instrumentLayout { grid-template-columns: .8fr 1.2fr; }
+}
+@media (max-width: 760px) {
+  .hero { min-height: max(850px, calc(100svh - 4.5rem)); }
+  .heroComposition { min-height: 710px; grid-template-columns: 1fr; }
+  .heroCopy { margin-top: 0; transform: none; }
+  .heroCopy::before { top: -3rem; left: -1rem; font-size: 22rem; }
+  .heroCopy h1 { font-size: clamp(5rem, 13vw, 7.6rem); }
+  .specimenStage { width: min(86vw, 590px); margin: -3rem -3% 0 auto; }
+  .beliefLayout { grid-template-columns: 1fr; }
+  .beliefAside { margin-left: 14%; }
+  .studyRow { grid-template-columns: 2.6rem minmax(8rem, .9fr) 1.2fr 2.5rem; }
+  .instrumentLayout { grid-template-columns: 1fr; }
+  .instrumentStage { min-height: 30rem; }
+  .invitation { min-height: 42rem; }
+}
+@media (max-width: 560px) {
+  .heroCopy h1 { font-size: clamp(4.1rem, 14vw, 6.3rem); }
+  .heroCopy h1 span:nth-child(2) { margin-left: .04em; }
+  .heroDescription { margin-left: 3%; }
+  .specimenStage { width: 112vw; margin: -1rem -29% 0 auto; transform: rotate(1deg); }
+  .specimenField { aspect-ratio: 1.2; }
+  .materialDock { right: 25%; }
+  .beliefHeadline h2 { font-size: clamp(3.8rem, 15vw, 5.8rem); }
+  .beliefAside { margin-left: 5%; padding-left: 1rem; }
+  .studiesIntro h2 { font-size: clamp(3.8rem, 15vw, 5.8rem); }
+  .studyRow { grid-template-columns: 2.2rem 1fr 2.1rem; }
+  .studyArtwork { box-shadow: .3rem .3rem 0 rgb(23 21 29 / .07); }
+  .studyText h3 { font-size: 1.8rem; }
+  .controls { padding: 1rem; }
+  .instrumentStage { min-height: 21rem; }
+  .invitationMain h2 { font-size: clamp(3.8rem, 14vw, 5.8rem); }
+  .invitation::before { right: -48%; width: 110vw; }
+  .invitation::after { right: -25%; width: 90vw; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .overline span,.specimenField::after,.specimenMark,.processTrack i,
+  .studyRow[data-study="matter"] .studyArtwork i,
+  .studyRow[data-study="force"] .studyArtwork i { animation: none; }
+  .studyRow:hover .studyArtwork,.studyRow:hover .studyText h3,
+  .studyRow:hover .studyArrow { transform: none; }
+}
