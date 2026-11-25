@@ -97,6 +97,36 @@ export function MotionLab() {
           <input aria-label="Motion timeline position" type="range" min="0" max="100" step="1" value={progress} onChange={(event) => { const next = Number(event.target.value); setProgress(next); setPaused(true); const animation = objectRef.current?.getAnimations()[0]; if (animation) { animation.pause(); animation.currentTime = (next / 100) * duration * 2000; } }} />
           <div className={styles.timelineScale}><span>0:00</span><span>{(duration * 2).toFixed(1)}s / FULL CYCLE</span></div>
         </div>
+        <div className={styles.score} aria-label="Live motion score, generated from the current motion settings">
+          <div className={styles.scoreHeader}>
+            <span>THE MOTION SCORE / GENERATED IN REAL TIME</span>
+            <span>01 — 03</span>
+          </div>
+          <div className={styles.scoreLanes}>
+            <div className={styles.scoreLane} data-lane="path">
+              <span>PATH <i>01</i></span>
+              <div className={styles.scoreRail} style={{ "--score-fill": `${mode === "orbit" ? 88 : mode === "shift" ? 76 : mode === "stagger" ? 62 : 48}%` } as CSSProperties}>
+                {Array.from({ length: 12 }, (_, index) => <i key={index} className={index < (mode === "orbit" ? 10 : mode === "shift" ? 8 : mode === "stagger" ? 6 : 5) ? styles.scoreTickActive : ""} />)}
+              </div>
+              <em>{mode.toUpperCase()}</em>
+            </div>
+            <div className={styles.scoreLane} data-lane="force">
+              <span>FORCE <i>02</i></span>
+              <div className={styles.scoreRail} style={{ "--score-fill": `${intensity}%` } as CSSProperties}>
+                {Array.from({ length: 12 }, (_, index) => <i key={index} className={index < Math.round(intensity / 100 * 12) ? styles.scoreTickActive : ""} />)}
+              </div>
+              <em>{intensity < 35 ? "SOFT" : intensity < 70 ? "TENSE" : "LOUD"}</em>
+            </div>
+            <div className={styles.scoreLane} data-lane="rhythm">
+              <span>RHYTHM <i>03</i></span>
+              <div className={styles.scoreRail} style={{ "--score-fill": `${Math.max(18, 100 - duration * 7)}%` } as CSSProperties}>
+                {Array.from({ length: 12 }, (_, index) => <i key={index} className={index < Math.max(2, Math.round(9 - duration)) ? styles.scoreTickActive : ""} />)}
+              </div>
+              <em>{duration <= 2.5 ? "URGENT" : duration >= 6 ? "SUSPENDED" : "MEASURED"}</em>
+            </div>
+          </div>
+          <p>Not a preset. A fingerprint of this exact movement.</p>
+        </div>
         <div className={styles.stageFooter}>
           <span>{selected.note}</span>
           <button type="button" aria-pressed={paused} aria-label={paused ? "Play motion" : "Pause motion"} onClick={() => setPaused((value) => !value)}>{paused ? "▶ PLAY" : "Ⅱ PAUSE"}</button>
