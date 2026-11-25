@@ -235,3 +235,43 @@
 @media(prefers-reduced-motion:reduce){
   .studio *{scroll-behavior:auto!important;transition:none!important;animation:none!important}
 }
+
+/* ROOM 03 — THE WORKBENCH */
+.studio{--ink:var(--forma-studio-bone);--paper:var(--forma-carbon-ink);--line:rgb(241 237 227 / .16);background:var(--forma-carbon-ink);color:var(--forma-studio-bone)}
+.topbar,.leftPanel,.rightPanel{background:#201d27;color:var(--forma-studio-bone)}
+.topbar,.leftPanel,.rightPanel,.toolbar,.statusbar{border-color:var(--line)}
+.brand,.document input,.quietButton,.toolGroup button,.objectSelect,.visibility,.selectionIntro strong,.axisFields input,.nameField input{color:var(--forma-studio-bone)}
+.brandMark{background:var(--forma-acid-voltage);color:var(--forma-carbon-ink)}
+.saveState,.panelHeading,.panelFoot,.selectionIntro>span,.selectionIntro small,.propertyTitle,.axisFields label>span,.rangeField>span,.colorField>span,.nameField>span,.inspectorFoot{color:#aaa4b0}
+.publishButton{background:var(--forma-acid-voltage);border-color:var(--forma-acid-voltage);color:var(--forma-carbon-ink)}
+.publishButton span,.addTools button b,.objectGlyph,.selectionIntro small,.inspectorFoot span:first-child{color:var(--forma-signal-vermilion)}
+.workspace{background:#201d27}
+.leftPanel,.rightPanel{background:#201d27}
+.addTools button,.objectRow,.selectedRow,.axisFields input,.nameField input,.resetMaterial{border-color:var(--line);background:#292530;color:#e7e1eb}
+.selectedRow{background:#34303d;border-color:var(--forma-electric-iris)}
+.objectSelect{color:#d2cbd7}
+.objectIndex,.visibility{color:#aaa4b0}
+.stageColumn{background:#17151d}
+.toolbar{background:#201d27}
+.toolGroup button:hover,.toolGroup .activeTool,.cameraPresets button:hover,.cameraPresets .activeCamera{background:#34303d;border-color:var(--forma-electric-iris);color:var(--forma-studio-bone)}
+.toolGroup .activeTool{box-shadow:inset 0 -2px var(--forma-acid-voltage)}
+.viewportLabel,.viewportMeta{color:#aaa4b0}
+.canvasFrame{background-color:#17151d;background-image:linear-gradient(rgb(241 237 227 / .07) 1px,transparent 1px),linear-gradient(90deg,rgb(241 237 227 / .07) 1px,transparent 1px);background-size:34px 34px}
+.canvasGrid{background:radial-gradient(ellipse at 50% 48%,rgb(104 85 245 / .16),transparent 65%)}
+.canvasStamp,.canvasHint,.statusbar{color:#aaa4b0}
+.axisWidget span{background:#292530;border-color:var(--line)}
+.inspector{background:#201d27}
+.propertySection,.selectionIntro,.inspectorFoot{border-color:var(--line)}
+.axisFields input,.nameField input{background:#292530}
+.rangeField b,.axisWidget span:last-child{color:var(--forma-electric-iris)}
+.rangeField input{accent-color:var(--forma-signal-vermilion)}
+.colorField input{border-color:var(--line)}
+.swatches button{border-color:rgb(241 237 227 / .35)}
+.deleteButton{border-color:rgb(255 91 69 / .4);background:rgb(255 91 69 / .06);color:var(--forma-signal-vermilion)}
+.panelFoot{border-color:var(--line)}
+.panelFoot span:last-child,.liveDot,.statusbar i{background:var(--forma-acid-voltage);color:var(--forma-acid-voltage)}
+.mobileBar{background:#201d27;color:#aaa4b0;border-color:var(--line)}
+.mobileBar>button{color:#aaa4b0}
+.mobileBar>button[aria-pressed=true]{color:var(--forma-acid-voltage)}
+.mobileBackdrop{background:rgb(10 9 14 / .68)}
+@media(max-width:700px){.leftPanel.mobilePanelOpen,.rightPanel.mobilePanelOpen{background:#201d27;border-color:var(--line)}}
