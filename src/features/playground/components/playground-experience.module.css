@@ -135,3 +135,11 @@
 .generatorPicker button[aria-pressed=true]{box-shadow:inset 0 -3px var(--forma-signal-vermilion)}
 .generatorPicker button:hover{background:#ded8cd}
 @media(prefers-reduced-motion:reduce){.experience{box-shadow:none}}
+
+
+/* Generative bridge actions */
+.outputActions{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:1rem}
+.outputLinks{display:flex;flex-wrap:wrap;gap:.45rem}
+.outputLinks button{min-height:2.8rem;border:1px solid rgb(241 237 227 / .28);padding:.7rem .9rem;background:transparent;color:var(--forma-studio-bone);font:500 .55rem var(--font-mono);letter-spacing:.07em;cursor:pointer}
+.outputLinks button:hover,.outputLinks button:focus-visible{border-color:var(--forma-acid-voltage);background:var(--forma-acid-voltage);color:var(--forma-carbon-ink)}
+@media(max-width:700px){.outputActions{align-items:stretch}.outputLinks{display:grid;grid-template-columns:1fr}.outputLinks button{width:100%;text-align:left}}
