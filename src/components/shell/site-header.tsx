@@ -5,7 +5,7 @@ const navigation = [
   { label: "STUDIES", href: "/playground" },
   { label: "MOTION", href: "/motion-lab" },
   { label: "SCENE STUDIO", href: "/scene-studio" },
-  { label: "THE BELIEF", href: "/#manifesto" },
+  { label: "ARCHIVE", href: "/archive" },
 ];
 
 export function SiteHeader() {
