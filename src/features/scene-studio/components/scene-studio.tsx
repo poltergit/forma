@@ -492,6 +492,11 @@ export function SceneStudio() {
     }
   };
 
+  const setProjection = (projection: SceneRenderDocument["projection"]) => {
+    recordHistory();
+    setRenderSettings((current) => ({ ...current, projection }));
+  };
+
   const exportRender = () => {
     const canvas = document.querySelector<HTMLCanvasElement>(`.${styles.canvas} canvas`);
     if (!canvas) { setSaveStatus("RENDER CANVAS NOT READY"); return; }
@@ -654,7 +659,11 @@ export function SceneStudio() {
               <button className={styles.quietButton} onClick={redo} disabled={!historyState.canRedo} title="Redo (⌘/Ctrl + Shift + Z)">↷</button>
               {(["select", "move", "rotate", "scale"] as const).map((tool) => <button key={tool} className={activeTool === tool ? styles.activeTool : ""} aria-pressed={activeTool === tool} onClick={() => setActiveTool(tool)} title={tool}>{tool === "select" ? "↖" : tool === "move" ? "✣" : tool === "rotate" ? "⟳" : "↗"}<span>{tool.toUpperCase()}</span></button>)}
             </div>
-            <div className={styles.cameraPresets}><button className={renderSettings.projection === "perspective" ? styles.activeCamera : ""} aria-pressed={renderSettings.projection === "perspective"} onClick={() => { recordHistory(); setRenderSettings(current => ({ ...current, projection: "perspective" })); }}>PERSPECTIVE</button><button className={renderSettings.projection === "orthographic" ? styles.activeCamera : ""} aria-pressed={renderSettings.projection === "orthographic"} onClick={() => { recordHistory(); setRenderSettings(current => ({ ...current, projection: "orthographic" })); }}>ORTHO</button>{(["front", "top", "side"] as const).map((view) => <button key={view} className={cameraView === view ? styles.activeCamera : ""} aria-pressed={cameraView === view} onClick={() => { recordHistory(); setCameraView(view); }}>{view.toUpperCase()}</button>)}</div>
+            <div className={styles.cameraPresets}>
+              <button className={renderSettings.projection === "perspective" ? styles.activeCamera : ""} aria-pressed={renderSettings.projection === "perspective"} onClick={() => setProjection("perspective")}>PERSPECTIVE</button>
+              <button className={renderSettings.projection === "orthographic" ? styles.activeCamera : ""} aria-pressed={renderSettings.projection === "orthographic"} onClick={() => setProjection("orthographic")}>ORTHO</button>
+              {(["front", "top", "side"] as const).map((view) => <button key={view} className={cameraView === view ? styles.activeCamera : ""} aria-pressed={cameraView === view} onClick={() => { recordHistory(); setCameraView(view); }}>{view.toUpperCase()}</button>)}
+            </div>
             <span className={styles.viewportMeta}>X · Y · Z</span>
           </div>
           <div className={styles.canvasFrame}>
