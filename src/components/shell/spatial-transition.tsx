@@ -84,7 +84,7 @@ export function SpatialTransitionProvider({ children }: { children: React.ReactN
       {active && (
         <div ref={overlay} className={styles.overlay} aria-hidden="true">
           <span className={styles.index}>FORM / SHIFT</span>
-          <span className={styles.wordmark}>F<span>·</span></span>
+          <div className={styles.brandCore}><svg className={styles.brandMark} viewBox="0 0 240 240"><circle className={styles.markOrbit} cx="120" cy="120" r="101" /><circle className={styles.markOrbitAlt} cx="120" cy="120" r="76" /><path d="M66 177 120 50l54 127M83 139h74M96 177l24-57 24 57" /><path className={styles.markCut} d="M91 119h58" /><circle className={styles.markCoreDot} cx="120" cy="120" r="8" /></svg><span className={styles.wordmark}>FORMA</span></div>
           <span className={styles.caption}>A NEW SPACE TO MAKE</span>
         </div>
       )}
