@@ -1406,3 +1406,10 @@
   .enterLink:hover,.invitationLink:hover,.studyRow:hover { transform: none; }
   .studyRow:hover { padding-inline: 0; }
 }
+
+/* Depth plane for the hero's pointer-responsive specimen. */
+.specimenField { perspective: 1100px; }
+.specimenCanvas { transform-style: preserve-3d; will-change: transform; }
+@media (prefers-reduced-motion: reduce) {
+  .specimenCanvas { will-change: auto; }
+}
