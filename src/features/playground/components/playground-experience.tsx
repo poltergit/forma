@@ -6,7 +6,7 @@ import {
   createGeneratorPoints, createPlaygroundScene, GENERATORS, PLAYGROUND_RECIPE_KEY, PLAYGROUND_SCENE_HANDOFF_KEY,
   type GeneratorId, type PlaygroundRecipe,
 } from "../playground-scene";
-import { createPortableRecipe, parsePortableRecipe, PLAYGROUND_PALETTES, PLAYGROUND_PRESETS, type PaletteId, type AnimationMode, getAnimationMotion } from "../playground-recipe";
+import { createPortableRecipe, parsePortableRecipe, PLAYGROUND_PALETTES, PLAYGROUND_PRESETS, type PaletteId, type AnimationMode, type MaterialId, PLAYGROUND_MATERIALS, getAnimationMotion, getMaterialTreatment } from "../playground-recipe";
 
 const defaultPalette = PLAYGROUND_PALETTES[0];
 
@@ -25,7 +25,7 @@ function readRecipes(): PlaygroundRecipe[] {
       item.name.length > 0 && item.name.length <= 48 && ["displacement", "orbital-bloom", "woven-lattice"].includes(item.generator) &&
       Number.isInteger(item.seed) && item.seed >= 0 && item.seed <= 9_999_999 &&
       Number.isInteger(item.density) && item.density >= 12 && item.density <= 96 &&
-      Number.isFinite(item.influence) && item.influence >= 0 && item.influence <= 100 && typeof item.createdAt === "string" && (item.palette === undefined || PLAYGROUND_PALETTES.some((paletteItem) => paletteItem.id === item.palette)) && (item.animation === undefined || ["still", "drift", "pulse"].includes(item.animation)),
+      Number.isFinite(item.influence) && item.influence >= 0 && item.influence <= 100 && typeof item.createdAt === "string" && (item.palette === undefined || PLAYGROUND_PALETTES.some((paletteItem) => paletteItem.id === item.palette)) && (item.animation === undefined || ["still", "drift", "pulse"].includes(item.animation)) && (item.material === undefined || PLAYGROUND_MATERIALS.some((material) => material.id === item.material)),
     ).slice(0, 24);
   } catch { return []; }
 }
@@ -41,6 +41,7 @@ export function PlaygroundExperience() {
   const [influence, setInfluence] = useState(58);
   const [paletteId, setPaletteId] = useState<PaletteId>("atelier");
   const [animationMode, setAnimationMode] = useState<AnimationMode>("still");
+  const [materialId, setMaterialId] = useState<MaterialId>("paper");
   const phaseRef = useRef(0);
   const [status, setStatus] = useState("COMPOSITION AT REST");
   const [recipeName, setRecipeName] = useState("Untitled study");
@@ -67,13 +68,13 @@ export function PlaygroundExperience() {
   const saveRecipe = () => {
     const cleanName = recipeName.trim().slice(0, 48);
     if (!cleanName) { setStatus("GIVE YOUR STUDY A NAME"); return; }
-    const recipe: PlaygroundRecipe = { id: window.crypto.randomUUID(), name: cleanName, generator, seed, density, influence, palette: paletteId, animation: animationMode, createdAt: new Date().toISOString() };
+    const recipe: PlaygroundRecipe = { id: window.crypto.randomUUID(), name: cleanName, generator, seed, density, influence, palette: paletteId, animation: animationMode, material: materialId, createdAt: new Date().toISOString() };
     persistRecipes([recipe, ...recipes].slice(0, 24));
     setStatus("RECIPE SAVED TO THIS DEVICE");
   };
 
   const loadRecipe = (recipe: PlaygroundRecipe) => {
-    setGenerator(recipe.generator); setSeed(recipe.seed); setDensity(recipe.density); setInfluence(recipe.influence); setPaletteId((recipe.palette as PaletteId) ?? "atelier"); setAnimationMode(recipe.animation ?? "still");
+    setGenerator(recipe.generator); setSeed(recipe.seed); setDensity(recipe.density); setInfluence(recipe.influence); setPaletteId((recipe.palette as PaletteId) ?? "atelier"); setAnimationMode(recipe.animation ?? "still"); setMaterialId(recipe.material ?? "paper");
     setRecipeName(recipe.name); pointerRef.current = { x: 0.5, y: 0.5, active: false }; setStatus("RECIPE RESTORED");
   };
 
@@ -101,7 +102,7 @@ export function PlaygroundExperience() {
       const pixelWidth = Math.floor(width * ratio); const pixelHeight = Math.floor(height * ratio);
       if (canvas.width !== pixelWidth || canvas.height !== pixelHeight) { canvas.width = pixelWidth; canvas.height = pixelHeight; }
       context.setTransform(ratio, 0, 0, ratio, 0, 0);
-      context.fillStyle = activePalette.background; context.fillRect(0, 0, width, height);
+      context.fillStyle = activePalette.background; context.fillRect(0, 0, width, height);\n      const material = getMaterialTreatment(materialId);\n      if (materialId === "ink") { context.fillStyle = "rgba(20,20,19,0.16)"; context.fillRect(0, 0, width, height); }\n      if (materialId === "glass") { const wash = context.createLinearGradient(0, 0, width, height); wash.addColorStop(0, "rgba(255,255,255,0.2)"); wash.addColorStop(0.5, "rgba(255,255,255,0)"); wash.addColorStop(1, "rgba(36,59,214,0.08)"); context.fillStyle = wash; context.fillRect(0, 0, width, height); }\n      if (materialId === "liquid") { const wash = context.createRadialGradient(width * 0.25, height * 0.2, 0, width * 0.25, height * 0.2, Math.max(width, height) * 0.8); wash.addColorStop(0, "rgba(255,255,255,0.22)"); wash.addColorStop(1, "rgba(240,91,62,0)"); context.fillStyle = wash; context.fillRect(0, 0, width, height); }
 
       const points = createGeneratorPoints(seed, density, generator);
       const originX = width * (pointerRef.current.active ? pointerRef.current.x : 0.5);
@@ -148,7 +149,7 @@ export function PlaygroundExperience() {
       projected.slice().sort((a, b) => a.z - b.z).forEach((point, index) => {
         const half = point.size * (generator === "orbital-bloom" ? 0.68 : 1);
         const rise = half * (0.42 + point.z * 0.72); const x = point.x; const y = point.y;
-        const tone = activePalette.colors[point.tone]; const alpha = 0.25 + point.z * 0.62;
+        const tone = activePalette.colors[point.tone]; const alpha = (0.25 + point.z * 0.62) * material.alpha;
         if (generator === "orbital-bloom") {
           context.save(); context.translate(x, y); context.rotate((index / projected.length) * Math.PI);
           context.beginPath(); context.ellipse(0, 0, half * 0.48, half * 1.5, 0, 0, Math.PI * 2);
@@ -165,7 +166,7 @@ export function PlaygroundExperience() {
         }
       });
 
-      const glow = context.createRadialGradient(originX, originY, 0, originX, originY, influenceRadius);
+      if (materialId === "paper" && material.grain > 0) { context.save(); context.globalAlpha = material.grain; context.fillStyle = "#20211f"; for (let index = 0; index < 180; index += 1) { const x = ((index * 73) % 997) / 997 * width; const y = ((index * 193) % 991) / 991 * height; context.fillRect(x, y, 1, 1); } context.restore(); }\n      const glow = context.createRadialGradient(originX, originY, 0, originX, originY, influenceRadius);
       glow.addColorStop(0, "rgba(240,91,62,0.13)"); glow.addColorStop(1, "rgba(240,91,62,0)");
       context.fillStyle = glow; context.fillRect(0, 0, width, height);
     };
@@ -173,7 +174,7 @@ export function PlaygroundExperience() {
     drawRef.current = draw; draw();
     const observer = new ResizeObserver(draw); observer.observe(frame);
     return () => { observer.disconnect(); drawRef.current = null; };
-  }, [activePalette, animationMode, density, generator, influence, seed]);
+  }, [activePalette, animationMode, density, generator, influence, materialId, seed]);
 
   useEffect(() => {
     phaseRef.current = 0;
@@ -248,7 +249,7 @@ export function PlaygroundExperience() {
         </button>)}
       </div>
 
-      <div className={styles.animationStudio} role="group" aria-label="Animation mode">
+      <div className={styles.materialStudio} role="group" aria-label="Material treatment">\n        <span>MATERIAL / SURFACE</span>\n        {PLAYGROUND_MATERIALS.map((material) => <button key={material.id} type="button" aria-pressed={materialId === material.id} onClick={() => { setMaterialId(material.id); setStatus(`${material.name.toUpperCase()} SURFACE`); }}><strong>{material.name}</strong><small>{material.note}</small></button>)}\n      </div>\n      <div className={styles.animationStudio} role="group" aria-label="Animation mode">
         <span>TIME / BEHAVIOR</span>
         {([{ id: "still", label: "Still", note: "STATIC" }, { id: "drift", label: "Drift", note: "SLOW FIELD" }, { id: "pulse", label: "Pulse", note: "BREATHING FORM" }] as const).map((mode) => <button key={mode.id} type="button" aria-pressed={animationMode === mode.id} onClick={() => { setAnimationMode(mode.id); setStatus(`${mode.label.toUpperCase()} MODE`); }}><strong>{mode.label}</strong><small>{mode.note}</small></button>)}
         <small className={styles.motionNote}>Motion pauses when this tab is hidden and is disabled by reduced-motion preferences.</small>
@@ -268,7 +269,7 @@ export function PlaygroundExperience() {
         </div>
         <div className={styles.portableActions}>
           <button type="button" onClick={() => {
-            const recipe = createPortableRecipe({ id: "export", name: recipeName.trim() || "Untitled study", generator, seed, density, influence, palette: paletteId, animation: animationMode, createdAt: new Date().toISOString() });
+            const recipe = createPortableRecipe({ id: "export", name: recipeName.trim() || "Untitled study", generator, seed, density, influence, palette: paletteId, animation: animationMode, material: materialId, createdAt: new Date().toISOString() });
             const blob = new Blob([JSON.stringify(recipe, null, 2)], { type: "application/json" });
             const url = URL.createObjectURL(blob); const anchor = document.createElement("a"); anchor.href = url; anchor.download = `forma-${generator}-${seed}.json`; anchor.click(); URL.revokeObjectURL(url); setStatus("PORTABLE RECIPE EXPORTED");
           }}>EXPORT .JSON ↗</button>
@@ -282,14 +283,14 @@ export function PlaygroundExperience() {
           {!recipesReady ? <p>Loading your local recipes…</p> : recipes.length === 0 ? <p>No saved recipes yet. Tune an instrument and save your first study.</p> : recipes.map((recipe) => <article key={recipe.id}>
             <button type="button" className={styles.recipeLoad} onClick={() => loadRecipe(recipe)}>
               <span>{GENERATORS.find((item) => item.id === recipe.generator)?.number} / SEED {String(recipe.seed).padStart(3, "0")}</span><strong>{recipe.name}</strong>
-              <small>{recipe.generator.replace("-", " ").toUpperCase()} · {recipe.density} FORMS · {recipe.influence}% INFLUENCE</small>
+              <small>{recipe.generator.replace("-", " ").toUpperCase()} · {recipe.density} FORMS · {recipe.influence}% · {(recipe.material ?? "paper").toUpperCase()}</small>
             </button>
             <button type="button" className={styles.recipeDelete} aria-label={`Delete recipe ${recipe.name}`} onClick={() => deleteRecipe(recipe.id)}>×</button>
           </article>)}
         </div>
       </section>
       <div className={styles.outputActions}><span>EXPORT STUDY / {activeGenerator.number} · SEED {seed}</span><button type="button" onClick={continueInSceneStudio}>TAKE INTO SCENE STUDIO <b aria-hidden="true">↗</b></button></div>
-      <p className={styles.caption}>{activeGenerator.note} The same seed and settings reproduce the same logical composition. Save a recipe to return to its exact rules, or carry the generated forms into Scene Studio.</p>
+      <p className={styles.caption}>{activeGenerator.note} The same seed, material, and settings reproduce the same logical composition. Save a recipe to return to its exact rules, or carry the generated forms into Scene Studio.</p>
     </div>
   );
 }
