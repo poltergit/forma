@@ -680,6 +680,19 @@ export function SceneStudio() {
           </div>
           <div className={styles.canvasFrame}>
             <div className={styles.canvasStamp}><span>FORMA / LAB 001</span><span>24° 08′ N — 3D SPACE</span></div>
+            <div className={styles.compositionSignature} aria-label={`Composition signature: ${objects.filter((item) => item.visible).length} visible forms and their material colors`}>
+              <div><span>COMPOSITION / DNA</span><b>{String(objects.filter((item) => item.visible).length).padStart(2, "0")} FORMS</b></div>
+              <div className={styles.signatureForms}>
+                {objects.filter((item) => item.visible).slice(0, 6).map((item) => (
+                  <span key={item.id} title={item.name}>
+                    <i style={{ backgroundColor: item.color }} />
+                    <b>{item.kind === "box" ? "◇" : item.kind === "sphere" ? "●" : "◎"}</b>
+                  </span>
+                ))}
+                {objects.filter((item) => item.visible).length > 6 && <small>+{objects.filter((item) => item.visible).length - 6}</small>}
+              </div>
+              <small>LIVE MATERIAL PALETTE</small>
+            </div>
             <div className={styles.canvasGrid} aria-hidden="true" />
             <div className={styles.canvas}><SceneCanvas objects={objects} selectedId={selected?.id ?? -1} tool={activeTool} view={cameraView} lighting={lighting} render={renderSettings} onSelect={setSelectedId} onTransform={(id, transform) => { recordHistory(); setObjects((current) => current.map((item) => item.id === id ? { ...item, ...transform } : item)); }} /></div>
             <div className={styles.canvasHint}>DRAG TO ORBIT <i /> SCROLL TO ZOOM <i /> SELECT TO INSPECT</div>
