@@ -40,7 +40,7 @@ describe("scene document", () => {
     const value = normalizeSceneLighting({ preset: "neon", environment: "invalid", environmentIntensity: 99, key: { color: "bad", intensity: -2, position: [99, 0, 0] } });
     expect(value.environment).toBe("night");
     expect(value.environmentIntensity).toBe(3);
-    expect(value.key).toMatchObject({ color: "#5d7cff", intensity: 0, position: [10, 0, 0] });
+    expect(value.key).toMatchObject({ color: "#6855f5", intensity: 0, position: [10, 0, 0] });
     expect(SCENE_LIGHTING_PRESETS).toHaveLength(5);
   });
 
