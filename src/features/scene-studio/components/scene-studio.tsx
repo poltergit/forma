@@ -57,8 +57,8 @@ function CameraRig({ view }: { view: CameraView }) {
 
 const initialObjects: SceneObject[] = [
   { id: 1, name: "Signal / cube", kind: "box", color: "#f05b3e", roughness: 0.28, metalness: 0.12, emissive: "#000000", transmission: 0, thickness: 0, ior: 1.5, clearcoat: 0, clearcoatRoughness: 0, opacity: 1, position: [-1.05, 0.1, 0], rotation: [0, 0, -0.12], scale: 1, visible: true },
-  { id: 2, name: "Orbit / ring", kind: "torus", color: "#243bd6", roughness: 0.28, metalness: 0.12, emissive: "#000000", position: [0.95, 0.35, -0.2], rotation: [0.35, 0.2, 0], scale: 0.9, visible: true },
-  { id: 3, name: "Core / sphere", kind: "sphere", color: "#c6d83b", roughness: 0.28, metalness: 0.12, emissive: "#000000", position: [0.05, -0.85, 0.55], rotation: [0, 0, 0], scale: 0.72, visible: true },
+  { id: 2, name: "Orbit / ring", kind: "torus", color: "#243bd6", roughness: 0.28, metalness: 0.12, emissive: "#000000", transmission: 0, thickness: 0, ior: 1.5, clearcoat: 0, clearcoatRoughness: 0, opacity: 1, position: [0.95, 0.35, -0.2], rotation: [0.35, 0.2, 0], scale: 0.9, visible: true },
+  { id: 3, name: "Core / sphere", kind: "sphere", color: "#c6d83b", roughness: 0.28, metalness: 0.12, emissive: "#000000", transmission: 0, thickness: 0, ior: 1.5, clearcoat: 0, clearcoatRoughness: 0, opacity: 1, position: [0.05, -0.85, 0.55], rotation: [0, 0, 0], scale: 0.72, visible: true },
 ];
 
 function ObjectMesh({ item, selected, tool, onSelect, onTransform }: { item: SceneObject; selected: boolean; tool: TransformTool; onSelect: () => void; onTransform: (transform: Pick<SceneObject, "position" | "rotation" | "scale">) => void }) {
@@ -71,7 +71,7 @@ function ObjectMesh({ item, selected, tool, onSelect, onTransform }: { item: Sce
   const mesh = (
     <mesh ref={meshRef} position={item.position} rotation={item.rotation} scale={item.scale} visible={item.visible} onClick={(event) => { event.stopPropagation(); onSelect(); }}>
       {geometry}
-      {item.kind !== "box" && <meshStandardMaterial {...material} />}
+      {item.kind !== "box" && <meshPhysicalMaterial {...material} />}
       {selected && <mesh scale={1.035}><sphereGeometry args={[item.kind === "sphere" ? 0.69 : 0.82, 24, 24]} /><meshBasicMaterial color="#20211f" wireframe transparent opacity={0.18} /></mesh>}
     </mesh>
   );
@@ -441,7 +441,7 @@ export function SceneStudio() {
     recordHistory();
     const id = Math.max(0, ...objects.map((item) => item.id)) + 1;
     const labels: Record<ShapeKind, string> = { box: "Block", sphere: "Orb", torus: "Loop" };
-    setObjects((current) => [...current, { id, name: `${labels[kind]} / ${String(id).padStart(2, "0")}`, kind, color: kind === "box" ? "#f05b3e" : kind === "sphere" ? "#243bd6" : "#c6d83b", roughness: 0.28, metalness: 0.12, emissive: "#000000", position: [((id % 3) - 1) * 0.65, 0, -0.6], rotation: [0, 0, 0], scale: 0.8, visible: true }]);
+    setObjects((current) => [...current, { id, name: `${labels[kind]} / ${String(id).padStart(2, "0")}`, kind, color: kind === "box" ? "#f05b3e" : kind === "sphere" ? "#243bd6" : "#c6d83b", roughness: 0.28, metalness: 0.12, emissive: "#000000", transmission: 0, thickness: 0, ior: 1.5, clearcoat: 0, clearcoatRoughness: 0, opacity: 1, position: [((id % 3) - 1) * 0.65, 0, -0.6], rotation: [0, 0, 0], scale: 0.8, visible: true }]);
     setSelectedId(id);
     
   };
