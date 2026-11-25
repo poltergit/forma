@@ -11,10 +11,11 @@ export function ArchiveImprints() {
 
   useEffect(() => {
     const refresh = () => { setImprints(readArchiveImprints()); setReady(true); };
-    refresh();
+    const timeout = window.setTimeout(refresh, 0);
     window.addEventListener("forma:archive-updated", refresh);
     window.addEventListener("storage", refresh);
     return () => {
+      window.clearTimeout(timeout);
       window.removeEventListener("forma:archive-updated", refresh);
       window.removeEventListener("storage", refresh);
     };
