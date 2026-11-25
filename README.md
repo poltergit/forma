@@ -34,9 +34,9 @@ The guiding principle is simple: **make every interaction change something real.
 
 ## Project status
 
-FORMA is undergoing a creative re-foundation. The Identity Renaissance is being developed in review branches and has not been merged into `main`. The Creative DNA is a working foundation for owner review; visual implementation and browser/device validation follow after the identity direction is accepted.
+FORMA's Matter in Motion identity and creative-room experience are now consolidated on `main`. The atelier is in active visual development; automated checks cover the current code, while browser/device visual QA, real touch testing, reduced-motion verification, and GPU profiling still require hands-on validation.
 
-See [Project Status](PROJECT_STATUS.md), [Technical Architecture](docs/TECHNICAL_ARCHITECTURE.md), [Security Threat Model](docs/SECURITY_THREAT_MODEL.md), and [Brand Guidelines](docs/BRAND_GUIDELINES.md), and [Creative DNA](docs/CREATIVE_DNA.md).
+See [Project Status](PROJECT_STATUS.md), [Technical Architecture](docs/TECHNICAL_ARCHITECTURE.md), [Security Threat Model](docs/SECURITY_THREAT_MODEL.md), [Brand Guidelines](docs/BRAND_GUIDELINES.md), and [Creative DNA](docs/CREATIVE_DNA.md).
 
 ## Run locally
 
