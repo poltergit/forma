@@ -275,3 +275,54 @@
 .mobileBar>button[aria-pressed=true]{color:var(--forma-acid-voltage)}
 .mobileBackdrop{background:rgb(10 9 14 / .68)}
 @media(max-width:700px){.leftPanel.mobilePanelOpen,.rightPanel.mobilePanelOpen{background:#201d27;border-color:var(--line)}}
+
+
+/* MATTER IN MOTION / WORKBENCH — precision with an editorial edge */
+.workspace{border:1px solid var(--forma-carbon-ink);box-shadow:14px 14px 0 rgb(104 85 245 / .18);background:#201d27}
+.leftPanel,.rightPanel{background:#201d27}
+.stageColumn{background:#17151d}
+.toolbar{min-height:3.5rem;border-bottom:1px solid rgb(241 237 227 / .16);background:#201d27}
+.toolGroup button,.cameraPresets button{min-height:2.55rem;border-color:rgb(241 237 227 / .2);transition:background .2s ease,border-color .2s ease,color .2s ease,transform .2s ease}
+.toolGroup button:hover,.cameraPresets button:hover{transform:translateY(-2px);border-color:var(--forma-electric-iris)}
+.toolGroup .activeTool,.cameraPresets .activeCamera{border-color:var(--forma-acid-voltage);background:rgb(216 255 56 / .08);color:var(--forma-acid-voltage)}
+.canvasFrame{position:relative;background-color:#17151d;background-image:linear-gradient(rgb(241 237 227 / .07) 1px,transparent 1px),linear-gradient(90deg,rgb(241 237 227 / .07) 1px,transparent 1px),radial-gradient(ellipse at 50% 50%,rgb(104 85 245 / .18),transparent 64%);background-size:32px 32px,32px 32px,auto}
+.canvasFrame::after{position:absolute;inset:1rem;border:1px solid rgb(241 237 227 / .13);content:"";pointer-events:none}
+.canvasStamp{color:var(--forma-acid-voltage);letter-spacing:.16em}
+.canvasHint{color:#c4bdca}
+.viewportLabel,.viewportMeta{color:#c4bdca}
+.leftPanel,.rightPanel{border-color:rgb(241 237 227 / .16)}
+.panelTitle,.propertyTitle{color:var(--forma-acid-voltage);letter-spacing:.13em}
+.objectRow,.selectedRow{min-height:3rem;transition:background .2s ease,border-color .2s ease}
+.objectRow:hover,.selectedRow{border-color:var(--forma-electric-iris);background:rgb(104 85 245 / .1)}
+.addTools button{min-height:2.8rem;transition:background .2s ease,border-color .2s ease,transform .2s ease}
+.addTools button:hover{transform:translateY(-2px);border-color:var(--forma-acid-voltage);color:var(--forma-acid-voltage)}
+.selectionIntro{padding:1.1rem 0;border-color:rgb(241 237 227 / .15)}
+.selectionIntro strong{color:var(--forma-studio-bone)}
+.propertySection{padding:1.1rem 0;border-color:rgb(241 237 227 / .14)}
+.axisFields input,.nameField input{min-height:2.5rem;border-color:rgb(241 237 227 / .2);background:#17151d;transition:border-color .2s ease}
+.axisFields input:focus,.nameField input:focus{outline:2px solid var(--forma-electric-iris);outline-offset:1px}
+.rangeField input{accent-color:var(--forma-signal-vermilion)}
+.rangeField input:focus-visible{outline:2px solid var(--forma-acid-voltage);outline-offset:4px}
+.rangeField b{color:var(--forma-acid-voltage)}
+.colorField input{width:2.5rem;height:2.5rem;border:1px solid rgb(241 237 227 / .25);background:#17151d}
+.swatches button{width:1.65rem;height:1.65rem;border:1px solid rgb(241 237 227 / .4);transition:transform .2s ease}
+.swatches button:hover{transform:scale(1.18)}
+.materialPresets button,.renderQuality button,.lightingPresets button{min-height:3.3rem;border-color:rgb(241 237 227 / .2);background:#17151d;transition:background .2s ease,border-color .2s ease,transform .2s ease}
+.materialPresets button:hover,.renderQuality button:hover,.lightingPresets button:hover{transform:translateY(-2px);border-color:var(--forma-electric-iris)}
+.materialPresets button[aria-pressed=true],.renderQuality button[aria-pressed=true],.lightingPresets button[aria-pressed=true]{border-color:var(--forma-acid-voltage);background:rgb(216 255 56 / .07)}
+.resetMaterial,.deleteButton{min-height:2.7rem;transition:background .2s ease,border-color .2s ease,color .2s ease}
+.resetMaterial:hover{border-color:var(--forma-acid-voltage);color:var(--forma-acid-voltage)}
+.deleteButton:hover{border-color:var(--forma-signal-vermilion);background:rgb(255 91 69 / .12)}
+.versionShelf{border-color:rgb(241 237 227 / .16);background:#201d27}
+.versionToggle{min-height:3.5rem;color:var(--forma-studio-bone)}
+.versionToggle:hover{color:var(--forma-acid-voltage)}
+.versionItem{border-color:rgb(241 237 227 / .13)}
+.versionItem button{min-height:2.5rem;transition:color .2s ease,border-color .2s ease}
+.versionItem button:hover{color:var(--forma-acid-voltage);border-color:var(--forma-acid-voltage)}
+.inspectorFoot{color:#aaa4b0}
+.mobileBar{min-height:3.8rem;border-color:rgb(241 237 227 / .16);background:#17151d}
+.mobileBar>button{min-height:3rem;transition:color .2s ease}
+.mobileBar>button:hover,.mobileBar>button[aria-pressed=true]{color:var(--forma-acid-voltage)}
+@media(max-width:900px){.workspace{box-shadow:8px 8px 0 rgb(104 85 245 / .18)}}
+@media(max-width:700px){.canvasFrame::after{inset:.5rem}.toolbar{flex-wrap:wrap}.rightPanel,.leftPanel{max-height:min(72vh,720px);overflow:auto}}
+@media(prefers-reduced-motion:reduce){.toolGroup button,.cameraPresets button,.objectRow,.selectedRow,.addTools button,.swatches button,.materialPresets button,.renderQuality button,.lightingPresets button,.versionItem button{transition:none;transform:none}}
