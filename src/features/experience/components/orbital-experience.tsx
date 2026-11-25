@@ -40,22 +40,56 @@ export function AtelierExperience() {
 
   useGSAP(() => {
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+
     const intro = gsap.timeline({ defaults: { ease: "power3.out" } });
     intro.fromTo("[data-intro='index']", { y: 16, opacity: 0 }, { y: 0, opacity: 1, duration: 0.65 })
       .fromTo("[data-intro='headline'] > *", { yPercent: 115, rotate: 3, opacity: 0 }, { yPercent: 0, rotate: 0, opacity: 1, duration: 1.05, stagger: 0.12 }, "-=0.25")
       .fromTo("[data-intro='copy']", { y: 24, opacity: 0 }, { y: 0, opacity: 1, duration: 0.7 }, "-=0.55")
-      .fromTo("[data-intro='specimen']", { scale: 0.78, rotate: -8, opacity: 0 }, { scale: 1, rotate: 0, opacity: 1, duration: 1.35 }, "-=1");
+      .fromTo("[data-intro='specimen']", { scale: 0.78, rotate: -8, opacity: 0 }, { scale: 1, rotate: 1.4, opacity: 1, duration: 1.35 }, "-=1")
+      .fromTo(".specimenAnnotation, .specimenLegend", { y: 12, opacity: 0 }, { y: 0, opacity: 1, duration: 0.55, stagger: 0.1 }, "-=0.6")
+      .fromTo(".materialDock", { y: 18, opacity: 0, rotate: -3 }, { y: 0, opacity: 1, rotate: 0, duration: 0.65 }, "-=0.35")
+      .fromTo(".heroFoot", { y: 12, opacity: 0 }, { y: 0, opacity: 1, duration: 0.55 }, "-=0.2");
+
     gsap.to("[data-specimen]", {
       yPercent: 8,
-      rotate: 4,
+      rotate: 5,
+      scale: 0.96,
       ease: "none",
       scrollTrigger: { trigger: "[data-hero]", start: "top top", end: "bottom top", scrub: 1 },
     });
+    gsap.to(".heroGrid", {
+      yPercent: 18,
+      opacity: 0.12,
+      ease: "none",
+      scrollTrigger: { trigger: "[data-hero]", start: "top top", end: "bottom top", scrub: 1.2 },
+    });
+    gsap.to(".heroSideNote", {
+      yPercent: 55,
+      opacity: 0,
+      ease: "none",
+      scrollTrigger: { trigger: "[data-hero]", start: "top top", end: "bottom top", scrub: 1 },
+    });
+
     gsap.utils.toArray<HTMLElement>("[data-reveal]").forEach((element) => {
       gsap.fromTo(element, { y: 34, opacity: 0 }, {
         y: 0, opacity: 1, duration: 0.85, ease: "power3.out",
         scrollTrigger: { trigger: element, start: "top 88%", once: true },
       });
+    });
+
+    gsap.utils.toArray<HTMLElement>(".studyArtwork").forEach((artwork, index) => {
+      gsap.fromTo(artwork, { y: 28, rotate: index % 2 ? 3 : -3, scale: 0.94 }, {
+        y: 0, rotate: 0, scale: 1, duration: 0.9, ease: "power3.out",
+        scrollTrigger: { trigger: artwork, start: "top 90%", once: true },
+      });
+    });
+
+    gsap.fromTo(".instrumentStage", { clipPath: "inset(8% 8% 8% 8%)", opacity: 0.6 }, {
+      clipPath: "inset(0% 0% 0% 0%)",
+      opacity: 1,
+      duration: 1.15,
+      ease: "power3.out",
+      scrollTrigger: { trigger: ".instrumentStage", start: "top 82%", once: true },
     });
   });
 
