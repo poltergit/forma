@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 240" fill="none">
+  <title>FORMA — Matter in Motion</title>
+  <circle cx="120" cy="120" r="101" stroke="#6855F5" stroke-width="1.8" stroke-dasharray="2 8"/>
+  <circle cx="120" cy="120" r="76" stroke="#FF5B45" stroke-width="1.8" stroke-dasharray="48 12 3 12"/>
+  <path d="M72 190V50h112M72 112h82M72 190l82-140" stroke="#D8FF38" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M72 112h82" stroke="#FF5B45" stroke-width="5" stroke-linecap="round"/>
+  <circle cx="120" cy="120" r="8" fill="#F1EDE3" stroke="#D8FF38" stroke-width="2"/>
+</svg>
