@@ -57,25 +57,28 @@ export function MotionLab() {
   const copyMessage = copyStatus?.recipeKey === recipeKey ? copyStatus.message : "";
 
   useEffect(() => {
-    const handoff = readPlaygroundMotionHandoff();
-    if (handoff) {
-      const nextMode: MotionMode = handoff.generator === "orbital-bloom" ? "orbit" : handoff.generator === "woven-lattice" ? "stagger" : "shift";
-      const nextDuration = Math.min(8, Math.max(1, Number((2 + handoff.density / 32).toFixed(1))));
-      const nextIntensity = Math.min(100, Math.max(10, Math.round(handoff.influence / 5) * 5));
-      const nextEasing: Easing = handoff.animation === "pulse" ? "cubic-bezier(.2,.8,.2,1)" : handoff.animation === "drift" ? "ease-in-out" : "linear";
-      setMode(nextMode); setDuration(nextDuration); setIntensity(nextIntensity); setEasing(nextEasing);
-      setFieldSource(`${handoff.title} · ${handoff.generator.replace("-", " ")} · SEED ${handoff.seed}`);
-    } else {
-      const params = new URLSearchParams(window.location.search);
-      const nextMode = params.get("mode");
-      const nextDuration = Number(params.get("duration"));
-      const nextIntensity = Number(params.get("intensity"));
-      const nextEasing = params.get("easing");
-      if (["orbit", "pulse", "shift", "stagger"].includes(nextMode ?? "") && nextDuration >= 1 && nextDuration <= 8 && nextIntensity >= 10 && nextIntensity <= 100 && ["ease-in-out", "linear", "cubic-bezier(.2,.8,.2,1)", "steps(5,end)"].includes(nextEasing ?? "")) {
-        setMode(nextMode as MotionMode); setDuration(nextDuration); setIntensity(nextIntensity); setEasing(nextEasing as Easing);
-        setFieldSource("ARCHIVE SPECIMEN RESTORED");
-      }
-    }
+    const timeout = window.setTimeout(() => {
+          const handoff = readPlaygroundMotionHandoff();
+          if (handoff) {
+            const nextMode: MotionMode = handoff.generator === "orbital-bloom" ? "orbit" : handoff.generator === "woven-lattice" ? "stagger" : "shift";
+            const nextDuration = Math.min(8, Math.max(1, Number((2 + handoff.density / 32).toFixed(1))));
+            const nextIntensity = Math.min(100, Math.max(10, Math.round(handoff.influence / 5) * 5));
+            const nextEasing: Easing = handoff.animation === "pulse" ? "cubic-bezier(.2,.8,.2,1)" : handoff.animation === "drift" ? "ease-in-out" : "linear";
+            setMode(nextMode); setDuration(nextDuration); setIntensity(nextIntensity); setEasing(nextEasing);
+            setFieldSource(`${handoff.title} · ${handoff.generator.replace("-", " ")} · SEED ${handoff.seed}`);
+          } else {
+            const params = new URLSearchParams(window.location.search);
+            const nextMode = params.get("mode");
+            const nextDuration = Number(params.get("duration"));
+            const nextIntensity = Number(params.get("intensity"));
+            const nextEasing = params.get("easing");
+            if (["orbit", "pulse", "shift", "stagger"].includes(nextMode ?? "") && nextDuration >= 1 && nextDuration <= 8 && nextIntensity >= 10 && nextIntensity <= 100 && ["ease-in-out", "linear", "cubic-bezier(.2,.8,.2,1)", "steps(5,end)"].includes(nextEasing ?? "")) {
+              setMode(nextMode as MotionMode); setDuration(nextDuration); setIntensity(nextIntensity); setEasing(nextEasing as Easing);
+              setFieldSource("ARCHIVE SPECIMEN RESTORED");
+            }
+          }
+    }, 0);
+    return () => window.clearTimeout(timeout);
   }, []);
 
   useEffect(() => {
