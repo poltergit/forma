@@ -57,7 +57,11 @@ function CameraRig({ view, projection }: { view: CameraView; projection: SceneRe
     camera.position.set(...cameraViews[view]);
     camera.up.set(0, 1, 0);
     camera.lookAt(0, 0, 0);
-    if (camera instanceof OrthographicCamera) camera.zoom = 85;
+    if (camera instanceof OrthographicCamera) {
+      // R3F exposes the live camera as a readonly hook value; camera configuration belongs in this effect.
+      // eslint-disable-next-line react-hooks/immutability
+      camera.zoom = 85;
+    }
     camera.updateProjectionMatrix();
   }, [camera, view, projection]);
   return null;
@@ -110,11 +114,16 @@ const vignetteShader = {
 
 function SceneRenderPipeline({ settings }: { settings: SceneRenderDocument }) {
   const { gl, scene, camera, size } = useThree();
-  const composer = useMemo(() => new EffectComposer(gl), [gl, settings]);
+  const composerRef = useRef<EffectComposer | null>(null);
   useEffect(() => {
+    const composer = new EffectComposer(gl);
+    composerRef.current = composer;
+    // The renderer is configured imperatively as part of the WebGL render pipeline.
+    // eslint-disable-next-line react-hooks/immutability
     gl.toneMapping = settings.toneMapping === "linear" ? LinearToneMapping
       : settings.toneMapping === "neutral" ? NeutralToneMapping
       : settings.toneMapping === "none" ? NoToneMapping : ACESFilmicToneMapping;
+    // eslint-disable-next-line react-hooks/immutability
     gl.toneMappingExposure = 1;
     composer.addPass(new RenderPass(scene, camera));
     const bloom = new UnrealBloomPass(new Vector2(size.width, size.height), settings.bloom, 0.42, 0.82);
@@ -134,10 +143,10 @@ function SceneRenderPipeline({ settings }: { settings: SceneRenderDocument }) {
     composer.setSize(size.width, size.height);
     return () => {
       composer.dispose();
-      gl.toneMapping = ACESFilmicToneMapping;
+      if (composerRef.current === composer) composerRef.current = null;
     };
-  }, [camera, composer, gl, scene, settings, size.height, size.width]);
-  useFrame((_, delta) => composer.render(delta), 1);
+  }, [camera, gl, scene, settings, size.height, size.width]);
+  useFrame((_, delta) => composerRef.current?.render(delta), 1);
   return null;
 }
 
