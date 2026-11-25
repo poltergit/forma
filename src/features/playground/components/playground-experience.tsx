@@ -176,23 +176,33 @@ export function PlaygroundExperience() {
   }, [activePalette, animationMode, density, generator, influence, seed]);
 
   useEffect(() => {
-    if (animationMode === "still") { phaseRef.current = 0; drawRef.current?.(); return; }
+    phaseRef.current = 0;
+    drawRef.current?.();
+    if (animationMode === "still") return;
     const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
-    if (reducedMotion.matches) { phaseRef.current = 0; drawRef.current?.(); return; }
     let frameId = 0;
     let lastDraw = 0;
     const render = (timestamp: number) => {
       if (document.visibilityState === "visible" && timestamp - lastDraw >= 33) {
-        phaseRef.current = (timestamp / 1000) * 0.48;
+        if (lastDraw > 0) phaseRef.current += Math.min(timestamp - lastDraw, 100) / 1000 * 0.48;
         drawRef.current?.();
         lastDraw = timestamp;
       }
       frameId = window.requestAnimationFrame(render);
     };
-    frameId = window.requestAnimationFrame(render);
-    const stopWhenHidden = () => { window.cancelAnimationFrame(frameId); if (document.visibilityState === "visible") { lastDraw = 0; frameId = window.requestAnimationFrame(render); } };
-    document.addEventListener("visibilitychange", stopWhenHidden);
-    return () => { window.cancelAnimationFrame(frameId); document.removeEventListener("visibilitychange", stopWhenHidden); };
+    const synchronizePlayback = () => {
+      window.cancelAnimationFrame(frameId);
+      if (reducedMotion.matches) { phaseRef.current = 0; drawRef.current?.(); return; }
+      if (document.visibilityState === "visible") { lastDraw = 0; frameId = window.requestAnimationFrame(render); }
+    };
+    synchronizePlayback();
+    reducedMotion.addEventListener("change", synchronizePlayback);
+    document.addEventListener("visibilitychange", synchronizePlayback);
+    return () => {
+      window.cancelAnimationFrame(frameId);
+      reducedMotion.removeEventListener("change", synchronizePlayback);
+      document.removeEventListener("visibilitychange", synchronizePlayback);
+    };
   }, [animationMode]);
 
   const updatePointer = (event: PointerEvent<HTMLDivElement>) => {
