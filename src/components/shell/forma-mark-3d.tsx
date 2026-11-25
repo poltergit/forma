@@ -22,6 +22,15 @@ function Emblem() {
     form.closePath();
     return form;
   }, []);
+  const diagonal = useMemo(() => {
+    const slash = new THREE.Shape();
+    slash.moveTo(-0.49, -0.61);
+    slash.lineTo(-0.39, -0.61);
+    slash.lineTo(0.57, 0.61);
+    slash.lineTo(0.47, 0.61);
+    slash.closePath();
+    return slash;
+  }, []);
 
   useFrame(({ clock, pointer }, delta) => {
     if (!root.current || !orbit.current) return;
@@ -37,7 +46,11 @@ function Emblem() {
         <extrudeGeometry args={[shape, { depth: 0.16, bevelEnabled: true, bevelSegments: 4, steps: 1, bevelSize: 0.035, bevelThickness: 0.035, curveSegments: 12 }]} />
         <meshPhysicalMaterial color="#d8ff38" metalness={0.56} roughness={0.2} clearcoat={1} clearcoatRoughness={0.12} />
       </mesh>
-      <mesh position={[0.08, -0.015, 0.18]}>
+      <mesh position={[0, 0, 0.19]}>
+        <extrudeGeometry args={[diagonal, { depth: 0.045, bevelEnabled: true, bevelSegments: 2, steps: 1, bevelSize: 0.012, bevelThickness: 0.012 }]} />
+        <meshPhysicalMaterial color="#f1ede3" metalness={0.42} roughness={0.24} clearcoat={0.7} />
+      </mesh>
+      <mesh position={[0.08, -0.015, 0.25]}>
         <boxGeometry args={[0.72, 0.045, 0.035]} />
         <meshStandardMaterial color="#ff5b45" emissive="#ff5b45" emissiveIntensity={0.22} metalness={0.35} roughness={0.24} />
       </mesh>
