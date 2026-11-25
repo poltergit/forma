@@ -163,7 +163,7 @@ function Sculpture({ intensity, speed, density, seed, reducedMotion, mode }: Pro
       <Afterform reducedMotion={reducedMotion} />
       <mesh rotation={[Math.PI / 2.2, 0.4, 0]}>
         <torusGeometry args={[1.55, 0.012, 8, 180]} />
-        <meshBasicMaterial color="#20211f" transparent opacity={0.48} />
+        <meshBasicMaterial color="#17151d" transparent opacity={0.48} />
       </mesh>
       {shards.map((shard, index) => (
         <mesh key={index} position={shard.position} rotation={shard.rotation} scale={shard.scale}>
