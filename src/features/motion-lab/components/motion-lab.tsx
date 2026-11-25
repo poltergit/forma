@@ -2,7 +2,8 @@
 
 import { useEffect, useMemo, useRef, useState, type CSSProperties } from "react";
 import styles from "./motion-lab.module.css";
-import { createMotionRecipe, type MotionEasing as Easing, type MotionMode } from "../motion-recipe";\nimport { createArchiveImprint, readPlaygroundMotionHandoff, saveArchiveImprint } from "@/features/atelier/atelier-bridge";
+import { createMotionRecipe, type MotionEasing as Easing, type MotionMode } from "../motion-recipe";
+import { createArchiveImprint, readPlaygroundMotionHandoff, saveArchiveImprint } from "@/features/atelier/atelier-bridge";
 
 const curvePaths: Record<Easing, string> = {
   "ease-in-out": "M 8 70 C 28 70, 28 10, 50 40 S 72 10, 92 10",
@@ -28,7 +29,9 @@ export function MotionLab() {
   const [progress, setProgress] = useState(0);
   const [copiedRecipe, setCopiedRecipe] = useState<string | null>(null);
   const [copyStatus, setCopyStatus] = useState<{ recipeKey: string; message: string } | null>(null);
-  const [reducedMotion, setReducedMotion] = useState(false);\n  const [fieldSource, setFieldSource] = useState("");\n  const [traceStatus, setTraceStatus] = useState("");
+  const [reducedMotion, setReducedMotion] = useState(false);
+  const [fieldSource, setFieldSource] = useState("");
+  const [traceStatus, setTraceStatus] = useState("");
 
   const reset = () => {
     setMode("orbit");
@@ -52,6 +55,28 @@ export function MotionLab() {
   const recipeKey = JSON.stringify(recipe);
   const copied = copiedRecipe === recipeKey;
   const copyMessage = copyStatus?.recipeKey === recipeKey ? copyStatus.message : "";
+
+  useEffect(() => {
+    const handoff = readPlaygroundMotionHandoff();
+    if (handoff) {
+      const nextMode: MotionMode = handoff.generator === "orbital-bloom" ? "orbit" : handoff.generator === "woven-lattice" ? "stagger" : "shift";
+      const nextDuration = Math.min(8, Math.max(1, Number((2 + handoff.density / 32).toFixed(1))));
+      const nextIntensity = Math.min(100, Math.max(10, Math.round(handoff.influence / 5) * 5));
+      const nextEasing: Easing = handoff.animation === "pulse" ? "cubic-bezier(.2,.8,.2,1)" : handoff.animation === "drift" ? "ease-in-out" : "linear";
+      setMode(nextMode); setDuration(nextDuration); setIntensity(nextIntensity); setEasing(nextEasing);
+      setFieldSource(`${handoff.title} · ${handoff.generator.replace("-", " ")} · SEED ${handoff.seed}`);
+    } else {
+      const params = new URLSearchParams(window.location.search);
+      const nextMode = params.get("mode");
+      const nextDuration = Number(params.get("duration"));
+      const nextIntensity = Number(params.get("intensity"));
+      const nextEasing = params.get("easing");
+      if (["orbit", "pulse", "shift", "stagger"].includes(nextMode ?? "") && nextDuration >= 1 && nextDuration <= 8 && nextIntensity >= 10 && nextIntensity <= 100 && ["ease-in-out", "linear", "cubic-bezier(.2,.8,.2,1)", "steps(5,end)"].includes(nextEasing ?? "")) {
+        setMode(nextMode as MotionMode); setDuration(nextDuration); setIntensity(nextIntensity); setEasing(nextEasing as Easing);
+        setFieldSource("ARCHIVE SPECIMEN RESTORED");
+      }
+    }
+  }, []);
 
   useEffect(() => {
     const preference = window.matchMedia("(prefers-reduced-motion: reduce)");
@@ -89,7 +114,8 @@ export function MotionLab() {
   return (
     <section className={styles.workspace} aria-label="Interactive motion instrument">
       <div className={styles.stageColumn}>
-        <div className={styles.stageMeta}><span>LIVE STAGE / 001</span><span className={styles.live} role="status" aria-live="polite"><i /> {reducedMotion ? "STATIC / REDUCED MOTION" : paused ? "PAUSED" : "LIVE PREVIEW"}</span></div>\n        {fieldSource && <div className={styles.fieldSource} role="status"><span>FIELD RECEIVED / 01</span><strong>{fieldSource}</strong><small>Parameters translated into a motion score. Adjust anything; the source field remains yours.</small></div>}
+        <div className={styles.stageMeta}><span>LIVE STAGE / 001</span><span className={styles.live} role="status" aria-live="polite"><i /> {reducedMotion ? "STATIC / REDUCED MOTION" : paused ? "PAUSED" : "LIVE PREVIEW"}</span></div>
+        {fieldSource && <div className={styles.fieldSource} role="status"><span>FIELD RECEIVED / 01</span><strong>{fieldSource}</strong><small>Parameters translated into a motion score. Adjust anything; the source field remains yours.</small></div>}
         <div
           className={`${styles.stage} ${paused ? styles.paused : ""}`}
           data-motion={mode}
@@ -196,7 +222,8 @@ export function MotionLab() {
           <pre>{JSON.stringify(recipe, null, 2)}</pre>
           <p className={styles.copyMessage} role="status" aria-live="polite">{copyMessage}</p>
         </div>
-        <div className={styles.traceActions}><button type="button" onClick={leaveArchiveTrace}>LEAVE A TRACE IN THE ARCHIVE ↗</button><p role="status" aria-live="polite">{traceStatus}</p></div>\n        <button className={styles.reset} type="button" onClick={reset}>↺ RESET PARAMETERS</button>
+        <div className={styles.traceActions}><button type="button" onClick={leaveArchiveTrace}>LEAVE A TRACE IN THE ARCHIVE ↗</button><p role="status" aria-live="polite">{traceStatus}</p></div>
+        <button className={styles.reset} type="button" onClick={reset}>↺ RESET PARAMETERS</button>
       </aside>
     </section>
   );
