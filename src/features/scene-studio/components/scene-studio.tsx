@@ -69,9 +69,9 @@ function CameraRig({ view, projection }: { view: CameraView; projection: SceneRe
 }
 
 const initialObjects: SceneObject[] = [
-  { id: 1, name: "Signal / cube", kind: "box", color: "#f05b3e", roughness: 0.28, metalness: 0.12, emissive: "#000000", transmission: 0, thickness: 0, ior: 1.5, clearcoat: 0, clearcoatRoughness: 0, opacity: 1, position: [-1.05, 0.1, 0], rotation: [0, 0, -0.12], scale: 1, visible: true },
-  { id: 2, name: "Orbit / ring", kind: "torus", color: "#243bd6", roughness: 0.28, metalness: 0.12, emissive: "#000000", transmission: 0, thickness: 0, ior: 1.5, clearcoat: 0, clearcoatRoughness: 0, opacity: 1, position: [0.95, 0.35, -0.2], rotation: [0.35, 0.2, 0], scale: 0.9, visible: true },
-  { id: 3, name: "Core / sphere", kind: "sphere", color: "#c6d83b", roughness: 0.28, metalness: 0.12, emissive: "#000000", transmission: 0, thickness: 0, ior: 1.5, clearcoat: 0, clearcoatRoughness: 0, opacity: 1, position: [0.05, -0.85, 0.55], rotation: [0, 0, 0], scale: 0.72, visible: true },
+  { id: 1, name: "Signal / cube", kind: "box", color: "#ff654f", roughness: 0.28, metalness: 0.12, emissive: "#000000", transmission: 0, thickness: 0, ior: 1.5, clearcoat: 0, clearcoatRoughness: 0, opacity: 1, position: [-1.05, 0.1, 0], rotation: [0, 0, -0.12], scale: 1, visible: true },
+  { id: 2, name: "Orbit / ring", kind: "torus", color: "#6258f5", roughness: 0.28, metalness: 0.12, emissive: "#000000", transmission: 0, thickness: 0, ior: 1.5, clearcoat: 0, clearcoatRoughness: 0, opacity: 1, position: [0.95, 0.35, -0.2], rotation: [0.35, 0.2, 0], scale: 0.9, visible: true },
+  { id: 3, name: "Core / sphere", kind: "sphere", color: "#d7f45b", roughness: 0.28, metalness: 0.12, emissive: "#000000", transmission: 0, thickness: 0, ior: 1.5, clearcoat: 0, clearcoatRoughness: 0, opacity: 1, position: [0.05, -0.85, 0.55], rotation: [0, 0, 0], scale: 0.72, visible: true },
 ];
 
 function ObjectMesh({ item, selected, tool, onSelect, onTransform }: { item: SceneObject; selected: boolean; tool: TransformTool; onSelect: () => void; onTransform: (transform: Pick<SceneObject, "position" | "rotation" | "scale">) => void }) {
@@ -156,7 +156,7 @@ function SceneRenderPipeline({ settings }: { settings: SceneRenderDocument }) {
 function SceneCanvas({ objects, selectedId, tool, view, lighting, render, onSelect, onTransform }: { objects: SceneObject[]; selectedId: number; tool: TransformTool; view: CameraView; lighting: SceneLightingDocument; render: SceneRenderDocument; onSelect: (id: number) => void; onTransform: (id: number, transform: Pick<SceneObject, "position" | "rotation" | "scale">) => void }) {
   return (
     <Canvas key={render.projection} orthographic={render.projection === "orthographic"} camera={render.projection === "orthographic" ? { position: cameraViews.perspective, zoom: 85 } : { position: cameraViews.perspective, fov: 38 }} dpr={render.quality === "draft" ? 1 : render.quality === "studio" ? 1.5 : 2} gl={{ antialias: true, alpha: true, preserveDrawingBuffer: true }}>
-      <color attach="background" args={["#e9e6dd"]} />
+      <color attach="background" args={["#191720"]} />
       <ambientLight intensity={lighting.ambientIntensity} />
       <directionalLight position={lighting.key.position} intensity={lighting.key.intensity} color={lighting.key.color} castShadow />
       <directionalLight position={lighting.fill.position} intensity={lighting.fill.intensity} color={lighting.fill.color} />
@@ -479,7 +479,7 @@ export function SceneStudio() {
   const generateVariation = (mode: "orbit" | "scatter" | "stack" | "tension" = "orbit") => {
     if (objects.length === 0) return;
     recordHistory();
-    const palette = ["#f05b3e", "#243bd6", "#c6d83b", "#20211f", "#e7a6a0", "#f4f1e8"];
+    const palette = ["#ff654f", "#6258f5", "#d7f45b", "#20211f", "#e7a6a0", "#f4f1e8"];
     const variation = variationCounter.current++;
     const randomFor = (salt: number) => {
       const value = Math.sin((variation + 1) * 127.1 + (salt + 1) * 311.7) * 43758.5453;
@@ -585,7 +585,7 @@ export function SceneStudio() {
     recordHistory();
     const id = Math.max(0, ...objects.map((item) => item.id)) + 1;
     const labels: Record<ShapeKind, string> = { box: "Block", sphere: "Orb", torus: "Loop" };
-    setObjects((current) => [...current, { id, name: `${labels[kind]} / ${String(id).padStart(2, "0")}`, kind, color: kind === "box" ? "#f05b3e" : kind === "sphere" ? "#243bd6" : "#c6d83b", roughness: 0.28, metalness: 0.12, emissive: "#000000", transmission: 0, thickness: 0, ior: 1.5, clearcoat: 0, clearcoatRoughness: 0, opacity: 1, position: [((id % 3) - 1) * 0.65, 0, -0.6], rotation: [0, 0, 0], scale: 0.8, visible: true }]);
+    setObjects((current) => [...current, { id, name: `${labels[kind]} / ${String(id).padStart(2, "0")}`, kind, color: kind === "box" ? "#ff654f" : kind === "sphere" ? "#6258f5" : "#d7f45b", roughness: 0.28, metalness: 0.12, emissive: "#000000", transmission: 0, thickness: 0, ior: 1.5, clearcoat: 0, clearcoatRoughness: 0, opacity: 1, position: [((id % 3) - 1) * 0.65, 0, -0.6], rotation: [0, 0, 0], scale: 0.8, visible: true }]);
     setSelectedId(id);
     
   };
@@ -767,7 +767,7 @@ export function SceneStudio() {
             <section className={styles.propertySection}>
               <div className={styles.propertyTitle}>SURFACE <span>⌄</span></div>
               <label className={styles.colorField}><span>BASE COLOR</span><input type="color" value={selected.color} onChange={(event) => updateSelected({ color: event.target.value })} /><code>{selected.color.toUpperCase()}</code></label>
-              <div className={styles.swatches}>{["#f05b3e", "#243bd6", "#c6d83b", "#20211f", "#f4f1e8"].map((color) => <button key={color} style={{ backgroundColor: color }} aria-label={`Set color ${color}`} onClick={() => updateSelected({ color })} />)}</div>
+              <div className={styles.swatches}>{["#ff654f", "#6258f5", "#d7f45b", "#20211f", "#f4f1e8"].map((color) => <button key={color} style={{ backgroundColor: color }} aria-label={`Set color ${color}`} onClick={() => updateSelected({ color })} />)}</div>
             </section>
             <section className={styles.propertySection}>
               <div className={styles.propertyTitle}>MATERIAL LAB <span>PHYSICAL / PBR</span></div>
