@@ -1413,3 +1413,8 @@
 @media (prefers-reduced-motion: reduce) {
   .specimenCanvas { will-change: auto; }
 }
+
+/* MATTER IN MOTION / DEPTH PASS 03 */
+.specimenField{perspective:1100px;transform-style:preserve-3d}.specimenCanvas{transform-style:preserve-3d;backface-visibility:hidden;will-change:transform}.specimenStage{transform-style:preserve-3d}.studyArtwork{transform-style:preserve-3d;perspective:900px;backface-visibility:hidden}.studyRow{transform-style:preserve-3d;perspective:1200px}.studyRow:hover .studyArtwork{transform:translateZ(24px) rotateY(-5deg) rotateX(3deg)}.instrumentStage{transform-style:preserve-3d;backface-visibility:hidden}
+@media(hover:hover) and (prefers-reduced-motion:no-preference){.specimenStage:hover .specimenCanvas{filter:drop-shadow(0 24px 35px rgb(104 85 245 / .16))}.studyArtwork{transition:transform .7s cubic-bezier(.16,1,.3,1),filter .7s ease}.studyRow:hover .studyArtwork{filter:drop-shadow(0 20px 22px rgb(23 21 29 / .12))}}
+@media(prefers-reduced-motion:reduce){.specimenCanvas,.studyArtwork{will-change:auto;transform:none!important}}
