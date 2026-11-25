@@ -150,6 +150,9 @@ export function PlaygroundExperience() {
         }
       }
 
+      context.globalCompositeOperation = material.blend;
+      context.shadowColor = material.shadow > 0 ? "rgba(32,33,31,0.22)" : "transparent";
+      context.shadowBlur = material.shadow * 18;
       projected.slice().sort((a, b) => a.z - b.z).forEach((point, index) => {
         const half = point.size * (generator === "orbital-bloom" ? 0.68 : 1);
         const rise = half * (0.42 + point.z * 0.72); const x = point.x; const y = point.y;
@@ -171,6 +174,7 @@ export function PlaygroundExperience() {
       });
 
       if (materialId === "paper" && material.grain > 0) { context.save(); context.globalAlpha = material.grain; context.fillStyle = "#20211f"; for (let index = 0; index < 180; index += 1) { const x = ((index * 73) % 997) / 997 * width; const y = ((index * 193) % 991) / 991 * height; context.fillRect(x, y, 1, 1); } context.restore(); }
+      context.globalCompositeOperation = "source-over"; context.shadowBlur = 0; context.shadowColor = "transparent";
       const glow = context.createRadialGradient(originX, originY, 0, originX, originY, influenceRadius);
       glow.addColorStop(0, "rgba(240,91,62,0.13)"); glow.addColorStop(1, "rgba(240,91,62,0)");
       context.fillStyle = glow; context.fillRect(0, 0, width, height);
