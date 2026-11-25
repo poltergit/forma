@@ -8,7 +8,7 @@ import { parseSceneDocument } from "./scene-document";
 type CloudRow = {
   id: string;
   title: string;
-  document: { camera: string; objects: unknown };
+  document: { camera: string; objects: unknown; lighting?: unknown; render?: unknown };
   revision: number;
   updated_at: string;
 };
@@ -33,12 +33,16 @@ function fromCloudRow(row: CloudRow): SceneDocument {
     name: row.title,
     camera: row.document.camera,
     objects: row.document.objects,
+    lighting: row.document.lighting,
+    render: row.document.render,
   });
   return {
     id: row.id,
     name: parsed.name,
     camera: parsed.camera,
     objects: parsed.objects,
+    lighting: parsed.lighting,
+    render: parsed.render,
     updatedAt: row.updated_at,
     revision: row.revision,
   };
@@ -78,7 +82,7 @@ export async function saveCloudComposition(
   const { data, error } = await supabase.rpc("save_scene_studio_composition", {
     p_id: composition.id,
     p_title: composition.name.trim().slice(0, 80) || "Untitled composition",
-    p_document: { camera: composition.camera, objects: composition.objects },
+    p_document: { camera: composition.camera, objects: composition.objects, lighting: composition.lighting, render: composition.render },
     p_expected_revision: composition.revision ?? null,
   });
   if (error) throw error;

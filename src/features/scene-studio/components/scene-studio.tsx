@@ -105,7 +105,7 @@ const chromaticShader = {
 const vignetteShader = {
   uniforms: { tDiffuse: { value: null }, strength: { value: 0 } },
   vertexShader: `varying vec2 vUv; void main(){ vUv=uv; gl_Position=projectionMatrix*modelViewMatrix*vec4(position,1.0); }`,
-  fragmentShader: `uniform sampler2D tDiffuse; uniform float strength; varying vec2 vUv; void main(){ vec4 color=texture2D(tDiffuse,vUv); vec2 uv=(vUv-0.5)*0.9; float vignette=smoothstep(0.82,0.18,dot(uv,uv)*1.45); color.rgb*=mix(1.0,vignette,strength); gl_FragColor=color; }`,
+  fragmentShader: `uniform sampler2D tDiffuse; uniform float strength; varying vec2 vUv; void main(){ vec4 color=texture2D(tDiffuse,vUv); vec2 uv=(vUv-0.5)*0.9; float vignette=1.0-smoothstep(0.18,0.82,dot(uv,uv)*1.45); color.rgb*=mix(1.0,vignette,strength); gl_FragColor=color; }`,
 };
 
 function SceneRenderPipeline({ settings }: { settings: SceneRenderDocument }) {
@@ -669,7 +669,7 @@ export function SceneStudio() {
           <div className={styles.canvasFrame}>
             <div className={styles.canvasStamp}><span>FORMA / LAB 001</span><span>24° 08′ N — 3D SPACE</span></div>
             <div className={styles.canvasGrid} aria-hidden="true" />
-            <div className={styles.canvas}><SceneCanvas objects={objects} selectedId={selected?.id ?? -1} tool={activeTool} view={cameraView} lighting={lighting} render={renderSettings} onSelect={setSelectedId> onTransform={(id, transform) => { recordHistory(); setObjects((current) => current.map((item) => item.id === id ? { ...item, ...transform } : item)); }} /></div>
+            <div className={styles.canvas}><SceneCanvas objects={objects} selectedId={selected?.id ?? -1} tool={activeTool} view={cameraView} lighting={lighting} render={renderSettings} onSelect={setSelectedId} onTransform={(id, transform) => { recordHistory(); setObjects((current) => current.map((item) => item.id === id ? { ...item, ...transform } : item)); }} /></div>
             <div className={styles.canvasHint}>DRAG TO ORBIT <i /> SCROLL TO ZOOM <i /> SELECT TO INSPECT</div>
             <div className={styles.axisWidget}><span>X</span><span>Y</span><span>Z</span></div>
           </div>
