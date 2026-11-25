@@ -14,6 +14,7 @@ export const metadata: Metadata = {
   title: { default: "FORMA — Matter in Motion", template: "%s — FORMA" },
   description: "Nothing is finished. Everything is becoming. FORMA is a digital atelier for shaping ideas through matter, force, motion, and trace.",
   applicationName: "FORMA",
+  icons: { icon: "/forma-mark.svg", shortcut: "/forma-mark.svg" },
   metadataBase: siteUrl ? new URL(siteUrl) : undefined,
   openGraph: {
     type: "website",
