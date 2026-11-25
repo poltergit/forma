@@ -475,6 +475,37 @@ export function SceneStudio() {
     }
   };
 
+  const generateVariation = () => {
+    if (objects.length === 0) return;
+    recordHistory();
+    const palette = ["#f05b3e", "#243bd6", "#c6d83b", "#20211f", "#e7a6a0", "#f4f1e8"];
+    const seed = Math.random() * Math.PI * 2;
+    const next = objects.map((item, index) => {
+      const angle = seed + index * 2.399963;
+      const radius = 0.55 + Math.random() * 1.15;
+      const depth = (Math.random() - 0.5) * 1.5;
+      const paletteIndex = (index + Math.floor(Math.random() * palette.length)) % palette.length;
+      return {
+        ...item,
+        position: [
+          Math.cos(angle) * radius,
+          Math.sin(angle) * radius * 0.78,
+          depth,
+        ] as [number, number, number],
+        rotation: [
+          (Math.random() - 0.5) * Math.PI,
+          (Math.random() - 0.5) * Math.PI,
+          (Math.random() - 0.5) * Math.PI,
+        ] as [number, number, number],
+        scale: Math.max(0.35, Math.min(1.55, item.scale * (0.78 + Math.random() * 0.48))),
+        color: palette[paletteIndex],
+      };
+    });
+    setObjects(next);
+    setSelectedId(next[0].id);
+    setSaveStatus("NEW VARIATION GENERATED · UNDO TO RETURN");
+  };
+
   const deleteComposition = () => {
     history.current = { past: [], future: [] };
     setHistoryState({ canUndo: false, canRedo: false });
@@ -671,6 +702,9 @@ export function SceneStudio() {
               <button className={styles.quietButton} onClick={redo} disabled={!historyState.canRedo} title="Redo (⌘/Ctrl + Shift + Z)">↷</button>
               {(["select", "move", "rotate", "scale"] as const).map((tool) => <button key={tool} className={activeTool === tool ? styles.activeTool : ""} aria-pressed={activeTool === tool} onClick={() => setActiveTool(tool)} title={tool}>{tool === "select" ? "↖" : tool === "move" ? "✣" : tool === "rotate" ? "⟳" : "↗"}<span>{tool.toUpperCase()}</span></button>)}
             </div>
+            <button className={styles.recomposeButton} onClick={generateVariation} title="Generate a new arrangement from the current objects. Undo to restore the previous composition.">
+              <span>✳</span> RECOMPOSE <i>↗</i>
+            </button>
             <div className={styles.cameraPresets}>
               <button className={renderSettings.projection === "perspective" ? styles.activeCamera : ""} aria-pressed={renderSettings.projection === "perspective"} onClick={() => setProjection("perspective")}>PERSPECTIVE</button>
               <button className={renderSettings.projection === "orthographic" ? styles.activeCamera : ""} aria-pressed={renderSettings.projection === "orthographic"} onClick={() => setProjection("orthographic")}>ORTHO</button>
