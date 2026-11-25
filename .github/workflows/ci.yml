@@ -4,7 +4,7 @@ on:
   push:
     branches: [main]
   pull_request:
-    branches: [main, phase-09/atelier-expression]
+    branches: [main, phase-09/atelier-expression, phase-12/signature-experience]
 
 permissions:
   contents: read
