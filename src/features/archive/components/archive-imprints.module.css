@@ -7,14 +7,16 @@
 .empty{display:flex;min-height:12rem;flex-direction:column;align-items:flex-start;justify-content:center;gap:1rem;padding:1.5rem;border-bottom:1px solid var(--forma-rule);color:#68636d}
 .empty>span{color:var(--forma-signal-vermilion);font:500 .58rem var(--font-mono);letter-spacing:.12em}
 .empty p{max-width:26rem;margin:0;line-height:1.65}
-.empty a{border-bottom:1px solid var(--forma-carbon-ink);padding:.7rem 0;color:var(--forma-carbon-ink);font:500 .58rem var(--font-mono);letter-spacing:.1em;text-decoration:none}
+.empty a{display:inline-flex;min-height:44px;align-items:center;border-bottom:1px solid var(--forma-carbon-ink);padding:.7rem 0;color:var(--forma-carbon-ink);font:500 .58rem var(--font-mono);letter-spacing:.1em;text-decoration:none}
 .list{border-bottom:1px solid var(--forma-rule)}
 .item{display:grid;grid-template-columns:3.5rem 1fr auto;align-items:center;gap:1.5rem;padding:1.35rem 0;border-bottom:1px solid var(--forma-rule)}
 .number{align-self:start;padding-top:.25rem;color:var(--forma-signal-vermilion);font:500 .75rem var(--font-mono)}
 .copy>span{color:var(--forma-electric-iris);font:500 .52rem var(--font-mono);letter-spacing:.1em}
 .copy h3{margin:.45rem 0;font:600 clamp(1.4rem,2.8vw,2.4rem)/1 var(--font-display);letter-spacing:-.06em}
 .copy p{margin:0;color:#68636d;font-size:.82rem;line-height:1.55}
-.item>a{border-bottom:1px solid var(--forma-carbon-ink);padding:.65rem 0;color:var(--forma-carbon-ink);font:500 .56rem var(--font-mono);letter-spacing:.1em;text-decoration:none;white-space:nowrap}
+.item>a{display:inline-flex;min-height:44px;align-items:center;border-bottom:1px solid var(--forma-carbon-ink);padding:.65rem 0;color:var(--forma-carbon-ink);font:500 .56rem var(--font-mono);letter-spacing:.1em;text-decoration:none;white-space:nowrap}
 .item>a b{padding-left:.5rem;color:var(--forma-signal-vermilion)}
-.item>a:hover{color:var(--forma-electric-iris)}
+.item>a:hover,.empty a:hover{color:var(--forma-electric-iris);border-color:var(--forma-electric-iris)}
+.item>a:focus-visible,.empty a:focus-visible{outline:2px solid var(--forma-electric-iris);outline-offset:4px}
 @media(max-width:650px){.heading{grid-template-columns:1fr;gap:1rem}.item{grid-template-columns:2rem 1fr;gap:.75rem}.item>a{grid-column:2;justify-self:start}.copy h3{font-size:1.65rem}}
+@media(prefers-reduced-motion:reduce){.item>a,.empty a{transition:none}}
