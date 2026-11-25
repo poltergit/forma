@@ -511,7 +511,7 @@ export function SceneStudio() {
     });
     setObjects(next);
     setSelectedId(next[0].id);
-    setSaveStatus(`\u001b[0m${mode.toUpperCase()} STUDY GENERATED · UNDO TO RETURN`);
+    setSaveStatus(`${mode.toUpperCase()} STUDY GENERATED · UNDO TO RETURN`);
   };
 
   const deleteComposition = () => {
