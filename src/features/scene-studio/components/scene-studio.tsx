@@ -186,6 +186,7 @@ export function SceneStudio() {
   const [storageKey, setStorageKey] = useState(SCENE_STORAGE_KEY);
   const cloudRevisions = useRef(new Map<string, number>());
   const history = useRef<{ past: EditorSnapshot[]; future: EditorSnapshot[] }>({ past: [], future: [] });
+  const variationCounter = useRef(0);
   const [historyState, setHistoryState] = useState({ canUndo: false, canRedo: false });
   const [versions, setVersions] = useState<SceneVersion[]>([]);
   const [showVersions, setShowVersions] = useState(false);
@@ -475,35 +476,42 @@ export function SceneStudio() {
     }
   };
 
-  const generateVariation = () => {
+  const generateVariation = (mode: "orbit" | "scatter" | "stack" | "tension" = "orbit") => {
     if (objects.length === 0) return;
     recordHistory();
     const palette = ["#f05b3e", "#243bd6", "#c6d83b", "#20211f", "#e7a6a0", "#f4f1e8"];
-    const seed = Math.random() * Math.PI * 2;
+    const variation = variationCounter.current++;
+    const randomFor = (salt: number) => {
+      const value = Math.sin((variation + 1) * 127.1 + (salt + 1) * 311.7) * 43758.5453;
+      return value - Math.floor(value);
+    };
+    const phase = randomFor(0) * Math.PI * 2;
     const next = objects.map((item, index) => {
-      const angle = seed + index * 2.399963;
-      const radius = 0.55 + Math.random() * 1.15;
-      const depth = (Math.random() - 0.5) * 1.5;
-      const paletteIndex = (index + Math.floor(Math.random() * palette.length)) % palette.length;
+      const angle = phase + index * 2.399963;
+      const spread = 0.65 + randomFor(index + 2) * 0.9;
+      const side = index % 2 === 0 ? -1 : 1;
+      const position: [number, number, number] = mode === "scatter"
+        ? [(randomFor(index + 10) - 0.5) * 4.1, (randomFor(index + 11) - 0.5) * 3.1, (randomFor(index + 12) - 0.5) * 2.2]
+        : mode === "stack"
+          ? [(randomFor(index + 13) - 0.5) * 0.65, (index - (objects.length - 1) / 2) * 0.72, (randomFor(index + 14) - 0.5) * 0.55]
+          : mode === "tension"
+            ? [side * (0.55 + index * 0.38), Math.sin(angle) * 0.42 + (randomFor(index + 15) - 0.5) * 0.35, Math.cos(angle) * 0.72]
+            : [Math.cos(angle) * spread, Math.sin(angle) * spread * 0.78, (randomFor(index + 16) - 0.5) * 1.5];
       return {
         ...item,
-        position: [
-          Math.cos(angle) * radius,
-          Math.sin(angle) * radius * 0.78,
-          depth,
-        ] as [number, number, number],
+        position,
         rotation: [
-          (Math.random() - 0.5) * Math.PI,
-          (Math.random() - 0.5) * Math.PI,
-          (Math.random() - 0.5) * Math.PI,
+          (randomFor(index + 20) - 0.5) * Math.PI,
+          (randomFor(index + 21) - 0.5) * Math.PI,
+          (randomFor(index + 22) - 0.5) * Math.PI,
         ] as [number, number, number],
-        scale: Math.max(0.35, Math.min(1.55, item.scale * (0.78 + Math.random() * 0.48))),
-        color: palette[paletteIndex],
+        scale: Math.max(0.35, Math.min(1.55, item.scale * (0.78 + randomFor(index + 23) * 0.48))),
+        color: palette[Math.floor(randomFor(index + 24) * palette.length)],
       };
     });
     setObjects(next);
     setSelectedId(next[0].id);
-    setSaveStatus("NEW VARIATION GENERATED · UNDO TO RETURN");
+    setSaveStatus(`\u001b[0m${mode.toUpperCase()} STUDY GENERATED · UNDO TO RETURN`);
   };
 
   const deleteComposition = () => {
@@ -702,7 +710,13 @@ export function SceneStudio() {
               <button className={styles.quietButton} onClick={redo} disabled={!historyState.canRedo} title="Redo (⌘/Ctrl + Shift + Z)">↷</button>
               {(["select", "move", "rotate", "scale"] as const).map((tool) => <button key={tool} className={activeTool === tool ? styles.activeTool : ""} aria-pressed={activeTool === tool} onClick={() => setActiveTool(tool)} title={tool}>{tool === "select" ? "↖" : tool === "move" ? "✣" : tool === "rotate" ? "⟳" : "↗"}<span>{tool.toUpperCase()}</span></button>)}
             </div>
-            <button className={styles.recomposeButton} onClick={generateVariation} title="Generate a new arrangement from the current objects. Undo to restore the previous composition.">
+            <div className={styles.compositionModes} role="group" aria-label="Generate a composition system">
+              <button type="button" onClick={() => generateVariation("orbit")} title="Arrange forms around a shared center">ORBIT</button>
+              <button type="button" onClick={() => generateVariation("scatter")} title="Release forms into a loose field">SCATTER</button>
+              <button type="button" onClick={() => generateVariation("stack")} title="Build a vertical sculptural stack">STACK</button>
+              <button type="button" onClick={() => generateVariation("tension")} title="Pull forms into opposing forces">TENSION</button>
+            </div>
+            <button className={styles.recomposeButton} onClick={() => generateVariation("orbit")} title="Generate a new orbital arrangement from the current objects. Undo to restore the previous composition.">
               <span>✳</span> RECOMPOSE <i>↗</i>
             </button>
             <div className={styles.cameraPresets}>
