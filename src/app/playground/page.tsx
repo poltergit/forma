@@ -13,16 +13,16 @@ export default function PlaygroundPage() {
   return (
     <main id="main-content" className={styles.main}>
       <section className={styles.intro}>
-        <div className={styles.introMeta}><span>01 / THE PLAYGROUND</span><span>AN INDEX OF EXPERIMENTS</span></div>
+        <div className={styles.introMeta}><span>ROOM 01 / THE OPEN FIELD</span><span>UNFINISHED SYSTEMS · LIVE STUDIES</span></div>
         <div className={styles.introGrid}>
-          <h1>Enter the<br /><em>unmade.</em></h1>
-          <p>Not a gallery of finished answers. An open workbench for curious minds. Pull at a system, interrupt its logic, and see what else it can become.</p>
+          <h1>Enter the<br /><em>unknown.</em></h1>
+          <p>An open field for unfinished ideas. Pull at a system, interrupt its logic, and let the unexpected become part of the composition.</p>
         </div>
-        <div className={styles.introFoot}><span>FORM / FORCE / FEELING</span><span>SCROLL TO INTERACT ↓</span></div>
+        <div className={styles.introFoot}><span>FIELD NOTES / 001—∞</span><span>TOUCH THE FIELD ↓</span></div>
       </section>
       <section className={styles.process} aria-label="The FORMA process">
         <div className={styles.processLead}>
-          <span>THE ATELIER METHOD / 00—∞</span>
+          <span>A METHOD WITHOUT A MAP / 00—∞</span>
           <p>There is no straight line from idea to object.</p>
         </div>
         <div className={styles.processSteps}>
