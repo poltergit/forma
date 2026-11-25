@@ -39,3 +39,10 @@
 .projectLibraryActions{display:flex;justify-content:flex-end;gap:.45rem;margin-top:.75rem}
 .projectLibraryActions button{padding:.45rem .6rem;border:1px solid var(--line);background:transparent;color:#77746b;font:8px var(--font-mono);letter-spacing:.05em;cursor:pointer}
 .projectLibraryActions button:hover,.projectLibraryActions button[aria-pressed=true]{border-color:var(--brand-coral);color:var(--ink)}
+
+.materialPresets{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:.4rem;margin:.8rem 0}
+.materialPresets button{display:grid;gap:.25rem;min-width:0;padding:.55rem .5rem;border:1px solid var(--line);background:#f1eee6;color:var(--ink);text-align:left;cursor:pointer}
+.materialPresets button:hover,.materialPresets button:focus-visible{border-color:var(--brand-coral);outline-offset:2px}
+.materialPresets strong{font:600 .7rem var(--font-display)}
+.materialPresets small{color:#858177;font:7px var(--font-mono);letter-spacing:.04em}
+.materialPresets button:active{background:#fffdf7}

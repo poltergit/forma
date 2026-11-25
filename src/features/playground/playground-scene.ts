@@ -53,13 +53,13 @@ export function createPoints(seed: number, amount: number): FieldPoint[] {
 
 export type PlaygroundSurface = "paper" | "ink" | "metal" | "glass" | "liquid" | "ceramic";
 
-const SURFACE_PHYSICS: Record<PlaygroundSurface, { roughness: number; metalness: number; emissive: string }> = {
-  paper: { roughness: 0.94, metalness: 0.02, emissive: "#000000" },
-  ink: { roughness: 0.98, metalness: 0, emissive: "#000000" },
-  metal: { roughness: 0.2, metalness: 0.88, emissive: "#080808" },
-  glass: { roughness: 0.06, metalness: 0.16, emissive: "#101827" },
-  liquid: { roughness: 0.12, metalness: 0.3, emissive: "#090d16" },
-  ceramic: { roughness: 0.18, metalness: 0.04, emissive: "#080604" },
+const SURFACE_PHYSICS: Record<PlaygroundSurface, { roughness: number; metalness: number; emissive: string; transmission: number; thickness: number; ior: number; clearcoat: number; clearcoatRoughness: number; opacity: number }> = {
+  paper: { roughness: 0.94, metalness: 0.02, emissive: "#000000", transmission: 0, thickness: 0, ior: 1.5, clearcoat: 0, clearcoatRoughness: 0, opacity: 1 },
+  ink: { roughness: 0.98, metalness: 0, emissive: "#000000", transmission: 0, thickness: 0, ior: 1.5, clearcoat: 0, clearcoatRoughness: 0, opacity: 1 },
+  metal: { roughness: 0.2, metalness: 0.88, emissive: "#080808", transmission: 0, thickness: 0, ior: 1.5, clearcoat: 0.22, clearcoatRoughness: 0.16, opacity: 1 },
+  glass: { roughness: 0.035, metalness: 0, emissive: "#080d18", transmission: 1, thickness: 0.85, ior: 1.48, clearcoat: 0.95, clearcoatRoughness: 0.025, opacity: 1 },
+  liquid: { roughness: 0.075, metalness: 0.12, emissive: "#090d16", transmission: 0.82, thickness: 1.35, ior: 1.36, clearcoat: 1, clearcoatRoughness: 0.035, opacity: 1 },
+  ceramic: { roughness: 0.16, metalness: 0.025, emissive: "#080604", transmission: 0, thickness: 0, ior: 1.5, clearcoat: 0.82, clearcoatRoughness: 0.12, opacity: 1 },
 };
 
 export function createPlaygroundScene(seed: number, density: number, influence: number, generator: GeneratorId = "displacement", paletteColors?: [string, string, string], surface: PlaygroundSurface = "paper") {

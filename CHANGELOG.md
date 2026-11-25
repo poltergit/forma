@@ -68,3 +68,9 @@ All notable project changes are recorded here.
 - Page layouts, component specifications, and identity assets remain proposals for review.
 - The Modular Frame hybrid identity is not final approved artwork or trademark clearance.
 - Contrast measurements are preliminary; full component-level validation requires rendered UI testing.
+
+
+### Material Intelligence 2.0
+- Added true Three.js physical-material controls and presets for transmission, thickness, IOR, clearcoat, coat roughness, and opacity; Glass and Liquid use transmissive MeshPhysicalMaterial rather than only metallic/roughness approximations.
+- Added safe legacy-scene normalization and additive server-side validation migration for bounded physical properties.
+- Playground-to-Scene-Studio handoffs now preserve full physical surface profiles.

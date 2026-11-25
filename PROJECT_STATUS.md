@@ -127,3 +127,8 @@ Added three explicit animation modes: Still, Drift, and Pulse. Motion uses bound
 ### Playground Material Lab (2026-11-25)
 
 Added six renderer-native surface treatments: Paper, Ink, Metal, Glass, Liquid, and Ceramic. Treatments use bounded Canvas 2D gradients, opacity, highlight, stroke, and deterministic low-alpha grain; they do not introduce WebGL or per-pixel shader work into the Playground. Material selection is saved in local recipes and portable JSON, with legacy recipes defaulting to Paper and unknown imported materials rejected. Scene Studio handoff maps each Playground surface to the existing editable roughness, metalness, and emissive properties; transparency is not implied because the current scene schema has no opacity contract. Device-level visual/performance review remains outstanding.
+
+
+### Material Intelligence 2.0 (2026-11-25)
+
+Scene Studio now uses Three.js MeshPhysicalMaterial with bounded transmission, thickness, index of refraction, clearcoat, clearcoat roughness, and opacity controls. Six named PBR presets (Paper, Ink, Metal, Glass, Liquid, Ceramic) apply complete physical-material profiles. Playground handoffs carry these properties into editable Scene Studio objects. Legacy scene documents are normalized with safe opaque defaults. An additive Supabase migration updates server-side validation for optional physical properties without invalidating older rows. The migration is committed but has not been applied to a Supabase project. Real browser/device rendering and performance review remain outstanding.

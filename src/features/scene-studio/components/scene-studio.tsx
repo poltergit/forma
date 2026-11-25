@@ -13,9 +13,10 @@ import { parseSceneDocument, readSceneLibrary, SCENE_STORAGE_KEY } from "../scen
 import type { SceneDocument } from "../scene-document";
 import { deleteCloudComposition, getSceneCloudSession, loadCloudCompositions, saveCloudComposition, signOutCloudSession } from "../scene-cloud";
 import { PLAYGROUND_SCENE_HANDOFF_KEY } from "@/features/playground/playground-scene";
+import { applySceneMaterialPreset, SCENE_MATERIAL_PRESETS, type SceneMaterialId } from "../scene-materials";
 
 type ShapeKind = "box" | "sphere" | "torus";
-type SceneObject = { id: number; name: string; kind: ShapeKind; color: string; roughness: number; metalness: number; emissive: string; position: [number, number, number]; rotation: [number, number, number]; scale: number; visible: boolean };
+type SceneObject = { id: number; name: string; kind: ShapeKind; color: string; roughness: number; metalness: number; emissive: string; transmission: number; thickness: number; ior: number; clearcoat: number; clearcoatRoughness: number; opacity: number; position: [number, number, number]; rotation: [number, number, number]; scale: number; visible: boolean };
 type CameraView = "perspective" | "front" | "top" | "side";
 type TransformTool = "select" | "move" | "rotate" | "scale";
 
@@ -55,16 +56,16 @@ function CameraRig({ view }: { view: CameraView }) {
 }
 
 const initialObjects: SceneObject[] = [
-  { id: 1, name: "Signal / cube", kind: "box", color: "#f05b3e", roughness: 0.28, metalness: 0.12, emissive: "#000000", position: [-1.05, 0.1, 0], rotation: [0, 0, -0.12], scale: 1, visible: true },
+  { id: 1, name: "Signal / cube", kind: "box", color: "#f05b3e", roughness: 0.28, metalness: 0.12, emissive: "#000000", transmission: 0, thickness: 0, ior: 1.5, clearcoat: 0, clearcoatRoughness: 0, opacity: 1, position: [-1.05, 0.1, 0], rotation: [0, 0, -0.12], scale: 1, visible: true },
   { id: 2, name: "Orbit / ring", kind: "torus", color: "#243bd6", roughness: 0.28, metalness: 0.12, emissive: "#000000", position: [0.95, 0.35, -0.2], rotation: [0.35, 0.2, 0], scale: 0.9, visible: true },
   { id: 3, name: "Core / sphere", kind: "sphere", color: "#c6d83b", roughness: 0.28, metalness: 0.12, emissive: "#000000", position: [0.05, -0.85, 0.55], rotation: [0, 0, 0], scale: 0.72, visible: true },
 ];
 
 function ObjectMesh({ item, selected, tool, onSelect, onTransform }: { item: SceneObject; selected: boolean; tool: TransformTool; onSelect: () => void; onTransform: (transform: Pick<SceneObject, "position" | "rotation" | "scale">) => void }) {
   const meshRef = useRef<Mesh>(null);
-  const material = { color: item.color, roughness: item.roughness, metalness: item.metalness, emissive: item.emissive, emissiveIntensity: item.emissive === "#000000" ? 0 : 0.65 };
+  const material = { color: item.color, roughness: item.roughness, metalness: item.metalness, emissive: item.emissive, emissiveIntensity: item.emissive === "#000000" ? 0 : 0.65, transmission: item.transmission, thickness: item.thickness, ior: item.ior, clearcoat: item.clearcoat, clearcoatRoughness: item.clearcoatRoughness, transparent: item.transmission > 0 || item.opacity < 1, opacity: item.opacity, envMapIntensity: 1.35 };
   let geometry: ReactNode;
-  if (item.kind === "box") geometry = <RoundedBox args={[1.15, 1.15, 1.15]} radius={0.12} smoothness={4}><meshStandardMaterial {...material} /></RoundedBox>;
+  if (item.kind === "box") geometry = <RoundedBox args={[1.15, 1.15, 1.15]} radius={0.12} smoothness={4}><meshPhysicalMaterial {...material} /></RoundedBox>;
   else if (item.kind === "sphere") geometry = <sphereGeometry args={[0.68, 64, 48]} />;
   else geometry = <torusGeometry args={[0.62, 0.19, 24, 80]} />;
   const mesh = (
@@ -597,11 +598,18 @@ export function SceneStudio() {
               <div className={styles.swatches}>{["#f05b3e", "#243bd6", "#c6d83b", "#20211f", "#f4f1e8"].map((color) => <button key={color} style={{ backgroundColor: color }} aria-label={`Set color ${color}`} onClick={() => updateSelected({ color })} />)}</div>
             </section>
             <section className={styles.propertySection}>
-              <div className={styles.propertyTitle}>MATERIAL LAB <span>⌄</span></div>
+              <div className={styles.propertyTitle}>MATERIAL LAB <span>PHYSICAL / PBR</span></div>
+              <div className={styles.materialPresets} role="group" aria-label="Physical material presets">{SCENE_MATERIAL_PRESETS.map((preset) => <button key={preset.id} type="button" onClick={() => updateSelected(applySceneMaterialPreset(selected, preset.id as SceneMaterialId))}><strong>{preset.name}</strong><small>{preset.descriptor}</small></button>)}</div>
               <label className={styles.rangeField}><span>ROUGHNESS <b>{selected.roughness.toFixed(2)}</b></span><input type="range" min="0" max="1" step="0.01" value={selected.roughness} onChange={(event) => updateSelected({ roughness: Number(event.target.value) })} /></label>
               <label className={styles.rangeField}><span>METALNESS <b>{selected.metalness.toFixed(2)}</b></span><input type="range" min="0" max="1" step="0.01" value={selected.metalness} onChange={(event) => updateSelected({ metalness: Number(event.target.value) })} /></label>
+              <label className={styles.rangeField}><span>TRANSMISSION <b>{selected.transmission.toFixed(2)}</b></span><input type="range" min="0" max="1" step="0.01" value={selected.transmission} onChange={(event) => updateSelected({ transmission: Number(event.target.value) })} /></label>
+              <label className={styles.rangeField}><span>THICKNESS <b>{selected.thickness.toFixed(2)}</b></span><input type="range" min="0" max="5" step="0.05" value={selected.thickness} onChange={(event) => updateSelected({ thickness: Number(event.target.value) })} /></label>
+              <label className={styles.rangeField}><span>INDEX OF REFRACTION <b>{selected.ior.toFixed(2)}</b></span><input type="range" min="1" max="2.33" step="0.01" value={selected.ior} onChange={(event) => updateSelected({ ior: Number(event.target.value) })} /></label>
+              <label className={styles.rangeField}><span>CLEARCOAT <b>{selected.clearcoat.toFixed(2)}</b></span><input type="range" min="0" max="1" step="0.01" value={selected.clearcoat} onChange={(event) => updateSelected({ clearcoat: Number(event.target.value) })} /></label>
+              <label className={styles.rangeField}><span>COAT ROUGHNESS <b>{selected.clearcoatRoughness.toFixed(2)}</b></span><input type="range" min="0" max="1" step="0.01" value={selected.clearcoatRoughness} onChange={(event) => updateSelected({ clearcoatRoughness: Number(event.target.value) })} /></label>
+              <label className={styles.rangeField}><span>OPACITY <b>{selected.opacity.toFixed(2)}</b></span><input type="range" min="0.15" max="1" step="0.01" value={selected.opacity} onChange={(event) => updateSelected({ opacity: Number(event.target.value) })} /></label>
               <label className={styles.colorField} style={{ marginTop: "1rem" }}><span>EMISSION</span><input type="color" value={selected.emissive} onChange={(event) => updateSelected({ emissive: event.target.value })} /><code>{selected.emissive.toUpperCase()}</code></label>
-              <button className={styles.resetMaterial} onClick={() => updateSelected({ roughness: 0.28, metalness: 0.12, emissive: "#000000" })}>RESET MATERIAL</button>
+              <button className={styles.resetMaterial} onClick={() => updateSelected({ roughness: 0.28, metalness: 0.12, emissive: "#000000", transmission: 0, thickness: 0, ior: 1.5, clearcoat: 0, clearcoatRoughness: 0, opacity: 1 })}>RESET MATERIAL</button>
             </section>
             <section className={styles.propertySection}>
               <div className={styles.propertyTitle}>OBJECT <span>⌄</span></div>

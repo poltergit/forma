@@ -23,6 +23,16 @@ describe("scene document", () => {
     expect(() => parseSceneDocument({ ...validScene, objects: [{ ...validScene.objects[0], position: [0, "bad", 0] }] })).toThrow(/invalid objects/i);
   });
 
+  it("upgrades legacy objects with safe physical-material defaults", () => {
+    expect(parseSceneDocument(validScene).objects[0]).toMatchObject({ transmission: 0, thickness: 0, ior: 1.5, clearcoat: 0, clearcoatRoughness: 0, opacity: 1 });
+  });
+
+  it("accepts bounded physical material values and rejects invalid transmission", () => {
+    const glass = { ...validScene, objects: [{ ...validScene.objects[0], transmission: 1, thickness: 1.2, ior: 1.48, clearcoat: 0.9, clearcoatRoughness: 0.03, opacity: 1 }] };
+    expect(parseSceneDocument(glass).objects[0].transmission).toBe(1);
+    expect(() => parseSceneDocument({ ...validScene, objects: [{ ...validScene.objects[0], transmission: 2 }] })).toThrow(/invalid objects/i);
+  });
+
   it("recovers a valid local library and ignores corrupt storage", () => {
     const entry = { id: "scene-1", ...parseSceneDocument(validScene), updatedAt: "2026-11-24T00:00:00.000Z" };
     expect(readSceneLibrary(JSON.stringify([entry]))).toHaveLength(1);
