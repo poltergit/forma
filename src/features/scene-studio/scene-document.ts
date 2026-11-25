@@ -6,7 +6,8 @@ export type SceneObjectDocument = {
   position: [number, number, number]; rotation: [number, number, number]; scale: number; visible: boolean;
 };
 import { normalizeSceneLighting, type SceneLightingDocument } from "./scene-lighting";
-export type SceneDocument = { id: string; name: string; camera: "perspective" | "front" | "top" | "side"; objects: SceneObjectDocument[]; lighting?: SceneLightingDocument; updatedAt: string; revision?: number };
+import { normalizeSceneRender, type SceneRenderDocument } from "./scene-render";
+export type SceneDocument = { id: string; name: string; camera: "perspective" | "front" | "top" | "side"; objects: SceneObjectDocument[]; lighting?: SceneLightingDocument; render?: SceneRenderDocument; updatedAt: string; revision?: number };
 export const SCENE_STORAGE_KEY = "forma:scene-studio:compositions:v1";
 const physicalDefaults = { transmission: 0, thickness: 0, ior: 1.5, clearcoat: 0, clearcoatRoughness: 0, opacity: 1 };
 function isVector(value: unknown): value is [number, number, number] {
@@ -39,7 +40,7 @@ export function parseSceneDocument(input: unknown): Omit<SceneDocument, "id" | "
   if (typeof data.name !== "string" || !data.name.trim()) throw new Error("The scene needs a name.");
   if (!["perspective", "front", "top", "side"].includes(String(data.camera))) throw new Error("The scene camera is invalid.");
   if (!Array.isArray(data.objects) || data.objects.length < 1 || data.objects.length > 250 || !data.objects.every(isSceneObject)) throw new Error("The scene contains invalid objects. Import a valid FORMA JSON export.");
-  return { name: data.name.slice(0, 80), camera: data.camera as SceneDocument["camera"], objects: data.objects.map((item) => normalizeSceneObject(item as Record<string, unknown>)), lighting: normalizeSceneLighting(data.lighting) };
+  return { name: data.name.slice(0, 80), camera: data.camera as SceneDocument["camera"], objects: data.objects.map((item) => normalizeSceneObject(item as Record<string, unknown>)), lighting: normalizeSceneLighting(data.lighting), render: normalizeSceneRender(data.render) };
 }
 export function readSceneLibrary(raw: string | null): SceneDocument[] {
   if (!raw) return [];
@@ -52,6 +53,6 @@ export function readSceneLibrary(raw: string | null): SceneDocument[] {
       return typeof item.id === "string" && typeof item.name === "string" && typeof item.updatedAt === "string" &&
         ["perspective", "front", "top", "side"].includes(String(item.camera)) && Array.isArray(item.objects) &&
         item.objects.length > 0 && item.objects.length <= 250 && item.objects.every(isSceneObject);
-    }).map((entry) => ({ ...entry, lighting: normalizeSceneLighting(entry.lighting), objects: entry.objects.map((item) => normalizeSceneObject(item as unknown as Record<string, unknown>)) })).slice(0, 100);
+    }).map((entry) => ({ ...entry, lighting: normalizeSceneLighting(entry.lighting), render: normalizeSceneRender(entry.render), objects: entry.objects.map((item) => normalizeSceneObject(item as unknown as Record<string, unknown>)) })).slice(0, 100);
   } catch { return []; }
 }

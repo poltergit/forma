@@ -5,6 +5,7 @@ All notable project changes are recorded here.
 ## [Unreleased]
 
 ### Added
+- Added a versioned, bounded Scene Studio render-settings contract with legacy defaults for projection, focus, post-processing, tone mapping, and quality.
 - Added Still, Drift, and Pulse Playground motion modes with bounded deterministic transforms, portable recipe persistence, 30 FPS rendering, tab-visibility pause, and reduced-motion handling.
 - Added four curated Playground remix presets and four color palettes, plus versioned portable recipe JSON export/import with strict allowlist, bounds, and file-size validation.
 - Added three deterministic Playground instruments: Displacement Field, Orbital Bloom, and Woven Lattice, each with distinct geometry logic and Scene Studio export.

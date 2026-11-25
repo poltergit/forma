@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { parseSceneDocument, readSceneLibrary } from "./scene-document";
 import { normalizeSceneLighting, SCENE_LIGHTING_PRESETS } from "./scene-lighting";
+import { DEFAULT_SCENE_RENDER, normalizeSceneRender, SCENE_RENDER_QUALITY } from "./scene-render";
 
 const validScene = {
   format: "forma-scene",
@@ -41,6 +42,13 @@ describe("scene document", () => {
     expect(value.environmentIntensity).toBe(3);
     expect(value.key).toMatchObject({ color: "#5d7cff", intensity: 0, position: [10, 0, 0] });
     expect(SCENE_LIGHTING_PRESETS).toHaveLength(5);
+  });
+
+  it("normalizes legacy render settings and bounds the camera and render pipeline", () => {
+    expect(parseSceneDocument(validScene).render).toEqual(DEFAULT_SCENE_RENDER);
+    const settings = normalizeSceneRender({ projection: "orthographic", focusDistance: -4, aperture: 1, bloom: 8, vignette: -1, chromaticAberration: 1, toneMapping: "invalid", quality: "ultra" });
+    expect(settings).toMatchObject({ projection: "orthographic", focusDistance: 0.5, aperture: 0.0002, bloom: 2, vignette: 0, chromaticAberration: 0.012, toneMapping: "aces", quality: "ultra" });
+    expect(SCENE_RENDER_QUALITY).toHaveLength(3);
   });
 
   it("recovers a valid local library and ignores corrupt storage", () => {

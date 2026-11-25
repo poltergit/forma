@@ -137,3 +137,8 @@ Scene Studio now uses Three.js MeshPhysicalMaterial with bounded transmission, t
 ### Studio Lighting System (2026-11-25)
 
 Added five lighting moods and a configurable three-point rig to Scene Studio. Key, fill, and rim lights expose color, intensity, and position controls; ambient and environment intensity, curated environment presets, and contact-shadow settings are adjustable. Lighting persists in scene documents, local/cloud library payloads, version snapshots, and portable JSON. Legacy scenes receive Softbox defaults. Environment presets are provided by Drei; no external HDRI assets or new dependencies were added. Automated validation covers preset availability, legacy defaults, and bounded custom values. Manual rendered/device QA remains outstanding.
+
+
+### Camera & Render System — implementation in progress (2026-11-25)
+
+The owner approved the next Scene Studio milestone: perspective/orthographic projection, cinematic focus, bloom/vignette/chromatic aberration, tone mapping, render quality, and image export. The scene-document contract now includes backwards-compatible, bounded render settings. The implementation remains in progress until the renderer, controls, export path, automated checks, and CI are complete. This milestone is part of the broader creative mandate: every expressive treatment must communicate a useful creative choice rather than add visual noise.
