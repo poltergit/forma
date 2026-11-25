@@ -11,3 +11,15 @@
 .modeControl button:hover{border-color:var(--acid);color:var(--paper)}
 .modeControl button[aria-pressed=true]{border-color:var(--acid);background:var(--acid);color:var(--ink)}
 @media(prefers-reduced-motion:reduce){.modeControl button{transition:none}}
+
+/* The hero's material dock is an instrument, not a decorative legend. */
+.heroModeDock{position:absolute;z-index:5;right:4%;bottom:3.1rem;display:flex;align-items:center;gap:.35rem;max-width:calc(100% - 2rem);padding:.45rem;border:1px solid #c9c6bc;background:rgb(244 241 232 / .88);backdrop-filter:blur(12px);pointer-events:auto;box-shadow:6px 7px 0 rgb(32 33 31 / .06)}
+.heroModeDock>span{padding-inline:.45rem;color:#77776f;font:500 .48rem var(--font-mono);letter-spacing:.08em;white-space:nowrap}
+.heroModeDock button{min-height:2rem;border:1px solid transparent;padding:.48rem .65rem;background:transparent;color:#696961;font:500 .52rem var(--font-mono);letter-spacing:.08em;cursor:pointer;transition:background .2s ease,color .2s ease,border-color .2s ease}
+.heroModeDock button:hover,.heroModeDock button:focus-visible{border-color:var(--coral);color:var(--ink)}
+.heroModeDock button[aria-pressed=true]{border-color:var(--ink);background:var(--ink);color:var(--paper)}
+.heroModeDock button:focus-visible{outline:2px solid var(--coral);outline-offset:2px}
+@media(max-width:900px){.heroModeDock{right:3%;bottom:2.8rem}}
+@media(max-width:620px){.heroModeDock{right:50%;bottom:2.6rem;transform:translateX(50%);gap:.15rem;padding:.3rem}.heroModeDock>span{font-size:.42rem;padding-inline:.3rem}.heroModeDock button{min-height:1.8rem;padding:.42rem .5rem;font-size:.46rem}}
+@media(prefers-reduced-motion:reduce){.heroModeDock button{transition:none}}
+
