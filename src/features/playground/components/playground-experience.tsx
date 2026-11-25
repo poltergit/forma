@@ -6,7 +6,8 @@ import {
   createGeneratorPoints, createPlaygroundScene, GENERATORS, PLAYGROUND_RECIPE_KEY, PLAYGROUND_SCENE_HANDOFF_KEY,
   type GeneratorId, type PlaygroundRecipe,
 } from "../playground-scene";
-import { createPortableRecipe, parsePortableRecipe, PLAYGROUND_PALETTES, PLAYGROUND_PRESETS, type PaletteId, type AnimationMode, type MaterialId, PLAYGROUND_MATERIALS, getAnimationMotion, getMaterialTreatment } from "../playground-recipe";\nimport { createArchiveImprint, createPlaygroundMotionHandoff, saveArchiveImprint, PLAYGROUND_MOTION_HANDOFF_KEY } from "@/features/atelier/atelier-bridge";
+import { createPortableRecipe, parsePortableRecipe, PLAYGROUND_PALETTES, PLAYGROUND_PRESETS, type PaletteId, type AnimationMode, type MaterialId, PLAYGROUND_MATERIALS, getAnimationMotion, getMaterialTreatment } from "../playground-recipe";
+import { createArchiveImprint, createPlaygroundMotionHandoff, saveArchiveImprint, PLAYGROUND_MOTION_HANDOFF_KEY } from "@/features/atelier/atelier-bridge";
 
 const defaultPalette = PLAYGROUND_PALETTES[0];
 
@@ -51,6 +52,24 @@ export function PlaygroundExperience() {
   useEffect(() => {
     const timeout = window.setTimeout(() => { setRecipes(readRecipes()); setRecipesReady(true); }, 0);
     return () => window.clearTimeout(timeout);
+  }, []);
+
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const nextGenerator = params.get("generator");
+    const nextSeed = Number(params.get("seed"));
+    const nextDensity = Number(params.get("density"));
+    const nextInfluence = Number(params.get("influence"));
+    if (["displacement", "orbital-bloom", "woven-lattice"].includes(nextGenerator ?? "") &&
+      Number.isInteger(nextSeed) && nextSeed >= 0 && nextSeed <= 9_999_999 &&
+      Number.isInteger(nextDensity) && nextDensity >= 12 && nextDensity <= 96 &&
+      Number.isInteger(nextInfluence) && nextInfluence >= 0 && nextInfluence <= 100) {
+      setGenerator(nextGenerator as GeneratorId); setSeed(nextSeed); setDensity(nextDensity); setInfluence(nextInfluence);
+      const nextPalette = params.get("palette"); if (PLAYGROUND_PALETTES.some((item) => item.id === nextPalette)) setPaletteId(nextPalette as PaletteId);
+      const nextMaterial = params.get("material"); if (PLAYGROUND_MATERIALS.some((item) => item.id === nextMaterial)) setMaterialId(nextMaterial as MaterialId);
+      const nextAnimation = params.get("animation"); if (["still", "drift", "pulse"].includes(nextAnimation ?? "")) setAnimationMode(nextAnimation as AnimationMode);
+      setStatus("ARCHIVE SPECIMEN RESTORED");
+    }
   }, []);
 
   const activeGenerator = GENERATORS.find((item) => item.id === generator) ?? GENERATORS[0];
