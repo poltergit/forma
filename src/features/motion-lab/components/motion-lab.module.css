@@ -42,3 +42,14 @@
 .recipeSave button{background:var(--forma-acid-voltage);border-color:var(--forma-acid-voltage);color:var(--forma-carbon-ink)}
 @media(max-width:900px){.panel{background:#292530}}
 @media(prefers-reduced-motion:reduce){.workspace{box-shadow:none}}
+
+
+/* Generative bridge actions */
+.fieldSource{display:grid;gap:.35rem;padding:.8rem 1rem;border-bottom:1px solid rgb(241 237 227 / .15);background:linear-gradient(90deg,rgb(104 85 245 / .2),transparent 80%)}
+.fieldSource span{color:var(--forma-acid-voltage);font:500 .52rem var(--font-mono);letter-spacing:.12em}
+.fieldSource strong{color:var(--forma-studio-bone);font:500 1rem var(--font-display)}
+.fieldSource small{color:#aaa4b0;font-size:.72rem;line-height:1.5}
+.traceActions{display:grid;gap:.45rem;padding:.85rem 0;border-top:1px solid rgb(241 237 227 / .15)}
+.traceActions button{justify-self:start;border:1px solid rgb(241 237 227 / .25);padding:.7rem .85rem;background:transparent;color:var(--forma-acid-voltage);font:500 .55rem var(--font-mono);letter-spacing:.08em;cursor:pointer}
+.traceActions button:hover,.traceActions button:focus-visible{border-color:var(--forma-acid-voltage);background:rgb(216 255 56 / .08)}
+.traceActions p{min-height:1em;margin:0;color:#aaa4b0;font-size:.7rem}
