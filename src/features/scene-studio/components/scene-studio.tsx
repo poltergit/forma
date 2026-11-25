@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { Canvas } from "@react-three/fiber";
+import { Canvas, useFrame } from "@react-three/fiber";
 import { ContactShadows, Environment, OrbitControls, RoundedBox, TransformControls } from "@react-three/drei";
 import { Suspense, useEffect, useMemo, useState } from "react";
 import type { ChangeEvent, ReactNode } from "react";
@@ -110,7 +110,7 @@ const vignetteShader = {
 
 function SceneRenderPipeline({ settings }: { settings: SceneRenderDocument }) {
   const { gl, scene, camera, size } = useThree();
-  const composer = useMemo(() => new EffectComposer(gl), [gl]);
+  const composer = useMemo(() => new EffectComposer(gl), [gl, settings]);
   useEffect(() => {
     gl.toneMapping = settings.toneMapping === "linear" ? LinearToneMapping
       : settings.toneMapping === "neutral" ? NeutralToneMapping
@@ -133,7 +133,6 @@ function SceneRenderPipeline({ settings }: { settings: SceneRenderDocument }) {
     composer.addPass(chromatic);
     composer.setSize(size.width, size.height);
     return () => {
-      composer.passes.forEach((pass) => pass.dispose?.());
       composer.dispose();
       gl.toneMapping = ACESFilmicToneMapping;
     };
@@ -277,7 +276,8 @@ export function SceneStudio() {
                 const localDiffers = localScene.name !== cloudScene.name
                   || localScene.camera !== cloudScene.camera
                   || JSON.stringify(localScene.objects) !== JSON.stringify(cloudScene.objects)
-                  || JSON.stringify(normalizeSceneLighting(localScene.lighting)) !== JSON.stringify(normalizeSceneLighting(cloudScene.lighting));
+                  || JSON.stringify(normalizeSceneLighting(localScene.lighting)) !== JSON.stringify(normalizeSceneLighting(cloudScene.lighting))
+                   || JSON.stringify(normalizeSceneRender(localScene.render)) !== JSON.stringify(normalizeSceneRender(cloudScene.render));
                 const sameRevision = localScene.revision === cloudScene.revision;
                 const legacyLocalIsNewer = localScene.revision === undefined && localScene.updatedAt > cloudScene.updatedAt;
                 if (localDiffers && (sameRevision || legacyLocalIsNewer)) {
@@ -395,6 +395,8 @@ export function SceneStudio() {
           setSceneName(conflictCopy.name);
           setObjects(conflictCopy.objects);
           setCameraView(conflictCopy.camera);
+          setLighting(normalizeSceneLighting(conflictCopy.lighting));
+          setRenderSettings(normalizeSceneRender(conflictCopy.render));
           setSaveStatus("CONFLICT COPY CREATED · SAVING");
           return;
         }
@@ -402,7 +404,7 @@ export function SceneStudio() {
       });
     }, 650);
     return () => window.clearTimeout(timeout);
-  }, [activeCompositionId, cameraView, cloudMode, cloudUserId, hydrated, lighting, objects, sceneName, storageKey]);
+  }, [activeCompositionId, cameraView, cloudMode, cloudUserId, hydrated, lighting, objects, renderSettings, sceneName, storageKey]);
 
   const openComposition = (id: string) => {
     history.current = { past: [], future: [] };
@@ -431,6 +433,7 @@ export function SceneStudio() {
     setSceneName(document.name);
     setObjects(document.objects);
     setCameraView(document.camera);
+    setLighting(DEFAULT_SCENE_LIGHTING);
     setRenderSettings(DEFAULT_SCENE_RENDER);
     setSelectedId(1);
     
@@ -472,7 +475,8 @@ export function SceneStudio() {
     setSceneName(next[0].name);
     setObjects(next[0].objects);
     setCameraView(next[0].camera);
-        setLighting(normalizeSceneLighting(next[0].lighting));
+    setLighting(normalizeSceneLighting(next[0].lighting));
+    setRenderSettings(normalizeSceneRender(next[0].render));
     setSelectedId(next[0].objects[0]?.id ?? 1);
     cloudRevisions.current.delete(deletedId);
     void deleteCloudComposition(deletedId).catch(() => setSaveStatus("LOCAL DELETE · CLOUD DELETE FAILED"));
