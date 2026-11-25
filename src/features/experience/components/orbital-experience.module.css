@@ -23,3 +23,13 @@
 @media(max-width:620px){.heroModeDock{right:50%;bottom:2.6rem;transform:translateX(50%);gap:.15rem;padding:.3rem}.heroModeDock>span{font-size:.42rem;padding-inline:.3rem}.heroModeDock button{min-height:1.8rem;padding:.42rem .5rem;font-size:.46rem}}
 @media(prefers-reduced-motion:reduce){.heroModeDock button{transition:none}}
 
+
+/* A moving editorial seam: the homepage changes tempo between the hero and manifesto. */
+.kineticRibbon{position:relative;z-index:4;overflow:hidden;margin-block:-.15rem;background:var(--coral);color:var(--ink);transform:rotate(-1.1deg) scale(1.02);border-block:1px solid var(--ink)}
+.kineticTrack{display:flex;width:max-content;min-height:clamp(4.2rem,7vw,6.2rem);align-items:center;gap:clamp(1.4rem,3vw,3.2rem);padding-inline:1.5rem;animation:atelier-ticker 26s linear infinite}
+.kineticTrack span{font:600 clamp(2rem,4.4vw,4.2rem)/.9 var(--font-display);letter-spacing:-.085em;white-space:nowrap}
+.kineticTrack i{color:var(--paper);font:normal clamp(1.3rem,2.5vw,2.4rem) var(--font-display)}
+@keyframes atelier-ticker{to{transform:translateX(-50%)}}
+@media(hover:hover){.kineticRibbon:hover .kineticTrack{animation-play-state:paused}}
+@media(prefers-reduced-motion:reduce){.kineticTrack{animation:none;justify-content:center;flex-wrap:wrap;width:100%;padding-block:.8rem}.kineticTrack span:nth-of-type(n+4),.kineticTrack i:nth-of-type(n+4){display:none}}
+@media(max-width:620px){.kineticRibbon{transform:rotate(-1.6deg) scale(1.04)}.kineticTrack{min-height:3.6rem;gap:1.25rem}.kineticTrack span{font-size:2rem}}
