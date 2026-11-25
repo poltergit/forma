@@ -7,6 +7,7 @@ const generatorSchema = z.enum(["displacement", "orbital-bloom", "woven-lattice"
 const paletteSchema = z.enum(["atelier", "citrus", "nocturne", "mineral"]);
 const materialSchema = z.enum(["paper", "ink", "metal", "glass", "liquid", "ceramic"]);
 const animationSchema = z.enum(["still", "drift", "pulse"]);
+const timestampSchema = z.string().max(40).refine((value) => !Number.isNaN(Date.parse(value)), "Expected a valid timestamp");
 
 export const playgroundMotionHandoffSchema = z.object({
   version: z.literal(1),
@@ -19,7 +20,7 @@ export const playgroundMotionHandoffSchema = z.object({
   palette: paletteSchema,
   animation: animationSchema,
   material: materialSchema,
-  createdAt: z.string().max(40),
+  createdAt: timestampSchema,
 }).strict();
 
 export type PlaygroundMotionHandoff = z.infer<typeof playgroundMotionHandoffSchema>;
@@ -31,7 +32,7 @@ export const archiveImprintSchema = z.object({
   room: z.enum(["OPEN FIELD", "FORCE ROOM", "WORKBENCH"]),
   detail: z.string().trim().min(1).max(180),
   href: z.string().regex(/^\/(playground|motion-lab|scene-studio)(\?.*)?$/),
-  createdAt: z.string().max(40),
+  createdAt: timestampSchema,
   parameters: imprintParametersSchema,
 }).strict();
 
@@ -67,20 +68,35 @@ export function readArchiveImprints(): ArchiveImprint[] {
 }
 
 export function saveArchiveImprint(imprint: ArchiveImprint): ArchiveImprint[] {
-  const next = [archiveImprintSchema.parse(imprint), ...readArchiveImprints().filter((item) => item.id !== imprint.id)].slice(0, 40);
+  const validated = archiveImprintSchema.parse(imprint);
+  const next = [validated, ...readArchiveImprints().filter((item) => item.id !== validated.id)].slice(0, 40);
+  // Keep quota/security failures visible to the calling instrument so it can report the
+  // failure instead of claiming that a trace was preserved.
   window.localStorage.setItem(ARCHIVE_IMPRINTS_KEY, JSON.stringify(next));
   window.dispatchEvent(new CustomEvent("forma:archive-updated"));
   return next;
 }
 
 export function readPlaygroundMotionHandoff(): PlaygroundMotionHandoff | null {
+  let raw: string | null = null;
   try {
-    const raw = window.localStorage.getItem(PLAYGROUND_MOTION_HANDOFF_KEY);
-    if (!raw) return null;
+    raw = window.localStorage.getItem(PLAYGROUND_MOTION_HANDOFF_KEY);
+  } catch {
+    return null;
+  }
+  if (!raw) return null;
+
+  // A handoff is a one-time message. Attempt removal independently so blocked storage
+  // cannot turn a malformed or unreadable handoff into an uncaught runtime error.
+  try {
     window.localStorage.removeItem(PLAYGROUND_MOTION_HANDOFF_KEY);
+  } catch {
+    // The validated payload can still be consumed for this visit.
+  }
+
+  try {
     return parsePlaygroundMotionHandoff(JSON.parse(raw));
   } catch {
-    window.localStorage.removeItem(PLAYGROUND_MOTION_HANDOFF_KEY);
     return null;
   }
 }
