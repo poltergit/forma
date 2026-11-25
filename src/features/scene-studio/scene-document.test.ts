@@ -1,5 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { parseSceneDocument, readSceneLibrary } from "./scene-document";
+import { normalizeSceneLighting, SCENE_LIGHTING_PRESETS } from "./scene-lighting";
 
 const validScene = {
   format: "forma-scene",
@@ -31,6 +32,15 @@ describe("scene document", () => {
     const glass = { ...validScene, objects: [{ ...validScene.objects[0], transmission: 1, thickness: 1.2, ior: 1.48, clearcoat: 0.9, clearcoatRoughness: 0.03, opacity: 1 }] };
     expect(parseSceneDocument(glass).objects[0].transmission).toBe(1);
     expect(() => parseSceneDocument({ ...validScene, objects: [{ ...validScene.objects[0], transmission: 2 }] })).toThrow(/invalid objects/i);
+  });
+
+  it("normalizes legacy lighting and bounds custom rig values", () => {
+    expect(parseSceneDocument(validScene).lighting?.preset).toBe("softbox");
+    const value = normalizeSceneLighting({ preset: "neon", environment: "invalid", environmentIntensity: 99, key: { color: "bad", intensity: -2, position: [99, 0, 0] } });
+    expect(value.environment).toBe("night");
+    expect(value.environmentIntensity).toBe(3);
+    expect(value.key).toMatchObject({ color: "#5d7cff", intensity: 0, position: [10, 0, 0] });
+    expect(SCENE_LIGHTING_PRESETS).toHaveLength(5);
   });
 
   it("recovers a valid local library and ignores corrupt storage", () => {

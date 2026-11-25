@@ -74,3 +74,9 @@ All notable project changes are recorded here.
 - Added true Three.js physical-material controls and presets for transmission, thickness, IOR, clearcoat, coat roughness, and opacity; Glass and Liquid use transmissive MeshPhysicalMaterial rather than only metallic/roughness approximations.
 - Added safe legacy-scene normalization and additive server-side validation migration for bounded physical properties.
 - Playground-to-Scene-Studio handoffs now preserve full physical surface profiles.
+
+
+### Studio Lighting System
+- Added Softbox, Dramatic, Product Studio, Sunset, and Neon lighting moods with independent key/fill/rim controls.
+- Added curated environment selection, ambient/environment intensity, and contact-shadow controls.
+- Persisted lighting in scene documents, version snapshots, local/cloud libraries, and portable JSON; legacy scenes normalize to Softbox.

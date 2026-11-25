@@ -14,13 +14,14 @@ import type { SceneDocument } from "../scene-document";
 import { deleteCloudComposition, getSceneCloudSession, loadCloudCompositions, saveCloudComposition, signOutCloudSession } from "../scene-cloud";
 import { PLAYGROUND_SCENE_HANDOFF_KEY } from "@/features/playground/playground-scene";
 import { applySceneMaterialPreset, SCENE_MATERIAL_PRESETS, type SceneMaterialId } from "../scene-materials";
+import { DEFAULT_SCENE_LIGHTING, normalizeSceneLighting, SCENE_ENVIRONMENTS, SCENE_LIGHTING_PRESETS, type SceneLightingDocument } from "../scene-lighting";
 
 type ShapeKind = "box" | "sphere" | "torus";
 type SceneObject = { id: number; name: string; kind: ShapeKind; color: string; roughness: number; metalness: number; emissive: string; transmission: number; thickness: number; ior: number; clearcoat: number; clearcoatRoughness: number; opacity: number; position: [number, number, number]; rotation: [number, number, number]; scale: number; visible: boolean };
 type CameraView = "perspective" | "front" | "top" | "side";
 type TransformTool = "select" | "move" | "rotate" | "scale";
 
-type EditorSnapshot = { objects: SceneDocument["objects"]; camera: CameraView; name: string };
+type EditorSnapshot = { objects: SceneDocument["objects"]; camera: CameraView; name: string; lighting: SceneLightingDocument };
 type SceneVersion = EditorSnapshot & { id: string; createdAt: string };
 
 function makeThumbnail(objects: SceneDocument["objects"]) {
@@ -89,18 +90,19 @@ function ObjectMesh({ item, selected, tool, onSelect, onTransform }: { item: Sce
   return mesh;
 }
 
-function SceneCanvas({ objects, selectedId, tool, view, onSelect, onTransform }: { objects: SceneObject[]; selectedId: number; tool: TransformTool; view: CameraView; onSelect: (id: number) => void; onTransform: (id: number, transform: Pick<SceneObject, "position" | "rotation" | "scale">) => void }) {
+function SceneCanvas({ objects, selectedId, tool, view, lighting, onSelect, onTransform }: { objects: SceneObject[]; selectedId: number; tool: TransformTool; view: CameraView; lighting: SceneLightingDocument; onSelect: (id: number) => void; onTransform: (id: number, transform: Pick<SceneObject, "position" | "rotation" | "scale">) => void }) {
   return (
     <Canvas camera={{ position: cameraViews.perspective, fov: 38 }} dpr={[1, 1.7]} gl={{ antialias: true, alpha: true }}>
       <color attach="background" args={["#e9e6dd"]} />
-      <ambientLight intensity={1.2} />
-      <directionalLight position={[4, 6, 4]} intensity={2.3} />
-      <pointLight position={[-4, 1, -3]} intensity={55} color="#f05b3e" distance={10} />
+      <ambientLight intensity={lighting.ambientIntensity} />
+      <directionalLight position={lighting.key.position} intensity={lighting.key.intensity} color={lighting.key.color} castShadow />
+      <directionalLight position={lighting.fill.position} intensity={lighting.fill.intensity} color={lighting.fill.color} />
+      <directionalLight position={lighting.rim.position} intensity={lighting.rim.intensity} color={lighting.rim.color} />
       <Suspense fallback={null}>
         <CameraRig view={view} />
-        <Environment preset="studio" />
+        <Environment preset={lighting.environment} environmentIntensity={lighting.environmentIntensity} />
         {objects.map((item) => <ObjectMesh key={item.id} item={item} selected={item.id === selectedId} tool={tool} onSelect={() => onSelect(item.id)} onTransform={(transform) => onTransform(item.id, transform)} />)}
-        <ContactShadows position={[0, -1.7, 0]} opacity={0.28} scale={10} blur={2.5} far={4} />
+        {lighting.shadows && <ContactShadows position={[0, -1.7, 0]} opacity={lighting.shadowOpacity} scale={10} blur={lighting.shadowBlur} far={4} />}
       </Suspense>
       <OrbitControls makeDefault enableDamping dampingFactor={0.08} minDistance={3.5} maxDistance={11} />
     </Canvas>
@@ -109,6 +111,7 @@ function SceneCanvas({ objects, selectedId, tool, view, onSelect, onTransform }:
 
 export function SceneStudio() {
   const [objects, setObjects] = useState(initialObjects);
+  const [lighting, setLighting] = useState<SceneLightingDocument>(DEFAULT_SCENE_LIGHTING);
   const [compositions, setCompositions] = useState<SceneDocument[]>([]);
   const [activeCompositionId, setActiveCompositionId] = useState("");
   const [hydrated, setHydrated] = useState(false);
@@ -125,7 +128,7 @@ export function SceneStudio() {
   const [showArchived, setShowArchived] = useState(false);
 
   const versionStorageKey = (id: string) => `forma:scene-studio:versions:v1:${id}`;
-  const snapshot = (): EditorSnapshot => ({ objects: structuredClone(objects), camera: cameraView, name: sceneName });
+  const snapshot = (): EditorSnapshot => ({ objects: structuredClone(objects), camera: cameraView, name: sceneName, lighting: structuredClone(lighting) });
   const recordHistory = () => {
     history.current.past = [...history.current.past.slice(-49), snapshot()];
     history.current.future = [];
@@ -136,6 +139,7 @@ export function SceneStudio() {
     setObjects(structuredClone(entry.objects));
     setCameraView(entry.camera);
     setSceneName(entry.name);
+    setLighting(normalizeSceneLighting(entry.lighting));
     setSelectedId(entry.objects[0]?.id ?? 1);
   };
   const undo = () => {
@@ -217,7 +221,8 @@ export function SceneStudio() {
               } else {
                 const localDiffers = localScene.name !== cloudScene.name
                   || localScene.camera !== cloudScene.camera
-                  || JSON.stringify(localScene.objects) !== JSON.stringify(cloudScene.objects);
+                  || JSON.stringify(localScene.objects) !== JSON.stringify(cloudScene.objects)
+                  || JSON.stringify(normalizeSceneLighting(localScene.lighting)) !== JSON.stringify(normalizeSceneLighting(cloudScene.lighting));
                 const sameRevision = localScene.revision === cloudScene.revision;
                 const legacyLocalIsNewer = localScene.revision === undefined && localScene.updatedAt > cloudScene.updatedAt;
                 if (localDiffers && (sameRevision || legacyLocalIsNewer)) {
@@ -274,6 +279,7 @@ export function SceneStudio() {
         setSceneName(latest.name);
         setObjects(latest.objects);
         setCameraView(latest.camera);
+        setLighting(normalizeSceneLighting(latest.lighting));
         setSelectedId(latest.objects[0]?.id ?? 1);
         window.localStorage.setItem(activeStorageKey, JSON.stringify(library));
         setSaveStatus(status);
@@ -294,6 +300,7 @@ export function SceneStudio() {
         name: sceneName.trim().slice(0, 80) || "Untitled composition",
         camera: cameraView,
         objects,
+        lighting,
         updatedAt: new Date().toISOString(),
         revision: cloudRevisions.current.get(activeCompositionId),
       };
@@ -338,7 +345,7 @@ export function SceneStudio() {
       });
     }, 650);
     return () => window.clearTimeout(timeout);
-  }, [activeCompositionId, cameraView, cloudMode, cloudUserId, hydrated, objects, sceneName, storageKey]);
+  }, [activeCompositionId, cameraView, cloudMode, cloudUserId, hydrated, lighting, objects, sceneName, storageKey]);
 
   const openComposition = (id: string) => {
     history.current = { past: [], future: [] };
@@ -349,6 +356,7 @@ export function SceneStudio() {
     setSceneName(document.name);
     setObjects(document.objects);
     setCameraView(document.camera);
+        setLighting(normalizeSceneLighting(document.lighting));
     setSelectedId(document.objects[0]?.id ?? 1);
     setSaveStatus("OPENING COMPOSITION");
   };
@@ -404,6 +412,7 @@ export function SceneStudio() {
     setSceneName(next[0].name);
     setObjects(next[0].objects);
     setCameraView(next[0].camera);
+        setLighting(normalizeSceneLighting(next[0].lighting));
     setSelectedId(next[0].objects[0]?.id ?? 1);
     cloudRevisions.current.delete(deletedId);
     void deleteCloudComposition(deletedId).catch(() => setSaveStatus("LOCAL DELETE · CLOUD DELETE FAILED"));
@@ -421,7 +430,7 @@ export function SceneStudio() {
 
   const exportScene = () => {
     setSaveStatus("JSON EXPORTED");
-    const payload = { format: "forma-scene", version: 1, name: sceneName, camera: cameraView, objects, exportedAt: new Date().toISOString() };
+    const payload = { format: "forma-scene", version: 1, name: sceneName, camera: cameraView, objects, lighting, exportedAt: new Date().toISOString() };
     const file = new Blob([JSON.stringify(payload, null, 2)], { type: "application/json" });
     const url = URL.createObjectURL(file);
     const anchor = document.createElement("a");
@@ -465,6 +474,7 @@ export function SceneStudio() {
     setSceneName(copy.name);
     setObjects(copy.objects);
     setCameraView(copy.camera);
+        setLighting(normalizeSceneLighting(copy.lighting));
     setSelectedId(copy.objects[0]?.id ?? 1);
     setSaveStatus("COMPOSITION DUPLICATED");
   };
@@ -570,7 +580,7 @@ export function SceneStudio() {
           <div className={styles.canvasFrame}>
             <div className={styles.canvasStamp}><span>FORMA / LAB 001</span><span>24° 08′ N — 3D SPACE</span></div>
             <div className={styles.canvasGrid} aria-hidden="true" />
-            <div className={styles.canvas}><SceneCanvas objects={objects} selectedId={selected?.id ?? -1} tool={activeTool} view={cameraView} onSelect={setSelectedId} onTransform={(id, transform) => { recordHistory(); setObjects((current) => current.map((item) => item.id === id ? { ...item, ...transform } : item)); }} /></div>
+            <div className={styles.canvas}><SceneCanvas objects={objects} selectedId={selected?.id ?? -1} tool={activeTool} view={cameraView} lighting={lighting} onSelect={setSelectedId} onTransform={(id, transform) => { recordHistory(); setObjects((current) => current.map((item) => item.id === id ? { ...item, ...transform } : item)); }} /></div>
             <div className={styles.canvasHint}>DRAG TO ORBIT <i /> SCROLL TO ZOOM <i /> SELECT TO INSPECT</div>
             <div className={styles.axisWidget}><span>X</span><span>Y</span><span>Z</span></div>
           </div>
@@ -612,7 +622,18 @@ export function SceneStudio() {
               <button className={styles.resetMaterial} onClick={() => updateSelected({ roughness: 0.28, metalness: 0.12, emissive: "#000000", transmission: 0, thickness: 0, ior: 1.5, clearcoat: 0, clearcoatRoughness: 0, opacity: 1 })}>RESET MATERIAL</button>
             </section>
             <section className={styles.propertySection}>
-              <div className={styles.propertyTitle}>OBJECT <span>⌄</span></div>
+              <section className={styles.propertySection}>
+<div className={styles.propertyTitle}>STUDIO LIGHTING <span>3-POINT RIG</span></div>
+<div className={styles.lightingPresets} role="group" aria-label="Lighting presets">{SCENE_LIGHTING_PRESETS.map((preset)=><button key={preset.id} type="button" aria-pressed={lighting.preset===preset.id} className={lighting.preset===preset.id?styles.lightingPresetActive:""} onClick={()=>{recordHistory();setLighting(structuredClone(preset.lighting));}}><strong>{preset.name}</strong><small>{preset.description}</small></button>)}</div>
+<label className={styles.selectField}><span>ENVIRONMENT / HDRI</span><select value={lighting.environment} onChange={event=>setLighting(current=>({...current,environment:event.target.value as SceneLightingDocument["environment"]}))}>{SCENE_ENVIRONMENTS.map(environment=><option key={environment} value={environment}>{environment.toUpperCase()}</option>)}</select></label>
+<label className={styles.rangeField}><span>ENVIRONMENT INTENSITY <b>{lighting.environmentIntensity.toFixed(2)}</b></span><input type="range" min="0" max="3" step=".05" value={lighting.environmentIntensity} onChange={event=>setLighting(current=>({...current,environmentIntensity:Number(event.target.value)}))}/></label>
+<label className={styles.rangeField}><span>AMBIENT FILL <b>{lighting.ambientIntensity.toFixed(2)}</b></span><input type="range" min="0" max="3" step=".05" value={lighting.ambientIntensity} onChange={event=>setLighting(current=>({...current,ambientIntensity:Number(event.target.value)}))}/></label>
+{(["key","fill","rim"] as const).map(name=><div className={styles.lightControl} key={name}><div className={styles.lightControlHead}><strong>{name.toUpperCase()} LIGHT</strong></div><label className={styles.colorField}><span>COLOR</span><input type="color" value={lighting[name].color} onChange={event=>setLighting(current=>({...current,[name]:{...current[name],color:event.target.value}}))}/></label><label className={styles.rangeField}><span>INTENSITY <b>{lighting[name].intensity.toFixed(2)}</b></span><input type="range" min="0" max="8" step=".05" value={lighting[name].intensity} onChange={event=>setLighting(current=>({...current,[name]:{...current[name],intensity:Number(event.target.value)}}))}/></label>{(["x","y","z"] as const).map((axis,index)=><label className={styles.rangeField} key={axis}><span>POSITION {axis.toUpperCase()} <b>{lighting[name].position[index].toFixed(1)}</b></span><input type="range" min="-10" max="10" step=".5" value={lighting[name].position[index]} onChange={event=>setLighting(current=>({...current,[name]:{...current[name],position:current[name].position.map((part,i)=>i===index?Number(event.target.value):part) as [number,number,number]}}))}/></label>)}</div>)}
+<label className={styles.toggleField}><input type="checkbox" checked={lighting.shadows} onChange={event=>setLighting(current=>({...current,shadows:event.target.checked}))}/><span>CONTACT SHADOWS</span></label>
+<label className={styles.rangeField}><span>SHADOW OPACITY <b>{lighting.shadowOpacity.toFixed(2)}</b></span><input type="range" min="0" max="1" step=".01" value={lighting.shadowOpacity} onChange={event=>setLighting(current=>({...current,shadowOpacity:Number(event.target.value)}))}/></label>
+<label className={styles.rangeField}><span>SHADOW SOFTNESS <b>{lighting.shadowBlur.toFixed(1)}</b></span><input type="range" min="0" max="6" step=".1" value={lighting.shadowBlur} onChange={event=>setLighting(current=>({...current,shadowBlur:Number(event.target.value)}))}/></label>
+</section>
+<div className={styles.propertyTitle}>OBJECT <span>⌄</span></div>
               <label className={styles.nameField}><span>NAME</span><input value={selected.name} onChange={(event) => updateSelected({ name: event.target.value })} /></label>
               <button className={styles.deleteButton} onClick={removeSelected} disabled={objects.length <= 1}>− REMOVE OBJECT</button>
             </section>

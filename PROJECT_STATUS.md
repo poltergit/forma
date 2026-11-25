@@ -132,3 +132,8 @@ Added six renderer-native surface treatments: Paper, Ink, Metal, Glass, Liquid, 
 ### Material Intelligence 2.0 (2026-11-25)
 
 Scene Studio now uses Three.js MeshPhysicalMaterial with bounded transmission, thickness, index of refraction, clearcoat, clearcoat roughness, and opacity controls. Six named PBR presets (Paper, Ink, Metal, Glass, Liquid, Ceramic) apply complete physical-material profiles. Playground handoffs carry these properties into editable Scene Studio objects. Legacy scene documents are normalized with safe opaque defaults. An additive Supabase migration updates server-side validation for optional physical properties without invalidating older rows. The migration is committed but has not been applied to a Supabase project. Real browser/device rendering and performance review remain outstanding.
+
+
+### Studio Lighting System (2026-11-25)
+
+Added five lighting moods and a configurable three-point rig to Scene Studio. Key, fill, and rim lights expose color, intensity, and position controls; ambient and environment intensity, curated environment presets, and contact-shadow settings are adjustable. Lighting persists in scene documents, local/cloud library payloads, version snapshots, and portable JSON. Legacy scenes receive Softbox defaults. Environment presets are provided by Drei; no external HDRI assets or new dependencies were added. Automated validation covers preset availability, legacy defaults, and bounded custom values. Manual rendered/device QA remains outstanding.
