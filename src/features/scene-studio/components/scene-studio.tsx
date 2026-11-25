@@ -120,6 +120,8 @@ function SceneRenderPipeline({ settings }: { settings: SceneRenderDocument }) {
   useEffect(() => {
     const composer = new EffectComposer(gl);
     composerRef.current = composer;
+    // Three.js renderer tone mapping is intentionally configured at the WebGL boundary.
+    // eslint-disable-next-line react-hooks/immutability
     gl.toneMapping = settings.toneMapping === "linear" ? LinearToneMapping
       : settings.toneMapping === "neutral" ? NeutralToneMapping
       : settings.toneMapping === "none" ? NoToneMapping : ACESFilmicToneMapping;
