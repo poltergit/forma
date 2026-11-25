@@ -31,3 +31,24 @@
 .processSteps i{position:absolute;right:.65rem;top:.55rem;color:var(--brand-blue);font:normal 1.2rem var(--font-display)}
 @media(max-width:700px){.process{grid-template-columns:1fr;gap:1.25rem}.processLead p{max-width:24rem}.processSteps>div{min-height:4.5rem;padding:.55rem}.processSteps span{font-size:clamp(.55rem,2.2vw,.75rem)}}
 @media(prefers-reduced-motion:reduce){.processSteps>div{transition:none}}
+
+/* ROOM 01 — THE OPEN FIELD */
+.main{width:min(100% - (var(--page-gutter)*2),100rem)}
+.intro{position:relative;overflow:hidden;padding-top:clamp(3.5rem,8vw,7.5rem);background:radial-gradient(ellipse at 83% 48%,rgb(104 85 245 / .14),transparent 30rem),radial-gradient(ellipse at 13% 82%,rgb(216 255 56 / .18),transparent 24rem)}
+.intro::after{position:absolute;top:17%;right:-8%;width:min(46vw,36rem);aspect-ratio:1;border:1px solid rgb(104 85 245 / .28);border-radius:50%;box-shadow:0 0 0 2.2rem rgb(104 85 245 / .035),0 0 0 5rem rgb(255 91 69 / .035);content:"";pointer-events:none}
+.introMeta,.introFoot{position:relative;z-index:1;color:var(--forma-ash)}
+.introGrid{position:relative;z-index:1;grid-template-columns:1.3fr .7fr;min-height:28rem}
+.introGrid h1{font-size:clamp(5rem,12vw,12rem);font-weight:600;letter-spacing:-.11em}
+.introGrid h1 em{color:var(--forma-electric-iris)}
+.introGrid>p{max-width:22rem;padding:1.2rem 0 0 1.2rem;border-left:2px solid var(--forma-acid-voltage);color:#55515d}
+.introFoot{border-color:var(--forma-rule)}
+.process{border-color:var(--forma-carbon-ink);background:var(--forma-acid-voltage);padding:1.25rem 1.4rem;transform:rotate(-.35deg)}
+.processLead>span{color:#575b39}
+.processLead p{font-size:clamp(1.35rem,2.5vw,2.2rem)}
+.processSteps>div{border-color:rgb(23 21 29 / .25);background:rgb(251 249 244 / .38)}
+.processSteps>div:nth-child(2){background:var(--forma-signal-vermilion);color:var(--forma-carbon-ink)}
+.processSteps b,.processSteps i{color:var(--forma-electric-iris)}
+.experimentHeading h2 em,.introGrid h1 em{color:var(--forma-electric-iris)}
+.next{border-color:var(--forma-carbon-ink)}
+.next em{color:var(--forma-signal-vermilion)}
+@media(max-width:700px){.introGrid{min-height:0}.intro::after{top:38%;right:-32%;width:75vw}.process{transform:none;padding:.9rem}}
