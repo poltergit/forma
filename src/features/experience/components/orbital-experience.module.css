@@ -992,3 +992,417 @@
   .studyRow:hover .studyArtwork,.studyRow:hover .studyText h3,
   .studyRow:hover .studyArrow { transform: none; }
 }
+
+
+/* ---------------------------------------------------------------
+   LANDING / ART DIRECTION PASS 02
+   Treat the first screen as a printed object with a living core.
+   Existing content and section order intentionally remain untouched.
+---------------------------------------------------------------- */
+.page {
+  --forma-hairline: rgb(23 21 29 / .18);
+  --forma-ease: cubic-bezier(.18,.72,.22,1);
+}
+.hero {
+  min-height: max(820px, calc(100svh - 4.5rem));
+  padding-top: clamp(1.2rem, 2.3vw, 2.2rem);
+  background:
+    radial-gradient(ellipse at 76% 46%, rgb(104 85 245 / .16), transparent 28rem),
+    radial-gradient(ellipse at 28% 88%, rgb(255 91 69 / .11), transparent 30rem),
+    linear-gradient(118deg, rgb(255 255 255 / .22), transparent 48%),
+    var(--paper);
+}
+.hero::before {
+  position: absolute;
+  z-index: -1;
+  top: 12%;
+  right: 2%;
+  width: min(54vw, 54rem);
+  aspect-ratio: 1;
+  border: 1px solid rgb(23 21 29 / .1);
+  border-radius: 50%;
+  box-shadow: 0 0 0 1.2rem rgb(23 21 29 / .018), 0 0 0 4.8rem rgb(23 21 29 / .014);
+  content: "";
+  transform: rotate(-19deg) scaleY(.72);
+  pointer-events: none;
+}
+.heroGrid {
+  opacity: .26;
+  background-size: 100% 100%, 100% 5.5rem;
+  mask-image: linear-gradient(90deg, #000 0%, #000 70%, transparent 100%);
+}
+.heroIndex {
+  min-height: 2.6rem;
+  padding-bottom: .85rem;
+  border-bottom: 1px solid var(--forma-hairline);
+}
+.heroIndex span:last-child { color: var(--ink); }
+.heroComposition {
+  min-height: 650px;
+  padding-block: clamp(2rem, 5vh, 4rem) 2rem;
+}
+.heroCopy { margin-top: -2.6rem; }
+.overline {
+  margin-bottom: 1.9rem;
+  color: var(--ink);
+}
+.overline span {
+  display: inline-grid;
+  width: 1.6rem;
+  height: 1.6rem;
+  place-items: center;
+  border: 1px solid rgb(255 91 69 / .55);
+  border-radius: 50%;
+  animation: forma-mark 9s linear infinite;
+}
+.heroCopy h1 {
+  position: relative;
+  font-size: clamp(5.6rem, 9.5vw, 10.2rem);
+  line-height: .75;
+  letter-spacing: -.115em;
+  text-shadow: .012em .018em 0 rgb(23 21 29 / .08);
+}
+.heroCopy h1 span:nth-child(2) { margin-left: .12em; }
+.heroCopy h1 em {
+  position: relative;
+  display: inline-block;
+  color: var(--iris);
+  text-shadow: .035em .025em 0 rgb(255 91 69 / .28);
+  transform: rotate(-4deg) translateY(-.025em);
+}
+.heroDescription {
+  max-width: 35rem;
+  align-items: center;
+  margin-top: clamp(2rem, 4vh, 3.4rem);
+}
+.heroDescription p {
+  max-width: 18rem;
+  font-size: clamp(.9rem, 1vw, 1rem);
+}
+.enterLink {
+  position: relative;
+  min-width: 12.8rem;
+  box-shadow: .35rem .35rem 0 rgb(23 21 29 / .14);
+}
+.enterLink:hover { box-shadow: .12rem .12rem 0 rgb(23 21 29 / .14); }
+.specimenStage {
+  width: min(108%, 760px);
+  margin: -1.4rem -4% 0 -9%;
+}
+.specimenField {
+  filter: drop-shadow(0 1.8rem 2.5rem rgb(23 21 29 / .08));
+}
+.specimenField::before {
+  inset: 5% 8%;
+  border-width: 1.5px;
+  box-shadow: inset 0 0 3rem rgb(104 85 245 / .035);
+}
+.specimenField::after {
+  inset: -2% 15%;
+  border-width: 1px;
+  animation: forma-orbit 44s linear infinite;
+}
+.specimenCanvas {
+  filter: saturate(1.13) contrast(1.04);
+}
+.specimenMark {
+  width: 2.4rem;
+  height: 2.4rem;
+  display: grid;
+  place-items: center;
+  border: 1px solid rgb(23 21 29 / .2);
+  border-radius: 50%;
+  background: rgb(241 237 227 / .78);
+  box-shadow: 0 .5rem 1.5rem rgb(23 21 29 / .08);
+  backdrop-filter: blur(12px);
+}
+.specimenCoordinate {
+  padding: .45rem .65rem;
+  border: 1px solid rgb(23 21 29 / .12);
+  background: rgb(241 237 227 / .7);
+  backdrop-filter: blur(10px);
+}
+.specimenAnnotation,
+.specimenLegend {
+  padding-inline: .25rem;
+}
+.materialDock {
+  padding: .55rem .7rem;
+  border: 1px solid rgb(23 21 29 / .16);
+  border-radius: 2px;
+  background: rgb(241 237 227 / .88);
+  box-shadow: 0 .8rem 2rem rgb(23 21 29 / .1);
+  backdrop-filter: blur(18px);
+}
+.materialDock button {
+  min-height: 2rem;
+  padding-inline: .65rem;
+  border: 1px solid transparent;
+  transition: color 220ms ease, background 220ms ease, border-color 220ms ease, transform 220ms var(--forma-ease);
+}
+.materialDock button:hover { transform: translateY(-2px); border-color: var(--ink); }
+.materialDock button[aria-pressed="true"] {
+  background: var(--ink);
+  color: var(--paper);
+}
+.heroFoot {
+  min-height: 3.3rem;
+  padding-top: .9rem;
+  border-top: 1px solid var(--forma-hairline);
+}
+.heroFoot a {
+  display: inline-flex;
+  align-items: center;
+  gap: .7rem;
+  transition: color 200ms ease;
+}
+.heroFoot a:hover { color: var(--coral); }
+.heroFoot a b { color: var(--coral); font-size: 1rem; }
+.heroSideNote {
+  right: max(.5rem, calc((100vw - 1480px) / 2 - 1.5rem));
+  writing-mode: vertical-rl;
+  letter-spacing: .2em;
+}
+.processStrip {
+  position: relative;
+  border-block: 1px solid rgb(23 21 29 / .12);
+  background: var(--acid);
+}
+.processTrack {
+  min-height: 4.2rem;
+  gap: clamp(1.5rem, 4vw, 4.5rem);
+  font-size: .68rem;
+}
+.processTrack i { font-size: 1.1rem; }
+.belief {
+  background:
+    radial-gradient(ellipse at 12% 72%, rgb(104 85 245 / .16), transparent 30rem),
+    radial-gradient(ellipse at 90% 16%, rgb(255 91 69 / .11), transparent 25rem),
+    #17151d;
+}
+.belief::before {
+  opacity: .7;
+  border-color: rgb(241 237 227 / .13);
+  box-shadow: 0 0 0 2rem rgb(241 237 227 / .018), 0 0 0 5rem rgb(241 237 227 / .012);
+}
+.beliefHeadline h2 {
+  font-size: clamp(5rem, 8.5vw, 9rem);
+  line-height: .84;
+  letter-spacing: -.105em;
+}
+.beliefHeadline h2 em:first-of-type { color: var(--mint); }
+.beliefHeadline h2 em:last-of-type { color: var(--acid); }
+.beliefAside {
+  position: relative;
+  padding: 2rem 0 1rem 2rem;
+  border-left: 1px solid rgb(241 237 227 / .22);
+}
+.afterformStamp {
+  border: 1px solid rgb(216 255 56 / .55);
+  background: rgb(216 255 56 / .055);
+  transform: rotate(3deg);
+}
+.primitiveList span {
+  transition: padding 250ms var(--forma-ease), color 250ms ease, background 250ms ease;
+}
+.primitiveList span:hover {
+  padding-inline: .55rem;
+  background: rgb(241 237 227 / .06);
+  color: var(--acid);
+}
+.studies {
+  background:
+    radial-gradient(ellipse at 85% 15%, rgb(104 85 245 / .07), transparent 28rem),
+    var(--paper);
+}
+.studiesIntro h2 {
+  font-size: clamp(5rem, 8vw, 8.8rem);
+  line-height: .82;
+  letter-spacing: -.11em;
+}
+.studiesIntro h2 em {
+  color: var(--iris);
+  text-shadow: .025em .02em 0 rgb(255 91 69 / .24);
+}
+.studyList { border-top: 1px solid rgb(23 21 29 / .3); }
+.studyRow {
+  position: relative;
+  min-height: 17rem;
+  padding-block: 1.8rem;
+  border-bottom-color: rgb(23 21 29 / .25);
+  transition: padding 450ms var(--forma-ease), background 350ms ease;
+}
+.studyRow::before {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: linear-gradient(90deg, rgb(216 255 56 / .16), transparent 72%);
+  content: "";
+  opacity: 0;
+  transition: opacity 350ms ease;
+}
+.studyRow:hover { padding-inline: 1rem; }
+.studyRow:hover::before { opacity: 1; }
+.studyArtwork {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  border: 1px solid rgb(23 21 29 / .18);
+  box-shadow: .55rem .55rem 0 rgb(23 21 29 / .09);
+}
+.studyArtwork::after {
+  position: absolute;
+  inset: .55rem;
+  z-index: 2;
+  border: 1px solid rgb(241 237 227 / .35);
+  content: "";
+  pointer-events: none;
+}
+.studyRow[data-study="matter"] .studyArtwork {
+  background:
+    radial-gradient(circle at 30% 25%, rgb(216 255 56 / .8), transparent 22%),
+    radial-gradient(circle at 72% 76%, rgb(104 85 245 / .72), transparent 38%),
+    #d8cfc0;
+}
+.studyRow[data-study="force"] .studyArtwork {
+  background:
+    repeating-radial-gradient(ellipse at 50% 50%, transparent 0 9px, rgb(241 237 227 / .32) 10px 11px, transparent 12px 19px),
+    linear-gradient(135deg, #17151d, #6855f5 72%, #ff5b45);
+}
+.studyRow[data-study="notation"] .studyArtwork {
+  background:
+    linear-gradient(135deg, rgb(255 91 69 / .94), rgb(241 237 227 / .25)),
+    #a8e5d2;
+}
+.studyArtwork small {
+  position: absolute;
+  z-index: 3;
+  right: .8rem;
+  bottom: .75rem;
+  color: var(--paper);
+  text-shadow: 0 1px 5px rgb(23 21 29 / .7);
+}
+.studyText h3 { letter-spacing: -.075em; }
+.studyArrow {
+  transition: transform 350ms var(--forma-ease), background 250ms ease, color 250ms ease;
+}
+.instrument {
+  background:
+    radial-gradient(ellipse at 80% 50%, rgb(104 85 245 / .12), transparent 33rem),
+    linear-gradient(125deg, #e9e4da, #ded7cb);
+}
+.instrumentCopy h2 {
+  font-size: clamp(5rem, 8vw, 8.8rem);
+  line-height: .82;
+}
+.instrumentCopy h2 em {
+  display: inline-block;
+  text-shadow: .035em .025em 0 rgb(104 85 245 / .2);
+  transform: rotate(-3deg);
+}
+.controls {
+  border-color: rgb(23 21 29 / .22);
+  background: rgb(241 237 227 / .72);
+  backdrop-filter: blur(12px);
+}
+.controls label {
+  padding-block: .55rem;
+  border-bottom: 1px solid rgb(23 21 29 / .1);
+}
+.controls input { cursor: ew-resize; }
+.instrumentModes button,
+.instrumentAction button {
+  transition: transform 220ms var(--forma-ease), background 220ms ease, color 220ms ease;
+}
+.instrumentModes button:hover,
+.instrumentAction button:hover { transform: translateY(-2px); }
+.instrumentModes button[aria-pressed="true"] {
+  background: var(--iris);
+  color: white;
+}
+.instrumentAction button {
+  padding: .55rem .7rem;
+  background: var(--ink);
+  color: var(--paper);
+}
+.instrumentAction button:hover { background: var(--acid); color: var(--ink); }
+.instrumentStage {
+  position: relative;
+  isolation: isolate;
+  background:
+    radial-gradient(ellipse at 50% 45%, rgb(104 85 245 / .32), transparent 44%),
+    radial-gradient(ellipse at 68% 75%, rgb(255 91 69 / .18), transparent 35%),
+    repeating-linear-gradient(0deg, transparent 0 39px, rgb(241 237 227 / .045) 40px),
+    repeating-linear-gradient(90deg, transparent 0 39px, rgb(241 237 227 / .045) 40px),
+    #17151d;
+}
+.instrumentStage::before {
+  position: absolute;
+  inset: 12%;
+  z-index: -1;
+  border: 1px dashed rgb(216 255 56 / .25);
+  border-radius: 50%;
+  content: "";
+  transform: rotate(-24deg) scaleY(.62);
+  animation: forma-orbit 48s linear infinite;
+}
+.invitation {
+  background:
+    radial-gradient(ellipse at 78% 43%, rgb(241 237 227 / .23), transparent 29rem),
+    linear-gradient(115deg, #ff5b45, #f65b4d 56%, #ef6c57);
+}
+.invitationMain h2 {
+  line-height: .82;
+  letter-spacing: -.11em;
+}
+.invitationMain h2 em {
+  text-shadow: .035em .025em 0 rgb(23 21 29 / .2);
+}
+.invitationLink {
+  transition: transform 350ms var(--forma-ease), box-shadow 350ms var(--forma-ease), background 250ms ease;
+}
+.invitationLink:hover { transform: translate(3px, 3px); }
+@media (max-width: 1100px) {
+  .heroComposition { min-height: 590px; }
+  .heroCopy h1 { font-size: clamp(5rem, 9.3vw, 8.8rem); }
+  .specimenStage { width: 112%; margin-left: -11%; }
+}
+@media (max-width: 760px) {
+  .hero { min-height: max(900px, calc(100svh - 4.5rem)); }
+  .heroComposition { min-height: 760px; padding-top: 3.5rem; }
+  .heroCopy { margin-top: 0; }
+  .heroCopy h1 { font-size: clamp(5.1rem, 13.5vw, 7.8rem); }
+  .specimenStage { width: min(92vw, 620px); margin: -2rem -2% 0 auto; }
+  .hero::before { top: 38%; right: -18%; width: 90vw; }
+  .beliefHeadline h2,.studiesIntro h2 { font-size: clamp(4.8rem, 12vw, 7rem); }
+  .studyRow { min-height: 14rem; }
+  .instrumentCopy h2 { font-size: clamp(4.8rem, 12vw, 7rem); }
+}
+@media (max-width: 560px) {
+  .hero { min-height: max(860px, calc(100svh - 4.5rem)); padding-bottom: 1rem; }
+  .heroIndex { align-items: flex-start; font-size: .52rem; }
+  .heroIndex span:last-child { text-align: right; }
+  .heroComposition { min-height: 730px; padding-top: 2.8rem; }
+  .heroCopy h1 { font-size: clamp(4.35rem, 14.4vw, 6.1rem); }
+  .heroDescription { align-items: flex-start; flex-direction: column; gap: 1rem; margin-top: 1.7rem; }
+  .heroDescription p { max-width: 19rem; }
+  .specimenStage { width: 116vw; margin: -1.2rem -30% 0 auto; }
+  .specimenLegend { font-size: .48rem; }
+  .materialDock { right: 24%; }
+  .heroFoot { font-size: .5rem; }
+  .heroFoot span:last-child { display: none; }
+  .processTrack { min-height: 3.5rem; gap: 1.1rem; font-size: .55rem; }
+  .beliefHeadline h2,.studiesIntro h2,.instrumentCopy h2 { font-size: clamp(4rem, 14vw, 5.6rem); }
+  .beliefAside { border-left: 0; border-top: 1px solid rgb(241 237 227 / .22); padding: 1.5rem 0 0; }
+  .studyRow { min-height: 12rem; gap: .7rem; }
+  .studyArtwork { min-height: 8rem; }
+  .studyText h3 { font-size: 1.6rem; }
+  .studyText > span { font-size: .8rem; line-height: 1.5; }
+  .instrumentStage { min-height: 23rem; }
+  .invitation { min-height: 40rem; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .specimenField::after,.instrumentStage::before { animation: none; }
+  .enterLink:hover,.invitationLink:hover,.studyRow:hover { transform: none; }
+  .studyRow:hover { padding-inline: 0; }
+}
