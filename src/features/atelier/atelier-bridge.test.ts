@@ -6,7 +6,7 @@ import {
 } from "./atelier-bridge";
 
 describe("atelier bridge", () => {
-  beforeEach(() => window.localStorage.clear());
+  beforeEach(() => { vi.restoreAllMocks(); window.localStorage.clear(); });
 
   it("creates a bounded Playground-to-Motion handoff", () => {
     const handoff = createPlaygroundMotionHandoff({
