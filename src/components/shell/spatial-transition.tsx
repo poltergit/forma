@@ -3,7 +3,10 @@
 import { createContext, useCallback, useContext, useEffect, useRef, useState } from "react";
 import { usePathname, useRouter } from "next/navigation";
 import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 import styles from "./spatial-transition.module.css";
+
+gsap.registerPlugin(ScrollTrigger);
 
 type TransitionContextValue = { navigate: (href: string) => void };
 const TransitionContext = createContext<TransitionContextValue | null>(null);
@@ -73,6 +76,24 @@ export function SpatialTransitionProvider({ children }: { children: React.ReactN
       },
     });
   }, [pathname, active]);
+
+  useEffect(() => {
+    if (pathname === "/" || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    let animations: gsap.core.Tween[] = [];
+    let frame = 0;
+    frame = window.requestAnimationFrame(() => {
+      const sections = gsap.utils.toArray<HTMLElement>("main > section, main > header, main > footer");
+      animations = sections.map((section) => gsap.fromTo(section,
+        { y: 34, rotateX: 3.5, transformPerspective: 1200, transformOrigin: "center top" },
+        { y: 0, rotateX: 0, ease: "none", scrollTrigger: { trigger: section, start: "top 94%", end: "top 42%", scrub: 0.8 } },
+      ));
+      ScrollTrigger.refresh();
+    });
+    return () => {
+      window.cancelAnimationFrame(frame);
+      animations.forEach((animation) => { animation.scrollTrigger?.kill(); animation.kill(); });
+    };
+  }, [pathname]);
 
   useEffect(() => () => {
     gsap.killTweensOf(overlay.current);
