@@ -51,6 +51,7 @@ export type PortableRecipe = {
     influence: number;
     palette: PaletteId;
     animation: AnimationMode;
+    material: MaterialId;
   };
 };
 
