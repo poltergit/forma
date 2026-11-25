@@ -35,6 +35,16 @@ describe("Playground generator registry", () => {
       expect(scene.objects.every((item) => item.position.every(Number.isFinite))).toBe(true);
     }
   });
+  it("translates each Playground surface into editable Scene Studio material properties", () => {
+    const expected = { paper: [0.94, 0.02], ink: [0.98, 0], metal: [0.2, 0.88], glass: [0.06, 0.16], liquid: [0.12, 0.3], ceramic: [0.18, 0.04] } as const;
+    for (const [surface, [roughness, metalness]] of Object.entries(expected)) {
+      const scene = createPlaygroundScene(27, 12, 30, "displacement", undefined, surface as keyof typeof expected);
+      expect(scene.objects[0].roughness).toBe(roughness);
+      expect(scene.objects[0].metalness).toBe(metalness);
+      expect(scene.objects[0].emissive).toMatch(/^#[0-9a-f]{6}$/i);
+    }
+    expect(() => createPlaygroundScene(1, 12, 30, "displacement", undefined, "plasma" as never)).toThrow(/surface/i);
+  });
   it("rejects out-of-range influence values", () => {
     expect(() => createPlaygroundScene(1, 24, 101)).toThrow(/influence/i);
   });

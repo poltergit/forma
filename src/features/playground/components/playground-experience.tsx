@@ -82,7 +82,7 @@ export function PlaygroundExperience() {
 
   const continueInSceneStudio = () => {
     try {
-      const scene = createPlaygroundScene(seed, density, influence, generator, activePalette.colors);
+      const scene = createPlaygroundScene(seed, density, influence, generator, activePalette.colors, materialId);
       window.localStorage.setItem(PLAYGROUND_SCENE_HANDOFF_KEY, JSON.stringify(scene));
       window.location.assign("/scene-studio?from=playground");
     } catch { setStatus("SCENE HANDOFF UNAVAILABLE"); }

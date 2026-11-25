@@ -51,16 +51,29 @@ export function createPoints(seed: number, amount: number): FieldPoint[] {
   return createGeneratorPoints(seed, amount, "displacement");
 }
 
-export function createPlaygroundScene(seed: number, density: number, influence: number, generator: GeneratorId = "displacement", paletteColors?: [string, string, string]) {
+export type PlaygroundSurface = "paper" | "ink" | "metal" | "glass" | "liquid" | "ceramic";
+
+const SURFACE_PHYSICS: Record<PlaygroundSurface, { roughness: number; metalness: number; emissive: string }> = {
+  paper: { roughness: 0.94, metalness: 0.02, emissive: "#000000" },
+  ink: { roughness: 0.98, metalness: 0, emissive: "#000000" },
+  metal: { roughness: 0.2, metalness: 0.88, emissive: "#080808" },
+  glass: { roughness: 0.06, metalness: 0.16, emissive: "#101827" },
+  liquid: { roughness: 0.12, metalness: 0.3, emissive: "#090d16" },
+  ceramic: { roughness: 0.18, metalness: 0.04, emissive: "#080604" },
+};
+
+export function createPlaygroundScene(seed: number, density: number, influence: number, generator: GeneratorId = "displacement", paletteColors?: [string, string, string], surface: PlaygroundSurface = "paper") {
   if (!Number.isFinite(influence) || influence < 0 || influence > 100) throw new RangeError("Influence must be between 0 and 100.");
   const palette = paletteColors ?? ["#f05b3e", "#243bd6", "#c6d83b"];
+  const physicalMaterial = SURFACE_PHYSICS[surface];
+  if (!physicalMaterial) throw new RangeError("Unknown Playground surface.");
   const kinds = ["box", "sphere", "torus"] as const;
   const objects = createGeneratorPoints(seed, density, generator).map((point, index) => {
     const spread = generator === "orbital-bloom" ? 7 : generator === "woven-lattice" ? 6.4 : 6;
     return {
       id: index + 1,
       name: `${generator === "orbital-bloom" ? "Bloom" : generator === "woven-lattice" ? "Weave" : "Field"} / ${String(index + 1).padStart(3, "0")}`,
-      kind: kinds[point.tone], color: palette[point.tone], roughness: 0.28, metalness: 0.12, emissive: "#000000",
+      kind: kinds[point.tone], color: palette[point.tone], ...physicalMaterial,
       position: [Number(((point.x - 0.5) * spread).toFixed(3)), Number(((0.5 - point.y) * 4.5).toFixed(3)), Number(((point.depth - 0.5) * (1.2 + influence / 45)).toFixed(3))] as [number, number, number],
       rotation: [Number((point.depth * 0.6).toFixed(3)), Number((point.x * Math.PI).toFixed(3)), Number((point.y * 0.5).toFixed(3))] as [number, number, number],
       scale: Number((0.3 + point.size * 0.18 + influence / 500).toFixed(3)), visible: true,
