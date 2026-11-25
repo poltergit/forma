@@ -17,7 +17,8 @@ export function SiteHeader() {
           <span>FORMA<span className={styles.registered}>®</span></span>
         </SpatialLink>
         <nav className={styles.nav} aria-label="Main navigation">
-          {navigation.map((item) => <SpatialLink key={item.label} href={item.href}>{item.label}</SpatialLink>)}
+          <span className={styles.navIndex}>ATELIER INDEX / 01—04</span>
+          {navigation.map((item, index) => <SpatialLink key={item.label} href={item.href}><small>{String(index + 1).padStart(2, "0")}</small><span>{item.label}</span></SpatialLink>)}
         </nav>
         <SpatialLink className={styles.contact} href="/playground">MAKE SOMETHING <span>↗</span></SpatialLink>
       </div>
