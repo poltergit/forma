@@ -93,3 +93,15 @@
 @media (max-width: 800px) { .presetList { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
 @media (max-width: 420px) { .presetHeading { flex-direction: column; } .presetHeading small { text-align: left; } .presetList { grid-template-columns: 1fr 1fr; } }
 @media (prefers-reduced-motion: reduce) { .presetList button { transition: none; } }
+
+
+.animationStudio { display: grid; grid-template-columns: auto repeat(3, minmax(7rem, 1fr)); align-items: stretch; gap: .45rem; padding: .9rem 1rem; border-top: 1px solid #d8d5ca; background: #e2dfd5; }
+.animationStudio > span { align-self: center; margin-right: .6rem; color: #696961; font: 9px var(--font-mono); letter-spacing: .1em; }
+.animationStudio button { display: flex; min-height: 3.2rem; flex-direction: column; justify-content: center; align-items: flex-start; gap: .25rem; border: 1px solid #c9c6bb; padding: .55rem .7rem; background: transparent; color: #20211f; text-align: left; cursor: pointer; }
+.animationStudio button[aria-pressed="true"] { border-color: #20211f; background: #f0ede5; box-shadow: inset 0 -2px #f05b3e; }
+.animationStudio button strong { font: 500 .95rem var(--font-display); }
+.animationStudio button small, .motionNote { color: #696961; font: 8px var(--font-mono); letter-spacing: .06em; }
+.motionNote { grid-column: 2 / -1; align-self: center; }
+.animationStudio button:focus-visible { outline: 2px solid #f05b3e; outline-offset: 2px; }
+@media (max-width: 700px) { .animationStudio { grid-template-columns: repeat(3, minmax(0, 1fr)); } .animationStudio > span, .motionNote { grid-column: 1 / -1; } .animationStudio > span { margin-bottom: .2rem; } }
+@media (prefers-reduced-motion: reduce) { .animationStudio button { transition: none; } }

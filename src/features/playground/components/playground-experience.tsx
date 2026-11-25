@@ -6,7 +6,7 @@ import {
   createGeneratorPoints, createPlaygroundScene, GENERATORS, PLAYGROUND_RECIPE_KEY, PLAYGROUND_SCENE_HANDOFF_KEY,
   type GeneratorId, type PlaygroundRecipe,
 } from "../playground-scene";
-import { createPortableRecipe, parsePortableRecipe, PLAYGROUND_PALETTES, PLAYGROUND_PRESETS, type PaletteId } from "../playground-recipe";
+import { createPortableRecipe, parsePortableRecipe, PLAYGROUND_PALETTES, PLAYGROUND_PRESETS, type PaletteId, type AnimationMode, getAnimationMotion } from "../playground-recipe";
 
 const defaultPalette = PLAYGROUND_PALETTES[0];
 
@@ -25,7 +25,7 @@ function readRecipes(): PlaygroundRecipe[] {
       item.name.length > 0 && item.name.length <= 48 && ["displacement", "orbital-bloom", "woven-lattice"].includes(item.generator) &&
       Number.isInteger(item.seed) && item.seed >= 0 && item.seed <= 9_999_999 &&
       Number.isInteger(item.density) && item.density >= 12 && item.density <= 96 &&
-      Number.isFinite(item.influence) && item.influence >= 0 && item.influence <= 100 && typeof item.createdAt === "string" && (item.palette === undefined || PLAYGROUND_PALETTES.some((paletteItem) => paletteItem.id === item.palette)),
+      Number.isFinite(item.influence) && item.influence >= 0 && item.influence <= 100 && typeof item.createdAt === "string" && (item.palette === undefined || PLAYGROUND_PALETTES.some((paletteItem) => paletteItem.id === item.palette)) && (item.animation === undefined || ["still", "drift", "pulse"].includes(item.animation)),
     ).slice(0, 24);
   } catch { return []; }
 }
@@ -40,6 +40,8 @@ export function PlaygroundExperience() {
   const [density, setDensity] = useState(64);
   const [influence, setInfluence] = useState(58);
   const [paletteId, setPaletteId] = useState<PaletteId>("atelier");
+  const [animationMode, setAnimationMode] = useState<AnimationMode>("still");
+  const phaseRef = useRef(0);
   const [status, setStatus] = useState("COMPOSITION AT REST");
   const [recipeName, setRecipeName] = useState("Untitled study");
   const [recipes, setRecipes] = useState<PlaygroundRecipe[]>([]);
@@ -65,13 +67,13 @@ export function PlaygroundExperience() {
   const saveRecipe = () => {
     const cleanName = recipeName.trim().slice(0, 48);
     if (!cleanName) { setStatus("GIVE YOUR STUDY A NAME"); return; }
-    const recipe: PlaygroundRecipe = { id: window.crypto.randomUUID(), name: cleanName, generator, seed, density, influence, palette: paletteId, createdAt: new Date().toISOString() };
+    const recipe: PlaygroundRecipe = { id: window.crypto.randomUUID(), name: cleanName, generator, seed, density, influence, palette: paletteId, animation: animationMode, createdAt: new Date().toISOString() };
     persistRecipes([recipe, ...recipes].slice(0, 24));
     setStatus("RECIPE SAVED TO THIS DEVICE");
   };
 
   const loadRecipe = (recipe: PlaygroundRecipe) => {
-    setGenerator(recipe.generator); setSeed(recipe.seed); setDensity(recipe.density); setInfluence(recipe.influence); setPaletteId((recipe.palette as PaletteId) ?? "atelier");
+    setGenerator(recipe.generator); setSeed(recipe.seed); setDensity(recipe.density); setInfluence(recipe.influence); setPaletteId((recipe.palette as PaletteId) ?? "atelier"); setAnimationMode(recipe.animation ?? "still");
     setRecipeName(recipe.name); pointerRef.current = { x: 0.5, y: 0.5, active: false }; setStatus("RECIPE RESTORED");
   };
 
@@ -96,13 +98,15 @@ export function PlaygroundExperience() {
       const ratio = Math.min(window.devicePixelRatio || 1, 1.5);
       const width = Math.max(1, Math.floor(bounds.width));
       const height = Math.max(1, Math.floor(bounds.height));
-      canvas.width = Math.floor(width * ratio); canvas.height = Math.floor(height * ratio);
+      const pixelWidth = Math.floor(width * ratio); const pixelHeight = Math.floor(height * ratio);
+      if (canvas.width !== pixelWidth || canvas.height !== pixelHeight) { canvas.width = pixelWidth; canvas.height = pixelHeight; }
       context.setTransform(ratio, 0, 0, ratio, 0, 0);
       context.fillStyle = activePalette.background; context.fillRect(0, 0, width, height);
 
       const points = createGeneratorPoints(seed, density, generator);
       const originX = width * (pointerRef.current.active ? pointerRef.current.x : 0.5);
       const originY = height * (pointerRef.current.active ? pointerRef.current.y : 0.5);
+      const motion = getAnimationMotion(animationMode, phaseRef.current);
       const influenceRadius = Math.min(width, height) * (0.12 + influence / 180);
       const cell = Math.sqrt((width * height) / density) * 0.9;
       const projected = points.map((point) => {
@@ -110,7 +114,7 @@ export function PlaygroundExperience() {
         const dx = baseX - originX; const dy = baseY - originY; const distance = Math.hypot(dx, dy);
         const falloff = pointerRef.current.active ? Math.max(0, 1 - distance / influenceRadius) : 0;
         const push = falloff * (influence / 100) * 54;
-        return { x: baseX + (dx / (distance || 1)) * push, y: baseY + (dy / (distance || 1)) * push, z: point.depth, size: cell * point.size * (0.38 + point.depth * 0.6), tone: point.tone };
+        return { x: baseX + motion.offsetX * width + (dx / (distance || 1)) * push, y: baseY + motion.offsetY * height + (dy / (distance || 1)) * push, z: point.depth, size: cell * point.size * (0.38 + point.depth * 0.6) * motion.scale, tone: point.tone };
       });
 
       context.lineWidth = generator === "woven-lattice" ? 1 : 0.65;
@@ -169,7 +173,27 @@ export function PlaygroundExperience() {
     drawRef.current = draw; draw();
     const observer = new ResizeObserver(draw); observer.observe(frame);
     return () => { observer.disconnect(); drawRef.current = null; };
-  }, [activePalette, density, generator, influence, seed]);
+  }, [activePalette, animationMode, density, generator, influence, seed]);
+
+  useEffect(() => {
+    if (animationMode === "still") { phaseRef.current = 0; drawRef.current?.(); return; }
+    const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+    if (reducedMotion.matches) { phaseRef.current = 0; drawRef.current?.(); return; }
+    let frameId = 0;
+    let lastDraw = 0;
+    const render = (timestamp: number) => {
+      if (document.visibilityState === "visible" && timestamp - lastDraw >= 33) {
+        phaseRef.current = (timestamp / 1000) * 0.48;
+        drawRef.current?.();
+        lastDraw = timestamp;
+      }
+      frameId = window.requestAnimationFrame(render);
+    };
+    frameId = window.requestAnimationFrame(render);
+    const stopWhenHidden = () => { window.cancelAnimationFrame(frameId); if (document.visibilityState === "visible") { lastDraw = 0; frameId = window.requestAnimationFrame(render); } };
+    document.addEventListener("visibilitychange", stopWhenHidden);
+    return () => { window.cancelAnimationFrame(frameId); document.removeEventListener("visibilitychange", stopWhenHidden); };
+  }, [animationMode]);
 
   const updatePointer = (event: PointerEvent<HTMLDivElement>) => {
     const bounds = event.currentTarget.getBoundingClientRect();
@@ -213,6 +237,12 @@ export function PlaygroundExperience() {
           <i>{item.colors.map((color) => <b key={color} style={{ backgroundColor: color }} />)}</i><small>{item.name}</small>
         </button>)}
       </div>
+
+      <div className={styles.animationStudio} role="group" aria-label="Animation mode">
+        <span>TIME / BEHAVIOR</span>
+        {([{ id: "still", label: "Still", note: "STATIC" }, { id: "drift", label: "Drift", note: "SLOW FIELD" }, { id: "pulse", label: "Pulse", note: "BREATHING FORM" }] as const).map((mode) => <button key={mode.id} type="button" aria-pressed={animationMode === mode.id} onClick={() => { setAnimationMode(mode.id); setStatus(`${mode.label.toUpperCase()} MODE`); }}><strong>{mode.label}</strong><small>{mode.note}</small></button>)}
+        <small className={styles.motionNote}>Motion pauses when this tab is hidden and is disabled by reduced-motion preferences.</small>
+      </div>
       <div className={styles.controls}>
         <div className={styles.controlIntro}><span>INSTRUMENT PARAMETERS</span><button type="button" onClick={recompose}>RECOMPOSE <b aria-hidden="true">↗</b></button></div>
         <label className={styles.rangeControl}><span><span>DENSITY</span><output>{density}</output></span><input type="range" min="12" max="96" step="4" value={density} onChange={(event) => setDensity(Number(event.target.value))} /></label>
@@ -228,7 +258,7 @@ export function PlaygroundExperience() {
         </div>
         <div className={styles.portableActions}>
           <button type="button" onClick={() => {
-            const recipe = createPortableRecipe({ id: "export", name: recipeName.trim() || "Untitled study", generator, seed, density, influence, palette: paletteId, createdAt: new Date().toISOString() });
+            const recipe = createPortableRecipe({ id: "export", name: recipeName.trim() || "Untitled study", generator, seed, density, influence, palette: paletteId, animation: animationMode, createdAt: new Date().toISOString() });
             const blob = new Blob([JSON.stringify(recipe, null, 2)], { type: "application/json" });
             const url = URL.createObjectURL(blob); const anchor = document.createElement("a"); anchor.href = url; anchor.download = `forma-${generator}-${seed}.json`; anchor.click(); URL.revokeObjectURL(url); setStatus("PORTABLE RECIPE EXPORTED");
           }}>EXPORT .JSON ↗</button>

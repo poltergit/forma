@@ -1,6 +1,6 @@
 # FORMA — Project Status
 
-**Last updated:** 2026-11-24
+**Last updated:** 2026-11-25
 
 ## Current position
 
@@ -118,3 +118,8 @@ The creative runtime was installed and peer-resolved on a Node 22 GitHub Actions
 Playground now includes four curated remix presets and four named color systems (Atelier, Citrus, Nocturne, Mineral). Palette selection affects the live canvas and the exported Scene Studio object colors. Presets load a complete instrument/density/influence/palette starting point while leaving seed and pointer interaction editable.
 
 Recipes can be exported as versioned `forma-playground-recipe` JSON files and imported on another device. Import validates format/version, generator and palette allowlists, field bounds, density/influence increments, name length, and a 16 KB input ceiling before applying values. The format carries only declarative settings; it cannot execute code. Local saved recipes remain device-local; portable JSON is the cross-device transfer mechanism. No cloud sync or migration was added.
+
+
+### Playground temporal instrument (2026-11-25)
+
+Added three explicit animation modes: Still, Drift, and Pulse. Motion uses bounded deterministic transforms derived from an elapsed-time phase; the selected mode is included in local and portable recipes, with older recipe files defaulting to Still. The canvas redraw loop is capped at approximately 30 FPS, pauses while the document is hidden, and respects the user's reduced-motion preference. Canvas backing dimensions are only reset when the measured size changes. Automated tests cover motion bounds, recipe round-trip, legacy defaults, and invalid mode rejection. Real-device performance and visual review remain outstanding.

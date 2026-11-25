@@ -28,18 +28,25 @@ export type PortableRecipe = {
     density: number;
     influence: number;
     palette: PaletteId;
+    animation: AnimationMode;
   };
 };
 
 const generatorIds: GeneratorId[] = ["displacement", "orbital-bloom", "woven-lattice"];
 const paletteIds: PaletteId[] = ["atelier", "citrus", "nocturne", "mineral"];
 
-export function createPortableRecipe(recipe: PlaygroundRecipe & { palette: PaletteId }): PortableRecipe {
+export function getAnimationMotion(mode: AnimationMode, phase: number) {
+  if (mode === "drift") return { offsetX: Math.sin(phase) * 0.012, offsetY: Math.cos(phase * 0.72) * 0.009, scale: 1 };
+  if (mode === "pulse") return { offsetX: 0, offsetY: 0, scale: 1 + Math.sin(phase) * 0.035 };
+  return { offsetX: 0, offsetY: 0, scale: 1 };
+}
+
+export function createPortableRecipe(recipe: PlaygroundRecipe & { palette: PaletteId; animation?: AnimationMode }): PortableRecipe {
   return {
     format: "forma-playground-recipe",
     version: 1,
     exportedAt: new Date().toISOString(),
-    recipe: { name: recipe.name.trim().slice(0, 48), generator: recipe.generator, seed: recipe.seed, density: recipe.density, influence: recipe.influence, palette: recipe.palette },
+    recipe: { name: recipe.name.trim().slice(0, 48), generator: recipe.generator, seed: recipe.seed, density: recipe.density, influence: recipe.influence, palette: recipe.palette, animation: recipe.animation ?? "still" },
   };
 }
 
@@ -59,5 +66,7 @@ export function parsePortableRecipe(input: string): Omit<PlaygroundRecipe, "id" 
   if (!Number.isInteger(recipe.density) || (recipe.density as number) < 12 || (recipe.density as number) > 96 || (recipe.density as number) % 4 !== 0) throw new RangeError("Recipe density must be 12–96 in steps of 4.");
   if (!Number.isFinite(recipe.influence) || (recipe.influence as number) < 0 || (recipe.influence as number) > 100 || (recipe.influence as number) % 5 !== 0) throw new RangeError("Recipe influence must be 0–100 in steps of 5.");
   if (!paletteIds.includes(recipe.palette as PaletteId)) throw new TypeError("Recipe uses an unknown palette.");
-  return { name: recipe.name.trim(), generator: recipe.generator as GeneratorId, seed: recipe.seed as number, density: recipe.density as number, influence: recipe.influence as number, palette: recipe.palette as PaletteId };
+  const animation = recipe.animation === undefined ? "still" : recipe.animation;
+  if (!["still", "drift", "pulse"].includes(animation as string)) throw new TypeError("Recipe uses an unknown animation mode.");
+  return { name: recipe.name.trim(), generator: recipe.generator as GeneratorId, seed: recipe.seed as number, density: recipe.density as number, influence: recipe.influence as number, palette: recipe.palette as PaletteId, animation: animation as AnimationMode };
 }

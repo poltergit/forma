@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { createGeneratorPoints, createPlaygroundScene, GENERATORS } from "./playground-scene";
-import { createPortableRecipe, parsePortableRecipe } from "./playground-recipe";
+import { createPortableRecipe, parsePortableRecipe, getAnimationMotion } from "./playground-recipe";
 
 describe("Playground generator registry", () => {
   it("exposes three distinct instruments", () => {
@@ -53,5 +53,27 @@ describe("Portable Playground recipes", () => {
     expect(() => parsePortableRecipe(" ".repeat(16_385))).toThrow(/too large/i);
     const invalid = { format: "forma-playground-recipe", version: 1, recipe: { ...createPortableRecipe(recipe).recipe, seed: 10_000_000 } };
     expect(() => parsePortableRecipe(JSON.stringify(invalid))).toThrow(/seed/i);
+  });
+});
+
+
+describe("Playground motion modes", () => {
+  it("keeps still mode motionless and bounds drift and pulse transforms", () => {
+    expect(getAnimationMotion("still", 2)).toEqual({ offsetX: 0, offsetY: 0, scale: 1 });
+    const drift = getAnimationMotion("drift", Math.PI / 2);
+    expect(Math.abs(drift.offsetX)).toBeLessThanOrEqual(0.012);
+    expect(Math.abs(drift.offsetY)).toBeLessThanOrEqual(0.009);
+    const pulse = getAnimationMotion("pulse", Math.PI / 2);
+    expect(pulse.scale).toBeCloseTo(1.035);
+  });
+  it("round-trips animation mode and defaults older recipes to still", () => {
+    const portable = createPortableRecipe({ id: "motion", name: "Drifting study", generator: "woven-lattice", seed: 8, density: 32, influence: 40, palette: "mineral", animation: "drift", createdAt: new Date(0).toISOString() });
+    expect(parsePortableRecipe(JSON.stringify(portable)).animation).toBe("drift");
+    const legacy = { ...portable, recipe: { ...portable.recipe, animation: undefined } };
+    expect(parsePortableRecipe(JSON.stringify(legacy)).animation).toBe("still");
+  });
+  it("rejects unknown animation modes in imported recipes", () => {
+    const portable = createPortableRecipe({ id: "motion", name: "Pulse", generator: "displacement", seed: 2, density: 24, influence: 20, palette: "atelier", createdAt: new Date(0).toISOString() });
+    expect(() => parsePortableRecipe(JSON.stringify({ ...portable, recipe: { ...portable.recipe, animation: "chaos" } }))).toThrow(/animation/i);
   });
 });
