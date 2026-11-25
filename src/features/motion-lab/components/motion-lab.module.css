@@ -16,3 +16,29 @@
 .scoreLane[data-lane=force] .scoreRail i.scoreTickActive{background:var(--brand-coral)}
 .scoreLane[data-lane=rhythm] .scoreRail i.scoreTickActive{background:var(--brand-obsidian)}
 @media(prefers-reduced-motion:reduce){.object{animation:none!important}}
+
+/* Force Room — the stage is a dark instrument panel */
+.workspace{border:1px solid var(--forma-carbon-ink);background:var(--forma-carbon-ink);color:var(--forma-studio-bone);box-shadow:12px 12px 0 rgb(255 91 69 / .12)}
+.stageColumn{border-color:rgb(241 237 227 / .16);background:#201d27}
+.stageMeta,.panelTitle,.modeField legend,.control>span,.control small,.curve>div,.presets>span,.recipe>div{color:#aaa4b0}
+.stage{background:#211e29;background-image:radial-gradient(ellipse at 50% 50%,rgb(104 85 245 / .22),transparent 54%),linear-gradient(rgb(241 237 227 / .055) 1px,transparent 1px),linear-gradient(90deg,rgb(241 237 227 / .055) 1px,transparent 1px);background-size:auto,34px 34px,34px 34px}
+.stage::before{background:radial-gradient(ellipse at 50% 50%,rgb(255 91 69 / .14),transparent 60%)}
+.stageCoordinates,.stageInstruction{color:#aaa4b0}
+.cornerMark,.timelineMeta output,.control output,.reset{color:var(--forma-signal-vermilion)}
+.stageFooter,.timeline,.panel,.score,.recipeStudio{background:#292530;border-color:rgb(241 237 227 / .15);color:var(--forma-studio-bone)}
+.stageFooter>span,.stageFooter button,.modeGrid button,.presets button,.recipe button,.control select,.recipe pre{color:#e4dfe9;border-color:rgb(241 237 227 / .2);background:#211e29}
+.stageFooter button:hover,.modeGrid button[aria-pressed=true],.presets button:hover,.recipe button:hover{border-color:var(--forma-acid-voltage);color:var(--forma-acid-voltage);background:rgb(216 255 56 / .06)}
+.modeGrid button[aria-pressed=true]{box-shadow:inset 0 -2px var(--forma-signal-vermilion)}
+.curve svg,.recipe pre{background:#211e29}
+.curveLine{stroke:var(--forma-electric-iris)}
+.timeline input,.control input{accent-color:var(--forma-signal-vermilion)}
+.scoreHeader,.scoreLane>span,.score>p{color:#aaa4b0}
+.scoreHeader span:last-child,.scoreLane em{color:var(--forma-acid-voltage)}
+.scoreRail i{background:#514c59}
+.scoreRail i.scoreTickActive{background:var(--forma-electric-iris)}
+.scoreLane[data-lane=force] .scoreRail i.scoreTickActive{background:var(--forma-signal-vermilion)}
+.scoreLane[data-lane=rhythm] .scoreRail i.scoreTickActive{background:var(--forma-acid-voltage)}
+.recipeSave input{background:#211e29;border-color:rgb(241 237 227 / .2);color:var(--forma-studio-bone)}
+.recipeSave button{background:var(--forma-acid-voltage);border-color:var(--forma-acid-voltage);color:var(--forma-carbon-ink)}
+@media(max-width:900px){.panel{background:#292530}}
+@media(prefers-reduced-motion:reduce){.workspace{box-shadow:none}}
