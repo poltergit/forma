@@ -24,3 +24,37 @@
 @media (max-width: 650px) { .heading { align-items: start; flex-direction: column; } .controls { grid-template-columns: 1fr 1fr; } .controls button { min-height: 2.8rem; } .specimen { font-size: clamp(3.5rem, 17vw, 7rem); transform: scaleX(min(var(--tension), 1.35)); } .stage[data-inverted="true"] .specimen { transform: scaleX(min(calc(1.8 - var(--tension)), 1.35)); } }
 @media (max-width: 380px) { .controls { grid-template-columns: 1fr; } .coordinate, .baseline { font-size: 7px; } }
 @media (prefers-reduced-motion: reduce) { .specimen { transition: none; } }
+
+
+/* TYPE / ELASTIC MATTER — dark specimen bay with luminous letterforms */
+.stage {
+  background:
+    radial-gradient(ellipse at 50% 48%, rgb(135 91 255 / .2), transparent 58%),
+    radial-gradient(ellipse at 76% 70%, rgb(84 242 210 / .09), transparent 38%),
+    repeating-linear-gradient(90deg, transparent 0 8.25%, rgb(244 240 232 / .045) 8.3% 8.4%),
+    #100D18;
+  border-color: #51495F;
+}
+.stage[data-inverted="true"] {
+  background:
+    radial-gradient(ellipse at 50% 48%, rgb(255 118 94 / .18), transparent 58%),
+    repeating-linear-gradient(90deg, transparent 0 8.25%, rgb(244 240 232 / .045) 8.3% 8.4%),
+    #17141F;
+}
+.coordinate,.baseline { color: #D2CCDA; text-shadow: 0 1px 8px #08070D; }
+.specimen { color: #FF765E; text-shadow: 0 0 30px rgb(255 118 94 / .16); }
+.stage[data-inverted="true"] .specimen { color: #68E0CE; }
+.controls {
+  background: #17141F;
+  border-color: #51495F;
+  color: #FAF8F2;
+}
+.controls label { color: #E2DDE8; }
+.controls output { color: #68E0CE; }
+.controls input { accent-color: #68E0CE; }
+.controls button { color: #F5F1E8; border-color: #756C83; }
+.controls button:hover,.controls button[aria-pressed="true"] {
+  border-color: #68E0CE;
+  background: rgb(104 224 206 / .1);
+  color: #68E0CE;
+}
