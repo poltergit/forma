@@ -217,3 +217,64 @@
 .outputActions button{color:#F4F0E8;border-color:rgb(244 240 232 / .28)}
 .outputActions button:hover,.outputActions button:focus-visible{background:var(--forma-soft-matter);border-color:var(--forma-soft-matter);color:#100D18}
 @media(prefers-reduced-motion:reduce){.experience *{transition:none!important}}
+
+
+/* CONTRAST REFINEMENT — Open Field controls stay dark; only specimens carry color */
+.experience,.presetStudio,.recipeStudio,.animationStudio,.materialStudio,.paletteStudio,.outputActions,.generatorPicker {
+  background-color: #17141F;
+  color: #F5F1E8;
+  border-color: #51495F;
+}
+.presetHeading,.presetHeading small,.paletteStudio > span,.materialStudio > span,
+.animationStudio > span,.recipeHeading > div > span,.recipeSave label > span,
+.generatorPicker button > span,.generatorPicker button small,
+.animationStudio button small,.materialStudio button small,
+.recipeLoad > span,.recipeLoad small,.outputActions > span,.stageHeader,.stageFooter {
+  color: #C4BDCE;
+}
+.presetList button,.animationStudio button,.materialStudio button,
+.generatorPicker button,.portableActions button,.importRecipe,.outputActions button {
+  background: #100D18;
+  color: #F5F1E8;
+  border-color: #62596F;
+}
+.presetList button:hover,.animationStudio button:hover,.materialStudio button:hover,
+.generatorPicker button:hover,.portableActions button:hover,.importRecipe:hover {
+  background: #292333;
+  color: #FAF8F2;
+  border-color: #D7F36A;
+}
+.generatorPicker button[aria-pressed="true"],.animationStudio button[aria-pressed="true"],
+.materialStudio button[aria-pressed="true"] {
+  background: #30283D;
+  color: #FAF8F2;
+  border-color: #A48BFF;
+}
+.presetList button > span,.presetList button small { color: #C4BDCE; }
+.recipeHeading > p,.caption,.recipeList article p { color: #E2DDE8; }
+.recipeList article { background: #211D2B; border-color: #51495F; }
+.recipeSave input,.seedControl input {
+  background: #0D0B14;
+  color: #FAF8F2;
+  border-color: #756C83;
+}
+.recipeSave input::placeholder,.seedControl input::placeholder { color: #C4BDCE; opacity: 1; }
+.recipeSave button {
+  background: #D7F36A;
+  border-color: #D7F36A;
+  color: #0B0911;
+}
+.recipeSave button:hover { background: #68E0CE; border-color: #68E0CE; color: #0B0911; }
+.paletteStudio button small { color: #E2DDE8; }
+.paletteStudio button[aria-pressed="true"] { border-color: #FAF8F2; }
+.outputActions button:hover,.outputActions button:focus-visible {
+  background: #68E0CE;
+  border-color: #68E0CE;
+  color: #0B0911;
+}
+.controlIntro,.rangeControl,.rangeControl > span,.reset,.localNote { color: #E2DDE8; }
+.generatorPicker button[aria-pressed="true"] > span,
+.generatorPicker button[aria-pressed="true"] small { color: #E2DDE8; }
+@media (prefers-reduced-motion: reduce) {
+  .presetList button,.animationStudio button,.materialStudio button,.generatorPicker button { transition: none; }
+}
