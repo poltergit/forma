@@ -94,14 +94,37 @@ function ObjectMesh({ item, selected, tool, onSelect, onTransform }: { item: Sce
   else geometry = <torusGeometry args={[0.62, 0.19, 24, 80]} />;
   const form = item.kind === "text" ? (
     item.typographyStyle === "flat" || !item.typographyStyle ? (
-      <Text color={item.color} fontSize={item.fontSize ?? 0.72} letterSpacing={item.letterSpacing ?? 0.015} anchorX="center" anchorY="middle" textAlign="center" maxWidth={5} outlineWidth={selected ? 0.012 : 0} outlineColor="#090810" onClick={(event) => { event.stopPropagation(); onSelect(); }}>
-        {item.text ?? "FORM IS A VERB."}
+      <Text
+        color={item.color}
+        fontSize={item.fontSize ?? 0.72}
+        letterSpacing={item.letterSpacing ?? 0.015}
+        anchorX="center"
+        anchorY="middle"
+        textAlign="center"
+        maxWidth={5}
+        outlineWidth={selected ? 0.012 : 0}
+        outlineColor="#090810"
+        onClick={(event) => { event.stopPropagation(); onSelect(); }}
+      >
+        {item.text ?? "FORMA"}
       </Text>
     ) : (
-      <Center>\n      <Text3D font={helvetikerBold} size={item.fontSize ?? 0.72} height={item.typographyStyle === "inflated" ? Math.max(0.12, item.extrusion ?? 0.24) : item.extrusion ?? 0.18} curveSegments={12} bevelEnabled bevelSegments={5} bevelSize={item.typographyStyle === "inflated" ? Math.max(0.055, item.bevel ?? 0.09) : item.bevel ?? 0.025} bevelThickness={item.typographyStyle === "inflated" ? Math.max(0.055, item.bevel ?? 0.09) : item.bevel ?? 0.025} onClick={(event) => { event.stopPropagation(); onSelect(); }}>
-        <meshPhysicalMaterial {...material} />
-        {item.text ?? "FORMA"}
-      </Text3D>
+      <Center>
+        <Text3D
+          font={helvetikerBold}
+          size={item.fontSize ?? 0.72}
+          height={item.typographyStyle === "inflated" ? Math.max(0.12, item.extrusion ?? 0.24) : item.extrusion ?? 0.18}
+          curveSegments={12}
+          bevelEnabled
+          bevelSegments={5}
+          bevelSize={item.typographyStyle === "inflated" ? Math.max(0.055, item.bevel ?? 0.09) : item.bevel ?? 0.025}
+          bevelThickness={item.typographyStyle === "inflated" ? Math.max(0.055, item.bevel ?? 0.09) : item.bevel ?? 0.025}
+          onClick={(event) => { event.stopPropagation(); onSelect(); }}
+        >
+          <meshPhysicalMaterial {...material} />
+          {item.text ?? "FORMA"}
+        </Text3D>
+      </Center>
     )
   ) : (
     <mesh onClick={(event) => { event.stopPropagation(); onSelect(); }}>
