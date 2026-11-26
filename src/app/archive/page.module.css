@@ -1,5 +1,5 @@
 .archive{width:min(100% - (var(--page-gutter)*2),100rem);margin-inline:auto}
-.header{position:relative;overflow:hidden;padding:clamp(3rem,8vw,7rem) 0 2rem;background:radial-gradient(ellipse at 80% 45%,rgb(255 91 69 / .14),transparent 28rem),radial-gradient(ellipse at 18% 90%,rgb(104 85 245 / .12),transparent 25rem)}
+.header{position:relative;overflow:hidden;padding:clamp(3rem,8vw,7rem) 0 2rem;background:radial-gradient(ellipse at 80% 45%,rgb(255 90 60 / .14),transparent 28rem),radial-gradient(ellipse at 18% 90%,rgb(135 91 255 / .12),transparent 25rem)}
 .meta,.headerFoot,.kicker,.archiveIntro>span,.sectionHead>span,.specimenIndex,.specimenCopy>span,.specimenCopy>small,.notesMeta,.notesGrid article>span,.colophon>span{display:flex;justify-content:space-between;gap:1rem;color:var(--forma-ash);font:500 .58rem var(--font-mono);letter-spacing:.12em}
 .heading{display:grid;grid-template-columns:1.2fr .8fr;align-items:end;gap:3rem;padding:clamp(4rem,8vw,7rem) 0}
 .kicker{justify-content:flex-start;color:var(--forma-signal-vermilion)}
@@ -20,7 +20,7 @@
 .sectionHead>p{max-width:21rem;margin:0;color:#68636d;line-height:1.65}
 .specimenList{border-bottom:1px solid var(--forma-rule)}
 .specimen{position:relative;display:grid;min-height:18rem;grid-template-columns:.5fr 1fr 1.25fr 3rem;align-items:center;gap:2rem;padding:1.4rem 0;border-bottom:1px solid var(--forma-rule);color:var(--forma-carbon-ink);text-decoration:none;transition:padding var(--duration-panel) var(--ease-inertia),background var(--duration-panel) ease}
-.specimen:hover{padding-inline:1rem;background:#e8e2d8}
+.specimen:hover{padding-inline:1rem;background:#252030}
 .specimenIndex{height:100%;flex-direction:column;justify-content:flex-start;padding-top:1rem}
 .specimenIndex>span{color:var(--forma-signal-vermilion);font-size:.9rem}
 .specimenIndex small{max-width:6rem;font-size:.48rem;line-height:1.5}
@@ -33,7 +33,7 @@
 .specimen[data-tone=force] .specimenVisual{background:#24202e}
 .specimen[data-tone=force] .specimenVisual i:first-child{width:56%;height:28%;border:7px solid var(--forma-signal-vermilion);border-left-color:transparent;border-radius:50%;transform:rotate(-28deg)}
 .specimen[data-tone=force] .specimenVisual i:nth-child(2){width:42%;height:60%;border:1px solid var(--forma-electric-iris);border-radius:50%;transform:rotate(35deg)}
-.specimen[data-tone=force] .specimenVisual i:nth-child(3){width:.8rem;height:.8rem;border-radius:50%;background:var(--forma-acid-voltage);box-shadow:0 0 0 .6rem rgb(216 255 56 / .12)}
+.specimen[data-tone=force] .specimenVisual i:nth-child(3){width:.8rem;height:.8rem;border-radius:50%;background:var(--forma-acid-voltage);box-shadow:0 0 0 .6rem rgb(217 255 63 / .12)}
 .specimen[data-tone=force] .specimenVisual b{color:#c4bdca}
 .specimen[data-tone=matter] .specimenVisual{background:#d8d2c8}
 .specimen[data-tone=matter] .specimenVisual i:first-child{width:36%;aspect-ratio:1;border-radius:40% 60% 58% 42%;background:linear-gradient(140deg,var(--forma-signal-vermilion),var(--forma-electric-iris));transform:rotate(-25deg)}
@@ -51,7 +51,7 @@
 .marginNotes h2{margin:clamp(3rem,6vw,5rem) 0;font:600 clamp(4.5rem,9vw,9rem)/.8 var(--font-display);letter-spacing:-.1em}
 .marginNotes h2 em{color:var(--forma-acid-voltage);font-style:normal}
 .notesGrid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem}
-.notesGrid article{padding:1.2rem 0;border-top:1px solid rgb(241 237 227 / .24)}
+.notesGrid article{padding:1.2rem 0;border-top:1px solid rgb(244 240 232 / .24)}
 .notesGrid article>span{justify-content:flex-start;color:var(--forma-signal-vermilion)}
 .notesGrid h3{margin:1.5rem 0 .6rem;font:500 clamp(1.4rem,2vw,2rem)/1 var(--font-display);letter-spacing:-.05em}
 .notesGrid p{max-width:19rem;margin:0;color:#c3bdc8;font-size:.85rem;line-height:1.7}
@@ -64,3 +64,15 @@
 @media(max-width:760px){.heading{grid-template-columns:1fr;gap:2rem}.heading h1{font-size:clamp(4.8rem,16vw,7.5rem)}.archiveIntro{min-height:14rem;padding:1.2rem}.specimen{grid-template-columns:2.4rem 1fr 2.5rem;gap:.8rem}.specimenVisual{grid-column:2;grid-row:1;aspect-ratio:2}.specimenCopy{grid-column:2/4;grid-row:2}.specimenArrow{grid-column:3;grid-row:1;align-self:start}.specimenIndex{grid-column:1;grid-row:1/3}.specimenIndex small{writing-mode:vertical-rl}.notesGrid{grid-template-columns:1fr}.notesGrid article{padding:1.1rem 0}.colophon{grid-template-columns:1fr}.colophon> a{justify-self:start}}
 @media(max-width:420px){.meta,.headerFoot,.archiveIntro>span,.sectionHead>span,.notesMeta{font-size:.47rem}.heading h1{font-size:clamp(4.2rem,17vw,6rem)}.archiveIntro p{font-size:2.2rem}.archiveMark{font-size:2.5rem!important}.specimen{min-height:0;padding:1rem 0}.specimenCopy h3{font-size:1.7rem}.colophon p{font-size:3.5rem}}
 @media(prefers-reduced-motion:reduce){.specimen,.specimenArrow{transition:none}}
+
+/* NEON RELIC / ARCHIVE AFTER DARK */
+.heading>p,.sectionHead>p{color:#C2BACB}
+.specimen{color:var(--forma-studio-bone);border-color:rgb(244 240 232 / .18)}
+.specimen:hover{background:#1B1724}
+.specimenVisual{background:#201A2A}
+.specimen[data-tone=field] .specimenVisual{background:#15111F}
+.specimen[data-tone=matter] .specimenVisual{background:#252030}
+.specimenCopy p{color:#C2BACB}
+.specimenCopy>span,.specimenCopy>small{color:#A39AAA}
+.specimenArrow{color:var(--forma-soft-matter)}
+.archiveIntro{border-color:var(--forma-carbon-ink);background:var(--forma-acid-voltage)}

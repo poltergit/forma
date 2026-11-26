@@ -25,7 +25,7 @@
 /* MATTER IN MOTION / SPECIMEN INDEX */
 .collection{position:relative;padding:clamp(4.5rem,9vw,9rem) 0}
 .heading{position:relative;grid-template-columns:minmax(0,1.15fr) minmax(16rem,.85fr);gap:1.5rem 3rem;padding:0 0 2.4rem;border-bottom:1px solid var(--forma-carbon-ink)}
-.heading::after{position:absolute;right:0;top:-2rem;width:clamp(5rem,12vw,10rem);aspect-ratio:1;border:1px solid rgb(104 85 245 / .45);border-radius:50%;background:repeating-radial-gradient(circle,transparent 0 12px,rgb(104 85 245 / .12) 13px 14px);content:"";pointer-events:none}
+.heading::after{position:absolute;right:0;top:-2rem;width:clamp(5rem,12vw,10rem);aspect-ratio:1;border:1px solid rgb(135 91 255 / .45);border-radius:50%;background:repeating-radial-gradient(circle,transparent 0 12px,rgb(135 91 255 / .12) 13px 14px);content:"";pointer-events:none}
 .heading>span{color:var(--forma-electric-iris)}
 .heading h2{font-size:clamp(4rem,9vw,9rem);line-height:.78;max-width:9ch}
 .heading h2 em{color:var(--forma-signal-vermilion)}
@@ -33,19 +33,27 @@
 .empty{min-height:15rem;padding:2rem 0;border-color:var(--forma-carbon-ink)}
 .empty>span{color:var(--forma-electric-iris)}
 .list{position:relative;border-bottom:1px solid var(--forma-carbon-ink)}
-.item{position:relative;grid-template-columns:4rem minmax(0,1fr) auto;min-height:9rem;gap:clamp(1rem,3vw,2.5rem);padding:1.8rem 1rem 1.8rem 0;border-color:rgb(23 21 29 / .2);transition:background .3s ease,padding .3s ease}
+.item{position:relative;grid-template-columns:4rem minmax(0,1fr) auto;min-height:9rem;gap:clamp(1rem,3vw,2.5rem);padding:1.8rem 1rem 1.8rem 0;border-color:rgb(244 240 232 / .2);transition:background .3s ease,padding .3s ease}
 .item::before{position:absolute;inset:0 auto 0 0;width:3px;background:var(--forma-signal-vermilion);content:"";transform:scaleY(0);transform-origin:bottom;transition:transform .3s ease}
-.item:hover{padding-left:1rem;background:rgb(104 85 245 / .055)}
+.item:hover{padding-left:1rem;background:rgb(135 91 255 / .055)}
 .item:hover::before{transform:scaleY(1)}
 .number{padding-top:.45rem;color:var(--forma-signal-vermilion);font-size:.8rem}
 .copy>span{color:var(--forma-electric-iris);letter-spacing:.14em}
 .copy h3{font-size:clamp(1.7rem,3.5vw,3rem);letter-spacing:-.075em;transition:transform .3s ease}
 .item:hover .copy h3{transform:translateX(4px)}
 .copy p{max-width:42rem;color:#625d66}
-.item>a{align-self:center;min-width:6.5rem;justify-content:space-between;border-color:rgb(23 21 29 / .45);transition:color .2s ease,border-color .2s ease,transform .2s ease}
+.item>a{align-self:center;min-width:6.5rem;justify-content:space-between;border-color:rgb(244 240 232 / .45);transition:color .2s ease,border-color .2s ease,transform .2s ease}
 .item>a:hover{transform:translateX(3px);color:var(--forma-electric-iris);border-color:var(--forma-electric-iris)}
 .item>a b{color:var(--forma-signal-vermilion)}
 .empty a{transition:color .2s ease,border-color .2s ease,transform .2s ease}
 .empty a:hover{transform:translateX(3px)}
 @media(max-width:700px){.heading{grid-template-columns:1fr;gap:1.25rem}.heading::after{top:-1rem;width:5rem}.heading h2{font-size:clamp(4rem,16vw,6rem)}.heading>p{max-width:26rem}.item{grid-template-columns:2.5rem minmax(0,1fr);gap:.7rem;padding:1.35rem .5rem 1.35rem 0}.item:hover{padding-left:.5rem}.item>a{grid-column:2;justify-self:start}.copy h3{font-size:1.8rem}}
 @media(prefers-reduced-motion:reduce){.item,.item::before,.copy h3,.item>a,.empty a{transition:none;transform:none}}
+
+/* NEON RELIC / SPECIMEN INDEX */
+.heading>p,.empty,.copy p{color:#C2BACB}
+.empty a,.item>a{color:var(--forma-studio-bone);border-color:rgb(244 240 232 / .4)}
+.item{border-color:rgb(244 240 232 / .2)}
+.item:hover{background:rgb(135 91 255 / .12)}
+.item>a:hover,.empty a:hover{color:var(--forma-soft-matter);border-color:var(--forma-soft-matter)}
+.item>a:focus-visible,.empty a:focus-visible{outline-color:var(--forma-soft-matter)}
