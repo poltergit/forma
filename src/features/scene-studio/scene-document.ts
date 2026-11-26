@@ -47,9 +47,9 @@ function isSceneObject(value: unknown): value is SceneObjectDocument {
     ["box", "sphere", "torus", "text"].includes(String(item.kind)) &&
     validTypography &&
     typeof item.color === "string" &&
-    /^#[\\da-f]{6}$/i.test(item.color) &&
+    /^[#][\da-f]{6}$/i.test(item.color) &&
     typeof item.emissive === "string" &&
-    /^#[\\da-f]{6}$/i.test(item.emissive) &&
+    /^[#][\da-f]{6}$/i.test(item.emissive) &&
     typeof item.roughness === "number" &&
     item.roughness >= 0 &&
     item.roughness <= 1 &&
