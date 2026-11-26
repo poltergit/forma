@@ -3,7 +3,7 @@
   z-index: var(--z-sticky);
   top: 0;
   border-bottom: 1px solid rgb(241 237 227 / .16);
-  background: rgb(23 21 29 / .97);
+  background: rgb(16 13 24 / .88);
   color: var(--forma-studio-bone);
   backdrop-filter: blur(18px);
 }
@@ -68,3 +68,12 @@
 .mark circle{fill:var(--forma-signal-vermilion);stroke:var(--forma-studio-bone);stroke-width:1}
 .brand:hover .mark{transform:rotate(34deg) scale(1.18);filter:drop-shadow(0 0 12px rgb(84 242 210 / .55))}
 @media(prefers-reduced-motion:reduce){.brand:hover .mark{transform:none}}
+
+/* The signature never sits perfectly still. */
+.mark ellipse{transform-box:fill-box;transform-origin:center;will-change:transform}
+.mark ellipse:first-child{animation:header-orbit-a 17s linear infinite}
+.mark ellipse:nth-child(2){animation:header-orbit-b 23s linear infinite}
+.mark path{filter:drop-shadow(0 0 2px rgb(84 242 210 / .16))}
+@keyframes header-orbit-a{to{transform:rotate(360deg) scaleY(.72)}}
+@keyframes header-orbit-b{to{transform:rotate(-360deg) scaleX(.82)}}
+@media(prefers-reduced-motion:reduce){.mark ellipse{animation:none}}
