@@ -77,7 +77,7 @@ const initialObjects: SceneObject[] = [
 ];
 
 function ObjectMesh({ item, selected, tool, draftTransform, onSelect, onTransformStart, onTransformDraft }: { item: SceneObject; selected: boolean; tool: TransformTool; draftTransform?: Pick<SceneObject, "position" | "rotation" | "scale">; onSelect: () => void; onTransformStart: () => void; onTransformDraft: (transform: Pick<SceneObject, "position" | "rotation" | "scale">) => void }) {
-  const groupRef = useRef<Group>(null);
+  const groupRef = useRef<Group>(new Group());
   const material = { color: item.color, roughness: item.roughness, metalness: item.metalness, emissive: item.emissive, emissiveIntensity: item.emissive === "#000000" ? 0 : 0.65, transmission: item.transmission, thickness: item.thickness, ior: item.ior, clearcoat: item.clearcoat, clearcoatRoughness: item.clearcoatRoughness, transparent: item.transmission > 0 || item.opacity < 1, opacity: item.opacity, envMapIntensity: 1.35 };
   const handleTransform = () => {
     const target = groupRef.current;
@@ -134,7 +134,7 @@ function ObjectMesh({ item, selected, tool, draftTransform, onSelect, onTransfor
   );
   const transform = draftTransform ?? item;
   const group = <group ref={groupRef} position={transform.position} rotation={transform.rotation} scale={transform.scale} visible={item.visible}>{form}</group>;
-  const mode = tool === "move" ? "translate" : tool;
+  const mode: "translate" | "rotate" | "scale" = tool === "move" ? "translate" : tool === "rotate" ? "rotate" : "scale";
   return (
     <>
       {group}
