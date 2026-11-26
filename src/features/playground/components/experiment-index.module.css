@@ -31,3 +31,24 @@
 .empty { grid-column: 1 / -1; padding: 2rem; color: var(--color-text-secondary); border: 1px dashed var(--color-border); }
 @media (max-width: 760px) { .indexTop { align-items: start; flex-direction: column; } .results { grid-template-columns: 1fr; } .card { grid-template-columns: .9fr 1fr; } .cardVisual { min-height: 15rem; } }
 @media (max-width: 460px) { .filters { align-items: flex-start; flex-direction: column; } .card { grid-template-columns: 1fr; } .cardVisual { min-height: 12rem; } .typeMark { font-size: 7rem; } }
+
+
+/* EXPERIMENT INDEX — preserve vivid artwork, unify surrounding surfaces */
+.card { background: #17141F; border-color: #51495F; color: #FAF8F2; }
+.cardVisual {
+  background:
+    radial-gradient(circle at 28% 24%, rgb(215 243 106 / .16), transparent 34%),
+    radial-gradient(circle at 78% 76%, rgb(164 139 255 / .22), transparent 42%),
+    #100D18;
+}
+.cardVisual > span { color: #E2DDE8; text-shadow: 0 1px 8px #08070D; }
+.cardCopy h3 { color: #FAF8F2; }
+.cardCopy p { color: #E2DDE8; }
+.cardCopy > div span:last-child { color: #C4BDCE; }
+.cardCopy a { color: #FAF8F2; border-color: #756C83; }
+.cardCopy a:hover { color: #D7F36A; border-color: #D7F36A; }
+.filters > span,.indexTop > div > span { color: #C4BDCE; }
+.filters button { color: #E8E3ED; border-color: #62596F; }
+.filters button[aria-pressed="true"] { color: #68E0CE; border-color: #68E0CE; background: rgb(104 224 206 / .1); }
+.reset { color: #C4BDCE; }
+.empty { color: #E2DDE8; }
