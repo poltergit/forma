@@ -559,3 +559,24 @@
     background: #17131F;
   }
 }
+
+
+/* SCULPTURAL TYPE — controls for turning words into physical matter */
+.typeField select {
+  width: 100%;
+  min-height: 2.65rem;
+  padding: .65rem .7rem;
+  border: 1px solid #62596F;
+  border-radius: 2px;
+  background: #0D0A14;
+  color: #FAF8F2;
+  font: 500 .76rem var(--font-body);
+}
+.typeField select:focus-visible {
+  outline: 2px solid var(--forma-electric-iris);
+  outline-offset: 2px;
+}
+.typeField select option {
+  background: #17131F;
+  color: #FAF8F2;
+}
