@@ -33,3 +33,35 @@
 .closing p{font-size:clamp(2.4rem,5vw,5rem)}
 .closing em{color:var(--forma-electric-iris)}
 @media(max-width:700px){.heading{min-height:0}.heading h1{font-size:clamp(4.5rem,17vw,7rem)}}
+
+
+/* MOTION LAB — editorial hierarchy and contained instrument */
+.main {
+  width: min(100% - (var(--page-gutter) * 2), 88rem);
+}
+.intro {
+  padding: clamp(2.5rem, 5vw, 4.5rem) 0 1.5rem;
+}
+.heading {
+  grid-template-columns: minmax(0, 1.1fr) minmax(16rem, .55fr);
+  gap: clamp(1.5rem, 4vw, 4rem);
+  padding: clamp(2.5rem, 5vw, 4.5rem) 0;
+}
+.heading h1 {
+  font-size: clamp(4.5rem, 9vw, 9rem);
+  line-height: .82;
+}
+.heading p {
+  max-width: 23rem;
+  color: #D8D1DF;
+}
+.instrument {
+  padding: clamp(1.5rem, 3vw, 2.5rem) 0 5rem;
+}
+@media (max-width: 700px) {
+  .intro { padding-top: 2rem; }
+  .heading { gap: 1.5rem; padding-block: 2.5rem; }
+}
+@media (max-width: 440px) {
+  .meta, .foot { flex-wrap: wrap; }
+}
