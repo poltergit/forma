@@ -142,3 +142,23 @@ html {
     --duration-spatial: 1ms;
   }
 }
+
+
+/* HIGH-CONTRAST ATELIER — dark-first surfaces, bright readable matter */
+:root {
+  --color-page: #08070D;
+  --color-surface: #14111C;
+  --color-surface-raised: #211C2B;
+  --color-surface-sunken: #050409;
+  --color-text: #FAF8F2;
+  --color-text-secondary: #E8E3ED;
+  --color-text-muted: #CFC8D8;
+  --color-border: #494253;
+  --color-border-strong: #81778F;
+  --atelier-surface: #14111C;
+  --atelier-surface-raised: #211C2B;
+  --atelier-stage: #08070D;
+  --atelier-copy: #FAF8F2;
+  --atelier-copy-secondary: #E8E3ED;
+  --atelier-copy-muted: #CFC8D8;
+}
