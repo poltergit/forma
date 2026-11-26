@@ -2,11 +2,12 @@
 
 import Link from "next/link";
 import { Canvas, useFrame } from "@react-three/fiber";
-import { ContactShadows, Environment, OrbitControls, RoundedBox, Text, TransformControls } from "@react-three/drei";
+import { Center, ContactShadows, Environment, OrbitControls, RoundedBox, Text, Text3D, TransformControls } from "@react-three/drei";
 import { Suspense, useEffect, useMemo, useState } from "react";
 import type { ChangeEvent, ReactNode } from "react";
 import { useRef } from "react";
 import { ACESFilmicToneMapping, LinearToneMapping, NeutralToneMapping, NoToneMapping, OrthographicCamera, Vector2, type Group } from "three";
+import helvetikerBold from "three/examples/fonts/helvetiker_bold.typeface.json";
 import { EffectComposer } from "three/addons/postprocessing/EffectComposer.js";
 import { RenderPass } from "three/addons/postprocessing/RenderPass.js";
 import { UnrealBloomPass } from "three/addons/postprocessing/UnrealBloomPass.js";
@@ -25,7 +26,7 @@ import { DEFAULT_SCENE_LIGHTING, normalizeSceneLighting, SCENE_ENVIRONMENTS, SCE
 import { DEFAULT_SCENE_RENDER, normalizeSceneRender, SCENE_RENDER_QUALITY, type SceneRenderDocument } from "../scene-render";
 
 type ShapeKind = "box" | "sphere" | "torus" | "text";
-type SceneObject = { id: number; name: string; kind: ShapeKind; color: string; text?: string; fontSize?: number; letterSpacing?: number; roughness: number; metalness: number; emissive: string; transmission: number; thickness: number; ior: number; clearcoat: number; clearcoatRoughness: number; opacity: number; position: [number, number, number]; rotation: [number, number, number]; scale: number; visible: boolean };
+type SceneObject = { id: number; name: string; kind: ShapeKind; color: string; text?: string; fontSize?: number; letterSpacing?: number; typographyStyle?: "flat" | "extruded" | "inflated"; extrusion?: number; bevel?: number; roughness: number; metalness: number; emissive: string; transmission: number; thickness: number; ior: number; clearcoat: number; clearcoatRoughness: number; opacity: number; position: [number, number, number]; rotation: [number, number, number]; scale: number; visible: boolean };
 type CameraView = "perspective" | "front" | "top" | "side";
 type TransformTool = "select" | "move" | "rotate" | "scale";
 
@@ -92,9 +93,16 @@ function ObjectMesh({ item, selected, tool, onSelect, onTransform }: { item: Sce
   else if (item.kind === "sphere") geometry = <sphereGeometry args={[0.68, 64, 48]} />;
   else geometry = <torusGeometry args={[0.62, 0.19, 24, 80]} />;
   const form = item.kind === "text" ? (
-    <Text color={item.color} fontSize={item.fontSize ?? 0.72} letterSpacing={item.letterSpacing ?? 0.015} anchorX="center" anchorY="middle" textAlign="center" maxWidth={5} outlineWidth={selected ? 0.012 : 0} outlineColor="#090810" onClick={(event) => { event.stopPropagation(); onSelect(); }}>
-      {item.text ?? "FORM IS A VERB."}
-    </Text>
+    item.typographyStyle === "flat" || !item.typographyStyle ? (
+      <Text color={item.color} fontSize={item.fontSize ?? 0.72} letterSpacing={item.letterSpacing ?? 0.015} anchorX="center" anchorY="middle" textAlign="center" maxWidth={5} outlineWidth={selected ? 0.012 : 0} outlineColor="#090810" onClick={(event) => { event.stopPropagation(); onSelect(); }}>
+        {item.text ?? "FORM IS A VERB."}
+      </Text>
+    ) : (
+      <Center>\n      <Text3D font={helvetikerBold} size={item.fontSize ?? 0.72} height={item.typographyStyle === "inflated" ? Math.max(0.12, item.extrusion ?? 0.24) : item.extrusion ?? 0.18} curveSegments={12} bevelEnabled bevelSegments={5} bevelSize={item.typographyStyle === "inflated" ? Math.max(0.055, item.bevel ?? 0.09) : item.bevel ?? 0.025} bevelThickness={item.typographyStyle === "inflated" ? Math.max(0.055, item.bevel ?? 0.09) : item.bevel ?? 0.025} onClick={(event) => { event.stopPropagation(); onSelect(); }}>
+        <meshPhysicalMaterial {...material} />
+        {item.text ?? "FORMA"}
+      </Text3D>
+    )
   ) : (
     <mesh onClick={(event) => { event.stopPropagation(); onSelect(); }}>
       {geometry}
@@ -593,7 +601,7 @@ export function SceneStudio() {
     recordHistory();
     const id = Math.max(0, ...objects.map((item) => item.id)) + 1;
     const labels: Record<ShapeKind, string> = { box: "Block", sphere: "Orb", torus: "Loop", text: "Type" };
-    setObjects((current) => [...current, { id, name: `${labels[kind]} / ${String(id).padStart(2, "0")}`, kind, color: kind === "box" ? "#ff765e" : kind === "sphere" ? "#a48bff" : kind === "torus" ? "#d7f36a" : "#F5F1E8", ...(kind === "text" ? { text: "FORM IS A VERB.", fontSize: 0.72, letterSpacing: 0.015 } : {}), roughness: 0.28, metalness: 0.12, emissive: "#000000", transmission: 0, thickness: 0, ior: 1.5, clearcoat: 0, clearcoatRoughness: 0, opacity: 1, position: [((id % 3) - 1) * 0.65, 0, -0.6], rotation: [0, 0, 0], scale: 0.8, visible: true }]);
+    setObjects((current) => [...current, { id, name: `${labels[kind]} / ${String(id).padStart(2, "0")}`, kind, color: kind === "box" ? "#ff765e" : kind === "sphere" ? "#a48bff" : kind === "torus" ? "#d7f36a" : "#F5F1E8", ...(kind === "text" ? { text: "FORMA", fontSize: 0.72, letterSpacing: 0.015, typographyStyle: "inflated" as const, extrusion: 0.24, bevel: 0.09 } : {}), roughness: 0.28, metalness: 0.12, emissive: "#000000", transmission: 0, thickness: 0, ior: 1.5, clearcoat: 0, clearcoatRoughness: 0, opacity: 1, position: [((id % 3) - 1) * 0.65, 0, -0.6], rotation: [0, 0, 0], scale: 0.8, visible: true }]);
     setSelectedId(id);
     
   };
@@ -779,7 +787,7 @@ export function SceneStudio() {
               <div className={styles.propertyTitle}>TYPE COMPOSITION <span>LETTERFORM / MATTER</span></div>
               <label className={styles.typeField}><span>CONTENT</span><textarea maxLength={500} rows={4} value={selected.text ?? ""} onChange={(event) => updateSelected({ text: event.target.value })} /></label>
               <label className={styles.rangeField}><span>TYPE SIZE <b>{(selected.fontSize ?? 0.72).toFixed(2)}</b></span><input type="range" min="0.15" max="2" step="0.01" value={selected.fontSize ?? 0.72} onChange={(event) => updateSelected({ fontSize: Number(event.target.value) })} /></label>
-              <label className={styles.rangeField}><span>LETTER SPACING <b>{(selected.letterSpacing ?? 0.015).toFixed(3)}</b></span><input type="range" min="-0.1" max="0.25" step="0.001" value={selected.letterSpacing ?? 0.015} onChange={(event) => updateSelected({ letterSpacing: Number(event.target.value) })} /></label>
+              <label className={styles.typeField}><span>FORM TREATMENT</span><select value={selected.typographyStyle ?? "flat"} onChange={(event) => updateSelected({ typographyStyle: event.target.value as "flat" | "extruded" | "inflated" })}><option value="flat">Flat / editorial</option><option value="extruded">Extruded / solid</option><option value="inflated">Inflated / soft sculpture</option></select></label>{selected.typographyStyle !== "flat" && <><label className={styles.rangeField}><span>DEPTH <b>{(selected.extrusion ?? 0.18).toFixed(2)}</b></span><input type="range" min="0.04" max="0.8" step="0.01" value={selected.extrusion ?? 0.18} onChange={(event) => updateSelected({ extrusion: Number(event.target.value) })} /></label><label className={styles.rangeField}><span>BEVEL / ROUNDNESS <b>{(selected.bevel ?? 0.04).toFixed(2)}</b></span><input type="range" min="0.005" max="0.2" step="0.005" value={selected.bevel ?? 0.04} onChange={(event) => updateSelected({ bevel: Number(event.target.value) })} /></label></>}<label className={styles.rangeField}><span>LETTER SPACING <b>{(selected.letterSpacing ?? 0.015).toFixed(3)}</b></span><input type="range" min="-0.1" max="0.25" step="0.001" value={selected.letterSpacing ?? 0.015} onChange={(event) => updateSelected({ letterSpacing: Number(event.target.value) })} /></label>
             </section>}
             <section className={styles.propertySection}>
               <div className={styles.propertyTitle}>SURFACE <span>⌄</span></div>
