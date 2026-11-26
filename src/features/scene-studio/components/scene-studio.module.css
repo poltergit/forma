@@ -580,3 +580,82 @@
   background: #17131F;
   color: #FAF8F2;
 }
+
+
+/* TRANSFORM COMMIT — explicit, high-visibility placement confirmation */
+.transformCommit {
+  position: absolute;
+  z-index: 8;
+  top: 4.25rem;
+  right: 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: .65rem;
+  max-width: min(39rem, calc(100% - 3rem));
+  padding: .75rem;
+  border: 1px solid #D9FF3F;
+  background: #17131F;
+  color: #FAF8F2;
+  box-shadow: 0 12px 36px rgb(0 0 0 / .42), 0 0 0 1px rgb(217 255 63 / .12);
+}
+.transformCommit > div {
+  display: grid;
+  gap: .25rem;
+  min-width: 10rem;
+  margin-right: .4rem;
+}
+.transformCommit strong {
+  color: #D9FF3F;
+  font: 700 10px var(--font-mono);
+  letter-spacing: .12em;
+}
+.transformCommit span {
+  color: #D8D1DF;
+  font: 10px/1.45 var(--font-body);
+}
+.transformCommit button {
+  min-height: 2.65rem;
+  padding: .65rem .8rem;
+  border: 1px solid #71687F;
+  background: #211A2C;
+  color: #FAF8F2;
+  font: 9px var(--font-mono);
+  letter-spacing: .07em;
+  white-space: nowrap;
+  cursor: pointer;
+}
+.transformCommit .saveTransform {
+  border-color: #D9FF3F;
+  background: #D9FF3F;
+  color: #100D18;
+  font-weight: 700;
+}
+.transformCommit .saveTransform span {
+  color: #100D18;
+  font-size: 13px;
+}
+.transformCommit .discardTransform:hover {
+  border-color: #FF735F;
+  color: #FF9A8C;
+}
+.transformCommit .saveTransform:hover {
+  background: #E8FF8A;
+  border-color: #E8FF8A;
+}
+@media (max-width: 700px) {
+  .transformCommit {
+    top: auto;
+    right: .7rem;
+    bottom: 3.5rem;
+    left: .7rem;
+    max-width: none;
+    flex-wrap: wrap;
+    gap: .45rem;
+    padding: .6rem;
+  }
+  .transformCommit > div {
+    flex-basis: 100%;
+    margin: 0 0 .2rem;
+  }
+  .transformCommit button { flex: 1; }
+}
