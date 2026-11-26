@@ -135,7 +135,7 @@ function ObjectMesh({ item, selected, tool, onSelect, onTransformStart, onTransf
   const group = <group ref={groupRef} position={item.position} rotation={item.rotation} scale={item.scale} visible={item.visible}>{form}</group>;
   if (selected && tool !== "select") {
     const mode = tool === "move" ? "translate" : tool;
-    return <TransformControls mode={mode} onMouseDown={onTransformStart} onObjectChange={handleTransform} onMouseUp={handleTransform}>{group}</TransformControls>;
+    return <TransformControls mode={mode} onMouseDown={onTransformStart} onMouseUp={handleTransform}>{group}</TransformControls>;
   }
   return group;
 }
