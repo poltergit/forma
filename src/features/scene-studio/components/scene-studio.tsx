@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { Canvas, useFrame } from "@react-three/fiber";
-import { ContactShadows, Environment, OrbitControls, RoundedBox, Text, Text3D, TransformControls } from "@react-three/drei";
+import { Center, ContactShadows, Environment, OrbitControls, RoundedBox, Text, Text3D, TransformControls } from "@react-three/drei";
 import { Suspense, useEffect, useMemo, useState } from "react";
 import type { ChangeEvent, ReactNode } from "react";
 import { useRef } from "react";
@@ -98,7 +98,7 @@ function ObjectMesh({ item, selected, tool, onSelect, onTransform }: { item: Sce
         {item.text ?? "FORM IS A VERB."}
       </Text>
     ) : (
-      <Text3D font={helvetikerBold} size={item.fontSize ?? 0.72} height={item.typographyStyle === "inflated" ? Math.max(0.12, item.extrusion ?? 0.24) : item.extrusion ?? 0.18} curveSegments={12} bevelEnabled bevelSegments={5} bevelSize={item.typographyStyle === "inflated" ? Math.max(0.055, item.bevel ?? 0.09) : item.bevel ?? 0.025} bevelThickness={item.typographyStyle === "inflated" ? Math.max(0.055, item.bevel ?? 0.09) : item.bevel ?? 0.025} onClick={(event) => { event.stopPropagation(); onSelect(); }}>
+      <Center>\n      <Text3D font={helvetikerBold} size={item.fontSize ?? 0.72} height={item.typographyStyle === "inflated" ? Math.max(0.12, item.extrusion ?? 0.24) : item.extrusion ?? 0.18} curveSegments={12} bevelEnabled bevelSegments={5} bevelSize={item.typographyStyle === "inflated" ? Math.max(0.055, item.bevel ?? 0.09) : item.bevel ?? 0.025} bevelThickness={item.typographyStyle === "inflated" ? Math.max(0.055, item.bevel ?? 0.09) : item.bevel ?? 0.025} onClick={(event) => { event.stopPropagation(); onSelect(); }}>
         <meshPhysicalMaterial {...material} />
         {item.text ?? "FORMA"}
       </Text3D>
