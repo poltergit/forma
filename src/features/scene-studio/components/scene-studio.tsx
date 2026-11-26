@@ -6,7 +6,7 @@ import { Center, ContactShadows, Environment, OrbitControls, RoundedBox, Text, T
 import { Suspense, useEffect, useMemo, useState } from "react";
 import type { ChangeEvent, ReactNode } from "react";
 import { useRef } from "react";
-import { ACESFilmicToneMapping, LinearToneMapping, NeutralToneMapping, NoToneMapping, OrthographicCamera, Vector2, type Group } from "three";
+import { ACESFilmicToneMapping, LinearToneMapping, NeutralToneMapping, NoToneMapping, OrthographicCamera, Vector2, Group } from "three";
 import { EffectComposer } from "three/addons/postprocessing/EffectComposer.js";
 import { RenderPass } from "three/addons/postprocessing/RenderPass.js";
 import { UnrealBloomPass } from "three/addons/postprocessing/UnrealBloomPass.js";
