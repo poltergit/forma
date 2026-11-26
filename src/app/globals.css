@@ -18,8 +18,9 @@ body {
   min-height: 100vh;
   margin: 0;
   background:
-    radial-gradient(ellipse at 7% 8%, color-mix(in srgb, var(--forma-electric-iris) 9%, transparent), transparent 28rem),
-    radial-gradient(ellipse at 94% 34%, color-mix(in srgb, var(--forma-signal-vermilion) 6%, transparent), transparent 26rem),
+    radial-gradient(ellipse at 12% 8%, color-mix(in srgb, var(--forma-electric-iris) 22%, transparent), transparent 34rem),
+    radial-gradient(ellipse at 88% 28%, color-mix(in srgb, var(--forma-soft-matter) 12%, transparent), transparent 30rem),
+    radial-gradient(ellipse at 50% 100%, color-mix(in srgb, var(--forma-signal-vermilion) 10%, transparent), transparent 38rem),
     var(--color-page);
   color: var(--color-text);
   font-family: var(--font-body);
@@ -112,3 +113,6 @@ button { color: inherit; }
 }
 :root{--forma-depth-near:18px;--forma-depth-mid:42px;--forma-depth-far:88px}
 body{isolation:isolate}
+
+body::before{position:fixed;z-index:-1;inset:0;background-image:radial-gradient(rgb(244 240 232 / .12) .65px,transparent .65px);background-size:5px 5px;opacity:.12;pointer-events:none;content:""}
+::selection{color:var(--forma-carbon-ink);background:var(--forma-soft-matter)}

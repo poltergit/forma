@@ -17,3 +17,11 @@
   .inner { align-items: flex-start; flex-direction: column; justify-content: center; gap: .5rem; padding-block: 1rem; font-size: .5rem; }
 }
 .wordmark{display:inline-flex;align-items:center;gap:.55rem}.wordmark svg{width:1.55rem;height:1.55rem;fill:none;stroke:var(--forma-acid-voltage);stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;transform:rotate(-12deg)}.wordmark svg path:nth-child(2){stroke:var(--forma-signal-vermilion)}.wordmark svg circle{stroke:var(--forma-electric-iris);stroke-dasharray:3 4}
+
+.wordmark svg{filter:drop-shadow(0 0 8px rgb(135 91 255 / .28));animation:footer-mark-drift 14s ease-in-out infinite}
+.wordmark svg ellipse:first-child{stroke:var(--forma-electric-iris);stroke-dasharray:2 3}
+.wordmark svg ellipse:nth-child(2){stroke:var(--forma-soft-matter);stroke-width:1.1;stroke-dasharray:1 4}
+.wordmark svg path:nth-of-type(2){stroke:var(--forma-soft-matter)}
+.wordmark svg circle{fill:var(--forma-signal-vermilion);stroke:var(--forma-studio-bone)}
+@keyframes footer-mark-drift{50%{transform:rotate(8deg) scale(1.08)}}
+@media(prefers-reduced-motion:reduce){.wordmark svg{animation:none}}

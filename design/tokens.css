@@ -3,39 +3,39 @@
 :root {
   color-scheme: light;
 
-  /* Core palette: studio grounds, material, and signals */
-  --forma-studio-bone: #F1EDE3;
-  --forma-carbon-ink: #17151D;
-  --forma-acid-voltage: #D8FF38;
-  --forma-signal-vermilion: #FF5B45;
-  --forma-electric-iris: #6855F5;
-  --forma-soft-matter: #A8E5D2;
+  /* Core palette: NEON RELIC — nocturnal matter and electric signals */
+  --forma-studio-bone: #F4F0E8;
+  --forma-carbon-ink: #100D18;
+  --forma-acid-voltage: #D9FF3F;
+  --forma-signal-vermilion: #FF5A3C;
+  --forma-electric-iris: #875BFF;
+  --forma-soft-matter: #54F2D2;
 
   /* Supporting neutrals */
-  --forma-ash: #77727D;
-  --forma-rule: #D6D1C7;
-  --forma-paper-white: #FBF9F4;
-  --forma-deep-shadow: #100F15;
+  --forma-ash: #A39AAA;
+  --forma-rule: #393344;
+  --forma-paper-white: #1B1724;
+  --forma-deep-shadow: #08060D;
 
   /* Semantic surfaces */
-  --color-page: var(--forma-studio-bone);
-  --color-surface: #E9E4DA;
-  --color-surface-raised: var(--forma-paper-white);
-  --color-surface-sunken: #DED8CD;
-  --color-surface-inverse: var(--forma-carbon-ink);
-  --color-text: var(--forma-carbon-ink);
-  --color-text-secondary: #5F5A65;
+  --color-page: var(--forma-carbon-ink);
+  --color-surface: #1B1724;
+  --color-surface-raised: #252030;
+  --color-surface-sunken: #0C0912;
+  --color-surface-inverse: var(--forma-studio-bone);
+  --color-text: var(--forma-studio-bone);
+  --color-text-secondary: #C2BACB;
   --color-text-muted: var(--forma-ash);
-  --color-text-inverse: var(--forma-studio-bone);
-  --color-border: var(--forma-rule);
-  --color-border-strong: #96909A;
-  --color-accent: var(--forma-signal-vermilion);
-  --color-accent-secondary: var(--forma-electric-iris);
+  --color-text-inverse: var(--forma-carbon-ink);
+  --color-border: #393344;
+  --color-border-strong: #766D82;
+  --color-accent: var(--forma-electric-iris);
+  --color-accent-secondary: var(--forma-soft-matter);
   --color-accent-tertiary: var(--forma-acid-voltage);
-  --color-success: #287A62;
+  --color-success: #54F2D2;
   --color-warning: #94610B;
   --color-danger: #C63F36;
-  --color-info: #5148C8;
+  --color-info: #875BFF;
 
   /* Compatibility aliases — all resolve to the official Matter in Motion palette */
   --brand-obsidian: var(--forma-carbon-ink);

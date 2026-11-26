@@ -1,8 +1,17 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 240" fill="none">
-  <title>FORMA — Matter in Motion</title>
-  <circle cx="120" cy="120" r="101" stroke="#6855F5" stroke-width="1.8" stroke-dasharray="2 8"/>
-  <circle cx="120" cy="120" r="76" stroke="#FF5B45" stroke-width="1.8" stroke-dasharray="48 12 3 12"/>
-  <path d="M72 190V50h112M72 112h82M72 190l82-140" stroke="#D8FF38" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
-  <path d="M72 112h82" stroke="#FF5B45" stroke-width="5" stroke-linecap="round"/>
-  <circle cx="120" cy="120" r="8" fill="#F1EDE3" stroke="#D8FF38" stroke-width="2"/>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 300" fill="none">
+  <title>FORMA — Neon Relic</title>
+  <defs>
+    <linearGradient id="glyph" x1="62" y1="45" x2="232" y2="258" gradientUnits="userSpaceOnUse"><stop stop-color="#D9FF3F"/><stop offset=".48" stop-color="#54F2D2"/><stop offset="1" stop-color="#875BFF"/></linearGradient>
+    <filter id="glow" x="0" y="0" width="300" height="300" filterUnits="userSpaceOnUse"><feGaussianBlur stdDeviation="7" result="blur"/><feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+  </defs>
+  <ellipse cx="150" cy="150" rx="130" ry="58" transform="rotate(-31 150 150)" stroke="#875BFF" stroke-width="2.4" stroke-dasharray="3 9"/>
+  <ellipse cx="150" cy="150" rx="99" ry="128" transform="rotate(38 150 150)" stroke="#54F2D2" stroke-width="2" stroke-dasharray="1 8"/>
+  <ellipse cx="150" cy="150" rx="114" ry="114" transform="rotate(-18 150 150)" stroke="#FF5A3C" stroke-width="1.6" stroke-dasharray="54 18 4 16" opacity=".9"/>
+  <path d="M93 235V65h130v31H131v37h75v31h-75v71H93Z" stroke="url(#glyph)" stroke-width="3" fill="#D9FF3F" fill-opacity=".08" filter="url(#glow)"/>
+  <path d="m86 226 127-151" stroke="#54F2D2" stroke-width="13" stroke-linecap="square" filter="url(#glow)"/>
+  <path d="M116 150h83" stroke="#FF5A3C" stroke-width="8" stroke-linecap="square"/>
+  <circle cx="239" cy="87" r="7" fill="#FF5A3C" stroke="#F4F0E8" stroke-width="2"/>
+  <circle cx="62" cy="192" r="5" fill="#D9FF3F"/>
+  <circle cx="220" cy="232" r="4" fill="#54F2D2"/>
+  <path d="M150 20v16M150 264v16M20 150h16M264 150h16" stroke="#F4F0E8" stroke-width="2" stroke-linecap="round" opacity=".6"/>
 </svg>

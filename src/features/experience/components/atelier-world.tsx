@@ -51,11 +51,11 @@ void main() {
   float contour = smoothstep(0.91, 0.995, abs(sin(phase * 1.7 + bands * 0.8)));
   float fresnel = pow(1.0 - max(dot(normalize(vNormal), normalize(vViewPosition)), 0.0), 2.15);
 
-  vec3 coral = vec3(1.0, 0.357, 0.271);
-  vec3 iris = vec3(0.408, 0.333, 0.961);
-  vec3 acid = vec3(0.847, 1.0, 0.220);
-  vec3 mint = vec3(0.659, 0.898, 0.831);
-  vec3 bone = vec3(0.945, 0.929, 0.890);
+  vec3 coral = vec3(1.0, 0.353, 0.235);
+  vec3 iris = vec3(0.529, 0.357, 1.0);
+  vec3 acid = vec3(0.851, 1.0, 0.247);
+  vec3 mint = vec3(0.329, 0.949, 0.824);
+  vec3 bone = vec3(0.957, 0.941, 0.910);
   vec3 baseColor = mix(coral, iris, wave);
 
   if (uMode > 0.5 && uMode < 1.5) {
@@ -119,15 +119,15 @@ function Afterform({ reducedMotion }: { reducedMotion: boolean }) {
     <group ref={trace} scale={1.16}>
       <mesh rotation={[0.42, 0.18, -0.12]}>
         <torusKnotGeometry args={[0.9, 0.012, 180, 6, 3, 4]} />
-        <meshBasicMaterial color="#ff5b45" transparent opacity={0.72} wireframe />
+        <meshBasicMaterial color="#ff5a3c" transparent opacity={0.72} wireframe />
       </mesh>
       <mesh rotation={[-0.28, 0.56, 0.34]} scale={1.08}>
         <torusKnotGeometry args={[0.82, 0.009, 160, 5, 2, 5]} />
-        <meshBasicMaterial color="#a8e5d2" transparent opacity={0.62} wireframe />
+        <meshBasicMaterial color="#54f2d2" transparent opacity={0.62} wireframe />
       </mesh>
       <mesh rotation={[Math.PI / 2.5, 0.3, 0.18]}>
         <torusGeometry args={[1.82, 0.008, 6, 180]} />
-        <meshBasicMaterial color="#d8ff38" transparent opacity={0.7} />
+        <meshBasicMaterial color="#d9ff3f" transparent opacity={0.7} />
       </mesh>
     </group>
   );
@@ -158,17 +158,17 @@ function Sculpture({ intensity, speed, density, seed, reducedMotion, mode }: Pro
       </mesh>
       <mesh rotation={[0.8, 0.3, 0.6]} scale={0.72}>
         <icosahedronGeometry args={[1, 1]} />
-        <meshPhysicalMaterial color="#6855f5" metalness={0.72} roughness={0.2} clearcoat={0.9} clearcoatRoughness={0.12} wireframe />
+        <meshPhysicalMaterial color="#875bff" metalness={0.72} roughness={0.2} clearcoat={0.9} clearcoatRoughness={0.12} wireframe />
       </mesh>
       <Afterform reducedMotion={reducedMotion} />
       <mesh rotation={[Math.PI / 2.2, 0.4, 0]}>
         <torusGeometry args={[1.55, 0.012, 8, 180]} />
-        <meshBasicMaterial color="#17151d" transparent opacity={0.48} />
+        <meshBasicMaterial color="#100d18" transparent opacity={0.48} />
       </mesh>
       {shards.map((shard, index) => (
         <mesh key={index} position={shard.position} rotation={shard.rotation} scale={shard.scale}>
           <octahedronGeometry args={[1, 0]} />
-          <meshPhysicalMaterial color={index % 4 === 0 ? "#ff5b45" : index % 4 === 1 ? "#6855f5" : index % 4 === 2 ? "#d8ff38" : "#a8e5d2"} metalness={0.48} roughness={0.24} clearcoat={0.65} clearcoatRoughness={0.2} />
+          <meshPhysicalMaterial color={index % 4 === 0 ? "#ff5a3c" : index % 4 === 1 ? "#875bff" : index % 4 === 2 ? "#d9ff3f" : "#54f2d2"} metalness={0.48} roughness={0.24} clearcoat={0.65} clearcoatRoughness={0.2} />
         </mesh>
       ))}
     </group>
@@ -186,10 +186,10 @@ function Scene(props: Props) {
     <>
       <ambientLight intensity={1.25} />
       <directionalLight position={[4, 5, 6]} intensity={3.2} />
-      <pointLight position={[-4, 1, 3]} color="#ff5b45" intensity={26} distance={12} />
-      <pointLight position={[4, -2, -3]} color="#6855f5" intensity={20} distance={10} />
-      <pointLight position={[0, -4, 2]} color="#a8e5d2" intensity={8} distance={9} />
-      {!props.reducedMotion && <Sparkles count={Math.min(props.density * 3, 90)} scale={5.6} size={2.1} speed={0.24 * props.speed} opacity={0.58} color="#6855f5" />}
+      <pointLight position={[-4, 1, 3]} color="#ff5a3c" intensity={26} distance={12} />
+      <pointLight position={[4, -2, -3]} color="#875bff" intensity={20} distance={10} />
+      <pointLight position={[0, -4, 2]} color="#54f2d2" intensity={8} distance={9} />
+      {!props.reducedMotion && <Sparkles count={Math.min(props.density * 3, 90)} scale={5.6} size={2.1} speed={0.24 * props.speed} opacity={0.58} color="#875bff" />}
       <group ref={group}><Sculpture {...props} /></group>
     </>
   );

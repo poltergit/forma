@@ -13,7 +13,7 @@ export function SiteHeader() {
     <header className={styles.header}>
       <div className={styles.inner}>
         <SpatialLink className={styles.brand} href="/" aria-label="FORMA home">
-          <svg className={styles.mark} viewBox="0 0 48 48" aria-hidden="true"><path d="M13 38V10h23" /><path d="M13 23h17" /><path d="M13 38l17-28" /><circle cx="24" cy="24" r="19" /></svg>
+          <svg className={styles.mark} viewBox="0 0 48 48" aria-hidden="true"><ellipse cx="24" cy="24" rx="21" ry="10" transform="rotate(-32 24 24)" /><ellipse cx="24" cy="24" rx="17" ry="21" transform="rotate(38 24 24)" /><path d="M15 36V11h20M15 22h15" /><path d="m14 36 20-25" /><circle cx="36" cy="13" r="2.4" /></svg>
           <span>FORMA<span className={styles.registered}>®</span></span>
         </SpatialLink>
         <nav className={styles.nav} aria-label="Main navigation">
