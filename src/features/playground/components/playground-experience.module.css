@@ -315,3 +315,43 @@
   .stage { height: 22rem; }
   .generatorPicker button { min-height: 4.5rem; }
 }
+
+
+/* STUDY FRAME — match the 100rem editorial column and full-bleed canvas */
+.experience {
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
+}
+.stage {
+  display: block;
+  width: 100%;
+  height: clamp(30rem, 38.125vw, 38.125rem);
+  min-height: 0;
+  max-height: 38.125rem;
+  aspect-ratio: auto;
+  box-sizing: border-box;
+  isolation: isolate;
+}
+.stage canvas {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 100% !important;
+  height: 100% !important;
+  min-height: 0 !important;
+  max-width: none;
+  box-sizing: border-box;
+}
+.stageOverlay, .stageCrosshair { z-index: 2; }
+.staticFallback { z-index: 0; }
+@media (max-width: 760px) {
+  .stage {
+    height: clamp(24rem, 72vw, 32rem);
+    max-height: 32rem;
+  }
+}
+@media (max-width: 480px) {
+  .stage { height: 24rem; }
+}
