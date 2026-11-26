@@ -178,7 +178,11 @@ Use spatial depth when it helps explain:
 
 The camera is part of the art direction. Establish intentional viewpoints and focal distance. Keep controls accessible and provide sensible quality fallbacks. Do not let a full-screen 3D scene obscure the product's purpose.
 
-## 10. Feature personalities
+## 10. Meaning before visualization
+
+Every visible form must communicate a relationship between matter, force, trace, and intention. Before adding a new object or animation, define what it represents, what causes it to move, what changes through interaction, and what evidence remains afterward. FORMA's foundational force studies are Orbit (attraction and relationships), Fracture (pressure and exposed structure), and Resolve (alignment and emergence). Their visual behaviors and acceptance criteria are specified in [FORMA Force Grammar](./FORMA_FORCE_GRAMMAR.md). An effect without a clear cause, consequence, or trace is decoration and does not belong in the atelier.
+
+## 11. Feature personalities
 
 Each feature gets its own composition and interaction personality while sharing the four identity primitives.
 

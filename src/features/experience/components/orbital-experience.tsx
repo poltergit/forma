@@ -7,7 +7,7 @@ import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { useGSAP } from "@gsap/react";
 import styles from "./orbital-experience.module.css";
-import type { MaterialMode } from "./atelier-world";
+import type { ForceMode } from "./atelier-world";
 
 const AtelierWorld = dynamic(() => import("./atelier-world").then((module) => module.AtelierWorld), {
   ssr: false,
@@ -27,7 +27,7 @@ export function AtelierExperience() {
   const [speed, setSpeed] = useState(1);
   const [density, setDensity] = useState(18);
   const [seed, setSeed] = useState(4137);
-  const [mode, setMode] = useState<MaterialMode>("flow");
+  const [mode, setMode] = useState<ForceMode>("orbit");
   const [reducedMotion, setReducedMotion] = useState(false);
 
   useEffect(() => {
@@ -163,13 +163,13 @@ export function AtelierExperience() {
               <span className={styles.specimenCoordinate}>X 04.13 / Y 08.26 / Z ∞</span>
             </div>
             <div className={styles.specimenAnnotation}><span>SPECIMEN Nº 001</span><b>FORM / IN FLUX</b></div>
-            <div className={styles.specimenLegend}><span>LIVE GENERATIVE OBJECT</span><span>DRAG TO DISTURB ↗</span></div>
-            <div className={styles.materialDock} role="group" aria-label="Change the live specimen material behavior">
-              <span>FORCE FIELD</span>
+            <div className={styles.specimenLegend}><span>LIVE SPECIMEN / {mode.toUpperCase()}</span><span>{mode === "orbit" ? "ATTRACTION / RELATION" : mode === "fracture" ? "PRESSURE / RELEASE" : "ALIGNMENT / EMERGENCE"}</span></div>
+            <div className={styles.materialDock} role="group" aria-label="Change the force acting on the live specimen">
+              <span>APPLY A FORCE</span>
               {([
-                ["flow", "FLOW", "Liquid movement"],
-                ["prism", "PRISM", "Refracted geometry"],
-                ["signal", "SIGNAL", "Kinetic signal"],
+                ["orbit", "ORBIT", "Attraction / relationships"],
+                ["fracture", "FRACTURE", "Pressure / disruption"],
+                ["resolve", "RESOLVE", "Alignment / emergence"],
               ] as const).map(([value, label, description]) => (
                 <button key={value} type="button" aria-label={description} aria-pressed={mode === value} onClick={() => setMode(value)}>{label}</button>
               ))}
@@ -247,17 +247,17 @@ export function AtelierExperience() {
               <label><span>ENERGY <output>{intensity.toFixed(2)}×</output></span><input aria-label="Energy" type="range" min="0.65" max="1.45" step="0.05" value={intensity} onChange={(event) => setIntensity(Number(event.target.value))} /></label>
               <label><span>RHYTHM <output>{speed.toFixed(2)}×</output></span><input aria-label="Rhythm" type="range" min="0.3" max="1.8" step="0.05" value={speed} onChange={(event) => setSpeed(Number(event.target.value))} /></label>
               <label><span>FRAGMENTS <output>{density}</output></span><input aria-label="Fragments" type="range" min="6" max="30" step="2" value={density} onChange={(event) => setDensity(Number(event.target.value))} /></label>
-              <div className={styles.instrumentModes}><span>FIELD BEHAVIOR</span><div role="group" aria-label="Choose material behavior">
-                {(["flow", "prism", "signal"] as const).map((value) => <button key={value} type="button" aria-pressed={mode === value} onClick={() => setMode(value)}>{value.toUpperCase()}</button>)}
+              <div className={styles.instrumentModes}><span>FORCE / {mode.toUpperCase()}</span><div role="group" aria-label="Choose the force acting on the specimen">
+                {(["orbit", "fracture", "resolve"] as const).map((value) => <button key={value} type="button" aria-pressed={mode === value} onClick={() => setMode(value)}>{value.toUpperCase()}</button>)}
               </div></div>
               <div className={styles.instrumentAction}><span>SEED / {String(seed).padStart(5, "0")}</span><button type="button" onClick={() => setSeed((value) => value + 1)}>RECOMPOSE ↗</button></div>
             </div>
             <p className={styles.localNote}>LOCAL STUDY / YOUR EXPERIMENT IS NOT SAVED</p>
           </div>
           <div className={styles.instrumentStage}>
-            <div className={styles.instrumentStageTop}><span>VARIABLE / 03—B</span><span>LIVE SPECIMEN</span></div>
+            <div className={styles.instrumentStageTop}><span>FORCE / {mode.toUpperCase()}</span><span>{mode === "orbit" ? "RELATIONSHIP FIELD" : mode === "fracture" ? "STRESS FIELD" : "CONVERGENCE FIELD"}</span></div>
             <AtelierWorld intensity={intensity} speed={speed} density={density} seed={seed} reducedMotion={reducedMotion} mode={mode} />
-            <div className={styles.instrumentStageBottom}><span>MATTER × FORCE</span><span>SEED {seed}</span></div>
+            <div className={styles.instrumentStageBottom}><span>{mode === "orbit" ? "ATTRACTION CREATES RELATION" : mode === "fracture" ? "PRESSURE REVEALS STRUCTURE" : "FRAGMENTS FIND ALIGNMENT"}</span><span>SEED {seed}</span></div>
           </div>
         </div>
       </section>
