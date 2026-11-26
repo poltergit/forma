@@ -1,7 +1,7 @@
 # FORMA — Brand Guidelines
 
-**Version:** 2.0  
-**Phase:** Identity Renaissance — Phase A  
+**Version:** 2.1  
+**Phase:** Neon Relic — Visual Identity  
 **Status:** Working foundation — owner review required  
 **Creative premise:** Nothing is finished. Everything is becoming.
 
@@ -42,12 +42,12 @@ Individual sections may have different visual personalities while sharing this g
 
 | Role | Name | HEX |
 |---|---|---|
-| Primary light | Studio Bone | `#F1EDE3` |
-| Primary dark | Carbon Ink | `#17151D` |
-| Generative signal | Acid Voltage | `#D8FF38` |
-| Human signal | Signal Vermilion | `#FF5B45` |
-| Spatial signal | Electric Iris | `#6855F5` |
-| Organic counterpoint | Soft Matter | `#A8E5D2` |
+| Primary light | Porcelain | `#F4F0E8` |
+| Primary dark | Abyss | `#100D18` |
+| Generative signal | Hyperlime | `#D9FF3F` |
+| Human signal | Signal Flame | `#FF5A3C` |
+| Spatial signal | Ultraviolet | `#875BFF` |
+| Organic counterpoint | Laser Cyan | `#54F2D2` |
 
 ### Usage
 - Bone and Carbon establish the stage; alternate surfaces to create rhythm.
@@ -70,9 +70,9 @@ Use oversized display type as a compositional object. Crop, overlap, rotate, or 
 
 The wordmark must remain legible at small sizes, work in monochrome, and support both light and dark surfaces.
 
-The secondary symbol should explore transformation, structure, and the relationship between flat and dimensional form. Avoid generic cubes, glowing orbs, and unnecessarily complex emblems.
+The official mark is a sliced F glyph held inside three orbital trajectories. Its dimensional version is an extruded, metallic relic with a cyan slash, flame-colored cut, ultraviolet filament, orbiting satellites, and small fragments. The mark must feel like a system in motion—not a static letter inside a circle.
 
-The Afterform is a recurring graphic signature, not a replacement for the logo. It should adapt to the medium: contour, echo, path, imprint, or offset silhouette.
+The orbital F seal is the primary signature. The Afterform is a recurring graphic language around it, not a replacement for the logo. It should adapt to the medium: contour, echo, path, imprint, or offset silhouette.
 
 ## 7. 2D art direction
 

@@ -26,10 +26,10 @@ export function getMaterialTreatment(material: MaterialId) {
 }
 
 export const PLAYGROUND_PALETTES: Array<{ id: PaletteId; name: string; colors: [string, string, string]; background: string }> = [
-  { id: "atelier", name: "Atelier", colors: ["#ff5b45", "#6855f5", "#17151d"], background: "#e9e4da" },
-  { id: "citrus", name: "Citrus", colors: ["#d8ff38", "#ff5b45", "#17151d"], background: "#f1ede3" },
-  { id: "nocturne", name: "Nocturne", colors: ["#a8e5d2", "#6855f5", "#f1ede3"], background: "#17151d" },
-  { id: "mineral", name: "Mineral", colors: ["#ff5b45", "#a8e5d2", "#6855f5"], background: "#ded8cd" },
+  { id: "atelier", name: "Neon Relic", colors: ["#FF5A3C", "#875BFF", "#54F2D2"], background: "#100D18" },
+  { id: "citrus", name: "Citrus", colors: ["#d9ff3f", "#ff5a3c", "#100d18"], background: "#f4f0e8" },
+  { id: "nocturne", name: "Afterhours", colors: ["#54F2D2", "#875BFF", "#F4F0E8"], background: "#100D18" },
+  { id: "mineral", name: "Signal", colors: ["#FF5A3C", "#54F2D2", "#D9FF3F"], background: "#1B1724" },
 ];
 
 export const PLAYGROUND_PRESETS: Array<{ id: string; name: string; note: string; generator: GeneratorId; density: number; influence: number; palette: PaletteId }> = [

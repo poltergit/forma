@@ -7,7 +7,7 @@
   background:
     radial-gradient(circle at 50% 50%, rgb(199 243 107 / .2), transparent 30%),
     radial-gradient(ellipse at 50% 85%, rgb(100 123 255 / .15), transparent 60%),
-    #17151D;
+    #100D18;
 }
 .staticCore {
   position: relative;
@@ -30,7 +30,7 @@
 .staticCore::after { inset: 29%; border-color: rgb(255 118 94 / .85); }
 .staticCore span {
   transform: rotateZ(-45deg) rotateX(-58deg);
-  color: #F1EDE3;
+  color: #F4F0E8;
   font: 600 clamp(1.3rem, 3vw, 2rem)/1 var(--font-display);
   letter-spacing: -.09em;
 }
@@ -51,14 +51,14 @@
   position: absolute;
   width: 1.2rem;
   aspect-ratio: 1;
-  border: 1px solid #D8FF38;
+  border: 1px solid #D9FF3F;
   background: rgb(199 243 107 / .18);
 }
 .staticForm { top: 25%; left: 27%; transform: rotate(45deg); }
-.staticMotion { top: 32%; right: 24%; width: 2rem; border: 3px double #6855F5; border-radius: 50%; }
-.staticType { right: 31%; bottom: 25%; width: 1.6rem; background: #FF5B45; }
-.staticSpace { bottom: 32%; left: 24%; width: 2rem; border-color: #F1EDE3; transform: rotateX(55deg) rotateZ(45deg); }
-.staticField { top: 18%; right: 42%; width: .5rem; border: 0; border-radius: 50%; background: #A8E5D2; box-shadow: 0 0 1rem #A8E5D2; }
+.staticMotion { top: 32%; right: 24%; width: 2rem; border: 3px double #875BFF; border-radius: 50%; }
+.staticType { right: 31%; bottom: 25%; width: 1.6rem; background: #FF5A3C; }
+.staticSpace { bottom: 32%; left: 24%; width: 2rem; border-color: #F4F0E8; transform: rotateX(55deg) rotateZ(45deg); }
+.staticField { top: 18%; right: 42%; width: .5rem; border: 0; border-radius: 50%; background: #54F2D2; box-shadow: 0 0 1rem #54F2D2; }
 @media (prefers-reduced-motion: reduce) {
   .staticCore, .staticForm, .staticMotion, .staticType, .staticSpace, .staticField { animation: none; }
 }

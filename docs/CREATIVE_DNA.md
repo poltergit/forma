@@ -1,7 +1,7 @@
 # FORMA — Creative DNA
 
-**Version:** 1.0  
-**Phase:** Identity Renaissance — Phase A  
+**Version:** 1.1  
+**Phase:** Neon Relic — Visual Identity  
 **Status:** Working foundation for owner review  
 **Creative premise:** A world in which matter is always becoming.
 
@@ -63,18 +63,18 @@ FORMA is not:
 
 **Creative rule:** composition may be irregular; interaction must remain understandable.
 
-## 4. Color — Studio / Signal / Force
+## 4. Color — Neon Relic / Voltage / Afterhours
 
-Color is used as material and information, not as a universal decoration layer. The identity has two stable grounds, two high-energy signals, and one softer material tone.
+Color is used as material and information, not as a universal decoration layer. The identity is now nocturnal and high-contrast: one abyssal ground, one porcelain counter-ground, and four electric signals.
 
 | Token | Name | HEX | Purpose |
 |---|---|---:|---|
-| Studio Bone | Warm ground | `#F1EDE3` | Editorial pages, working surfaces, breathing room |
-| Carbon Ink | Deep ground | `#17151D` | Immersive environments, navigation, contrast |
-| Acid Voltage | Disruption | `#D8FF38` | Active state, generative energy, key signal |
-| Signal Vermilion | Impact | `#FF5B45` | Human warmth, interruption, emphasis |
-| Electric Iris | Spatial signal | `#6855F5` | Depth, dimensionality, selected technical state |
-| Soft Matter | Organic counterpoint | `#A8E5D2` | Secondary material, calm, organic forms |
+| Porcelain | Counter-ground | `#F4F0E8` | Editorial contrast, typography, breathing room |
+| Abyss | Primary ground | `#100D18` | Immersive environments, navigation, deep contrast |
+| Hyperlime | Disruption | `#D9FF3F` | Active state, generative energy, sharp punctuation |
+| Signal Flame | Impact | `#FF5A3C` | Human warmth, interruption, high-energy emphasis |
+| Ultraviolet | Spatial signal | `#875BFF` | Depth, dimensionality, selected technical state |
+| Laser Cyan | Organic counterpoint | `#54F2D2` | Luminous material, energy, and spatial trails |
 
 ### Color behavior
 - Bone and Carbon establish the stage. Do not place every section on the same ground.
