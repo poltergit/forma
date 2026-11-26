@@ -7,7 +7,6 @@ import { Suspense, useEffect, useMemo, useState } from "react";
 import type { ChangeEvent, ReactNode } from "react";
 import { useRef } from "react";
 import { ACESFilmicToneMapping, LinearToneMapping, NeutralToneMapping, NoToneMapping, OrthographicCamera, Vector2, type Group } from "three";
-import helvetikerBold from "three/examples/fonts/helvetiker_bold.typeface.json";
 import { EffectComposer } from "three/addons/postprocessing/EffectComposer.js";
 import { RenderPass } from "three/addons/postprocessing/RenderPass.js";
 import { UnrealBloomPass } from "three/addons/postprocessing/UnrealBloomPass.js";
@@ -111,7 +110,7 @@ function ObjectMesh({ item, selected, tool, onSelect, onTransform }: { item: Sce
     ) : (
       <Center>
         <Text3D
-          font={helvetikerBold}
+          font="/fonts/helvetiker_bold.typeface.json"
           size={item.fontSize ?? 0.72}
           height={item.typographyStyle === "inflated" ? Math.max(0.12, item.extrusion ?? 0.24) : item.extrusion ?? 0.18}
           curveSegments={12}
