@@ -163,13 +163,25 @@ export function PlaygroundExperience() {
       const originY = height * (pointerRef.current.active ? pointerRef.current.y : 0.5);
       const motion = getAnimationMotion(animationMode, phaseRef.current);
       const influenceRadius = Math.min(width, height) * (0.12 + influence / 180);
-      const cell = Math.sqrt((width * height) / density) * 0.9;
+      // Keep specimens proportional to the shorter stage edge. Area-based sizing
+      // made forms balloon on tall/narrow screens and pushed their faces off-canvas.
+      const cell = Math.min(width, height) / Math.sqrt(density) * 0.58;
       const projected = points.map((point) => {
-        const baseX = point.x * width; const baseY = point.y * height;
+        const baseX = width * (0.14 + point.x * 0.72);
+        const baseY = height * (0.14 + point.y * 0.72);
         const dx = baseX - originX; const dy = baseY - originY; const distance = Math.hypot(dx, dy);
         const falloff = pointerRef.current.active ? Math.max(0, 1 - distance / influenceRadius) : 0;
-        const push = falloff * (influence / 100) * 54;
-        return { x: baseX + motion.offsetX * width + (dx / (distance || 1)) * push, y: baseY + motion.offsetY * height + (dy / (distance || 1)) * push, z: point.depth, size: cell * point.size * (0.38 + point.depth * 0.6) * motion.scale, tone: point.tone };
+        const push = falloff * (influence / 100) * Math.min(width, height) * 0.075;
+        const size = cell * point.size * (0.38 + point.depth * 0.6) * motion.scale;
+        const rawX = baseX + motion.offsetX * width * 0.35 + (dx / (distance || 1)) * push;
+        const rawY = baseY + motion.offsetY * height * 0.35 + (dy / (distance || 1)) * push;
+        const marginX = Math.min(width * 0.18, size * 1.35);
+        const marginY = Math.min(height * 0.18, size * 1.35);
+        return {
+          x: Math.min(width - marginX, Math.max(marginX, rawX)),
+          y: Math.min(height - marginY, Math.max(marginY, rawY)),
+          z: point.depth, size, tone: point.tone,
+        };
       });
 
       context.lineWidth = generator === "woven-lattice" ? 1 : 0.65;
