@@ -278,3 +278,40 @@
 @media (prefers-reduced-motion: reduce) {
   .presetList button,.animationStudio button,.materialStudio button,.generatorPicker button { transition: none; }
 }
+
+
+/* OPEN FIELD STUDIES — keep the live specimen framed, not full-page */
+.stage {
+  height: clamp(22rem, 48vw, 38rem);
+  min-height: 0;
+  max-height: 38rem;
+  aspect-ratio: 16 / 9;
+  background-color: #100D18;
+  background-image:
+    linear-gradient(rgb(244 240 232 / .055) 1px, transparent 1px),
+    linear-gradient(90deg, rgb(244 240 232 / .055) 1px, transparent 1px),
+    radial-gradient(ellipse at 50% 48%, rgb(135 91 255 / .16), transparent 62%);
+  background-size: 30px 30px, 30px 30px, auto;
+}
+.stage canvas {
+  height: 100%;
+  min-height: 0;
+}
+.generatorPicker button {
+  min-height: 6.25rem;
+  padding: .9rem 1rem;
+}
+.generatorPicker button strong {
+  color: #FAF8F2;
+}
+.generatorPicker button small,
+.generatorPicker button > span {
+  color: #C4BDCE;
+}
+@media (max-width: 760px) {
+  .stage { height: clamp(22rem, 72vw, 30rem); }
+}
+@media (max-width: 560px) {
+  .stage { height: 22rem; }
+  .generatorPicker button { min-height: 4.5rem; }
+}
