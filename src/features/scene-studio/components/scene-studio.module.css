@@ -489,3 +489,15 @@
   .workspace { height: min(76svh, 780px); min-height: 460px; }
   .canvasFrame { min-height: 0; }
 }
+
+
+/* TYPOGRAPHIC MATTER — words are objects in the scene graph */
+.addTools { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+.addTools button:last-child { border-color: rgb(245 241 232 / .22); color: #F5F1E8; }
+.addTools button:last-child b { color: var(--forma-acid-voltage); font: 700 1rem var(--font-display); letter-spacing: -.08em; }
+.typeField { display: grid; gap: .5rem; margin-top: .9rem; }
+.typeField > span { color: #C4BDCE; font: 9px var(--font-mono); letter-spacing: .08em; }
+.typeField textarea { width: 100%; min-height: 6rem; resize: vertical; border: 1px solid #51495D; border-radius: 2px; padding: .7rem; background: #0D0B14; color: #F5F1E8; font: 500 .82rem/1.45 var(--font-display); transition: border-color .2s ease, background .2s ease; }
+.typeField textarea:focus { outline: 2px solid var(--forma-electric-iris); outline-offset: 2px; border-color: var(--forma-electric-iris); }
+.typeField textarea::placeholder { color: #C4BDCE; }
+@media (max-width: 700px) { .addTools { grid-template-columns: repeat(4, minmax(0, 1fr)); } }

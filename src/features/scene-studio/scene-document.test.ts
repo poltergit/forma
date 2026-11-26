@@ -29,6 +29,12 @@ describe("scene document", () => {
     expect(parseSceneDocument(validScene).objects[0]).toMatchObject({ transmission: 0, thickness: 0, ior: 1.5, clearcoat: 0, clearcoatRoughness: 0, opacity: 1 });
   });
 
+  it("accepts typography as a first-class scene object and normalizes its defaults", () => {
+    const typography = { ...validScene, objects: [{ ...validScene.objects[0], kind: "text", text: "MATTER / IN MOTION" }] };
+    expect(parseSceneDocument(typography).objects[0]).toMatchObject({ kind: "text", text: "MATTER / IN MOTION", fontSize: 0.72, letterSpacing: 0.015 });
+    expect(() => parseSceneDocument({ ...validScene, objects: [{ ...typography.objects[0], text: "x".repeat(501) }] })).toThrow(/invalid objects/i);
+  });
+
   it("accepts bounded physical material values and rejects invalid transmission", () => {
     const glass = { ...validScene, objects: [{ ...validScene.objects[0], transmission: 1, thickness: 1.2, ior: 1.48, clearcoat: 0.9, clearcoatRoughness: 0.03, opacity: 1 }] };
     expect(parseSceneDocument(glass).objects[0].transmission).toBe(1);

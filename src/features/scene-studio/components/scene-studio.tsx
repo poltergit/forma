@@ -2,11 +2,11 @@
 
 import Link from "next/link";
 import { Canvas, useFrame } from "@react-three/fiber";
-import { ContactShadows, Environment, OrbitControls, RoundedBox, TransformControls } from "@react-three/drei";
+import { ContactShadows, Environment, OrbitControls, RoundedBox, Text, TransformControls } from "@react-three/drei";
 import { Suspense, useEffect, useMemo, useState } from "react";
 import type { ChangeEvent, ReactNode } from "react";
 import { useRef } from "react";
-import { ACESFilmicToneMapping, LinearToneMapping, NeutralToneMapping, NoToneMapping, OrthographicCamera, Vector2, type Mesh } from "three";
+import { ACESFilmicToneMapping, LinearToneMapping, NeutralToneMapping, NoToneMapping, OrthographicCamera, Vector2, type Group } from "three";
 import { EffectComposer } from "three/addons/postprocessing/EffectComposer.js";
 import { RenderPass } from "three/addons/postprocessing/RenderPass.js";
 import { UnrealBloomPass } from "three/addons/postprocessing/UnrealBloomPass.js";
@@ -24,8 +24,8 @@ import { applySceneMaterialPreset, SCENE_MATERIAL_PRESETS, type SceneMaterialId 
 import { DEFAULT_SCENE_LIGHTING, normalizeSceneLighting, SCENE_ENVIRONMENTS, SCENE_LIGHTING_PRESETS, type SceneLightingDocument } from "../scene-lighting";
 import { DEFAULT_SCENE_RENDER, normalizeSceneRender, SCENE_RENDER_QUALITY, type SceneRenderDocument } from "../scene-render";
 
-type ShapeKind = "box" | "sphere" | "torus";
-type SceneObject = { id: number; name: string; kind: ShapeKind; color: string; roughness: number; metalness: number; emissive: string; transmission: number; thickness: number; ior: number; clearcoat: number; clearcoatRoughness: number; opacity: number; position: [number, number, number]; rotation: [number, number, number]; scale: number; visible: boolean };
+type ShapeKind = "box" | "sphere" | "torus" | "text";
+type SceneObject = { id: number; name: string; kind: ShapeKind; color: string; text?: string; fontSize?: number; letterSpacing?: number; roughness: number; metalness: number; emissive: string; transmission: number; thickness: number; ior: number; clearcoat: number; clearcoatRoughness: number; opacity: number; position: [number, number, number]; rotation: [number, number, number]; scale: number; visible: boolean };
 type CameraView = "perspective" | "front" | "top" | "side";
 type TransformTool = "select" | "move" | "rotate" | "scale";
 
@@ -38,6 +38,7 @@ function makeThumbnail(objects: SceneDocument["objects"]) {
     const x = 42 + (index % 4) * 52 + item.position[0] * 7;
     const y = 42 + Math.floor(index / 4) * 48 - item.position[1] * 7;
     const size = Math.max(9, Math.min(25, 15 * item.scale));
+    if (item.kind === "text") { const label = (item.text ?? "TYPE").slice(0, 12).replace(/[&<>"]/g, ""); return `<text x="${x}" y="${y}" fill="${item.color}" font-size="${Math.max(10, size)}" font-family="Arial,sans-serif" font-weight="700" text-anchor="middle">${label}</text>`; }
     if (item.kind === "sphere") return `<circle cx="${x}" cy="${y}" r="${size}" fill="${item.color}" />`;
     if (item.kind === "torus") return `<circle cx="${x}" cy="${y}" r="${size}" fill="none" stroke="${item.color}" stroke-width="8" />`;
     return `<rect x="${x-size}" y="${y-size}" width="${size*2}" height="${size*2}" rx="5" fill="${item.color}" transform="rotate(-12 ${x} ${y})" />`;
@@ -76,31 +77,37 @@ const initialObjects: SceneObject[] = [
 ];
 
 function ObjectMesh({ item, selected, tool, onSelect, onTransform }: { item: SceneObject; selected: boolean; tool: TransformTool; onSelect: () => void; onTransform: (transform: Pick<SceneObject, "position" | "rotation" | "scale">) => void }) {
-  const meshRef = useRef<Mesh>(null);
+  const groupRef = useRef<Group>(null);
   const material = { color: item.color, roughness: item.roughness, metalness: item.metalness, emissive: item.emissive, emissiveIntensity: item.emissive === "#000000" ? 0 : 0.65, transmission: item.transmission, thickness: item.thickness, ior: item.ior, clearcoat: item.clearcoat, clearcoatRoughness: item.clearcoatRoughness, transparent: item.transmission > 0 || item.opacity < 1, opacity: item.opacity, envMapIntensity: 1.35 };
+  const handleTransform = () => {
+    const target = groupRef.current;
+    if (target) onTransform({
+      position: [Number(target.position.x.toFixed(3)), Number(target.position.y.toFixed(3)), Number(target.position.z.toFixed(3))],
+      rotation: [Number(target.rotation.x.toFixed(3)), Number(target.rotation.y.toFixed(3)), Number(target.rotation.z.toFixed(3))],
+      scale: Number(((target.scale.x + target.scale.y + target.scale.z) / 3).toFixed(3)),
+    });
+  };
   let geometry: ReactNode;
   if (item.kind === "box") geometry = <RoundedBox args={[1.15, 1.15, 1.15]} radius={0.12} smoothness={4}><meshPhysicalMaterial {...material} /></RoundedBox>;
   else if (item.kind === "sphere") geometry = <sphereGeometry args={[0.68, 64, 48]} />;
   else geometry = <torusGeometry args={[0.62, 0.19, 24, 80]} />;
-  const mesh = (
-    <mesh ref={meshRef} position={item.position} rotation={item.rotation} scale={item.scale} visible={item.visible} onClick={(event) => { event.stopPropagation(); onSelect(); }}>
+  const form = item.kind === "text" ? (
+    <Text color={item.color} fontSize={item.fontSize ?? 0.72} letterSpacing={item.letterSpacing ?? 0.015} anchorX="center" anchorY="middle" textAlign="center" maxWidth={5} outlineWidth={selected ? 0.012 : 0} outlineColor="#090810" onClick={(event) => { event.stopPropagation(); onSelect(); }}>
+      {item.text ?? "FORM IS A VERB."}
+    </Text>
+  ) : (
+    <mesh onClick={(event) => { event.stopPropagation(); onSelect(); }}>
       {geometry}
       {item.kind !== "box" && <meshPhysicalMaterial {...material} />}
-      {selected && <mesh scale={1.035}><sphereGeometry args={[item.kind === "sphere" ? 0.69 : 0.82, 24, 24]} /><meshBasicMaterial color="#17151d" wireframe transparent opacity={0.18} /></mesh>}
+      {selected && <mesh scale={1.035}><sphereGeometry args={[item.kind === "sphere" ? 0.69 : 0.82, 24, 24]} /><meshBasicMaterial color="#F5F1E8" wireframe transparent opacity={0.22} /></mesh>}
     </mesh>
   );
+  const group = <group ref={groupRef} position={item.position} rotation={item.rotation} scale={item.scale} visible={item.visible}>{form}</group>;
   if (selected && tool !== "select") {
     const mode = tool === "move" ? "translate" : tool;
-    return <TransformControls mode={mode} onMouseUp={() => {
-      const target = meshRef.current;
-      if (target) onTransform({
-        position: [Number(target.position.x.toFixed(3)), Number(target.position.y.toFixed(3)), Number(target.position.z.toFixed(3))],
-        rotation: [Number(target.rotation.x.toFixed(3)), Number(target.rotation.y.toFixed(3)), Number(target.rotation.z.toFixed(3))],
-        scale: Number(((target.scale.x + target.scale.y + target.scale.z) / 3).toFixed(3)),
-      });
-    }}>{mesh}</TransformControls>;
+    return <TransformControls mode={mode} onMouseUp={handleTransform}>{group}</TransformControls>;
   }
-  return mesh;
+  return group;
 }
 
 const chromaticShader = {
@@ -585,8 +592,8 @@ export function SceneStudio() {
   const addObject = (kind: ShapeKind) => {
     recordHistory();
     const id = Math.max(0, ...objects.map((item) => item.id)) + 1;
-    const labels: Record<ShapeKind, string> = { box: "Block", sphere: "Orb", torus: "Loop" };
-    setObjects((current) => [...current, { id, name: `${labels[kind]} / ${String(id).padStart(2, "0")}`, kind, color: kind === "box" ? "#ff5b45" : kind === "sphere" ? "#6855f5" : "#d8ff38", roughness: 0.28, metalness: 0.12, emissive: "#000000", transmission: 0, thickness: 0, ior: 1.5, clearcoat: 0, clearcoatRoughness: 0, opacity: 1, position: [((id % 3) - 1) * 0.65, 0, -0.6], rotation: [0, 0, 0], scale: 0.8, visible: true }]);
+    const labels: Record<ShapeKind, string> = { box: "Block", sphere: "Orb", torus: "Loop", text: "Type" };
+    setObjects((current) => [...current, { id, name: `${labels[kind]} / ${String(id).padStart(2, "0")}`, kind, color: kind === "box" ? "#ff765e" : kind === "sphere" ? "#a48bff" : kind === "torus" ? "#d7f36a" : "#F5F1E8", ...(kind === "text" ? { text: "FORM IS A VERB.", fontSize: 0.72, letterSpacing: 0.015 } : {}), roughness: 0.28, metalness: 0.12, emissive: "#000000", transmission: 0, thickness: 0, ior: 1.5, clearcoat: 0, clearcoatRoughness: 0, opacity: 1, position: [((id % 3) - 1) * 0.65, 0, -0.6], rotation: [0, 0, 0], scale: 0.8, visible: true }]);
     setSelectedId(id);
     
   };
@@ -690,13 +697,14 @@ export function SceneStudio() {
             <button onClick={() => addObject("box")}><b>＋</b> BLOCK</button>
             <button onClick={() => addObject("sphere")}><b>＋</b> ORB</button>
             <button onClick={() => addObject("torus")}><b>＋</b> LOOP</button>
+            <button onClick={() => addObject("text")}><b>Aa</b> TYPE</button>
           </div>
           <div className={styles.objectList}>
             {objects.map((item, index) => (
               <div className={`${styles.objectRow} ${item.id === selectedId ? styles.selectedRow : ""}`} key={item.id}>
                 <button className={styles.objectSelect} onClick={() => setSelectedId(item.id)}>
                   <span className={styles.objectIndex}>{String(index + 1).padStart(2, "0")}</span>
-                  <span className={styles.objectGlyph}>{item.kind === "box" ? "◇" : item.kind === "sphere" ? "●" : "◎"}</span>
+                  <span className={styles.objectGlyph}>{item.kind === "box" ? "◇" : item.kind === "sphere" ? "●" : item.kind === "torus" ? "◎" : "Aa"}</span>
                   <span>{item.name}</span>
                 </button>
                 <button className={styles.visibility} aria-label={item.visible ? `Hide ${item.name}` : `Show ${item.name}`} aria-pressed={item.visible} onClick={() => { recordHistory(); setObjects((current) => current.map((object) => object.id === item.id ? { ...object, visible: !object.visible } : object)); }}>{item.visible ? "◉" : "○"}</button>
@@ -737,12 +745,12 @@ export function SceneStudio() {
                 {objects.filter((item) => item.visible).slice(0, 6).map((item) => (
                   <span key={item.id} title={item.name}>
                     <i style={{ backgroundColor: item.color }} />
-                    <b>{item.kind === "box" ? "◇" : item.kind === "sphere" ? "●" : "◎"}</b>
+                    <b>{item.kind === "box" ? "◇" : item.kind === "sphere" ? "●" : item.kind === "torus" ? "◎" : "Aa"}</b>
                   </span>
                 ))}
                 {objects.filter((item) => item.visible).length > 6 && <small>+{objects.filter((item) => item.visible).length - 6}</small>}
               </div>
-              <small>LIVE MATERIAL PALETTE</small>
+              <small>LIVE FORM PALETTE</small>
             </div>
             <div className={styles.canvasGrid} aria-hidden="true" />
             <div className={styles.canvas}><SceneCanvas objects={objects} selectedId={selected?.id ?? -1} tool={activeTool} view={cameraView} lighting={lighting} render={renderSettings} onSelect={setSelectedId} onTransform={(id, transform) => { recordHistory(); setObjects((current) => current.map((item) => item.id === id ? { ...item, ...transform } : item)); }} /></div>
@@ -755,7 +763,7 @@ export function SceneStudio() {
         <aside className={`${styles.rightPanel} ${mobilePanel === "inspector" ? styles.mobilePanelOpen : ""}`}>
           <div className={styles.panelHeading}><span>02 / INSPECTOR</span><span>PROPERTIES</span></div>
           {selected ? <div className={styles.inspector}>
-            <div className={styles.selectionIntro}><span>ACTIVE OBJECT / {String(selected.id).padStart(3, "0")}</span><strong>{selected.name}</strong><small>{selected.kind.toUpperCase()} · MESH STANDARD</small></div>
+            <div className={styles.selectionIntro}><span>ACTIVE OBJECT / {String(selected.id).padStart(3, "0")}</span><strong>{selected.name}</strong><small>{selected.kind === "text" ? "TYPOGRAPHIC MATTER" : `${selected.kind.toUpperCase()} · MESH STANDARD`}</small></div>
             <section className={styles.propertySection}>
               <div className={styles.propertyTitle}>TRANSFORM <span>⌄</span></div>
               <div className={styles.axisFields}>
@@ -767,12 +775,18 @@ export function SceneStudio() {
               </div>
               <label className={styles.rangeField}><span>UNIFORM SCALE <b>{selected.scale.toFixed(2)}</b></span><input type="range" min="0.25" max="1.8" step="0.05" value={selected.scale} onChange={(event) => updateSelected({ scale: Number(event.target.value) })} /></label>
             </section>
+            {selected.kind === "text" && <section className={styles.propertySection}>
+              <div className={styles.propertyTitle}>TYPE COMPOSITION <span>LETTERFORM / MATTER</span></div>
+              <label className={styles.typeField}><span>CONTENT</span><textarea maxLength={500} rows={4} value={selected.text ?? ""} onChange={(event) => updateSelected({ text: event.target.value })} /></label>
+              <label className={styles.rangeField}><span>TYPE SIZE <b>{(selected.fontSize ?? 0.72).toFixed(2)}</b></span><input type="range" min="0.15" max="2" step="0.01" value={selected.fontSize ?? 0.72} onChange={(event) => updateSelected({ fontSize: Number(event.target.value) })} /></label>
+              <label className={styles.rangeField}><span>LETTER SPACING <b>{(selected.letterSpacing ?? 0.015).toFixed(3)}</b></span><input type="range" min="-0.1" max="0.25" step="0.001" value={selected.letterSpacing ?? 0.015} onChange={(event) => updateSelected({ letterSpacing: Number(event.target.value) })} /></label>
+            </section>}
             <section className={styles.propertySection}>
               <div className={styles.propertyTitle}>SURFACE <span>⌄</span></div>
               <label className={styles.colorField}><span>BASE COLOR</span><input type="color" value={selected.color} onChange={(event) => updateSelected({ color: event.target.value })} /><code>{selected.color.toUpperCase()}</code></label>
               <div className={styles.swatches}>{["#ff5b45", "#6855f5", "#d8ff38", "#17151d", "#f1ede3"].map((color) => <button key={color} style={{ backgroundColor: color }} aria-label={`Set color ${color}`} onClick={() => updateSelected({ color })} />)}</div>
             </section>
-            <section className={styles.propertySection}>
+            {selected.kind !== "text" && <section className={styles.propertySection}>
               <div className={styles.propertyTitle}>MATERIAL LAB <span>PHYSICAL / PBR</span></div>
               <div className={styles.materialPresets} role="group" aria-label="Physical material presets">{SCENE_MATERIAL_PRESETS.map((preset) => <button key={preset.id} type="button" onClick={() => updateSelected(applySceneMaterialPreset(selected, preset.id as SceneMaterialId))}><strong>{preset.name}</strong><small>{preset.descriptor}</small></button>)}</div>
               <label className={styles.rangeField}><span>ROUGHNESS <b>{selected.roughness.toFixed(2)}</b></span><input type="range" min="0" max="1" step="0.01" value={selected.roughness} onChange={(event) => updateSelected({ roughness: Number(event.target.value) })} /></label>
@@ -785,7 +799,7 @@ export function SceneStudio() {
               <label className={styles.rangeField}><span>OPACITY <b>{selected.opacity.toFixed(2)}</b></span><input type="range" min="0.15" max="1" step="0.01" value={selected.opacity} onChange={(event) => updateSelected({ opacity: Number(event.target.value) })} /></label>
               <label className={styles.colorField} style={{ marginTop: "1rem" }}><span>EMISSION</span><input type="color" value={selected.emissive} onChange={(event) => updateSelected({ emissive: event.target.value })} /><code>{selected.emissive.toUpperCase()}</code></label>
               <button className={styles.resetMaterial} onClick={() => updateSelected({ roughness: 0.28, metalness: 0.12, emissive: "#000000", transmission: 0, thickness: 0, ior: 1.5, clearcoat: 0, clearcoatRoughness: 0, opacity: 1 })}>RESET MATERIAL</button>
-            </section>
+            </section>}
             <section className={styles.propertySection}>
               <section className={styles.propertySection}>
               <div className={styles.propertyTitle}>CAMERA & RENDER <span>OPTICS / OUTPUT</span></div>

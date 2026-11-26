@@ -5,7 +5,7 @@
 
   /* Core palette: NEON RELIC — nocturnal matter and electric signals */
   --forma-studio-bone: #F5F1E8;
-  --forma-carbon-ink: #111019;
+  --forma-carbon-ink: #0B0911;
   --forma-acid-voltage: #D7F36A;
   --forma-signal-vermilion: #FF765E;
   --forma-electric-iris: #A48BFF;
@@ -19,16 +19,16 @@
 
   /* Semantic surfaces */
   --color-page: var(--forma-carbon-ink);
-  --color-surface: #1D1A27;
-  --color-surface-raised: #292535;
-  --color-surface-sunken: #0D0B14;
+  --color-surface: #17141F;
+  --color-surface-raised: #211D2B;
+  --color-surface-sunken: #08070D;
   --color-surface-inverse: var(--forma-studio-bone);
   --color-text: var(--forma-studio-bone);
-  --color-text-secondary: #D0CAD8;
-  --color-text-muted: #B4ADBF;
+  --color-text-secondary: #E2DDE8;
+  --color-text-muted: #C4BDCE;
   --color-text-inverse: var(--forma-carbon-ink);
-  --color-border: #4B4558;
-  --color-border-strong: #81788E;
+  --color-border: #393343;
+  --color-border-strong: #756C83;
   --color-accent: var(--forma-electric-iris);
   --color-accent-secondary: var(--forma-soft-matter);
   --color-accent-tertiary: var(--forma-acid-voltage);

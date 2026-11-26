@@ -18,10 +18,8 @@ body {
   min-height: 100vh;
   margin: 0;
   background:
-    radial-gradient(ellipse at 12% 8%, color-mix(in srgb, var(--forma-electric-iris) 22%, transparent), transparent 34rem),
-    radial-gradient(ellipse at 88% 28%, color-mix(in srgb, var(--forma-soft-matter) 12%, transparent), transparent 30rem),
-    radial-gradient(ellipse at 50% 100%, color-mix(in srgb, var(--forma-signal-vermilion) 10%, transparent), transparent 38rem),
-    var(--color-page);
+    radial-gradient(ellipse at 50% 0%, rgb(164 139 255 / 5%), transparent 42rem),
+    linear-gradient(180deg, #0B0911 0%, #0D0B14 58%, #090810 100%);
   color: var(--color-text);
   font-family: var(--font-body);
 }
@@ -140,16 +138,16 @@ body { color: var(--forma-studio-bone); }
 
 /* CHROMATIC ATELIER — shared color and type contract */
 :root {
-  --color-text-secondary: #D0CAD8;
-  --color-text-muted: #B4ADBF;
-  --color-border: #4B4558;
-  --color-border-strong: #81788E;
-  --atelier-surface: #1D1A27;
-  --atelier-surface-raised: #292535;
-  --atelier-stage: #12101A;
+  --color-text-secondary: #E2DDE8;
+  --color-text-muted: #C4BDCE;
+  --color-border: #393343;
+  --color-border-strong: #756C83;
+  --atelier-surface: #17141F;
+  --atelier-surface-raised: #211D2B;
+  --atelier-stage: #0D0B14;
   --atelier-copy: #F5F1E8;
-  --atelier-copy-secondary: #D0CAD8;
-  --atelier-copy-muted: #B4ADBF;
+  --atelier-copy-secondary: #E2DDE8;
+  --atelier-copy-muted: #C4BDCE;
 }
 body { color: var(--atelier-copy); }
 :where(p, li, dd, figcaption) { color: var(--atelier-copy-secondary); }
