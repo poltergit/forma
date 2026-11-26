@@ -193,3 +193,49 @@
 @media (max-width: 900px) {
   .workspace { grid-template-columns: minmax(0, 1fr); }
 }
+
+
+/* MOTION LAB — compact, balanced desktop instrument */
+.workspace {
+  grid-template-columns: minmax(0, 1fr) minmax(19rem, 22rem);
+  align-items: stretch;
+  gap: 0;
+  width: 100%;
+  box-shadow: 10px 10px 0 rgb(135 91 255 / .16);
+}
+.workspace > :first-child {
+  grid-column: 1 / -1;
+  margin-bottom: 0;
+}
+.stageColumn { min-width: 0; }
+.stage {
+  min-height: clamp(24rem, 36vw, 34rem);
+  max-height: 34rem;
+}
+.panel {
+  min-width: 0;
+  gap: 1rem;
+  padding: 1.15rem;
+  border-left: 1px solid rgb(244 240 232 / .16);
+}
+.modeField { padding-block: .85rem; }
+.control { padding-block: .7rem; }
+.curve { padding-block: .65rem; }
+.presets { padding-block: .75rem; }
+.recipe { padding-block: .65rem; }
+.recipe pre { max-height: 8rem; }
+.score { padding: .9rem 1rem; }
+@media (max-width: 760px) {
+  .workspace { grid-template-columns: minmax(0, 1fr); }
+  .workspace > :first-child { grid-column: 1; }
+  .panel {
+    border-left: 0;
+    border-top: 1px solid rgb(244 240 232 / .16);
+    padding: 1.1rem;
+  }
+  .stage { min-height: clamp(22rem, 65vw, 30rem); }
+}
+@media (max-width: 480px) {
+  .stage { min-height: 21rem; }
+  .workspace { box-shadow: 5px 5px 0 rgb(135 91 255 / .16); }
+}
