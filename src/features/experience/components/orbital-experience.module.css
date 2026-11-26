@@ -1462,3 +1462,59 @@
 @keyframes neon-precess{to{transform:rotate(338deg) scaleY(.56)}}
 @keyframes neon-precess-reverse{to{transform:rotate(-329deg) scaleY(.78)}}
 @media(prefers-reduced-motion:reduce){.heroCopy h1 em,.specimenField::before,.specimenField::after{animation:none!important}}
+
+
+/* ORBITAL EXPERIENCE — dark-first surfaces and readable instrument controls */
+.processStrip {
+  border-color: rgb(104 224 206 / .45);
+  background: #17141F;
+  color: #FAF8F2;
+  box-shadow: 0 14px 44px rgb(135 91 255 / .12);
+}
+.processTrack { color: #FAF8F2; }
+.processTrack i { color: #D7F36A; }
+.belief {
+  background:
+    radial-gradient(ellipse at 12% 72%, rgb(135 91 255 / .16), transparent 30rem),
+    radial-gradient(ellipse at 90% 16%, rgb(255 118 94 / .09), transparent 25rem),
+    #100D18;
+  color: #FAF8F2;
+}
+.belief .sectionIndex,.belief .beliefFoot { border-color: rgb(244 240 232 / .2); color: #C4BDCE; }
+.belief .sectionIndex span:first-child,.beliefHeadline h2 em { color: #68E0CE; }
+.beliefHeadline .microLabel { color: #C4BDCE; }
+.beliefAside p { color: #E2DDE8; }
+.beliefAside .beliefLead { color: #FAF8F2; }
+.primitiveList { border-color: rgb(244 240 232 / .2); }
+.primitiveList span { color: #F5F1E8; }
+.primitiveList b { color: #FF765E; }
+.primitiveList small { color: #C4BDCE; }
+.beliefFoot { border-color: rgb(244 240 232 / .2); }
+.instrument {
+  background:
+    radial-gradient(ellipse at 80% 50%, rgb(135 91 255 / .14), transparent 33rem),
+    #17141F;
+  color: #FAF8F2;
+}
+.instrument .controls {
+  background: #100D18;
+  border-color: rgb(244 240 232 / .18);
+  color: #FAF8F2;
+}
+.instrument .controls label,.instrument .controls label > span { color: #E2DDE8; }
+.instrument .controls output { color: #68E0CE; }
+.instrument .controls input[type="range"] { accent-color: #68E0CE; }
+.instrumentModes button,.instrumentAction button {
+  background: #211D2B;
+  border: 1px solid #62596F;
+  color: #F5F1E8;
+}
+.instrumentModes button[aria-pressed="true"] {
+  background: #A48BFF;
+  border-color: #A48BFF;
+  color: #0B0911;
+}
+.instrumentAction button { background: #D7F36A; border-color: #D7F36A; color: #0B0911; }
+.instrumentAction button:hover { background: #68E0CE; border-color: #68E0CE; color: #0B0911; }
+.instrumentHeader,.instrumentHeader span,.instrumentModes > span,.instrumentAction > span,.localNote { color: #C4BDCE; }
+.instrumentDescription { color: #E2DDE8; }
