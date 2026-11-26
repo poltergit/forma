@@ -501,3 +501,61 @@
 .typeField textarea:focus { outline: 2px solid var(--forma-electric-iris); outline-offset: 2px; border-color: var(--forma-electric-iris); }
 .typeField textarea::placeholder { color: #C4BDCE; }
 @media (max-width: 700px) { .addTools { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
+
+
+/* HIGH-CONTRAST SCENE STUDIO — keep every instrument readable */
+.studio {
+  --ink: #FAF8F2;
+  --paper: #08070D;
+  --line: #51495F;
+  background: #08070D;
+  color: #FAF8F2;
+}
+.topbar, .leftPanel, .rightPanel, .inspector, .versionShelf, .mobileBar {
+  background-color: #17131F;
+  color: #FAF8F2;
+}
+.stageColumn, .canvasFrame { background-color: #090710; }
+.panelHeading, .panelFoot, .saveState, .selectionIntro > span,
+.selectionIntro small, .propertyTitle, .axisFields label > span,
+.rangeField > span, .colorField > span, .nameField > span,
+.inspectorFoot, .viewportLabel, .viewportMeta, .canvasStamp,
+.canvasHint, .statusbar, .mobileBar > button {
+  color: #D2CCDA;
+}
+.brand, .document input, .quietButton, .toolGroup button,
+.objectSelect, .selectionIntro strong, .versionToggle,
+.versionItem, .mobileBar > button[aria-pressed="true"] {
+  color: #FAF8F2;
+}
+.addTools button, .toolGroup button, .cameraPresets button,
+.materialPresets button, .lightingPresets button,
+.renderQuality button, .versionItem button {
+  color: #E8E3ED;
+  border-color: #62596F;
+}
+.axisFields input, .nameField input, .typeField textarea,
+.selectField select {
+  color: #FAF8F2;
+  background: #0D0A14;
+  border-color: #62596F;
+}
+.axisFields input::placeholder, .nameField input::placeholder,
+.typeField textarea::placeholder { color: #CFC8D8; opacity: 1; }
+.objectIndex, .visibility, .colorField code, .emptyState,
+.versionItem small { color: #CFC8D8; }
+.panelHeading, .panelFoot, .selectionIntro, .propertySection,
+.inspectorFoot, .versionItem, .statusbar, .toolbar {
+  border-color: #51495F;
+}
+.selectedRow, .objectRow:hover, .toolGroup button:hover,
+.toolGroup .activeTool, .cameraPresets .activeCamera {
+  background: #30283D;
+  color: #FAF8F2;
+}
+.canvasStamp, .canvasHint { text-shadow: 0 2px 12px #050409; }
+@media (max-width: 700px) {
+  .leftPanel.mobilePanelOpen, .rightPanel.mobilePanelOpen {
+    background: #17131F;
+  }
+}

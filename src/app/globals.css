@@ -159,3 +159,31 @@ body { color: var(--atelier-copy); }
   outline: 2px solid var(--forma-acid-voltage);
   outline-offset: 3px;
 }
+
+
+/* GLOBAL LEGIBILITY CONTRACT — no low-contrast body copy on dark surfaces */
+:where(body, main, section, article, aside, nav, header, footer) {
+  color: var(--color-text);
+}
+:where(p, li, dd, figcaption, blockquote, label, legend) {
+  color: var(--color-text-secondary);
+}
+:where(small, .microcopy, [data-muted="true"], [aria-description]) {
+  color: var(--color-text-muted);
+}
+:where(input, textarea, select) {
+  color: #FAF8F2;
+  background-color: #14111C;
+  border-color: #62596F;
+}
+:where(input, textarea, select)::placeholder {
+  color: #CFC8D8;
+  opacity: 1;
+}
+:where(button) { color: inherit; }
+:where(button:disabled, [aria-disabled="true"]) { opacity: .68; }
+:where(a) { text-decoration-color: currentColor; text-underline-offset: .2em; }
+:where(a, button, input, select, textarea):focus-visible {
+  outline: 2px solid #D7F36A;
+  outline-offset: 3px;
+}
