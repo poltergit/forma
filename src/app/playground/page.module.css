@@ -52,3 +52,30 @@
 .next{border-color:var(--forma-carbon-ink)}
 .next em{color:var(--forma-signal-vermilion)}
 @media(max-width:700px){.introGrid{min-height:0}.intro::after{top:38%;right:-32%;width:75vw}.process{transform:none;padding:.9rem}}
+
+
+/* OPEN FIELD PROCESS — retain acid/coral as accents, not low-contrast panels */
+.introGrid > p { color: #E2DDE8; }
+.process {
+  border: 1px solid #51495F;
+  background: #17141F;
+  color: #FAF8F2;
+  box-shadow: 8px 8px 0 rgb(164 139 255 / .16);
+}
+.processLead > span { color: #C4BDCE; }
+.processLead p { color: #FAF8F2; }
+.processSteps > div {
+  border-color: #62596F;
+  background: #211D2B;
+  color: #FAF8F2;
+}
+.processSteps > div:nth-child(2) {
+  background: #FF765E;
+  border-color: #FF765E;
+  color: #0B0911;
+}
+.processSteps > div:nth-child(2) span { color: #0B0911; }
+.processSteps b { color: #D7F36A; }
+.processSteps i { color: #68E0CE; }
+.processSteps > div:nth-child(2) b,.processSteps > div:nth-child(2) i { color: #0B0911; }
+.introMeta,.introFoot,.next > span { color: #C4BDCE; }
