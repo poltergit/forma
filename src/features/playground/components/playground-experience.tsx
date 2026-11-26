@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useRef, useState, type PointerEvent, type KeyboardEvent } from "react";
 import { useRouter } from "next/navigation";
 import styles from "./playground-experience.module.css";
+import { RoomManifest } from "@/components/shell/room-manifest";
 import {
   createGeneratorPoints, createPlaygroundScene, GENERATORS, PLAYGROUND_RECIPE_KEY, PLAYGROUND_SCENE_HANDOFF_KEY,
   type GeneratorId, type PlaygroundRecipe,
@@ -284,6 +285,7 @@ export function PlaygroundExperience() {
 
   return (
     <div className={styles.experience}>
+      <RoomManifest variant="field" number="01" room="THE OPEN FIELD" title="Compose by changing the conditions." description="Choose a generator, disturb its field, and discover what a new set of rules makes possible. The result is an experiment, not a preset." principle="Matter responds to influence. Every parameter is a creative decision; every composition should reveal the rule that shaped it." notation="MATTER + FORCE / ITERATION LEAVES A TRACE" />
       <div className={styles.stageHeader}><span>EXP. {activeGenerator.number} / {activeGenerator.name.toUpperCase()}</span><span className={styles.live}><i /> LIVE INSTRUMENT</span></div>
       <div className={styles.generatorPicker} role="group" aria-label="Choose a generative instrument">
         {GENERATORS.map((item) => <button key={item.id} type="button" aria-pressed={generator === item.id} onClick={() => { setGenerator(item.id); setStatus(`${item.name.toUpperCase()} LOADED`); }}>

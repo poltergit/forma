@@ -15,6 +15,7 @@ import { ShaderPass } from "three/addons/postprocessing/ShaderPass.js";
 import { OutputPass } from "three/addons/postprocessing/OutputPass.js";
 import { useThree } from "@react-three/fiber";
 import styles from "./scene-studio.module.css";
+import { RoomManifest } from "@/components/shell/room-manifest";
 import { parseSceneDocument, readSceneLibrary, SCENE_STORAGE_KEY } from "../scene-document";
 import type { SceneDocument } from "../scene-document";
 import { deleteCloudComposition, getSceneCloudSession, loadCloudCompositions, saveCloudComposition, signOutCloudSession } from "../scene-cloud";
@@ -665,6 +666,8 @@ export function SceneStudio() {
           <button className={styles.quietButton} onClick={saveVersion}>SAVE VERSION</button><button className={styles.quietButton} onClick={exportRender}>EXPORT PNG</button><button className={styles.publishButton} onClick={exportScene}>EXPORT JSON <span>↗</span></button>
         </div>
       </header>
+
+      <div className={styles.studioManifest}><RoomManifest variant="workbench" number="03" room="THE WORKBENCH" title="Shape the conditions." description="Build a scene by directing its material, light, camera, and space. The specimen stays central; the instruments exist to make its character intentional." principle="A material is a decision. Light reveals its behavior, the camera defines its meaning, and composition turns objects into a point of view." notation="MATTER + NOTATION / CONTROL THE SPECIMEN" /></div>
 
       <details className={styles.projectLibrary}>
         <summary><span>PROJECT LIBRARY</span><span>{String(compositions.length).padStart(2, "0")} COMPOSITIONS</span></summary>

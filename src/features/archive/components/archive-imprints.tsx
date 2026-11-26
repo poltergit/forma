@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { readArchiveImprints, type ArchiveImprint } from "@/features/atelier/atelier-bridge";
 import styles from "./archive-imprints.module.css";
+import { RoomManifest } from "@/components/shell/room-manifest";
 
 export function ArchiveImprints() {
   const [imprints, setImprints] = useState<ArchiveImprint[]>([]);
@@ -23,6 +24,7 @@ export function ArchiveImprints() {
 
   return (
     <section className={styles.collection} aria-labelledby="imprints-title">
+      <RoomManifest variant="index" number="04" room="THE SPECIMEN INDEX" title="Keep the evidence." description="A study is more than its final image. Return to the parameters, decisions, and traces that explain how a form came to be." principle="The archive preserves the thinking behind the object. Memory is part of the material; a saved trace makes experimentation cumulative." notation="TRACE + NOTATION / MEMORY OF PROCESS" />
       <div className={styles.heading}>
         <span>02 / YOUR IMPRINTS</span>
         <h2 id="imprints-title">Marks you <em>left.</em></h2>

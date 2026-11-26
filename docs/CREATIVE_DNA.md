@@ -182,9 +182,9 @@ The camera is part of the art direction. Establish intentional viewpoints and fo
 
 Every visible form must communicate a relationship between matter, force, trace, and intention. Before adding a new object or animation, define what it represents, what causes it to move, what changes through interaction, and what evidence remains afterward. FORMA's foundational force studies are Orbit (attraction and relationships), Fracture (pressure and exposed structure), and Resolve (alignment and emergence). Their visual behaviors and acceptance criteria are specified in [FORMA Force Grammar](./FORMA_FORCE_GRAMMAR.md). An effect without a clear cause, consequence, or trace is decoration and does not belong in the atelier.
 
-## 11. Feature personalities
+## 11. Feature personalities — one atelier, five rooms
 
-Each feature gets its own composition and interaction personality while sharing the four identity primitives.
+Each experience has its own visual language, composition, rhythm, and interaction logic. They share the same identity primitives and color semantics, but must never feel like the same template with different headings. See [FORMA Room Personalities](./FORMA_ROOM_PERSONALITIES.md) for the complete art-direction and interaction contracts.
 
 | Experience | Personality | Dominant primitives | Composition |
 |---|---|---|---|
@@ -196,7 +196,7 @@ Each feature gets its own composition and interaction personality while sharing 
 
 A shared identity does not mean identical layouts. Feature personality is expressed through composition, density, color balance, and interaction—not by changing the logo or inventing a new unrelated palette per page.
 
-## 11. Interface behavior and usability
+## 12. Interface behavior and usability
 
 - Essential navigation and core actions remain predictable.
 - Dense creative controls should be grouped by task and use progressive disclosure.
@@ -206,13 +206,13 @@ A shared identity does not mean identical layouts. Feature personality is expres
 - Responsive layouts should re-compose the experience, not merely shrink desktop columns.
 - Keyboard access, focus visibility, contrast, and reduced motion are part of the identity.
 
-## 12. Sound, texture, and environmental detail
+## 13. Sound, texture, and environmental detail
 
 Sound is optional and off by default. If introduced, it must be user-initiated, controllable, and useful.
 
 Texture may include paper grain, registration marks, fine rules, halftone, subtle noise, or measured grid systems. Texture should be quiet enough not to compete with text or reduce contrast. Avoid adding noise overlays to every surface.
 
-## 13. Anti-patterns
+## 14. Anti-patterns
 
 Reject:
 - Generic startup gradients as the primary identity.
@@ -226,7 +226,7 @@ Reject:
 - A different unrelated design language for every feature.
 - Copying another studio's distinctive composition, animation, code, imagery, or identity.
 
-## 14. Acceptance checklist
+## 15. Acceptance checklist
 
 A major visual decision should pass these questions:
 

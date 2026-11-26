@@ -2,6 +2,7 @@
 
 import { useEffect, useMemo, useRef, useState, type CSSProperties } from "react";
 import styles from "./motion-lab.module.css";
+import { RoomManifest } from "@/components/shell/room-manifest";
 import { createMotionRecipe, type MotionEasing as Easing, type MotionMode } from "../motion-recipe";
 import { createArchiveImprint, readPlaygroundMotionHandoff, saveArchiveImprint } from "@/features/atelier/atelier-bridge";
 
@@ -116,6 +117,7 @@ export function MotionLab() {
 
   return (
     <section className={styles.workspace} aria-label="Interactive motion instrument">
+      <RoomManifest variant="force" number="02" room="THE FORCE ROOM" title="Make time visible." description="Shape a movement through duration, intensity, easing, and behavior. Read the path as a record of what changed, not as motion for motion’s sake." principle="Movement is a consequence. Every curve has a cause, every pause has weight, and every Afterform remembers where the object has been." notation="FORCE + TRACE / CAUSE → RESPONSE" />
       <div className={styles.stageColumn}>
         <div className={styles.stageMeta}><span>LIVE STAGE / 001</span><span className={styles.live} role="status" aria-live="polite"><i /> {reducedMotion ? "STATIC / REDUCED MOTION" : paused ? "PAUSED" : "LIVE PREVIEW"}</span></div>
         {fieldSource && <div className={styles.fieldSource} role="status"><span>FIELD RECEIVED / 01</span><strong>{fieldSource}</strong><small>Parameters translated into a motion score. Adjust anything; the source field remains yours.</small></div>}

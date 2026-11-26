@@ -1,0 +1,109 @@
+.manifest {
+  --room-accent: var(--forma-acid-voltage, #d9ff3f);
+  position: relative;
+  isolation: isolate;
+  display: grid;
+  grid-template-columns: minmax(0, 1.2fr) minmax(170px, .72fr) minmax(180px, .8fr);
+  align-items: center;
+  gap: clamp(1.2rem, 3vw, 3.5rem);
+  overflow: hidden;
+  margin: 0 0 clamp(1.4rem, 3vw, 2.8rem);
+  padding: clamp(1.25rem, 3vw, 2.5rem);
+  border: 1px solid color-mix(in srgb, currentColor 14%, transparent);
+  background: linear-gradient(112deg, color-mix(in srgb, var(--room-accent) 9%, transparent), transparent 48%), var(--forma-abyss, #100d18);
+  color: var(--forma-porcelain, #f4f0e8);
+}
+.manifest::after {
+  position: absolute;
+  z-index: -1;
+  inset: auto -8% -70% 28%;
+  height: 150%;
+  border: 1px solid color-mix(in srgb, var(--room-accent) 24%, transparent);
+  border-radius: 50%;
+  content: "";
+  transform: rotate(-14deg);
+  pointer-events: none;
+}
+.identity { max-width: 38rem; }
+.kicker, .room, .figureIndex, .figureCaption, .principle > span {
+  display: block;
+  font: 500 .62rem/1.4 var(--font-mono, "JetBrains Mono", monospace);
+  letter-spacing: .12em;
+  text-transform: uppercase;
+}
+.kicker { color: var(--room-accent); }
+.room { margin-top: .55rem; color: color-mix(in srgb, currentColor 55%, transparent); }
+.identity h2 {
+  max-width: 13ch;
+  margin: .8rem 0 .65rem;
+  font: 600 clamp(1.65rem, 3.6vw, 3.4rem)/.98 var(--font-display, "Space Grotesk", sans-serif);
+  letter-spacing: -.065em;
+  text-wrap: balance;
+}
+.identity p {
+  max-width: 48ch;
+  margin: 0;
+  color: color-mix(in srgb, currentColor 72%, transparent);
+  font-size: clamp(.84rem, 1vw, .98rem);
+  line-height: 1.65;
+}
+.figure {
+  position: relative;
+  display: grid;
+  min-height: 142px;
+  align-content: center;
+  justify-items: center;
+  color: var(--room-accent);
+}
+.figureIndex, .figureCaption { width: 100%; color: color-mix(in srgb, currentColor 62%, transparent); font-size: .54rem; }
+.figureCaption { text-align: center; }
+.figure svg { width: min(100%, 180px); overflow: visible; fill: none; stroke: currentColor; stroke-width: 1; }
+.figure svg path, .figure svg ellipse { vector-effect: non-scaling-stroke; }
+.figure svg .core { fill: var(--room-accent); stroke: var(--room-accent); }
+.figure svg .node { fill: var(--forma-signal-flame, #ff5a3c); stroke: var(--forma-signal-flame, #ff5a3c); }
+.figure svg .nodeAlt { fill: var(--forma-laser-cyan, #54f2d2); stroke: var(--forma-laser-cyan, #54f2d2); }
+.figure svg .vector { stroke: var(--forma-signal-flame, #ff5a3c); stroke-dasharray: 3 4; }
+.figure svg .echo { stroke: color-mix(in srgb, currentColor 38%, transparent); stroke-dasharray: 2 5; }
+.principle {
+  align-self: stretch;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  gap: .65rem;
+  padding-left: clamp(1rem, 2vw, 2rem);
+  border-left: 1px solid color-mix(in srgb, currentColor 20%, transparent);
+}
+.principle > span { color: var(--room-accent); }
+.principle p {
+  max-width: 29ch;
+  margin: 0;
+  font: 500 clamp(.94rem, 1.25vw, 1.18rem)/1.45 var(--font-display, "Space Grotesk", sans-serif);
+  letter-spacing: -.025em;
+}
+.manifest[data-room="field"] { --room-accent: var(--forma-acid-voltage, #d9ff3f); }
+.manifest[data-room="force"] { --room-accent: var(--forma-signal-flame, #ff5a3c); background-image: linear-gradient(112deg, color-mix(in srgb, var(--room-accent) 10%, transparent), transparent 48%), repeating-linear-gradient(0deg, transparent 0 31px, color-mix(in srgb, currentColor 5%, transparent) 32px); }
+.manifest[data-room="workbench"] { --room-accent: var(--forma-laser-cyan, #54f2d2); background-image: linear-gradient(112deg, color-mix(in srgb, var(--room-accent) 8%, transparent), transparent 48%), linear-gradient(90deg, transparent 49.8%, color-mix(in srgb, currentColor 6%, transparent) 50%, transparent 50.2%); }
+.manifest[data-room="index"] { --room-accent: var(--forma-electric-iris, #875bff); background-image: linear-gradient(112deg, color-mix(in srgb, var(--room-accent) 10%, transparent), transparent 48%), repeating-linear-gradient(135deg, transparent 0 17px, color-mix(in srgb, currentColor 4%, transparent) 18px); }
+.manifest[data-room="field"] .figure svg { animation: fieldOrbit 18s linear infinite; }
+.manifest[data-room="force"] .figure svg { animation: forceTrace 5s ease-in-out infinite alternate; }
+.manifest[data-room="workbench"] .figure svg { animation: workbenchTilt 8s ease-in-out infinite alternate; }
+.manifest[data-room="index"] .figure svg { animation: indexEcho 6s ease-in-out infinite alternate; }
+@keyframes fieldOrbit { to { transform: rotate(360deg); } }
+@keyframes forceTrace { to { transform: translateY(-5px) skewY(-3deg); } }
+@keyframes workbenchTilt { to { transform: perspective(400px) rotateY(-9deg) rotateX(5deg); } }
+@keyframes indexEcho { to { transform: translate(3px, -3px); filter: drop-shadow(-5px 4px 0 color-mix(in srgb, var(--room-accent) 32%, transparent)); } }
+@media (max-width: 760px) {
+  .manifest { grid-template-columns: minmax(0, 1fr) minmax(110px, .55fr); gap: 1rem; }
+  .figure { grid-column: 2; grid-row: 1 / span 2; min-height: 125px; }
+  .principle { grid-column: 1 / -1; padding: .9rem 0 0; border-left: 0; border-top: 1px solid color-mix(in srgb, currentColor 20%, transparent); }
+  .principle p { max-width: 52ch; }
+}
+@media (max-width: 440px) {
+  .manifest { grid-template-columns: 1fr; }
+  .figure { grid-column: 1; grid-row: auto; min-height: 100px; }
+  .figure svg { width: 140px; }
+  .figureCaption { text-align: center; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .figure svg { animation: none !important; }
+}
