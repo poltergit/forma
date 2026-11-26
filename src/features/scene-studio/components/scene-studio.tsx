@@ -135,7 +135,7 @@ function ObjectMesh({ item, selected, tool, onSelect, onTransformStart, onTransf
   const group = <group ref={groupRef} position={item.position} rotation={item.rotation} scale={item.scale} visible={item.visible}>{form}</group>;
   if (selected && tool !== "select") {
     const mode = tool === "move" ? "translate" : tool;
-    return <TransformControls mode={mode} onMouseDown={onTransformStart} onMouseUp={handleTransform}>{group}</TransformControls>;
+    return <TransformControls mode={mode} size={1.35} showX showY showZ onMouseDown={onTransformStart} onMouseUp={handleTransform}>{group}</TransformControls>;
   }
   return group;
 }
@@ -206,7 +206,7 @@ function SceneCanvas({ objects, selectedId, tool, view, lighting, render, onSele
         {objects.map((item) => <ObjectMesh key={item.id} item={item} selected={item.id === selectedId} tool={tool} onSelect={() => onSelect(item.id)} onTransformStart={() => onTransformStart(item.id)} onTransform={(transform) => onTransform(item.id, transform)} />)}
         {lighting.shadows && <ContactShadows position={[0, -1.7, 0]} opacity={lighting.shadowOpacity} scale={10} blur={lighting.shadowBlur} far={4} />}
       </Suspense>
-      <OrbitControls makeDefault enableDamping dampingFactor={0.08} minDistance={2.2} maxDistance={18} />
+      <OrbitControls makeDefault enabled={tool === "select"} enableDamping dampingFactor={0.08} minDistance={2.2} maxDistance={18} />
     </Canvas>
   );
 }
@@ -233,10 +233,10 @@ export function SceneStudio() {
 
   const versionStorageKey = (id: string) => `forma:scene-studio:versions:v1:${id}`;
   const snapshot = (): EditorSnapshot => ({ objects: structuredClone(objects), camera: cameraView, name: sceneName, lighting: structuredClone(lighting), render: structuredClone(renderSettings) });
-  const recordHistory = () => {
+  const recordHistory = (updateUI = true) => {
     history.current.past = [...history.current.past.slice(-49), snapshot()];
     history.current.future = [];
-    setHistoryState({ canUndo: true, canRedo: false });
+    if (updateUI) setHistoryState({ canUndo: true, canRedo: false });
   };
   const refreshHistoryState = () => setHistoryState({ canUndo: history.current.past.length > 0, canRedo: history.current.future.length > 0 });
   const applySnapshot = (entry: EditorSnapshot) => {
@@ -783,7 +783,7 @@ export function SceneStudio() {
               <small>LIVE FORM PALETTE</small>
             </div>
             <div className={styles.canvasGrid} aria-hidden="true" />
-            <div className={styles.canvas}><SceneCanvas objects={objects} selectedId={selected?.id ?? -1} tool={activeTool} view={cameraView} lighting={lighting} render={renderSettings} onSelect={setSelectedId} onTransformStart={() => recordHistory()} onTransform={(id, transform) => { setObjects((current) => current.map((item) => item.id === id ? { ...item, ...transform } : item)); }} /></div>
+            <div className={styles.canvas}><SceneCanvas objects={objects} selectedId={selected?.id ?? -1} tool={activeTool} view={cameraView} lighting={lighting} render={renderSettings} onSelect={setSelectedId} onTransformStart={() => recordHistory(false)} onTransform={(id, transform) => { setObjects((current) => current.map((item) => item.id === id ? { ...item, ...transform } : item)); setHistoryState({ canUndo: history.current.past.length > 0, canRedo: false }); }} /></div>
             <div className={styles.canvasHint}>DRAG TO ORBIT <i /> SCROLL TO ZOOM <i /> SELECT TO INSPECT</div>
             <div className={styles.axisWidget}><span>X</span><span>Y</span><span>Z</span></div>
           </div>
