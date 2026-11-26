@@ -109,3 +109,55 @@
 @media(max-width:760px){.workspace{grid-template-columns:1fr;box-shadow:8px 8px 0 rgb(135 91 255 / .22)}.stageColumn{border-right:0;border-bottom:1px solid rgb(244 240 232 / .16)}.stage{min-height:clamp(360px,75vw,520px)}.panel{padding:1rem}.modeGrid{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media(max-width:480px){.stage{min-height:350px}.stageInstruction{max-width:70%;line-height:1.5}.stageCoordinates{font-size:7px}.score{padding:.8rem}.scoreHeader{font-size:7px}}
 @media(prefers-reduced-motion:reduce){.workspace,.modeGrid button,.stageFooter button,.presets button,.traceActions button{transition:none;transform:none}.object{animation:none!important}}
+
+
+/* FORCE ROOM / STRUCTURE + LEGIBILITY PASS */
+.workspace {
+  grid-template-columns: minmax(0, 1fr) minmax(20rem, 24rem);
+  align-items: stretch;
+  gap: 0;
+  border-color: rgb(244 240 232 / .24);
+  background: #17141f;
+}
+.workspace > :first-child { grid-column: 1 / -1; }
+.stageColumn { min-width: 0; }
+.stageMeta, .panelTitle, .modeField legend, .control > span,
+.control small, .curve > div, .presets > span, .recipe > div,
+.scoreHeader, .scoreLane > span, .timelineMeta, .timelineScale {
+  color: #D0C9D8;
+}
+.stageFooter > span, .fieldSource small, .copyMessage, .traceActions p,
+.score > p, .reducedMotionNote { color: #D8D1DF; }
+.stage { min-height: clamp(28rem, 52vw, 42rem); }
+.stageCoordinates, .stageInstruction { color: #D8D1DF; }
+.panel {
+  min-width: 0;
+  gap: 1.15rem;
+  padding: clamp(1.1rem, 1.7vw, 1.6rem);
+  border-left: 1px solid rgb(244 240 232 / .18);
+  background: #211d2a;
+}
+.modeGrid button, .presets button, .recipe button, .stageFooter button,
+.traceActions button, .control select {
+  min-height: 2.7rem;
+  border-color: #62596d;
+  color: #F4F0E8;
+}
+.modeGrid button[aria-pressed="true"] {
+  border-color: var(--forma-acid-voltage);
+  background: rgb(217 255 63 / .12);
+  color: var(--forma-acid-voltage);
+}
+.control output, .timelineMeta output { color: var(--forma-acid-voltage); }
+.recipe pre { max-height: 11rem; color: #E8E2ED; }
+.score { background: #252130; }
+.scoreLane em { color: var(--forma-acid-voltage); }
+@media (max-width: 900px) {
+  .workspace { grid-template-columns: minmax(0, 1fr); }
+  .workspace > :first-child { grid-column: 1; }
+  .panel { border-left: 0; border-top: 1px solid rgb(244 240 232 / .18); }
+}
+@media (max-width: 520px) {
+  .stage { min-height: 25rem; }
+  .panel { padding: 1rem; }
+}

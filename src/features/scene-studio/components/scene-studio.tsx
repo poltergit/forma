@@ -62,7 +62,7 @@ function CameraRig({ view, projection }: { view: CameraView; projection: SceneRe
     if (camera instanceof OrthographicCamera) {
       // R3F exposes the live camera as a readonly hook value; camera configuration belongs in this effect.
       // eslint-disable-next-line react-hooks/immutability
-      camera.zoom = 85;
+      camera.zoom = 68;
     }
     camera.updateProjectionMatrix();
   }, [camera, view, projection]);
@@ -169,7 +169,7 @@ function SceneCanvas({ objects, selectedId, tool, view, lighting, render, onSele
         {objects.map((item) => <ObjectMesh key={item.id} item={item} selected={item.id === selectedId} tool={tool} onSelect={() => onSelect(item.id)} onTransform={(transform) => onTransform(item.id, transform)} />)}
         {lighting.shadows && <ContactShadows position={[0, -1.7, 0]} opacity={lighting.shadowOpacity} scale={10} blur={lighting.shadowBlur} far={4} />}
       </Suspense>
-      <OrbitControls makeDefault enableDamping dampingFactor={0.08} minDistance={3.5} maxDistance={11} />
+      <OrbitControls makeDefault enableDamping dampingFactor={0.08} minDistance={2.2} maxDistance={18} />
     </Canvas>
   );
 }

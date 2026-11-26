@@ -326,3 +326,38 @@
 @media(max-width:900px){.workspace{box-shadow:8px 8px 0 rgb(135 91 255 / .18)}}
 @media(max-width:700px){.canvasFrame::after{inset:.5rem}.toolbar{flex-wrap:wrap}.rightPanel,.leftPanel{max-height:min(72vh,720px);overflow:auto}}
 @media(prefers-reduced-motion:reduce){.toolGroup button,.cameraPresets button,.objectRow,.selectedRow,.addTools button,.swatches button,.materialPresets button,.renderQuality button,.lightingPresets button,.versionItem button{transition:none;transform:none}}
+
+
+/* WORKBENCH / EXPANDED CANVAS — prioritize the artwork */
+.studio {
+  height: calc(100svh - 7.5rem);
+  min-height: 43rem;
+  max-height: 1100px;
+  overflow: hidden;
+}
+.workspace {
+  grid-template-columns: clamp(13rem, 14vw, 16.5rem) minmax(0, 1fr) clamp(17rem, 18vw, 21rem);
+}
+.leftPanel, .rightPanel { min-width: 0; }
+.canvasFrame {
+  min-height: 0;
+  background-size: 28px 28px, 28px 28px, auto;
+}
+.canvas { min-width: 0; min-height: 0; }
+.canvasStamp, .canvasHint { color: #D8D1DF; text-shadow: 0 1px 8px #100d18; }
+.canvasHint { font-size: 9px; }
+.viewportLabel, .viewportMeta { color: #D8D1DF; }
+.statusbar { color: #C8C0D0; }
+@media (min-width: 1400px) {
+  .studio { height: calc(100svh - 6.5rem); }
+  .workspace { grid-template-columns: 15rem minmax(0, 1fr) 19rem; }
+  .canvasFrame::after { inset: 1.35rem; }
+}
+@media (max-width: 1100px) and (min-width: 701px) {
+  .workspace { grid-template-columns: 13rem minmax(0, 1fr) 17rem; }
+}
+@media (max-width: 700px) {
+  .studio { height: auto; min-height: 0; max-height: none; }
+  .workspace { height: min(76svh, 760px); min-height: 430px; }
+  .canvasFrame { min-height: 0; }
+}

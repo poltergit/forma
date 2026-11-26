@@ -116,3 +116,23 @@ body{isolation:isolate}
 
 body::before{position:fixed;z-index:-1;inset:0;background-image:radial-gradient(rgb(244 240 232 / .12) .65px,transparent .65px);background-size:5px 5px;opacity:.12;pointer-events:none;content:""}
 ::selection{color:var(--forma-carbon-ink);background:var(--forma-soft-matter)}
+
+
+/* ACCESSIBILITY PASS — readable matter, clear controls, no low-contrast copy */
+:root {
+  --color-text-secondary: #D8D1DF;
+  --color-text-muted: #B8B0C1;
+  --color-border: #51495D;
+  --color-border-strong: #81768F;
+}
+body { color: var(--forma-studio-bone); }
+:where(p, li, dd, figcaption) { color: var(--color-text-secondary); }
+:where(small, .microcopy, [data-muted="true"]) { color: var(--color-text-muted); }
+:where(input, select, textarea) { color: var(--forma-studio-bone); }
+:where(input, select, textarea)::placeholder { color: #B8B0C1; opacity: 1; }
+:where(select option) { background: #201d27; color: var(--forma-studio-bone); }
+:where(button:disabled) { opacity: .58; cursor: not-allowed; }
+:where(a, button, input, select, textarea):focus-visible {
+  outline: 2px solid var(--forma-acid-voltage);
+  outline-offset: 3px;
+}
