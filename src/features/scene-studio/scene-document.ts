@@ -1,5 +1,5 @@
 export type SceneObjectDocument = {
-  id: number; name: string; kind: "box" | "sphere" | "torus" | "text"; color: string; text?: string; fontSize?: number; letterSpacing?: number;
+  id: number; name: string; kind: "box" | "sphere" | "torus" | "text"; color: string; text?: string; fontSize?: number; letterSpacing?: number; typographyStyle?: "flat" | "extruded" | "inflated"; extrusion?: number; bevel?: number;
   roughness: number; metalness: number; emissive: string;
   transmission: number; thickness: number; ior: number; clearcoat: number;
   clearcoatRoughness: number; opacity: number;
@@ -23,7 +23,7 @@ function isSceneObject(value: unknown): value is SceneObjectDocument {
     return key === "thickness" ? value >= 0 && value <= 5 : key === "ior" ? value >= 1 && value <= 2.333 : value >= 0 && value <= 1;
   });
   return Number.isInteger(item.id) && typeof item.name === "string" && item.name.trim().length > 0 && item.name.length <= 80 &&
-    ["box", "sphere", "torus", "text"].includes(String(item.kind)) && (item.kind !== "text" || (typeof item.text === "string" && item.text.length > 0 && item.text.length <= 500 && (item.fontSize === undefined || (typeof item.fontSize === "number" && item.fontSize >= 0.05 && item.fontSize <= 4)) && (item.letterSpacing === undefined || (typeof item.letterSpacing === "number" && item.letterSpacing >= -0.2 && item.letterSpacing <= 0.5)))) && typeof item.color === "string" && /^#[\da-f]{6}$/i.test(item.color) &&
+    ["box", "sphere", "torus", "text"].includes(String(item.kind)) && (item.kind !== "text" || (typeof item.text === "string" && item.text.length > 0 && item.text.length <= 500 && (item.fontSize === undefined || (typeof item.fontSize === "number" && item.fontSize >= 0.05 && item.fontSize <= 4)) && (item.letterSpacing === undefined || (typeof item.letterSpacing === "number" && item.letterSpacing >= -0.2 && item.letterSpacing <= 0.5)) && (item.typographyStyle === undefined || ["flat", "extruded", "inflated"].includes(String(item.typographyStyle))) && (item.extrusion === undefined || (typeof item.extrusion === "number" && item.extrusion >= 0.04 && item.extrusion <= 0.8)) && (item.bevel === undefined || (typeof item.bevel === "number" && item.bevel >= 0.005 && item.bevel <= 0.2))) && typeof item.color === "string" && /^#[\da-f]{6}$/i.test(item.color) &&
     typeof item.emissive === "string" && /^#[\da-f]{6}$/i.test(item.emissive) &&
     typeof item.roughness === "number" && item.roughness >= 0 && item.roughness <= 1 &&
     typeof item.metalness === "number" && item.metalness >= 0 && item.metalness <= 1 && validPhysical &&
