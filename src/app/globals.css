@@ -136,3 +136,28 @@ body { color: var(--forma-studio-bone); }
   outline: 2px solid var(--forma-acid-voltage);
   outline-offset: 3px;
 }
+
+
+/* CHROMATIC ATELIER — shared color and type contract */
+:root {
+  --color-text-secondary: #D0CAD8;
+  --color-text-muted: #B4ADBF;
+  --color-border: #4B4558;
+  --color-border-strong: #81788E;
+  --atelier-surface: #1D1A27;
+  --atelier-surface-raised: #292535;
+  --atelier-stage: #12101A;
+  --atelier-copy: #F5F1E8;
+  --atelier-copy-secondary: #D0CAD8;
+  --atelier-copy-muted: #B4ADBF;
+}
+body { color: var(--atelier-copy); }
+:where(p, li, dd, figcaption) { color: var(--atelier-copy-secondary); }
+:where(small, .microcopy, [data-muted="true"]) { color: var(--atelier-copy-muted); }
+:where(input, select, textarea) { color: var(--atelier-copy); }
+:where(input, select, textarea)::placeholder { color: var(--atelier-copy-muted); opacity: 1; }
+:where(select option) { background: var(--atelier-surface-raised); color: var(--atelier-copy); }
+:where(a, button, input, select, textarea):focus-visible {
+  outline: 2px solid var(--forma-acid-voltage);
+  outline-offset: 3px;
+}

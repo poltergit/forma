@@ -361,3 +361,131 @@
   .workspace { height: min(76svh, 760px); min-height: 430px; }
   .canvasFrame { min-height: 0; }
 }
+
+
+/* CHROMATIC WORKBENCH — high-contrast controls, generous viewport */
+.studio {
+  --ink: var(--forma-carbon-ink);
+  --paper: var(--forma-studio-bone);
+  --line: #494354;
+  min-height: calc(100svh - 5rem);
+  height: auto;
+  max-height: none;
+  overflow: visible;
+  background: var(--forma-carbon-ink);
+  color: var(--forma-studio-bone);
+}
+.topbar {
+  min-height: 4.5rem;
+  height: auto;
+  border-color: #494354;
+  background: #1D1A27;
+}
+.brand { color: var(--forma-studio-bone); }
+.slash { color: #B4ADBF; }
+.document input { color: var(--forma-studio-bone); }
+.document input::placeholder { color: #B4ADBF; }
+.saveState { color: #C2BACB; }
+.quietButton {
+  border-color: #71687F;
+  color: var(--forma-studio-bone);
+}
+.publishButton { background: var(--forma-acid-voltage); border-color: var(--forma-acid-voltage); color: #17150E; }
+.publishButton span { color: #17150E; }
+.publishButton:hover { background: #E5FF91; border-color: #E5FF91; }
+.studioManifest { background: var(--forma-carbon-ink); }
+.workspace {
+  flex: none;
+  height: clamp(640px, calc(100svh - 17rem), 980px);
+  min-height: 640px;
+  grid-template-columns: clamp(11rem, 12vw, 14rem) minmax(0, 1fr) clamp(15rem, 17vw, 19rem);
+  background: #17141F;
+}
+.leftPanel, .rightPanel { background: #201D2A; }
+.leftPanel { border-color: #494354; }
+.rightPanel { border-color: #494354; }
+.panelHeading { color: #B4ADBF; border-color: #494354; }
+.panelHeading span:first-child { color: #F5F1E8; }
+.addTools button {
+  border-color: #514A5F;
+  background: #191622;
+  color: #D0CAD8;
+}
+.addTools button b, .objectGlyph { color: var(--forma-electric-iris); }
+.addTools button:hover { color: var(--forma-acid-voltage); }
+.objectSelect { color: #D0CAD8; }
+.objectIndex, .visibility { color: #B4ADBF; }
+.selectedRow { background: #322C3D; border-color: var(--forma-electric-iris); }
+.selectedRow .objectSelect { color: #F5F1E8; }
+.objectRow:hover { background: #292535; }
+.panelFoot { color: #B4ADBF; border-color: #494354; }
+.panelFoot span:last-child { color: var(--forma-soft-matter); }
+.stageColumn { background: #12101A; }
+.toolbar { border-color: #494354; background: #201D2A; }
+.toolGroup button, .cameraPresets button { color: #D0CAD8; }
+.toolGroup button:hover, .toolGroup .activeTool,
+.cameraPresets button:hover, .cameraPresets .activeCamera {
+  background: #342E40;
+  border-color: var(--forma-electric-iris);
+  color: #F5F1E8;
+}
+.toolGroup .activeTool { box-shadow: inset 0 -2px var(--forma-acid-voltage); }
+.cameraPresets .activeCamera { box-shadow: inset 0 -2px var(--forma-electric-iris); }
+.viewportLabel, .viewportMeta { color: #D0CAD8; }
+.canvasFrame {
+  background-color: #12101A;
+  background-image:
+    linear-gradient(rgb(245 241 232 / .065) 1px, transparent 1px),
+    linear-gradient(90deg, rgb(245 241 232 / .065) 1px, transparent 1px),
+    radial-gradient(ellipse at 50% 48%, rgb(164 139 255 / .18), transparent 68%);
+  background-size: 30px 30px, 30px 30px, auto;
+}
+.canvasGrid { background: radial-gradient(ellipse at 50% 48%, rgb(164 139 255 / .15), transparent 68%); }
+.canvasStamp { color: #F5F1E8; text-shadow: 0 2px 12px #090810; }
+.canvasHint { color: #D0CAD8; text-shadow: 0 2px 12px #090810; }
+.statusbar { border-color: #494354; background: #1D1A27; color: #D0CAD8; }
+.statusbar span:first-child { color: #F5F1E8; }
+.inspector { background: #201D2A; }
+.selectionIntro { border-color: #494354; }
+.selectionIntro > span, .selectionIntro small,
+.axisFields label > span, .rangeField > span,
+.colorField > span, .nameField > span { color: #BEB7C8; }
+.selectionIntro strong { color: #F5F1E8; }
+.propertySection { border-color: #494354; }
+.propertyTitle { color: var(--forma-soft-matter); }
+.axisFields input, .nameField input {
+  border-color: #5C536B;
+  background: #15121E;
+  color: #F5F1E8;
+}
+.rangeField b { color: var(--forma-acid-voltage); }
+.colorField code { color: #D0CAD8; }
+.deleteButton { color: #FF938A; border-color: #A75B59; }
+.emptyState { color: #D0CAD8; }
+.inspectorFoot { color: #B4ADBF; }
+.inspectorFoot span:first-child { color: var(--forma-signal-vermilion); }
+.versionShelf { border-color: #494354; background: #1D1A27; }
+.versionToggle { color: #F5F1E8; }
+.versionToggle:hover { color: var(--forma-acid-voltage); }
+.versionList, .versionItem { color: #D0CAD8; border-color: #494354; }
+.versionItem small { color: #B4ADBF; }
+.mobileBar { color: #D0CAD8; background: #15121E; border-color: #494354; }
+.mobileBar > button { color: #D0CAD8; }
+.mobileBar > button[aria-pressed=true] { color: var(--forma-acid-voltage); }
+@media (min-width: 1500px) {
+  .workspace {
+    height: clamp(720px, calc(100svh - 15rem), 1120px);
+    grid-template-columns: 14rem minmax(0, 1fr) 19rem;
+  }
+}
+@media (max-width: 1100px) and (min-width: 701px) {
+  .workspace {
+    height: clamp(620px, calc(100svh - 16rem), 900px);
+    grid-template-columns: 11rem minmax(0, 1fr) 16rem;
+  }
+}
+@media (max-width: 700px) {
+  .studio { min-height: 0; height: auto; }
+  .workspace { height: min(76svh, 780px); min-height: 460px; }
+  .canvasFrame { min-height: 0; }
+}

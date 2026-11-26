@@ -161,3 +161,35 @@
   .stage { min-height: 25rem; }
   .panel { padding: 1rem; }
 }
+
+
+/* FORCE ROOM — balanced signal colors and legible instrument labels */
+.workspace { background: #17141F; border-color: #494354; }
+.stageMeta, .panelTitle, .modeField legend, .control > span,
+.control small, .curve > div, .presets > span, .recipe > div,
+.scoreHeader, .scoreLane > span, .timelineMeta, .timelineScale {
+  color: #D0CAD8;
+}
+.stageCoordinates, .stageInstruction, .stageFooter > span,
+.fieldSource small, .copyMessage, .traceActions p, .score > p,
+.reducedMotionNote { color: #D0CAD8; }
+.stage { background-color: #15121E; }
+.stage::after { border-color: rgb(245 241 232 / .2); }
+.cornerMark, .timelineMeta output { color: var(--forma-signal-vermilion); }
+.control output, .scoreHeader span:last-child, .scoreLane em { color: var(--forma-acid-voltage); }
+.modeGrid button, .presets button, .recipe button, .stageFooter button,
+.traceActions button, .control select {
+  color: #F5F1E8;
+  border-color: #5C536B;
+}
+.modeGrid button[aria-pressed=true] {
+  border-color: var(--forma-acid-voltage);
+  background: rgb(215 243 106 / .12);
+  color: var(--forma-acid-voltage);
+}
+.recipe pre { color: #E8E2ED; background: #15121E; }
+.score { background: #201D2A; }
+.scoreLane > span i { color: #B4ADBF; }
+@media (max-width: 900px) {
+  .workspace { grid-template-columns: minmax(0, 1fr); }
+}
