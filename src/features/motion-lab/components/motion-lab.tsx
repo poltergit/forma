@@ -13,10 +13,10 @@ const curvePaths: Record<Easing, string> = {
 };
 
 const modes: Array<{ id: MotionMode; label: string; note: string }> = [
-  { id: "orbit", label: "Orbit", note: "A body moving around an invisible center." },
-  { id: "pulse", label: "Pulse", note: "Expansion and contraction as a rhythmic signal." },
-  { id: "shift", label: "Shift", note: "A form traveling across a spatial axis." },
-  { id: "stagger", label: "Stagger", note: "A stepped sequence with deliberate interruption." },
+  { id: "orbit", label: "Orbit", note: "ATTRACTION / A body responds to an invisible center. Its path reveals the relationship between distance, gravity, and time." },
+  { id: "pulse", label: "Pulse", note: "RHYTHM / A body expands and contracts. Repetition turns energy into a readable signal." },
+  { id: "shift", label: "Shift", note: "DISPLACEMENT / A body crosses a spatial axis. Its previous position becomes evidence of intervention." },
+  { id: "stagger", label: "Stagger", note: "SEQUENCE / Parts move in deliberate succession. Delay becomes a visible relationship between cause and response." },
 ];
 
 export function MotionLab() {

@@ -7,9 +7,9 @@ export const PLAYGROUND_RECIPE_KEY = "forma:playground:recipes:v1";
 const GENERATOR_IDS: GeneratorId[] = ["displacement", "orbital-bloom", "woven-lattice"];
 
 export const GENERATORS: Array<{ id: GeneratorId; number: string; name: string; note: string }> = [
-  { id: "displacement", number: "001", name: "Displacement field", note: "A responsive field pushed outward by your cursor." },
-  { id: "orbital-bloom", number: "002", name: "Orbital bloom", note: "A radial system of petals, rings, and rotating order." },
-  { id: "woven-lattice", number: "003", name: "Woven lattice", note: "A jittered grid that folds into a connected mesh." },
+  { id: "displacement", number: "001", name: "Pressure field", note: "Intervention pushes matter away from a point of contact. The displaced mesh records where pressure changed its structure." },
+  { id: "orbital-bloom", number: "002", name: "Orbit system", note: "A central attractor organizes matter into paths. Distance and repetition make relationships visible." },
+  { id: "woven-lattice", number: "003", name: "Tension lattice", note: "Connected points distribute stress across a shared grid. A local shift changes the balance of the whole structure." },
 ];
 
 export type PlaygroundRecipe = {
