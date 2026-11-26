@@ -76,12 +76,12 @@ const initialObjects: SceneObject[] = [
   { id: 3, name: "Core / sphere", kind: "sphere", color: "#d8ff38", roughness: 0.28, metalness: 0.12, emissive: "#000000", transmission: 0, thickness: 0, ior: 1.5, clearcoat: 0, clearcoatRoughness: 0, opacity: 1, position: [0.05, -0.85, 0.55], rotation: [0, 0, 0], scale: 0.72, visible: true },
 ];
 
-function ObjectMesh({ item, selected, tool, onSelect, onTransformStart, onTransform }: { item: SceneObject; selected: boolean; tool: TransformTool; onSelect: () => void; onTransformStart: () => void; onTransform: (transform: Pick<SceneObject, "position" | "rotation" | "scale">) => void }) {
+function ObjectMesh({ item, selected, tool, draftTransform, onSelect, onTransformStart, onTransformDraft }: { item: SceneObject; selected: boolean; tool: TransformTool; draftTransform?: Pick<SceneObject, "position" | "rotation" | "scale">; onSelect: () => void; onTransformStart: () => void; onTransformDraft: (transform: Pick<SceneObject, "position" | "rotation" | "scale">) => void }) {
   const groupRef = useRef<Group>(null);
   const material = { color: item.color, roughness: item.roughness, metalness: item.metalness, emissive: item.emissive, emissiveIntensity: item.emissive === "#000000" ? 0 : 0.65, transmission: item.transmission, thickness: item.thickness, ior: item.ior, clearcoat: item.clearcoat, clearcoatRoughness: item.clearcoatRoughness, transparent: item.transmission > 0 || item.opacity < 1, opacity: item.opacity, envMapIntensity: 1.35 };
   const handleTransform = () => {
     const target = groupRef.current;
-    if (target) onTransform({
+    if (target) onTransformDraft({
       position: [Number(target.position.x.toFixed(3)), Number(target.position.y.toFixed(3)), Number(target.position.z.toFixed(3))],
       rotation: [Number(target.rotation.x.toFixed(3)), Number(target.rotation.y.toFixed(3)), Number(target.rotation.z.toFixed(3))],
       scale: Number(((target.scale.x + target.scale.y + target.scale.z) / 3).toFixed(3)),
@@ -132,12 +132,17 @@ function ObjectMesh({ item, selected, tool, onSelect, onTransformStart, onTransf
       {selected && <mesh scale={1.035}><sphereGeometry args={[item.kind === "sphere" ? 0.69 : 0.82, 24, 24]} /><meshBasicMaterial color="#F5F1E8" wireframe transparent opacity={0.22} /></mesh>}
     </mesh>
   );
-  const group = <group ref={groupRef} position={item.position} rotation={item.rotation} scale={item.scale} visible={item.visible}>{form}</group>;
-  if (selected && tool !== "select") {
-    const mode = tool === "move" ? "translate" : tool;
-    return <TransformControls mode={mode} size={1.35} showX showY showZ onMouseDown={onTransformStart} onMouseUp={handleTransform}>{group}</TransformControls>;
-  }
-  return group;
+  const transform = draftTransform ?? item;
+  const group = <group ref={groupRef} position={transform.position} rotation={transform.rotation} scale={transform.scale} visible={item.visible}>{form}</group>;
+  const mode = tool === "move" ? "translate" : tool;
+  return (
+    <>
+      {group}
+      {selected && tool !== "select" && (
+        <TransformControls object={groupRef} mode={mode} size={1.5} showX showY showZ onMouseDown={onTransformStart} onMouseUp={handleTransform} />
+      )}
+    </>
+  );
 }
 
 const chromaticShader = {
@@ -191,7 +196,7 @@ function SceneRenderPipeline({ settings }: { settings: SceneRenderDocument }) {
   return null;
 }
 
-function SceneCanvas({ objects, selectedId, tool, view, lighting, render, onSelect, onTransformStart, onTransform }: { objects: SceneObject[]; selectedId: number; tool: TransformTool; view: CameraView; lighting: SceneLightingDocument; render: SceneRenderDocument; onSelect: (id: number) => void; onTransformStart: (id: number) => void; onTransform: (id: number, transform: Pick<SceneObject, "position" | "rotation" | "scale">) => void }) {
+function SceneCanvas({ objects, selectedId, tool, view, lighting, render, pendingTransform, onSelect, onTransformStart, onTransformDraft }: { objects: SceneObject[]; selectedId: number; tool: TransformTool; view: CameraView; lighting: SceneLightingDocument; render: SceneRenderDocument; pendingTransform: { id: number; transform: Pick<SceneObject, "position" | "rotation" | "scale"> } | null; onSelect: (id: number) => void; onTransformStart: (id: number) => void; onTransformDraft: (id: number, transform: Pick<SceneObject, "position" | "rotation" | "scale">) => void }) {
   return (
     <Canvas key={render.projection} orthographic={render.projection === "orthographic"} camera={render.projection === "orthographic" ? { position: cameraViews.perspective, zoom: 85 } : { position: cameraViews.perspective, fov: 38 }} dpr={render.quality === "draft" ? 1 : render.quality === "studio" ? 1.5 : 2} gl={{ antialias: true, alpha: true, preserveDrawingBuffer: true }}>
       <color attach="background" args={["#17151d"]} />
@@ -203,7 +208,7 @@ function SceneCanvas({ objects, selectedId, tool, view, lighting, render, onSele
         <CameraRig view={view} projection={render.projection} />
         <SceneRenderPipeline settings={render} />
         <Environment preset={lighting.environment} environmentIntensity={lighting.environmentIntensity} />
-        {objects.map((item) => <ObjectMesh key={item.id} item={item} selected={item.id === selectedId} tool={tool} onSelect={() => onSelect(item.id)} onTransformStart={() => onTransformStart(item.id)} onTransform={(transform) => onTransform(item.id, transform)} />)}
+        {objects.map((item) => <ObjectMesh key={item.id} item={item} selected={item.id === selectedId} tool={tool} draftTransform={pendingTransform?.id === item.id ? pendingTransform.transform : undefined} onSelect={() => onSelect(item.id)} onTransformStart={() => onTransformStart(item.id)} onTransformDraft={(transform) => onTransformDraft(item.id, transform)} />)}
         {lighting.shadows && <ContactShadows position={[0, -1.7, 0]} opacity={lighting.shadowOpacity} scale={10} blur={lighting.shadowBlur} far={4} />}
       </Suspense>
       <OrbitControls makeDefault enabled={tool === "select"} enableDamping dampingFactor={0.08} minDistance={2.2} maxDistance={18} />
@@ -264,6 +269,7 @@ export function SceneStudio() {
     setSaveStatus("REDO");
   };
   const [selectedId, setSelectedId] = useState(1);
+  const [pendingTransform, setPendingTransform] = useState<{ id: number; transform: Pick<SceneObject, "position" | "rotation" | "scale"> } | null>(null);
   const [activeTool, setActiveTool] = useState<"select" | "move" | "rotate" | "scale">("select");
   const [cameraView, setCameraView] = useState<CameraView>("perspective");
   const [sceneName, setSceneName] = useState("Untitled composition");
@@ -783,7 +789,8 @@ export function SceneStudio() {
               <small>LIVE FORM PALETTE</small>
             </div>
             <div className={styles.canvasGrid} aria-hidden="true" />
-            <div className={styles.canvas}><SceneCanvas objects={objects} selectedId={selected?.id ?? -1} tool={activeTool} view={cameraView} lighting={lighting} render={renderSettings} onSelect={setSelectedId} onTransformStart={() => recordHistory(false)} onTransform={(id, transform) => { setObjects((current) => current.map((item) => item.id === id ? { ...item, ...transform } : item)); setHistoryState({ canUndo: history.current.past.length > 0, canRedo: false }); }} /></div>
+            <div className={styles.canvas}><SceneCanvas objects={objects} selectedId={selected?.id ?? -1} tool={activeTool} view={cameraView} lighting={lighting} render={renderSettings} pendingTransform={pendingTransform} onSelect={setSelectedId} onTransformStart={() => recordHistory(false)} onTransformDraft={(id, transform) => setPendingTransform({ id, transform })} /></div>
+            {pendingTransform && <div className={styles.transformCommit} role="status" aria-live="polite"><div><strong>POSITION CHANGED</strong><span>Review the new placement, then save it to your composition.</span></div><button type="button" className={styles.discardTransform} onClick={() => { setPendingTransform(null); history.current.past.pop(); refreshHistoryState(); }}>DISCARD</button><button type="button" className={styles.saveTransform} onClick={() => { recordHistory(); setObjects((current) => current.map((item) => item.id === pendingTransform.id ? { ...item, ...pendingTransform.transform } : item)); setPendingTransform(null); setHistoryState({ canUndo: true, canRedo: false }); setSaveStatus("POSITION SAVED"); }}>SAVE POSITION <span>↗</span></button></div>}
             <div className={styles.canvasHint}>DRAG TO ORBIT <i /> SCROLL TO ZOOM <i /> SELECT TO INSPECT</div>
             <div className={styles.axisWidget}><span>X</span><span>Y</span><span>Z</span></div>
           </div>
