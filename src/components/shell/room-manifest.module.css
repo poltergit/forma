@@ -10,8 +10,8 @@
   margin: 0 0 clamp(1.4rem, 3vw, 2.8rem);
   padding: clamp(1.25rem, 3vw, 2.5rem);
   border: 1px solid color-mix(in srgb, currentColor 14%, transparent);
-  background: linear-gradient(112deg, color-mix(in srgb, var(--room-accent) 9%, transparent), transparent 48%), var(--forma-abyss, #100d18);
-  color: var(--forma-porcelain, #f4f0e8);
+  background: linear-gradient(112deg, color-mix(in srgb, var(--room-accent) 9%, transparent), transparent 48%), var(--forma-carbon-ink, #100d18);
+  color: var(--forma-studio-bone, #f4f0e8);
 }
 .manifest::after {
   position: absolute;
@@ -60,8 +60,8 @@
 .figure svg { width: min(100%, 180px); overflow: visible; fill: none; stroke: currentColor; stroke-width: 1; }
 .figure svg path, .figure svg ellipse { vector-effect: non-scaling-stroke; }
 .figure svg .core { fill: var(--room-accent); stroke: var(--room-accent); }
-.figure svg .node { fill: var(--forma-signal-flame, #ff5a3c); stroke: var(--forma-signal-flame, #ff5a3c); }
-.figure svg .nodeAlt { fill: var(--forma-laser-cyan, #54f2d2); stroke: var(--forma-laser-cyan, #54f2d2); }
+.figure svg .node { fill: var(--forma-signal-vermilion, #ff5a3c); stroke: var(--forma-signal-flame, #ff5a3c); }
+.figure svg .nodeAlt { fill: var(--forma-soft-matter, #54f2d2); stroke: var(--forma-laser-cyan, #54f2d2); }
 .figure svg .vector { stroke: var(--forma-signal-flame, #ff5a3c); stroke-dasharray: 3 4; }
 .figure svg .echo { stroke: color-mix(in srgb, currentColor 38%, transparent); stroke-dasharray: 2 5; }
 .principle {

@@ -66,7 +66,7 @@ export function RoomManifest({ variant, number, room, title, description, princi
         <span className={styles.figureCaption}>{notation}</span>
       </div>
       <div className={styles.principle}>
-        <span>THE ROOM'S RULE</span>
+        <span>THE ROOM&apos;S RULE</span>
         <p>{principle}</p>
       </div>
     </aside>

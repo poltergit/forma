@@ -186,15 +186,24 @@ Every visible form must communicate a relationship between matter, force, trace,
 
 Each experience has its own visual language, composition, rhythm, and interaction logic. They share the same identity primitives and color semantics, but must never feel like the same template with different headings. See [FORMA Room Personalities](./FORMA_ROOM_PERSONALITIES.md) for the complete art-direction and interaction contracts.
 
-| Experience | Personality | Dominant primitives | Composition |
-|---|---|---|---|
-| Landing | The Manifestation | Matter + Trace + Notation | A signature specimen, oversized voice, orbiting annotations, a sense of emergence |
-| Playground | The Open Field | Matter + Force | Loose, surprising, exploratory; studies feel like experiments pinned to a wall |
-| Scene Studio | The Workbench | Matter + Notation | Compact, viewport-first, dense but calm; tools support the specimen rather than compete with it |
-| Motion Lab | The Force Room | Force + Trace | Time, paths, echoes, and rhythm are visible; controls behave like instruments |
-| Archive | The Specimen Index | Trace + Notation | Curated, searchable records of work and its variations |
+| Experience | Personality | Dominant primitives | Visual signature | Interaction logic |
+|---|---|---|---|---|
+| Landing | The Manifestation | Matter + Trace + Notation | Signature specimen, expressive editorial field, living brand mark | Reveal the forces and identity as a visual story |
+| Playground | The Open Field | Matter + Force | Generative field, changing coordinates, annotated experiments | Change a condition and see the specimen respond |
+| Motion Lab | The Force Room | Force + Trace | Trajectories, temporal echoes, score lines, before-and-after states | Tune duration, intensity, easing, and behavior |
+| Scene Studio | The Workbench | Matter + Notation | Viewport-first instrument, spatial grid, material and lighting studies | Direct the specimen through camera, light, and material |
+| Archive | The Specimen Index | Trace + Notation | Layered specimen sheets, registration marks, preserved variations | Reopen a study with its original parameters |
 
-A shared identity does not mean identical layouts. Feature personality is expressed through composition, density, color balance, and interaction—not by changing the logo or inventing a new unrelated palette per page.
+### Room distinction rules
+
+- **Different visual composition:** do not repeat the same hero, card grid, or banner arrangement across rooms.
+- **Different motion grammar:** orbit and drift belong to relationships; pressure and displacement belong to intervention; settle and align belong to resolution; archival echoes belong to memory.
+- **Different interaction purpose:** every control should communicate what it changes and why that change matters.
+- **Shared brand signals:** the Afterform, notation system, typography roles, and semantic palette connect the rooms without making them identical.
+- **Meaningful handoffs:** when a study moves between rooms, preserve its context and explain what the next room will do with it.
+- **A deliberate quiet state:** each room needs stillness and readable working space. Creative intensity must not become permanent visual noise.
+
+A room is successful when its personality is recognizable before reading its title, while its controls and workflows remain familiar enough to use.
 
 ## 12. Interface behavior and usability
 
