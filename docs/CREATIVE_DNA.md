@@ -77,11 +77,11 @@ Color is used as material and information, not as a universal decoration layer. 
 | Laser Cyan | Organic counterpoint | `#54F2D2` | Luminous material, energy, and spatial trails |
 
 ### Color behavior
-- Bone and Carbon establish the stage. Do not place every section on the same ground.
-- Acid Voltage is a punctuation mark. It should be rare enough to stay powerful.
-- Vermilion is the human signal: use it for moments that need warmth or impact.
-- Electric Iris belongs to spatial and dimensional systems, not every link and button.
-- Soft Matter is a balancing material, not a mandatory accent.
+- Porcelain and Abyss establish the stage. Do not place every section on the same ground.
+- Hyperlime is a punctuation mark. It should be rare enough to stay powerful.
+- Signal Flame is the human signal: use it for moments that need warmth or impact.
+- Ultraviolet belongs to spatial and dimensional systems, not every link and button.
+- Laser Cyan is a balancing material, not a mandatory accent.
 - Avoid using all accents at equal strength in one composition.
 - Text contrast always takes priority over color expression.
 

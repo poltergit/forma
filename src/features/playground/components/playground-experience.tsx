@@ -218,11 +218,11 @@ export function PlaygroundExperience() {
           polygon(context, [[x - half, y], [x, y + rise], [x, y + rise + half * 0.62], [x - half, y + half * 0.62]], `rgba(119,114,125,${alpha * 0.55})`);
           polygon(context, [[x + half, y], [x, y + rise], [x, y + rise + half * 0.62], [x + half, y + half * 0.62]], `rgba(23,21,29,${alpha * 0.7})`);
           polygon(context, [[x, y - rise], [x + half, y], [x, y + rise], [x - half, y]], tone);
-          context.globalAlpha = 0.12 + point.z * 0.2; context.strokeStyle = "#f1ede3"; context.stroke(); context.globalAlpha = 1;
+          context.globalAlpha = 0.12 + point.z * 0.2; context.strokeStyle = "#f4f0e8"; context.stroke(); context.globalAlpha = 1;
         }
       });
 
-      if (materialId === "paper" && material.grain > 0) { context.save(); context.globalAlpha = material.grain; context.fillStyle = "#17151d"; for (let index = 0; index < 180; index += 1) { const x = ((index * 73) % 997) / 997 * width; const y = ((index * 193) % 991) / 991 * height; context.fillRect(x, y, 1, 1); } context.restore(); }
+      if (materialId === "paper" && material.grain > 0) { context.save(); context.globalAlpha = material.grain; context.fillStyle = "#100d18"; for (let index = 0; index < 180; index += 1) { const x = ((index * 73) % 997) / 997 * width; const y = ((index * 193) % 991) / 991 * height; context.fillRect(x, y, 1, 1); } context.restore(); }
       context.globalCompositeOperation = "source-over"; context.shadowBlur = 0; context.shadowColor = "transparent";
       const glow = context.createRadialGradient(originX, originY, 0, originX, originY, influenceRadius);
       glow.addColorStop(0, "rgba(255,91,69,0.13)"); glow.addColorStop(1, "rgba(255,91,69,0)");

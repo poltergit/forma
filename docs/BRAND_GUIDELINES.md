@@ -50,11 +50,11 @@ Individual sections may have different visual personalities while sharing this g
 | Organic counterpoint | Laser Cyan | `#54F2D2` |
 
 ### Usage
-- Bone and Carbon establish the stage; alternate surfaces to create rhythm.
-- Acid Voltage is a punctuation mark, not a default fill for every active control.
-- Vermilion introduces warmth and impact.
-- Electric Iris belongs naturally to spatial and dimensional systems.
-- Soft Matter balances the more intense signals.
+- Porcelain and Abyss establish the stage; alternate surfaces to create rhythm.
+- Hyperlime is a punctuation mark, not a default fill for every active control.
+- Signal Flame introduces warmth and impact.
+- Ultraviolet belongs naturally to spatial and dimensional systems.
+- Laser Cyan balances the more intense signals.
 - Avoid using all accents at equal strength in one composition.
 - Maintain sufficient contrast for readable interface text.
 

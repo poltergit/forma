@@ -27,7 +27,7 @@ export function getMaterialTreatment(material: MaterialId) {
 
 export const PLAYGROUND_PALETTES: Array<{ id: PaletteId; name: string; colors: [string, string, string]; background: string }> = [
   { id: "atelier", name: "Neon Relic", colors: ["#FF5A3C", "#875BFF", "#54F2D2"], background: "#100D18" },
-  { id: "citrus", name: "Citrus", colors: ["#d9ff3f", "#ff5a3c", "#100d18"], background: "#f4f0e8" },
+  { id: "citrus", name: "Voltage", colors: ["#D9FF3F", "#FF5A3C", "#875BFF"], background: "#100D18" },
   { id: "nocturne", name: "Afterhours", colors: ["#54F2D2", "#875BFF", "#F4F0E8"], background: "#100D18" },
   { id: "mineral", name: "Signal", colors: ["#FF5A3C", "#54F2D2", "#D9FF3F"], background: "#1B1724" },
 ];

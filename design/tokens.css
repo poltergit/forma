@@ -1,7 +1,7 @@
 /* FORMA — Matter in Motion
    Creative DNA tokens. Keep feature-specific art direction in CSS Modules. */
 :root {
-  color-scheme: light;
+  color-scheme: dark;
 
   /* Core palette: NEON RELIC — nocturnal matter and electric signals */
   --forma-studio-bone: #F4F0E8;
